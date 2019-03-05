@@ -403,7 +403,7 @@ if __name__ == '__main__':
     # unit cell
     Lx, Ly = 2, 2
 
-    my_corr_len(model, initial_state, tile_unit, t, U, mu, lattice, Lx, Ly, V_min=0, V_max=8, V_points=4)
+    my_corr_len(model, initial_state, tile_unit, t, U, mu, lattice, Lx, Ly, V_min=0, V_max=7, V_points=4)
     # my_charge_pump(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, phi_min=0, phi_max=1, phi_points=10)
     # my_ent_scal(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly_min=2, Ly_max=8)
     # my_ent_spec_real(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, charge_sectors=True)
