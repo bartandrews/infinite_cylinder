@@ -1,0 +1,12 @@
+ssh s3it # log in to the cluster (e.g. hydra, vesta, etc.)
+q # bashrc-defined shortcut to view status of jobs
+module avail # all available modules
+module list # all loaded modules
+module purge # purge all modules or specify one
+
+squeue # check how far along your script is in the slurm queue
+
+sbatch run_dmrg # run the script for run_dmrg
+
+Example Slurm Batch Scripts: https://www.id.uzh.ch/en/scienceit/infrastructure/usage/examples.html
+
