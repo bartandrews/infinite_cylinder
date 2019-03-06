@@ -1,7 +1,7 @@
 import numpy as np
 from tenpy.networks.mps import MPS
 from tenpy.models.fermions_hubbard import FermionicHubbardModel
-from tenpy.models.fermions_haldane import FermionicHaldaneModel
+from models.fermions_haldane import FermionicHaldaneModel
 from tenpy.algorithms import dmrg
 import random
 import sys
