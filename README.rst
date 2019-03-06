@@ -10,13 +10,18 @@ File naming convention
 
 All output .dat files are named in the following order:
 
+*stem*
+
 - tool (e.g. corr_len)
-- charge (either _charge or nothing)
+- charge (either "_charge" or nothing)
 - model (e.g. Hubbard)
 - lattice (e.g. Honeycomb)
 - initial state (e.g. neel)
-- tile units (0 1 or up down)
+- tile units ([0, 1] or ['up', 'down'])
 - chi (i.e. chi_max)
+
+*leaf*
+
 - t
 - U
 - mu

@@ -46,35 +46,46 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     return product_state
 
 
-def run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly):
+# def run_iDMRG_Hubbard(lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly):
+#
+#     model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+#                         order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
+#     M = FermionicHubbardModel(model_params)
+#
+#     (E, psi, M) = run_iDMRG(lattice, initial_state, tile_unit, chi_max, M)
+#
+#     return E, psi, M
+#
+#
+# def run_iDMRG_Haldane(lattice, initial_state, tile_unit, chi_max, t, mu, V, Lx, Ly, phi_ext=0):
+#
+#     model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+#                         order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
+#     M = FermionicHaldaneModel(model_params)
+#
+#     (E, psi, M) = run_iDMRG(lattice, initial_state, tile_unit, chi_max, M)
+#
+#     return E, psi, M
 
-    model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
-                        order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
-    M = FermionicHubbardModel(model_params)
 
-    (E, psi, M) = run_iDMRG(lattice, initial_state, tile_unit, chi_max, M)
+def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
 
-    return E, psi, M
+    if model == 'Hubbard':
+        model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
+        M = FermionicHubbardModel(model_params)
+    elif model == 'Haldane':
+        model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
+        M = FermionicHaldaneModel(model_params)
+    else:
+        sys.exit('Error: Unknown model.')
 
-
-def run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly, phi_ext=0):
-
-    model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
-                        order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
-    M = FermionicHaldaneModel(model_params)
-
-    (E, psi, M) = run_iDMRG(lattice, initial_state, tile_unit, chi_max, M)
-
-    return E, psi, M
-
-
-def run_iDMRG(lattice, initial_state, tile_unit, chi_max, model):
-
-    product_state = select_initial_psi(model, lattice, initial_state, tile_unit)
+    product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
     print(product_state)  # NB: two sites per basis for honeycomb crystal
 
-    psi = MPS.from_product_state(model.lat.mps_sites(), product_state, bc=model.lat.bc_MPS)
+    psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
     dmrg_params = {
         'mixer': True,
@@ -91,43 +102,44 @@ def run_iDMRG(lattice, initial_state, tile_unit, chi_max, model):
         'N_sweeps_check': 10
     }
 
-    info = dmrg.run(psi, model, dmrg_params)
+    info = dmrg.run(psi, M, dmrg_params)
 
     E = info['E']
 
-    return E, psi, model
+    return E, psi, M
+
+
+def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max, charge_sectors=False):
+
+    if charge_sectors:
+        charge_label = '_charge'
+    else:
+        charge_label = ''
+
+    stem = ("data/%s/%s%s_%s_%s_%s_tile_%s_%s_chi_%s_"
+            % (tool, tool, charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max))
+
+    return stem
 
 
 def my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min, V_max, V_samp):
 
-    directory = "data/corr_len/"
+    stem = file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
 
     if model == 'Hubbard':
-        file = ("corr_len_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat"
-                % (model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, U, mu, V_min, V_max, V_samp,
-                   Lx, Ly))
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly))
     elif model == 'Haldane':
-        file = ("corr_len_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat"
-                % (model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, mu, V_min, V_max, V_samp,
-                   Lx, Ly))
+        leaf = ("t_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, mu, V_min, V_max, V_samp, Lx, Ly))
     else:
         sys.exit('Error: Unknown model.')
 
-    dat_file = directory + file
-
+    dat_file = stem + leaf
     open(dat_file, "w")
     data = open(dat_file, "a")
 
     for V in np.linspace(V_min, V_max, V_samp):
 
-        if model == 'Hubbard':
-            (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
-        elif model == 'Haldane':
-            (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly)
-        else:
-            sys.exit('Error: Unknown model.')
+        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
         numb_sites = len(M.lat.mps_sites())
         xi = psi.correlation_length()
@@ -138,34 +150,22 @@ def my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx,
 
 def my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp):
 
-    directory = "data/charge_pump/"
+    stem = file_name_stem("charge_pump", model, lattice, initial_state, tile_unit, chi_max)
 
     if model == 'Hubbard':
-        file = ("charge_pump_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat"
-                % (model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, U, mu, V,
-                   Lx, Ly, phi_min, phi_max, phi_samp))
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
     elif model == 'Haldane':
-        file = ("charge_pump_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat"
-                % (model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, mu, V,
-                   Lx, Ly, phi_min, phi_max, phi_samp))
+        leaf = ("t_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
     else:
         sys.exit('Error: Unknown model.')
 
-    dat_file = directory + file
-
+    dat_file = stem + leaf
     open(dat_file, "w")
     data = open(dat_file, "a")
 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        if model == 'Hubbard':
-            (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
-        elif model == 'Haldane':
-            (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly, phi_ext)
-        else:
-            sys.exit('Error: Unknown model.')
+        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
 
         numb_sites = len(M.lat.mps_sites())
         dN = psi.expectation_value('dN')
@@ -188,34 +188,22 @@ def my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, 
 
 def my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min, Ly_max):
 
-    directory = "data/ent_scal/"
+    stem = file_name_stem("ent_scal", model, lattice, initial_state, tile_unit, chi_max)
 
     if model == 'Hubbard':
-        file = ("ent_scal_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat"
-                % (model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, U, mu, V,
-                   Lx, Ly_min, Ly_max))
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat" % (t, U, mu, V, Lx, Ly_min, Ly_max))
     elif model == 'Haldane':
-        file = ("ent_scal_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat"
-                % (model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, mu, V,
-                   Lx, Ly_min, Ly_max))
+        leaf = ("t_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat" % (t, mu, V, Lx, Ly_min, Ly_max))
     else:
         sys.exit('Error: Unknown model.')
 
-    dat_file = directory + file
-
+    dat_file = stem + leaf
     open(dat_file, "w")
     data = open(dat_file, "a")
 
     for Ly_iter in range(Ly_min, Ly_max+1):
 
-        if model == 'Hubbard':
-            (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
-        elif model == 'Haldane':
-            (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, lattice, Lx, Ly)
-        else:
-            sys.exit('Error: Unknown model.')
+        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
         print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly_iter, SvN=psi.entanglement_entropy()[(Lx*Ly_iter-1)//2],
                                                        Sinf=psi.entanglement_entropy(n=np.inf)[(Lx*Ly_iter-1)//2]))
@@ -225,45 +213,24 @@ def my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
 
 def my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors):
 
-    if charge_sectors == True:
-        charge_label = '_charge'
-    elif charge_sectors == False:
-        charge_label = ''
-    else:
-        sys.exit('Error: Unknown charge_sectors.')
-
-    directory = "data/ent_spec_real/"
+    stem = file_name_stem("ent_spec_real", model, lattice, initial_state, tile_unit, chi_max, charge_sectors)
 
     if model == 'Hubbard':
-        file = ("ent_spec_real%s_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat"
-                % (charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, U, mu, V,
-                   Lx, Ly))
-        (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V, Lx, Ly))
     elif model == 'Haldane':
-        file = ("ent_spec_real%s_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat"
-                % (charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, mu, V,
-                   Lx, Ly))
-        (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly)
+        leaf = ("t_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, mu, V, Lx, Ly))
     else:
         sys.exit('Error: Unknown model.')
 
-    dat_file = directory + file
-
+    dat_file = stem + leaf
     open(dat_file, "w")
     data = open(dat_file, "a")
 
+    (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+
     spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
 
-    if charge_sectors == False:
-
-        for bond in range(0, Lx*Ly):
-            for i in range(0, len(spectrum[bond])):
-                print("{bond:d}\t{spectrum:.15f}".format(bond=bond, spectrum=spectrum[bond][i]))
-                data.write("%i\t%.15f\n" % (bond, spectrum[bond][i]))
-
-    elif charge_sectors == True:
+    if charge_sectors:
 
         print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
 
@@ -277,39 +244,29 @@ def my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
                                                           bond, spectrum[bond][sector][1][i]))
 
     else:
-        sys.exit('Error: Unknown charge_sectors.')
+
+        for bond in range(0, Lx * Ly):
+            for i in range(0, len(spectrum[bond])):
+                print("{bond:d}\t{spectrum:.15f}".format(bond=bond, spectrum=spectrum[bond][i]))
+                data.write("%i\t%.15f\n" % (bond, spectrum[bond][i]))
 
 
 def my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors):
 
-    if charge_sectors == True:
-        charge_label = '_charge'
-    elif charge_sectors == False:
-        charge_label = ''
-    else:
-        sys.exit('Error: Unknown charge_sectors.')
-
-    directory = "data/ent_spec_mom/"
+    stem = file_name_stem("ent_spec_mom", model, lattice, initial_state, tile_unit, chi_max, charge_sectors)
 
     if model == 'Hubbard':
-        file = ("ent_spec_mom%s_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat"
-                % (charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, U, mu, V,
-                   Lx, Ly))
-        (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V, Lx, Ly))
     elif model == 'Haldane':
-        file = ("ent_spec_mom%s_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat"
-                % (charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, mu, V,
-                   Lx, Ly))
-        (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly)
+        leaf = ("t_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, mu, V, Lx, Ly))
     else:
         sys.exit('Error: Unknown model.')
 
-    dat_file = directory + file
-
+    dat_file = stem + leaf
     open(dat_file, "w")
     data = open(dat_file, "a")
+
+    (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
     (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, canonicalize=1.e-3, verbose=0)
 
@@ -319,13 +276,7 @@ def my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu,
     else:
         print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
 
-    if charge_sectors == False:
-
-        for i in range(len(W)):
-            print("{K:.15f}\t{epsilon:.15f}".format(K=np.angle(W[i])/np.pi, epsilon=-np.log(np.abs(W[i]))))
-            data.write("%.15f\t%.15f\n" % (np.angle(W[i])/np.pi, -np.log(np.abs(W[i]))))
-
-    elif charge_sectors == True:
+    if charge_sectors:
 
         print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=q.charges.shape[1]))
 
@@ -336,67 +287,34 @@ def my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu,
             data.write("%i\t%.15f\t%.15f\n" % (q.to_qflat()[i][0], np.angle(W[i])/np.pi, -np.log(np.abs(W[i]))))
 
     else:
-        sys.exit('Error: Unknown charge_sectors.')
+
+        for i in range(len(W)):
+            print("{K:.15f}\t{epsilon:.15f}".format(K=np.angle(W[i]) / np.pi, epsilon=-np.log(np.abs(W[i]))))
+            data.write("%.15f\t%.15f\n" % (np.angle(W[i]) / np.pi, -np.log(np.abs(W[i]))))
 
 
 def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp,
                      charge_sectors):
 
-    if charge_sectors == True:
-        charge_label = '_charge'
-    elif charge_sectors == False:
-        charge_label = ''
-    else:
-        sys.exit('Error: Unknown charge_sectors.')
-
-    directory = "data/ent_spec_flow/"
+    stem = file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max, charge_sectors)
 
     if model == 'Hubbard':
-        file = ("ent_spec_flow%s_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat"
-                % (charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, U, mu, V,
-                   Lx, Ly, phi_min, phi_max, phi_samp))
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
     elif model == 'Haldane':
-        file = ("ent_spec_flow%s_%s_%s_%s_tile_%s_%s_chi_%s_t_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat"
-                % (charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max,
-                   t, mu, V,
-                   Lx, Ly, phi_min, phi_max, phi_samp))
+        leaf = ("t_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
     else:
         sys.exit('Error: Unknown model.')
 
-    dat_file = directory + file
-
+    dat_file = stem + leaf
     open(dat_file, "w")
     data = open(dat_file, "a")
 
-    if charge_sectors == False:
-
-        for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
-
-            if model == 'Hubbard':
-                (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
-            elif model == 'Haldane':
-                (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly, phi_ext)
-            else:
-                sys.exit('Error: Unknown model.')
-
-            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
-
-            for i in range(0, len(spectrum[0])):
-                print("{phi_ext:.15f}\t{spectrum:.15f}".format(phi_ext=phi_ext, spectrum=spectrum[0][i]))
-                data.write("%.15f\t%.15f\n" % (phi_ext, spectrum[0][i]))
-
-    elif charge_sectors == True:
+    if charge_sectors:
 
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-            if model == 'Hubbard':
-                (E, psi, M) = run_iDMRG_Hubbard(initial_state, lattice, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
-            elif model == 'Haldane':
-                (E, psi, M) = run_iDMRG_Haldane(initial_state, lattice, tile_unit, chi_max, t, mu, V, Lx, Ly, phi_ext)
-            else:
-                sys.exit('Error: Unknown model.')
+            (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
 
             spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
 
@@ -408,7 +326,16 @@ def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
                     data.write("%i\t%.15f\t%.15f\n" % (spectrum[0][sector][0][0], phi_ext, spectrum[0][sector][1][i]))
 
     else:
-        sys.exit('Error: Unknown charge_sectors.')
+
+        for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
+
+            (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+
+            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
+
+            for i in range(0, len(spectrum[0])):
+                print("{phi_ext:.15f}\t{spectrum:.15f}".format(phi_ext=phi_ext, spectrum=spectrum[0][i]))
+                data.write("%.15f\t%.15f\n" % (phi_ext, spectrum[0][i]))
 
 
 if __name__ == '__main__':
@@ -424,11 +351,11 @@ if __name__ == '__main__':
     # unit cell
     Lx, Ly = 2, 2
 
-    # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
+    my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
     my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
                    phi_samp=4)
-    # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=4)
-    # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
-    # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
-    # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-    #                  phi_samp=4, charge_sectors=True)
+    my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=4)
+    my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
+    my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
+    my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+                     phi_samp=4, charge_sectors=True)
