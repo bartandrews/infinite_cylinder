@@ -3,3 +3,5 @@
 questions
 lattice_plots/
 git_instructions
+**/*.dat
+**/__pycache__/*

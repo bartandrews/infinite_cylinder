@@ -79,7 +79,7 @@ def run_iDMRG(initial_state, tile_unit, lattice, model):
     dmrg_params = {
         'mixer': True,
         'trunc_params': {
-            'chi_max': 50,
+            'chi_max': 30,
             'svd_min': 1.e-10
         },
         # 'lanczos_params': {
@@ -103,7 +103,7 @@ def my_corr_len(model, initial_state, tile_unit, t, U, mu, lattice, Lx, Ly, V_mi
     directory = "data/corr_len/"
 
     if model == 'Hubbard':
-        file = ("corr_len_%s_%s_%s_tile_%s_%s_t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s_V.dat"
+        file = ("corr_len_%s_%s_%s_tile_%s_%s_t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat"
                 % (model, lattice, initial_state, tile_unit[0], tile_unit[1], t, U, mu, V_min, V_max, V_points, Lx, Ly))
     elif model == 'Haldane':
         file = ("corr_len_%s_%s_%s_tile_%s_%s_t_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat"
@@ -126,7 +126,7 @@ def my_corr_len(model, initial_state, tile_unit, t, U, mu, lattice, Lx, Ly, V_mi
             sys.exit('Error: Unknown model.')
 
         numb_sites = len(M.lat.mps_sites())
-        xi = psi.correlation_length()[numb_sites//2]
+        xi = psi.correlation_length()
 
         print("{V:.15f}\t{xi:.15f}".format(V=V, xi=xi))
         data.write("%.15f\t%.15f\n" % (V, xi))
@@ -394,9 +394,9 @@ def my_ent_spec_flow(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, 
 if __name__ == '__main__':
 
     # configuration parameters
-    model = 'Haldane'
+    model = 'Hubbard'
     initial_state = 'neel'
-    tile_unit = [0, 1]
+    tile_unit = ['up', 'down']
     lattice = 'Honeycomb'
     # Hamiltonian parameters (U only for Hubbard)
     t, U, mu, V = -1, 0, 0, 1
@@ -404,9 +404,9 @@ if __name__ == '__main__':
     Lx, Ly = 2, 2
 
     my_corr_len(model, initial_state, tile_unit, t, U, mu, lattice, Lx, Ly, V_min=0, V_max=1, V_points=4)
-    # my_charge_pump(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, phi_min=0, phi_max=1, phi_points=10)
-    # my_ent_scal(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly_min=2, Ly_max=8)
-    # my_ent_spec_real(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, charge_sectors=True)
-    # my_ent_spec_mom(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, charge_sectors=True)
-    # my_ent_spec_flow(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, phi_min=0, phi_max=1,
-    #                  phi_points=7, charge_sectors=True)
+    my_charge_pump(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, phi_min=0, phi_max=1, phi_points=4)
+    my_ent_scal(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly_min=2, Ly_max=4)
+    my_ent_spec_real(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, charge_sectors=True)
+    my_ent_spec_mom(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, charge_sectors=True)
+    my_ent_spec_flow(model, initial_state, tile_unit, t, U, mu, V, lattice, Lx, Ly, phi_min=0, phi_max=1,
+                     phi_points=4, charge_sectors=True)
