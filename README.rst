@@ -32,9 +32,7 @@ All output .dat files are named in the following order:
 
 NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. V_0_1_4).
 
-Example file name:
-
-ent_spec_real_charge_Hubbard_Square_neel_tile_down_up_chi_100_t_-1_U_1_mu_0.5_V_0_Lx_2_Ly_2.dat
+Example: "ent_spec_real_charge_Hubbard_Square_neel_tile_down_up_chi_100_t_-1_U_1_mu_0.5_V_0_Lx_2_Ly_2.dat"
 
 Directory structure
 -------------------
