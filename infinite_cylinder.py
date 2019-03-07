@@ -32,6 +32,8 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     else:
         sys.exit('Error: Unknown lattice.')
 
+    Lx, Ly = model.lat.Ls[0], model.lat.Ls[1]
+
     if initial_state == 0:
         product_state = [tile_unit[0]] * model.lat.N_sites
     elif initial_state == 1:
@@ -158,14 +160,14 @@ def my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
     open(dat_file, "w")
     data = open(dat_file, "a")
 
-    for Ly_iter in range(Ly_min, Ly_max+1):
+    for Ly in range(Ly_min, Ly_max+1):
 
         (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
-        print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly_iter, SvN=psi.entanglement_entropy()[(Lx*Ly_iter-1)//2],
-                                                       Sinf=psi.entanglement_entropy(n=np.inf)[(Lx*Ly_iter-1)//2]))
-        data.write("%i\t%.15f\t%.15f\n" % (Ly_iter, psi.entanglement_entropy()[(Lx*Ly_iter-1)//2],
-                                           psi.entanglement_entropy(n=np.inf)[(Lx*Ly_iter-1)//2]))
+        print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly, SvN=psi.entanglement_entropy()[(Lx*Ly-1)//2],
+                                                       Sinf=psi.entanglement_entropy(n=np.inf)[(Lx*Ly-1)//2]))
+        data.write("%i\t%.15f\t%.15f\n" % (Ly, psi.entanglement_entropy()[(Lx*Ly-1)//2],
+                                           psi.entanglement_entropy(n=np.inf)[(Lx*Ly-1)//2]))
 
 
 def my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors):
