@@ -5,6 +5,39 @@ infinite_cylinder
 
 Prerequisites: TeNPy 0.3+, gnuplot, python 3+
 
+Tools description
+-----------------
+
+The initial tool set is inspired by the paper: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
+
+1) charge_pump = charge pump
+
+    This function is designed to plot the equivalent of Figs. 2.a,c) from the paper.
+
+2) ent_spec_flow = entanglement spectrum flow
+
+    This function is designed to plot the equivalent of Figs. 2.b,d) from the paper.
+
+3) ent_scal = entanglement scaling
+
+    This function is designed to plot the equivalent of Fig. 3.a) from the paper.
+
+4) ent_spec_mom = entanglement spectrum in momentum space
+
+    This function is designed to plot the equivalent of Fig. 3.b) from the paper.
+
+5) ent_spec_V_flow = entanglement spectrum flow with respect to V
+
+    This function is designed to plot the equivalent of Fig. 3.c) from the paper.
+
+6) corr_len = correlation length
+
+    This function is designed to plot the equivalent of the inset in Fig. 3.c) from the paper.
+
+7) ent_spec_real = entanglement spectrum in real space
+
+    Entanglement energy as a function of bond in the unit cell.
+
 Directory structure
 -------------------
 

@@ -320,7 +320,7 @@ if __name__ == '__main__':
     lattice = 'Square'
     initial_state = 'neel'
     tile_unit = [0, 1] if model == 'Haldane' else ['down', 'up']
-    chi_max = 100
+    chi_max = 30
     # Hamiltonian parameters (U=0 for Haldane)
     t, mu, V = -1, 0.25, 0
     U = 0 if model == 'Haldane' else 0
