@@ -317,10 +317,10 @@ if __name__ == '__main__':
     model = 'Hubbard'
     lattice = 'Square'
     initial_state = 'neel'
-    tile_unit = [0, 1] if model == 'Haldane' else ['up', 'down']
-    chi_max = 30
+    tile_unit = [0, 1] if model == 'Haldane' else ['down', 'up']
+    chi_max = 100
     # Hamiltonian parameters (U=0 for Haldane)
-    t, mu, V = -1, 0, 1
+    t, mu, V = -1, 0.25, 0
     U = 0 if model == 'Haldane' else 0
     # unit cell
     Lx, Ly = 2, 2
@@ -328,10 +328,10 @@ if __name__ == '__main__':
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
     # my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
     #                phi_samp=4)
-    # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=4)
+    my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=8)
     # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
     #                  phi_samp=4, charge_sectors=True)
-    my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=2, V_samp=4,
-                       charge_sectors=True)
+    # my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=2,
+    #                    V_samp=4, charge_sectors=True)

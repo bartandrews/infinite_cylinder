@@ -30,4 +30,17 @@ All output .dat files are named in the following order:
 - Ly
 - phi
 
-NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. V_0_1_4). 
+NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. V_0_1_4).
+
+Example file name:
+
+ent_spec_real_charge_Hubbard_Square_neel_tile_down_up_chi_100_t_-1_U_1_mu_0.5_V_0_Lx_2_Ly_2.dat
+
+Directory structure
+-------------------
+
+**data** is used to store all of the output dat files. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into keep. NB: No dat files are tracked by git due to their potentially large size.
+
+**models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we can create our own Hamiltonian classes e.g. for twisted bilayer graphene.
+
+**.idea** is used to store PyCharm configuration files, in case I would like to make changes to the code using a PyCharm project on a remote computer.
