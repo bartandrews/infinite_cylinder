@@ -1,0 +1,14 @@
+- 0/1 vs. up/down for spinful Hubbard model
+- 'poorly conditioned Lanczos warning' for Honeycomb implementation, and twisted boundary conditions
+- systematic method to reduce norm_err? it doesn't depend on chi_max, sometimes even gets worse with larger chi?
+- is the initial state of psi important? how to choose initial prodct state? why are answers dependent on initial state?
+- difference between init_sites and init_terms in fermions_haldane.py
+- is the code efficiently parallelized? parallelized for loops?
+- L=2*Ly in the paper. How can you adjust the number of unit cells in the y direction?
+- how to optimize the code for HPC? large amount of cores / memory required? settings to tune?
+- where to read the correlation length? middle bond?
+- freedom to choose...
+- how to extract various parameters from model? e.g. Lx, Ly is known, what about rest?
+- should entanglement be the same every time? repeatable?
+- implementation of command line flags / parameter files
+- bond 0 entanglement energies - take real or momentum space?
