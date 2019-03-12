@@ -191,9 +191,9 @@ def my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, 
         # # physical total charge to the left of middle bond (for the iMPS)
         # QL = QL_bar - np.mean(QL_array)
 
-        QL_bar = engine.psi.average_charge(bond=0)
+        QL_bar = engine.psi.average_charge(bond=0)[0]
 
-        QL = QL_bar - engine.psi.get_total_charge()
+        QL = QL_bar - engine.psi.get_total_charge()[0]
 
         print("{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL))
         data.write("%.15f\t%.15f\n" % (phi_ext, QL))
@@ -367,16 +367,16 @@ if __name__ == '__main__':
     lattice = 'Honeycomb'
     initial_state = 'neel'
     tile_unit = ['empty', 'full'] if model == 'Haldane' else ['down', 'up']
-    chi_max = 30
+    chi_max = 400
     # Hamiltonian parameters (U=0 for Haldane)
     t, mu, V = -1, 0, 1
     U = 0 if model == 'Haldane' else 0
     # unit cell
-    Lx, Ly = 2, 2
+    Lx, Ly = 1, 6
 
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
     my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=2,
-                   phi_samp=4)
+                   phi_samp=10)
     # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=8)
     # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)

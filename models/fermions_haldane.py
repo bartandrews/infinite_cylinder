@@ -56,7 +56,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
             self.add_coupling(np.conj(t_phi), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
         for u1, u2, dx in [(0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])), (0, 0, np.array([-1, 1])),
-                            (1, 1, np.array([1, 0])), (1, 1, np.array([0, -1])), (1, 1, np.array([1, -1]))]:
+                            (1, 1, np.array([-1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]:
             t2_phi = self.add_phi_ext(t2, dx, phi_ext)
             self.add_coupling(t2_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
             self.add_coupling(np.conj(t2_phi), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
