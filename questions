@@ -12,3 +12,4 @@
 - should entanglement be the same every time? repeatable?
 - implementation of command line flags / parameter files
 - bond 0 entanglement energies - take real or momentum space?
+- string formatting using fstrings?

@@ -44,7 +44,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
                 else:
                     strength_list.append(np.exp(1j*2*np.pi*phi_ext))
 
-            strength_array = np.reshape(strength_list, (2, 2))
+            strength_array = np.reshape(strength_list, (2, Ly))
 
             # hop_y = -t * np.exp(1.j * phi * np.arange(Lx)[:, np.newaxis])
             # print(hop_y)

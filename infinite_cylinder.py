@@ -316,13 +316,13 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
 if __name__ == '__main__':
 
     # configuration parameters
-    model = 'Hubbard'
-    lattice = 'Square'
+    model = 'Haldane'
+    lattice = 'Honeycomb'
     initial_state = 'neel'
     tile_unit = [0, 1] if model == 'Haldane' else ['down', 'up']
     chi_max = 30
     # Hamiltonian parameters (U=0 for Haldane)
-    t, mu, V = -1, 0.25, 0
+    t, mu, V = -1, 0, 1
     U = 0 if model == 'Haldane' else 0
     # unit cell
     Lx, Ly = 2, 2
