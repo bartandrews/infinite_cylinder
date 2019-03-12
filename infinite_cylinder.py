@@ -103,6 +103,43 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
     return E, psi, M
 
 
+def run_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
+
+    if model == 'Hubbard':
+        model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
+        M = FermionicHubbardModel(model_params)
+    elif model == 'Haldane':
+        model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
+        M = FermionicHaldaneModel(model_params)
+
+    product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
+
+    print(product_state)  # NB: two sites per basis for honeycomb crystal
+
+    psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
+
+    dmrg_params = {
+        'mixer': True,
+        'trunc_params': {
+            'chi_max': chi_max,
+            'svd_min': 1.e-10
+        },
+        # 'lanczos_params': {
+        #     'reortho': True,
+        #     'N_cache': 40
+        # },
+        'max_E_err': 1.e-10,
+        'verbose': 0,
+        'N_sweeps_check': 10
+    }
+
+    engine = dmrg.EngineCombine(psi, M, dmrg_params)
+
+    return engine, M
+
+
 def my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min, V_max, V_samp):
 
     stem = file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
@@ -129,25 +166,35 @@ def my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, 
     open(dat_file, "w")
     data = open(dat_file, "a")
 
+    (engine, M) = run_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+        # separate function for engine + model parameters
+        (_, M) = run_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+        engine.init_env(model=M)
+        engine.run()
 
-        numb_sites = len(M.lat.mps_sites())
-        dN = psi.expectation_value('dN')
+        # numb_sites = len(M.lat.mps_sites())
+        # dN = psi.expectation_value('dN')
+        #
+        # # cumulative charges to the left of bonds
+        # QL_array = []
+        # for i in range(len(dN)):
+        #     QL_array.append(sum(dN[0:i]))
+        #
+        # # print(psi.get_SL(numb_sites//2))
+        #
+        # # total charge to the left of middle bond
+        # QL_bar = QL_array[numb_sites//2]
+        #
+        # # physical total charge to the left of middle bond (for the iMPS)
+        # QL = QL_bar - np.mean(QL_array)
 
-        # cumulative charges to the left of bonds
-        QL_array = []
-        for i in range(len(dN)):
-            QL_array.append(sum(dN[0:i]))
+        QL_bar = engine.psi.average_charge(bond=0)
 
-        # print(psi.get_SL(numb_sites//2))
+        QL = QL_bar - engine.psi.get_total_charge()
 
-        # total charge to the left of middle bond
-        QL_bar = QL_array[numb_sites//2]
-
-        # physical total charge to the left of middle bond (for the iMPS)
-        QL = QL_bar - np.mean(QL_array)
         print("{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL))
         data.write("%.15f\t%.15f\n" % (phi_ext, QL))
 
@@ -164,10 +211,10 @@ def my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
 
         (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
-        print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly, SvN=psi.entanglement_entropy()[(Lx*Ly-1)//2],
-                                                       Sinf=psi.entanglement_entropy(n=np.inf)[(Lx*Ly-1)//2]))
-        data.write("%i\t%.15f\t%.15f\n" % (Ly, psi.entanglement_entropy()[(Lx*Ly-1)//2],
-                                           psi.entanglement_entropy(n=np.inf)[(Lx*Ly-1)//2]))
+        print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly, SvN=psi.entanglement_entropy()[0],
+                                                       Sinf=psi.entanglement_entropy(n=np.inf)[0]))
+        data.write("%i\t%.15f\t%.15f\n" % (Ly, psi.entanglement_entropy()[0],
+                                           psi.entanglement_entropy(n=np.inf)[0]))
 
 
 def my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors):
@@ -213,7 +260,7 @@ def my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu,
 
     (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
-    (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, canonicalize=1.e-3, verbose=0)
+    (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, canonicalize=1.e-6, verbose=0)
 
     if np.abs(np.abs(ov)-1) > 0.1:
         print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
@@ -319,7 +366,7 @@ if __name__ == '__main__':
     model = 'Haldane'
     lattice = 'Honeycomb'
     initial_state = 'neel'
-    tile_unit = [0, 1] if model == 'Haldane' else ['down', 'up']
+    tile_unit = ['empty', 'full'] if model == 'Haldane' else ['down', 'up']
     chi_max = 30
     # Hamiltonian parameters (U=0 for Haldane)
     t, mu, V = -1, 0, 1
@@ -328,9 +375,9 @@ if __name__ == '__main__':
     Lx, Ly = 2, 2
 
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
-    # my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-    #                phi_samp=4)
-    my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=8)
+    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=2,
+                   phi_samp=4)
+    # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=8)
     # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,

@@ -3,6 +3,7 @@
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite
+from tenpy.tools.misc import to_array
 import numpy as np
 
 
@@ -16,6 +17,18 @@ class FermionicHaldaneModel(CouplingMPOModel):
         filling = get_parameter(model_params, 'filling', 1/3, self.name)
         site = FermionSite(conserve=conserve, filling=filling)
         return site
+
+    def add_phi_ext(self, strength, dx, phase):
+        phi_ext = np.exp(1.j * np.pi * phase)
+        (_, c_shape) = self.lat._coupling_shape(dx)
+        strength = to_array(strength, c_shape) * (1. + 0.j)
+        dy = dx[1]
+        if dy> 0:
+            strength[:, -dy:] *= phi_ext
+        elif dy < 0:
+            strength[:, :dy] *= np.conj(phi_ext)
+
+        return strength
 
     def init_terms(self, model_params):
         # 0) Read out/set default parameters.
@@ -37,23 +50,16 @@ class FermionicHaldaneModel(CouplingMPOModel):
 
             # phi_ext = 1
 
-            strength_list = []
-            for i in range(Lx*Ly):
-                if i != Lx*Ly-1:
-                    strength_list.append(1)
-                else:
-                    strength_list.append(np.exp(1j*2*np.pi*phi_ext))
+            t_phi = self.add_phi_ext(t, dx, phi_ext)
 
-            strength_array = np.reshape(strength_list, (2, Ly))
-
-            # hop_y = -t * np.exp(1.j * phi * np.arange(Lx)[:, np.newaxis])
-            # print(hop_y)
-            self.add_coupling(t*strength_array, u1, 'Cd', u2, 'C', dx, 'JW', True)
-            self.add_coupling(t, u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
+            self.add_coupling(np.conj(t_phi), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
-        for u1, u2, dx in self.lat.next_nearest_neighbors:
-            self.add_coupling(t2, u1, 'Cd', u2, 'C', dx, 'JW', True)
-            self.add_coupling(np.conj(t2), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
+        for u1, u2, dx in [(0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])), (0, 0, np.array([-1, 1])),
+                            (1, 1, np.array([1, 0])), (1, 1, np.array([0, -1])), (1, 1, np.array([1, -1]))]:
+            t2_phi = self.add_phi_ext(t2, dx, phi_ext)
+            self.add_coupling(t2_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
+            self.add_coupling(np.conj(t2_phi), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
 
 
 class FermionicHaldaneChain(FermionicHaldaneModel, NearestNeighborModel):
