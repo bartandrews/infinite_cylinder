@@ -2,6 +2,7 @@ import numpy as np
 from tenpy.networks.mps import MPS
 from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
+from models.fermions_TBG1 import FermionicTBG1Model
 from tenpy.algorithms import dmrg
 import random
 import sys
@@ -9,7 +10,7 @@ import sys
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max, charge_sectors=False):
 
-    if model not in ['Hubbard', 'Haldane']:
+    if model not in ['Hubbard', 'Haldane', 'TBG1']:
         sys.exit('Error: Unknown model.')
 
     if charge_sectors:
@@ -64,7 +65,7 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     return product_state
 
 
-def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
+def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
 
     if model == 'Hubbard':
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
@@ -74,6 +75,47 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
         model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
+    elif model == 'TBG1':
+        model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
+        M = FermionicTBG1Model(model_params)
+
+    return M
+
+
+def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
+
+    M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+
+    product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
+
+    print(product_state)  # NB: two sites per basis for honeycomb crystal
+
+    psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
+
+    dmrg_params = {
+        'mixer': True,
+        'trunc_params': {
+            'chi_max': chi_max,
+            'svd_min': 1.e-10
+        },
+        # 'lanczos_params': {
+        #     'reortho': True,
+        #     'N_cache': 40
+        # },
+        'max_E_err': 1.e-10,
+        'verbose': 0,
+        'N_sweeps_check': 10
+    }
+
+    engine = dmrg.EngineCombine(psi, M, dmrg_params)
+
+    return engine
+
+
+def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
+
+    M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
 
     product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
@@ -103,43 +145,6 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
     return E, psi, M
 
 
-def run_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
-
-    if model == 'Hubbard':
-        model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
-                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
-        M = FermionicHubbardModel(model_params)
-    elif model == 'Haldane':
-        model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
-                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
-        M = FermionicHaldaneModel(model_params)
-
-    product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
-
-    print(product_state)  # NB: two sites per basis for honeycomb crystal
-
-    psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
-
-    dmrg_params = {
-        'mixer': True,
-        'trunc_params': {
-            'chi_max': chi_max,
-            'svd_min': 1.e-10
-        },
-        # 'lanczos_params': {
-        #     'reortho': True,
-        #     'N_cache': 40
-        # },
-        'max_E_err': 1.e-10,
-        'verbose': 0,
-        'N_sweeps_check': 10
-    }
-
-    engine = dmrg.EngineCombine(psi, M, dmrg_params)
-
-    return engine, M
-
-
 def my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min, V_max, V_samp):
 
     stem = file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
@@ -166,33 +171,15 @@ def my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, 
     open(dat_file, "w")
     data = open(dat_file, "a")
 
-    (engine, M) = run_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+    engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min)
 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        # separate function for engine + model parameters
-        (_, M) = run_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+        M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
         engine.init_env(model=M)
         engine.run()
 
-        # numb_sites = len(M.lat.mps_sites())
-        # dN = psi.expectation_value('dN')
-        #
-        # # cumulative charges to the left of bonds
-        # QL_array = []
-        # for i in range(len(dN)):
-        #     QL_array.append(sum(dN[0:i]))
-        #
-        # # print(psi.get_SL(numb_sites//2))
-        #
-        # # total charge to the left of middle bond
-        # QL_bar = QL_array[numb_sites//2]
-        #
-        # # physical total charge to the left of middle bond (for the iMPS)
-        # QL = QL_bar - np.mean(QL_array)
-
         QL_bar = engine.psi.average_charge(bond=0)[0]
-
         QL = QL_bar - engine.psi.get_total_charge()[0]
 
         print("{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL))
@@ -296,12 +283,16 @@ def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
 
     if charge_sectors:
 
+        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min)
+
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-            (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+            M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+            engine.init_env(model=M)
+            engine.run()
 
-            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
+            spectrum = engine.psi.entanglement_spectrum(by_charge=charge_sectors)
 
             for sector in range(0, len(spectrum[0])):
                 for i in range(0, len(spectrum[0][sector][1])):
@@ -312,11 +303,15 @@ def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
 
     else:
 
+        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min)
+
         for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-            (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+            M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+            engine.init_env(model=M)
+            engine.run()
 
-            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
+            spectrum = engine.psi.entanglement_spectrum(by_charge=charge_sectors)
 
             for i in range(0, len(spectrum[0])):
                 print("{phi_ext:.15f}\t{spectrum:.15f}".format(phi_ext=phi_ext, spectrum=spectrum[0][i]))
@@ -366,21 +361,35 @@ if __name__ == '__main__':
     model = 'Haldane'
     lattice = 'Honeycomb'
     initial_state = 'neel'
-    tile_unit = ['empty', 'full'] if model == 'Haldane' else ['down', 'up']
+
+    if model == 'Haldane':
+        tile_unit = ['empty', 'full']
+    elif model == 'Hubbard':
+        tile_unit = ['down', 'up']
+    elif model == 'TBG1':
+        tile_unit = ['down', 'up']
+
     chi_max = 400
     # Hamiltonian parameters (U=0 for Haldane)
     t, mu, V = -1, 0, 1
-    U = 0 if model == 'Haldane' else 0
+
+    if model == 'Haldane':
+        U = 0
+    elif model == 'Hubbard':
+        U = 0
+    elif model == 'TBG1':
+        U = 0
+
     # unit cell
     Lx, Ly = 1, 6
 
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
-    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=2,
+    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=2*np.pi,
                    phi_samp=10)
     # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=8)
     # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
-    # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+    # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=2,
     #                  phi_samp=4, charge_sectors=True)
     # my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=2,
     #                    V_samp=4, charge_sectors=True)

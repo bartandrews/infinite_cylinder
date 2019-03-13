@@ -10,3 +10,5 @@ sbatch run_dmrg # run the script for run_dmrg
 
 Example Slurm Batch Scripts: https://www.id.uzh.ch/en/scienceit/infrastructure/usage/examples.html
 
+If tenpy/linalg/_npc_helper.pyx changes, a recompile is neccesary.
+

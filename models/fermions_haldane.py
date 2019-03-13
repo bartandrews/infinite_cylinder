@@ -18,18 +18,6 @@ class FermionicHaldaneModel(CouplingMPOModel):
         site = FermionSite(conserve=conserve, filling=filling)
         return site
 
-    def add_phi_ext(self, strength, dx, phase):
-        phi_ext = np.exp(1.j * np.pi * phase)
-        (_, c_shape) = self.lat._coupling_shape(dx)
-        strength = to_array(strength, c_shape) * (1. + 0.j)
-        dy = dx[1]
-        if dy> 0:
-            strength[:, -dy:] *= phi_ext
-        elif dy < 0:
-            strength[:, :dy] *= np.conj(phi_ext)
-
-        return strength
-
     def init_terms(self, model_params):
         # 0) Read out/set default parameters.
         Lx = get_parameter(model_params, 'Lx', 2, self.name)
@@ -43,21 +31,22 @@ class FermionicHaldaneModel(CouplingMPOModel):
         t2 = (np.sqrt(129)/36)*t * np.exp(1j * phi)
 
         for u in range(len(self.lat.unit_cell)):
+
             self.add_onsite(mu, 0, 'N')
             self.add_onsite(-mu, 1, 'N')
+
         for u1, u2, dx in self.lat.nearest_neighbors:
-            #print(self.lat.nearest_neighbors)
 
-            # phi_ext = 1
-
-            t_phi = self.add_phi_ext(t, dx, phi_ext)
+            t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
 
             self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
             self.add_coupling(np.conj(t_phi), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
+
         for u1, u2, dx in [(0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])), (0, 0, np.array([-1, 1])),
-                            (1, 1, np.array([-1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]:
-            t2_phi = self.add_phi_ext(t2, dx, phi_ext)
+                           (1, 1, np.array([-1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]:
+
+            t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext])
             self.add_coupling(t2_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
             self.add_coupling(np.conj(t2_phi), u1, 'Cd', u2, 'C', -dx, 'JW', True)  # h.c.
 
