@@ -3,6 +3,7 @@ from tenpy.networks.mps import MPS
 from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
 from models.fermions_TBG1 import FermionicTBG1Model
+from models.fermions_TBG2 import FermionicTBG2Model
 from tenpy.algorithms import dmrg
 import random
 import sys
@@ -10,7 +11,7 @@ import sys
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max, charge_sectors=False):
 
-    if model not in ['Hubbard', 'Haldane', 'TBG1']:
+    if model not in ['Hubbard', 'Haldane', 'TBG1', 'TBG2']:
         sys.exit('Error: Unknown model.')
 
     if charge_sectors:
@@ -79,6 +80,14 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
         M = FermionicTBG1Model(model_params)
+        # print bond dimension of each bond in the MPO
+        print(M.H_MPO.chi)
+    elif model == 'TBG2':
+        model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
+        M = FermionicTBG2Model(model_params)
+        # print bond dimension of each bond in the MPO
+        print(M.H_MPO.chi)
 
     return M
 
@@ -104,8 +113,8 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         #     'N_cache': 40
         # },
         'max_E_err': 1.e-10,
-        'verbose': 0,
-        'N_sweeps_check': 10
+        'verbose': 20,
+        'N_sweeps_check': 1
     }
 
     engine = dmrg.EngineCombine(psi, M, dmrg_params)
@@ -175,7 +184,7 @@ def my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, 
 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+        M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, 2*np.pi*phi_ext)
         engine.init_env(model=M)
         engine.run()
 
@@ -288,7 +297,7 @@ def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-            M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+            M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, 2*np.pi*phi_ext)
             engine.init_env(model=M)
             engine.run()
 
@@ -307,7 +316,7 @@ def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
 
         for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-            M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+            M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, 2*np.pi*phi_ext)
             engine.init_env(model=M)
             engine.run()
 
@@ -358,7 +367,7 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
 if __name__ == '__main__':
 
     # configuration parameters
-    model = 'Haldane'
+    model = 'TBG1'
     lattice = 'Honeycomb'
     initial_state = 'neel'
 
@@ -367,6 +376,8 @@ if __name__ == '__main__':
     elif model == 'Hubbard':
         tile_unit = ['down', 'up']
     elif model == 'TBG1':
+        tile_unit = ['down_a up_b', 'down_a up_b']
+    elif model == 'TBG2':
         tile_unit = ['down', 'up']
 
     chi_max = 400
@@ -379,13 +390,15 @@ if __name__ == '__main__':
         U = 0
     elif model == 'TBG1':
         U = 0
+    elif model == 'TBG2':
+        U = 0
 
     # unit cell
     Lx, Ly = 1, 6
 
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=1, V_samp=4)
-    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=2*np.pi,
-                   phi_samp=10)
+    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+                   phi_samp=3)
     # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=2, Ly_max=8)
     # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
