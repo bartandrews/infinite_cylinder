@@ -46,9 +46,9 @@ class FermionicTBG1Model(CouplingMPOModel):
         for u1, u2, dx in self.lat.nearest_neighbors:
 
             self.add_coupling(t1, u1, 'Cdupx', u2, 'Cupx', dx, 'JW', True)
-            self.add_coupling(np.conj(t1), u2, 'Cdupx', u1, 'Cupx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t1, u2, 'Cdupx', u1, 'Cupx', -dx, 'JW', True)  # h.c.
             self.add_coupling(t1, u1, 'Cdupy', u2, 'Cupy', dx, 'JW', True)
-            self.add_coupling(np.conj(t1), u2, 'Cdupy', u1, 'Cupy', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t1, u2, 'Cdupy', u1, 'Cupy', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.next_nearest_neighbors:
 

@@ -15,11 +15,12 @@ class FermionicTBG2Model(CouplingMPOModel):
 
     def init_sites(self, model_params):
 
-        conserve = get_parameter(model_params, 'cons_N', 'N', self.name)
-        fs = FermionSite(conserve=conserve)
+        conserve = get_parameter(model_params, 'conserve', 'N', self.name)
+        filling = get_parameter(model_params, 'filling', 1/2, self.name)
+        fs = FermionSite(conserve=conserve, filling=filling)
 
         gs = GroupedSite([fs, fs], labels=['px', 'py'], charges='same')
-        gs.add_op('Ntot', gs.Ntotpx + gs.Ntotpy, False)
+        gs.add_op('Ntot', gs.Npx + gs.Npy, False)
 
         print(sorted(gs.opnames))
         print(gs.state_labels)
@@ -43,21 +44,21 @@ class FermionicTBG2Model(CouplingMPOModel):
         for u1, u2, dx in self.lat.nearest_neighbors:
 
             self.add_coupling(t1, u1, 'Cdpx', u2, 'Cpx', dx, 'JW', True)
-            self.add_coupling(t1, u1, 'Cdpx', u2, 'Cpx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t1, u2, 'Cdpx', u1, 'Cpx', -dx, 'JW', True)  # h.c.
             self.add_coupling(t1, u1, 'Cdpy', u2, 'Cpy', dx, 'JW', True)
-            self.add_coupling(t1, u1, 'Cdpy', u2, 'Cpy', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t1, u2, 'Cdpy', u1, 'Cpy', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.next_nearest_neighbors:
 
             self.add_coupling(np.real(t2), u1, 'Cdpx', u2, 'Cpx', dx, 'JW', True)
-            self.add_coupling(np.real(t2), u1, 'Cdpx', u2, 'Cpx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(np.real(t2), u2, 'Cdpx', u1, 'Cpx', -dx, 'JW', True)  # h.c.
             self.add_coupling(np.real(t2), u1, 'Cdpy', u2, 'Cpy', dx, 'JW', True)
-            self.add_coupling(np.real(t2), u1, 'Cdpy', u2, 'Cpy', -dx, 'JW', True)  # h.c.
+            self.add_coupling(np.real(t2), u2, 'Cdpy', u1, 'Cpy', -dx, 'JW', True)  # h.c.
 
             self.add_coupling(np.imag(t2), u1, 'Cdpx', u2, 'Cpy', dx, 'JW', True)
-            self.add_coupling(np.imag(t2), u1, 'Cdpx', u2, 'Cpy', -dx, 'JW', True)  # h.c.
+            self.add_coupling(np.imag(t2), u2, 'Cdpy', u1, 'Cpx', -dx, 'JW', True)  # h.c.
             self.add_coupling(-np.imag(t2), u1, 'Cdpy', u2, 'Cpx', dx, 'JW', True)
-            self.add_coupling(-np.imag(t2), u1, 'Cdpy', u2, 'Cpx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(-np.imag(t2), u2, 'Cdpx', u1, 'Cpy', -dx, 'JW', True)  # h.c.
 
 
 class FermionicTBG1Chain(FermionicTBG2Model, NearestNeighborModel):
