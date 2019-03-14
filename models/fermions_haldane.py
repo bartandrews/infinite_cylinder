@@ -3,7 +3,6 @@
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite
-from tenpy.tools.misc import to_array
 import numpy as np
 
 
@@ -25,10 +24,11 @@ class FermionicHaldaneModel(CouplingMPOModel):
         t = get_parameter(model_params, 't', 1., self.name, True)
         V = get_parameter(model_params, 'V', 0, self.name, True)
         mu = get_parameter(model_params, 'mu', 0., self.name, True)
-        phi_ext = get_parameter(model_params, 'phi_ext', 0., self.name, True)
+        phi_ext = get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi = np.arccos(3*np.sqrt(3/43))
         t2 = (np.sqrt(129)/36)*t * np.exp(1j * phi)
+        # t2 = 0
 
         for u in range(len(self.lat.unit_cell)):
 

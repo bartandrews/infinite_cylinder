@@ -29,10 +29,10 @@ class FermionicTBG1Model(CouplingMPOModel):
 
     def init_terms(self, model_params):
 
-        t = get_parameter(model_params, 't', 1., self.name)
-        U = get_parameter(model_params, 'U', 0, self.name)
-        V = get_parameter(model_params, 'V', 0, self.name)
-        mu = get_parameter(model_params, 'mu', 0., self.name)
+        t = get_parameter(model_params, 't', 1., self.name, True)
+        U = get_parameter(model_params, 'U', 0, self.name, True)
+        V = get_parameter(model_params, 'V', 0, self.name, True)
+        mu = get_parameter(model_params, 'mu', 0., self.name, True)
 
         t1 = 0.331*t  # real
         t2 = (-0.010 + 0.097 * 1j)*t  # complex
