@@ -19,7 +19,7 @@ fit g(x) '$1' u 1:3 via c, d
 title_g(c,d) = sprintf('S_{inf} = %.2f L_y + %.2f', c, d)
 
 #theoretical gamma in the Abelian case
-sum_square_sites=4
+sum_square_sites=3
 gamma=-0.5*log(sum_square_sites)
 title_gamma = sprintf('γ = -0.5 log(%i) = %.2f', sum_square_sites, gamma)
 

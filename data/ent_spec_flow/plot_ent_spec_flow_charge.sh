@@ -14,13 +14,13 @@ gnuplot -persist <<-EOFMarker
 stats '$1.temp2' u 2:3 nooutput
 blocks = STATS_blocks
 
-set key out right box
-
 set title noenhanced '$1'
 set xlabel 'Φ / 2π'
 set ylabel 'entanglement energy'
 
 set yrange [:8]
+
+set key out right box
 
 plot for[i=0:blocks-1] '$1.temp2' index i u 2:3 pt i+1 title sprintf("%i", i+$min_charge)
 
