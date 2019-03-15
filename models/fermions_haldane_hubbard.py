@@ -1,5 +1,5 @@
-"""Spinless fermionic Haldane model.
-Hamiltonian based on: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator"
+"""Spinless fermionic Haldane-Hubbard model.
+Hamiltonian based on: "Haldane-Hubbard Mott Insulator: From Tetrahedral Spin Crystal to Chiral Spin Liquid"
 """
 
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
@@ -9,7 +9,7 @@ import numpy as np
 import pprint
 
 
-class FermionicHaldaneModel(CouplingMPOModel):
+class FermionicHaldaneHubbardModel(CouplingMPOModel):
 
     def __init__(self, model_params):
         model_params.setdefault('lattice', 'Honeycomb')
@@ -27,7 +27,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
         t = get_parameter(model_params, 't', -1., self.name, True)
         V = get_parameter(model_params, 'V', 1, self.name, True)
         mu = get_parameter(model_params, 'mu', 0., self.name, True)
-        phi_ext = - 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
+        phi_ext = + 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi = np.arccos(3*np.sqrt(3/43))
         t2 = (np.sqrt(129)/36)*t * np.exp(1j * phi)
@@ -40,10 +40,10 @@ class FermionicHaldaneModel(CouplingMPOModel):
 
         for u1, u2, dx in self.lat.nearest_neighbors:
 
-            print(t, dx, phi_ext)
+            # print(t, dx, phi_ext)
             t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
             # print(np.abs(t_phi), np.angle(t_phi)/np.pi, dx)
-            print(t_phi)
+
             self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
             self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
@@ -58,7 +58,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
         pprint.pprint(self.coupling_terms)
 
 
-class FermionicHaldaneChain(FermionicHaldaneModel, NearestNeighborModel):
+class FermionicHaldaneHubbardChain(FermionicHaldaneHubbardModel, NearestNeighborModel):
 
     def __init__(self, model_params):
         model_params.setdefault('lattice', "Chain")

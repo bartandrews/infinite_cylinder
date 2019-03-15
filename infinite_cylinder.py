@@ -2,13 +2,41 @@ import numpy as np
 from tenpy.networks.mps import MPS
 from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
-from models.bosonic_haldane import BosonicHaldaneModel
+from models.bosons_haldane import BosonicHaldaneModel
 from models.fermions_TBG1 import FermionicTBG1Model
 from models.fermions_TBG2 import FermionicTBG2Model
 from tenpy.algorithms import dmrg
+# import tenpy.linalg.np_conserved as npc
+# import numpy.testing as npt
 import random
 import sys
 import time
+
+
+# def check_hermitian(H):
+#     """Check if `H` is a hermitian MPO."""
+#     if not H.finite:
+#         # include once over the boundary: double the unit cell
+#         # a general MPO might have terms going over multiple unit cells, but we ignore that...
+#         Ws = H._W * 2
+#     else:
+#         Ws = H._W
+#     #check trace(H.H) = trace(H.H^dagger)
+#     W = Ws[0].take_slice([H.get_IdL(0)], ['wL'])
+#
+#     trHH = npc.tensordot(W, W.replace_label('wR', 'wR*'), axes=[['p', 'p*'], ['p*', 'p']])
+#     trHHd = npc.tensordot(W, W.conj(), axes=[['p', 'p*'], ['p*', 'p']])
+#     for W in Ws[1:]:
+#         trHH = npc.tensordot(trHH, W, axes=['wR', 'wL'])
+#         trHHd = npc.tensordot(trHHd, W, axes=['wR', 'wL'])
+#         trHH = npc.tensordot(
+#             trHH, W.replace_label('wR', 'wR*'), axes=[['wR*', 'p', 'p*'], ['wL', 'p*', 'p']])
+#         trHHd = npc.tensordot(trHHd, W.conj(), axes=[['wR*', 'p', 'p*'], ['wL*', 'p*', 'p']])
+#     i = H.get_IdR(H.L - 1)
+#     trHH = trHH[i, i]
+#     trHHd = trHHd[i, i]
+#     print("check_hermitian: ", trHH, trHHd)
+#     npt.assert_array_almost_equal_nulp(trHH, trHHd, H.L * 20)
 
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max, charge_sectors=False):
@@ -82,6 +110,13 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', filling=1/2, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
+        # import matplotlib.pyplot as plt
+        # ax = plt.gca()
+        # M.lat.plot_sites(ax)
+        # M.plot_coupling_terms(ax)
+        # ax.set_aspect("equal")
+        # ax.legend()
+        # plt.show()
     elif model == 'TBG1':
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
@@ -110,7 +145,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
 
     dmrg_params = {
         'mixer': True,
-        'chi_list': {0: 19, 20: 100, 40: 400},
+        'chi_list': {0: 19, 20: 100, 40: chi_max},
         'trunc_params': {
             'chi_max': chi_max,
             'svd_min': 1.e-10
@@ -120,7 +155,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         #     'N_cache': 40
         # },
         'max_E_err': 1.e-10,
-        'verbose': 0,
+        'verbose': 1,
         'N_sweeps_check': 10
     }
 
@@ -141,6 +176,7 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
 
     dmrg_params = {
         'mixer': True,
+        'chi_list': {0: 19, 20: 100, 40: chi_max},
         'trunc_params': {
             'chi_max': chi_max,
             'svd_min': 1.e-10
@@ -309,6 +345,10 @@ def my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
+            # (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+
+            # check_hermitian(M.H_MPO)
+
             if phi_ext != phi_min:
                 M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
                 engine.init_env(model=M)
@@ -361,7 +401,7 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
                 engine.init_env(model=M)
             engine.run()
 
-            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
+            spectrum = engine.psi.entanglement_spectrum(by_charge=charge_sectors)
 
             for sector in range(0, len(spectrum[0])):
                 for i in range(0, len(spectrum[0][sector][1])):
@@ -380,7 +420,7 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
                 engine.init_env(model=M)
             engine.run()
 
-            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
+            spectrum = engine.psi.entanglement_spectrum(by_charge=charge_sectors)
 
             for i in range(0, len(spectrum[0])):
                 print("{V:.15f}\t{spectrum:.15f}".format(V=V, spectrum=spectrum[0][i]))
@@ -392,9 +432,11 @@ if __name__ == '__main__':
     # configuration parameters
     model = 'FermionicHaldane'
     lattice = 'Honeycomb'
-    initial_state = 'neel'
+    initial_state = 'third'
 
-    if model == 'BosonicHaldane' or model == 'FermionicHaldane':
+    if model == 'BosonicHaldane':
+        tile_unit = ['0', '1']
+    elif model == 'FermionicHaldane':
         tile_unit = ['empty', 'full']
     elif model == 'Hubbard':
         tile_unit = ['down', 'up']
@@ -403,7 +445,7 @@ if __name__ == '__main__':
     elif model == 'TBG2':
         tile_unit = ['empty_px full_py', 'empty_px full_py']
 
-    chi_max = 100
+    chi_max = 500
     # Hamiltonian parameters (U=0 for FermionicHaldane)
     t, mu, V = -1, 0, 1
 
@@ -425,12 +467,12 @@ if __name__ == '__main__':
     #
     # my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
     #                phi_samp=10)
-    my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-                     phi_samp=7, charge_sectors=True)
+    # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+    #                  phi_samp=7, charge_sectors=True)
 
-    # Lx, Ly = 1, 6
+    Lx, Ly = 1, 6
 
-    # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
+    my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=3, Ly_max=6, Ly_samp=2)
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0.3, V_max=1, V_samp=26)
     # my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=2,

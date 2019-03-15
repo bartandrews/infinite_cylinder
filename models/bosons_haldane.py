@@ -35,23 +35,23 @@ class BosonicHaldaneModel(CouplingMPOModel):
 
             t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
 
-            self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
-            self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t_phi, u1, 'Bd', u2, 'B', dx)
+            self.add_coupling(np.conj(t_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
 
         for u1, u2, dx in [(0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])), (0, 0, np.array([-1, 1])),
                            (1, 1, np.array([-1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]:
 
             tdash_phi = self.coupling_strength_add_ext_flux(tdash, dx, [0, phi_ext])
 
-            self.add_coupling(tdash_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
-            self.add_coupling(np.conj(tdash_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(tdash_phi, u1, 'Bd', u2, 'B', dx)
+            self.add_coupling(np.conj(tdash_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
 
         for u1, u2, dx in self.lat.next_next_nearest_neighbors:
 
             tdashdash_phi = self.coupling_strength_add_ext_flux(tdashdash, dx, [0, phi_ext])
 
-            self.add_coupling(tdashdash_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
-            self.add_coupling(np.conj(tdashdash_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(tdashdash_phi, u1, 'Bd', u2, 'B', dx)
+            self.add_coupling(np.conj(tdashdash_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
 
         pprint.pprint(self.coupling_terms)
 
