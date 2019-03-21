@@ -73,3 +73,14 @@ pprint.pprint(self.coupling_terms)
 # insert chi_list after 'mixer':True
 
 'chi_list': {0: 19, 20: 100, 40: chi_max},
+
+
+# insert at the end of def init_sites
+
+print(sorted(gs.opnames))
+print(gs.state_labels)
+
+
+# remove chi_list when reusing environment
+
+del eng.DMRG_params['chi_list']

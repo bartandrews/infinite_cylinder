@@ -1,6 +1,5 @@
-"""Spinless fermionic Haldane model.
-Hamiltonian based on: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator"
-"""
+"""Spinless fermion Haldane model.
+Hamiltonian based on: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator"."""
 
 import numpy as np
 

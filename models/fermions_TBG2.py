@@ -1,11 +1,11 @@
-"""Spinless fermions with 2 orbitals, Hamiltonian based on the paper: "Model for the metal-insulator transition in
-graphene superlattices and beyond" (Sec. III)
-"""
+"""Spinless fermions with two orbitals.
+Hamiltonian based on: "Model for the metal-insulator transition in graphene superlattices and beyond" (Sec. III)."""
+
+import numpy as np
 
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite, GroupedSite
-import numpy as np
 
 
 class FermionicTBG2Model(CouplingMPOModel):
@@ -21,9 +21,6 @@ class FermionicTBG2Model(CouplingMPOModel):
 
         gs = GroupedSite([fs, fs], labels=['px', 'py'], charges='same')
         gs.add_op('Ntot', gs.Npx + gs.Npy, False)
-
-        print(sorted(gs.opnames))
-        print(gs.state_labels)
 
         return gs
 

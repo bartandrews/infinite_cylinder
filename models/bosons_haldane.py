@@ -1,12 +1,11 @@
-"""Hardcore bosonic Haldane model.
-Hamiltonian based on: "Characterizing topological order by studying the ground states of an infinite cylinder"
-"""
+"""Hardcore boson Haldane model.
+Hamiltonian based on: "Characterizing topological order by studying the ground states of an infinite cylinder"."""
+
+import numpy as np
 
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import BosonSite
-import numpy as np
-import pprint
 
 
 class BosonicHaldaneModel(CouplingMPOModel):
@@ -52,8 +51,6 @@ class BosonicHaldaneModel(CouplingMPOModel):
 
             self.add_coupling(tdashdash_phi, u1, 'Bd', u2, 'B', dx)
             self.add_coupling(np.conj(tdashdash_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
-
-        pprint.pprint(self.coupling_terms)
 
 
 class BosonicHaldaneChain(BosonicHaldaneModel, NearestNeighborModel):
