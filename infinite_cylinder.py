@@ -111,7 +111,6 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
 
     dmrg_params = {
         'mixer': True,
-        'chi_list': {0: 19, 20: 100, 40: chi_max},
         'trunc_params': {
             'chi_max': chi_max,
             'svd_min': 1.e-10
@@ -121,7 +120,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         #     'N_cache': 40
         # },
         'max_E_err': 1.e-10,
-        'verbose': 1,
+        'verbose': 0,
         'N_sweeps_check': 10
     }
 
@@ -142,7 +141,6 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
 
     dmrg_params = {
         'mixer': True,
-        'chi_list': {0: 19, 20: 100, 40: chi_max},
         'trunc_params': {
             'chi_max': chi_max,
             'svd_min': 1.e-10
@@ -419,10 +417,10 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-                   phi_samp=10)
-    # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-    #                  phi_samp=7, charge_sectors=True)
+    # my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+    #                phi_samp=10)
+    my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+                     phi_samp=9, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=3, Ly_max=6, Ly_samp=2)
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0.3, V_max=1, V_samp=26)

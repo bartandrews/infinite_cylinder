@@ -37,7 +37,6 @@ check_hermitian(M.H_MPO)
 
 # print the couplings of the model (insert after M is defined)
 
-
 import matplotlib.pyplot as plt
 ax = plt.gca()
 M.lat.plot_sites(ax)
@@ -57,3 +56,20 @@ print(M.H_MPO.chi)
 QL_bar_m = [engine.psi.average_charge(bond=m) for m in range(engine.psi.L)]
 QL = (QL_bar_m[0] - np.mean(QL_bar_m, axis=0))[0]
 print(phi_ext, QL)
+
+
+# can be useful to look at product state output (insert after product state is defined in run_iDMRG_engine)
+
+print(product_state)  # NB: two sites per basis for honeycomb crystal
+
+
+# insert at the end of def init_terms in fermions_haldane.py
+
+import pprint
+
+pprint.pprint(self.coupling_terms)
+
+
+# insert chi_list after 'mixer':True
+
+'chi_list': {0: 19, 20: 100, 40: chi_max},

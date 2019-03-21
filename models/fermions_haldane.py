@@ -2,16 +2,17 @@
 Hamiltonian based on: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator"
 """
 
+import numpy as np
+
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite
-import numpy as np
-import pprint
 
 
 class FermionicHaldaneModel(CouplingMPOModel):
 
     def __init__(self, model_params):
+
         model_params.setdefault('lattice', 'Honeycomb')
         CouplingMPOModel.__init__(self, model_params)
 
@@ -27,11 +28,10 @@ class FermionicHaldaneModel(CouplingMPOModel):
         t = get_parameter(model_params, 't', -1., self.name, True)
         V = get_parameter(model_params, 'V', 1, self.name, True)
         mu = get_parameter(model_params, 'mu', 0., self.name, True)
-        phi_ext = - 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
+        phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi = np.arccos(3*np.sqrt(3/43))
         t2 = (np.sqrt(129)/36)*t * np.exp(1j * phi)
-        # t2 = 0
 
         for u in range(len(self.lat.unit_cell)):
 
@@ -40,10 +40,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
 
         for u1, u2, dx in self.lat.nearest_neighbors:
 
-            print(t, dx, phi_ext)
             t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
-            # print(np.abs(t_phi), np.angle(t_phi)/np.pi, dx)
-            print(t_phi)
             self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
             self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
@@ -54,8 +51,6 @@ class FermionicHaldaneModel(CouplingMPOModel):
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext])
             self.add_coupling(t2_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
             self.add_coupling(np.conj(t2_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
-
-        pprint.pprint(self.coupling_terms)
 
 
 class FermionicHaldaneChain(FermionicHaldaneModel, NearestNeighborModel):
