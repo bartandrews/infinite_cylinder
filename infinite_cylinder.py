@@ -401,7 +401,7 @@ if __name__ == '__main__':
     elif model == 'TBG2':
         tile_unit = ['empty_px full_py', 'empty_px full_py']
 
-    chi_max = 100
+    chi_max = 400
     # Hamiltonian parameters (U=0 for FermionicHaldane)
     t, mu, V = -1, 0, 1
 
@@ -417,10 +417,10 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    # my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-    #                phi_samp=10)
+    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=3,
+                   phi_samp=41)
     my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-                     phi_samp=9, charge_sectors=True)
+                     phi_samp=21, charge_sectors=True)
     # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=3, Ly_max=6, Ly_samp=2)
     # my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0.3, V_max=1, V_samp=26)

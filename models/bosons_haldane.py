@@ -24,7 +24,7 @@ class BosonicHaldaneModel(CouplingMPOModel):
     def init_terms(self, model_params):
 
         t = get_parameter(model_params, 't', -1., self.name, True)
-        phi_ext = - 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
+        phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi = 0.4*np.pi
         tdash = 0.6*t * np.exp(1j * phi)
