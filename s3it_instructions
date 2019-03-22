@@ -3,6 +3,9 @@ q # bashrc-defined shortcut to view status of jobs
 module avail # all available modules
 module list # all loaded modules
 module purge # purge all modules or specify one
+scancel 1656026 # cancel a job ID
+
+sbucheck # reports group usage breakdowns across the various systems
 
 squeue # check how far along your script is in the slurm queue
 
