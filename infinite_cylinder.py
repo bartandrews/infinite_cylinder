@@ -135,7 +135,7 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
 
     product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
-    print(product_state, flush=True)  # NB: two sites per basis for honeycomb crystal
+    print(product_state)  # NB: two sites per basis for honeycomb crystal
 
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
@@ -347,17 +347,19 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
 
     if charge_sectors:
 
-        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
+        # engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
 
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         for V in np.linspace(V_min, V_max, V_samp):
 
-            if V != V_min:
-                M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
-                engine.init_env(model=M)
-            engine.run()
+            # if V != V_min:
+            #     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
+            #     engine.init_env(model=M)
+            # engine.run()
 
-            spectrum = engine.psi.entanglement_spectrum(by_charge=charge_sectors)
+            (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+
+            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
 
             for sector in range(0, len(spectrum[0])):
                 for i in range(0, len(spectrum[0][sector][1])):
@@ -367,16 +369,18 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
 
     else:
 
-        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
+        # engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
 
         for V in np.linspace(V_min, V_max, V_samp):
 
-            if V != V_min:
-                M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
-                engine.init_env(model=M)
-            engine.run()
+            # if V != V_min:
+            #     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
+            #     engine.init_env(model=M)
+            # engine.run()
 
-            spectrum = engine.psi.entanglement_spectrum(by_charge=charge_sectors)
+            (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+
+            spectrum = psi.entanglement_spectrum(by_charge=charge_sectors)
 
             for i in range(0, len(spectrum[0])):
                 print("{V:.15f}\t{spectrum:.15f}".format(V=V, spectrum=spectrum[0][i]))
@@ -417,16 +421,17 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-                   phi_samp=41)
-    my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-                     phi_samp=21, charge_sectors=True)
-    my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
-    my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=3, Ly_max=6, Ly_samp=2)
-    my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0.3, V_max=1, V_samp=27)
+    # my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+    #                phi_samp=41)
+    # my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+    #                  phi_samp=21, charge_sectors=True)
+    # my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
+    # my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=3, Ly_max=6, Ly_samp=2)
+
     my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=2,
                        V_samp=21, charge_sectors=True)
+    my_corr_len(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0.3, V_max=1, V_samp=27)
 
-    my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
+    # my_ent_spec_real(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
 
     print(time.time() - t0)
