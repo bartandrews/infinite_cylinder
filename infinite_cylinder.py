@@ -82,7 +82,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHaldaneModel(model_params)
 
     elif model == 'FermionicHaldane':
-        model_params = dict(conserve='N', filling=1/2, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+        model_params = dict(conserve='N', filling=1/3, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
 
@@ -378,7 +378,7 @@ if __name__ == '__main__':
     # configuration parameters
     model = 'FermionicHaldane'
     lattice = 'Honeycomb'
-    initial_state = 'neel'
+    initial_state = 'third'
 
     if model == 'BosonicHaldane':
         tile_unit = ['0', '1']
@@ -391,7 +391,7 @@ if __name__ == '__main__':
     elif model == 'TBG2':
         tile_unit = ['empty_px full_py', 'empty_px full_py']
 
-    chi_max = 400
+    chi_max = 500
     # Hamiltonian parameters (U=0 for FermionicHaldane)
     t, mu, V = -1, 0, 1
 
@@ -407,10 +407,10 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
+    my_charge_pump(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=3,
                    phi_samp=41)
-    my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=1,
-                     phi_samp=21, charge_sectors=True)
+    my_ent_spec_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min=0, phi_max=3,
+                     phi_samp=31, charge_sectors=True)
     my_ent_spec_mom(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, charge_sectors=True)
     my_ent_scal(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min=3, Ly_max=6, Ly_samp=2)
     my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min=0, V_max=2,
