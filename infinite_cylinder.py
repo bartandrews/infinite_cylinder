@@ -347,15 +347,8 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
 
     if charge_sectors:
 
-        # engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
-
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         for V in np.linspace(V_min, V_max, V_samp):
-
-            # if V != V_min:
-            #     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
-            #     engine.init_env(model=M)
-            # engine.run()
 
             (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
@@ -369,14 +362,7 @@ def my_ent_spec_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, 
 
     else:
 
-        # engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
-
         for V in np.linspace(V_min, V_max, V_samp):
-
-            # if V != V_min:
-            #     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
-            #     engine.init_env(model=M)
-            # engine.run()
 
             (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
 
@@ -415,7 +401,7 @@ if __name__ == '__main__':
         U = 0
 
     # unit cell
-    Lx, Ly = 1, 3
+    Lx, Ly = 1, 6
 
     ####################################################################################################################
 
