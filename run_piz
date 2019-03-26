@@ -1,0 +1,7 @@
+sbatch scripts/run_charge_pump_piz &
+sbatch scripts/run_ent_scal_piz &
+sbatch scripts/run_ent_spec_real_piz &
+sbatch scripts/run_ent_spec_mom_piz &
+sbatch scripts/run_ent_spec_flow_piz &
+sbatch scripts/run_ent_spec_V_flow_piz &
+sbatch scripts/run_corr_len_piz &

@@ -1,0 +1,7 @@
+sbatch scripts/run_charge_pump_hydra &
+sbatch scripts/run_ent_scal_hydra &
+sbatch scripts/run_ent_spec_real_hydra &
+sbatch scripts/run_ent_spec_mom_hydra &
+sbatch scripts/run_ent_spec_flow_hydra &
+sbatch scripts/run_ent_spec_V_flow_hydra &
+sbatch scripts/run_corr_len_hydra &
