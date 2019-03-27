@@ -14,7 +14,7 @@ The code is split into three independent parts to optimize performance.
 
 **Ly_flow** is a program that varies the circumference length of the cylinder. This is used to calculate topological entropy and CFT edge counting.
 
-**V_flow** is a program that varies the NN interaction strength potential, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI.
+**V_flow** is a program that varies the off-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI.
 
 The tools employed for each 'flow' are given in the table below.
 
