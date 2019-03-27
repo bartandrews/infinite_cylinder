@@ -5,6 +5,7 @@ git_instructions
 **/*.dat
 **/__pycache__/*
 data/ent_scal/fit.log
+data/ent_scal/keep/fit.log
 **/*.temp
 **/*.tmp
 **/*.backup
