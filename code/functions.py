@@ -10,18 +10,13 @@ import sys
 import random
 
 
-def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max, charge_sectors=False):
+def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
     if model not in ['Hubbard', 'BosonicHaldane', 'FermionicHaldane', 'TBG1', 'TBG2']:
         sys.exit('Error: Unknown model.')
 
-    if charge_sectors:
-        charge_label = '_charge'
-    else:
-        charge_label = ''
-
-    stem = ("data/%s/%s%s_%s_%s_%s_tile_%s_%s_chi_%s_"
-            % (tool, tool, charge_label, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max))
+    stem = ("data/%s/%s_%s_%s_%s_tile_%s_%s_chi_%s_"
+            % (tool, tool, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max))
 
     return stem
 
