@@ -5,38 +5,65 @@ infinite_cylinder
 
 Prerequisites: TeNPy 0.3+, gnuplot, python 3+
 
+Workflow
+--------
+
+The code is split into three independent parts to optimize performance.
+
+**phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number.
+
+**Ly_flow** is a program that varies the circumference length of the cylinder. It is used to calculate topological entropy and CFT edge counting.
+
+**V_flow** is a program that varies the NN interaction strength potential, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI.
+
+The tools employed for each 'flow' are given in the table below.
+
++--------------+----------------------------------+
+| **flow**     | **tool**                         |
++--------------+----------------------------------+
+| phi_flow     | * charge_pump                    |
+|              | * ent_spec_flow                  |
++--------------+----------------------------------+
+| Ly_flow      | * ent_scal                       |
+|              | * ent_spec_real                  |
+|              | * ent_spec_mom                   |
++--------------+----------------------------------+
+| V_flow       | * corr_len                       |
+|              | * ent_spec_V_flow                |
++--------------+----------------------------------+
+
 Tools description
 -----------------
 
 The initial tool set is inspired by the paper: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
 
-1) charge_pump = charge pump
+* charge_pump = charge pump
 
     This function is designed to plot the equivalent of Figs. 2.a,c) from the paper.
 
-2) ent_spec_flow = entanglement spectrum flow
+* ent_spec_flow = entanglement spectrum flow
 
     This function is designed to plot the equivalent of Figs. 2.b,d) from the paper.
 
-3) ent_scal = entanglement scaling
+* ent_scal = entanglement scaling
 
     This function is designed to plot the equivalent of Fig. 3.a) from the paper.
 
-4) ent_spec_mom = entanglement spectrum in momentum space
+* ent_spec_real = entanglement spectrum in real space
+
+    Entanglement energy as a function of bond in the unit cell.
+
+* ent_spec_mom = entanglement spectrum in momentum space
 
     This function is designed to plot the equivalent of Fig. 3.b) from the paper.
 
-5) ent_spec_V_flow = entanglement spectrum flow with respect to V
-
-    This function is designed to plot the equivalent of Fig. 3.c) from the paper.
-
-6) corr_len = correlation length
+* corr_len = correlation length
 
     This function is designed to plot the equivalent of the inset in Fig. 3.c) from the paper.
 
-7) ent_spec_real = entanglement spectrum in real space
+* ent_spec_V_flow = entanglement spectrum flow with respect to V
 
-    Entanglement energy as a function of bond in the unit cell.
+    This function is designed to plot the equivalent of Fig. 3.c) from the paper.
 
 Models description
 ------------------
@@ -64,7 +91,11 @@ Directory structure
 
 **data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into keep. NB: No dat files are tracked by git due to their potentially large size.
 
-**models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we can create our own Hamiltonian classes e.g. for twisted bilayer graphene.
+**code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene.
+
+**scripts** contains all of the SLURM batch scripts used for Hydra and Piz Daint.
+
+**logs** is used to store all of the stdout and stderr files from the Hydra and Piz Daint batch scripts. NB: No log files are tracked by git.
 
 **.idea** is used to store PyCharm configuration files, in case I would like to make changes to the code using a PyCharm project on a remote computer.
 
@@ -76,7 +107,6 @@ All output .dat files are named in the following order:
 *stem*
 
 - tool (e.g. corr_len)
-- charge (either "_charge" or nothing)
 - model (e.g. Hubbard)
 - lattice (e.g. Honeycomb)
 - initial state (e.g. neel)
@@ -97,4 +127,4 @@ NB: For a range of parameter values in an output file, we denote this by the ord
 
 *name = stem + leaf*
 
-Example:  data/ent\_spec\_real/ent\_spec\_real\_charge\_Hubbard\_Square\_neel\_tile\_down\_up\_chi\_100\_t_\-1\_U\_1\_mu\_0.5\_V\_0\_Lx\_2\_Ly\_2.dat
+Example:  data/ent\_spec\_real/ent\_spec\_real\_Hubbard\_Square\_neel\_tile\_down\_up\_chi\_100\_t_\-1\_U\_1\_mu\_0.5\_V\_0\_Lx\_2\_Ly\_2.dat
