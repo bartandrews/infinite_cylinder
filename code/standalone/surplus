@@ -95,3 +95,20 @@ site = BosonSite(conserve=conserve, filling=filling, Nmax=1)
 
 model_params = dict(conserve='N', filling=1/2, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                     order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
+
+
+# edits in dmrg.py
+
+diff --git a/tenpy/algorithms/dmrg.py b/tenpy/algorithms/dmrg.py
+index fdb21f7..b9bc6cb 100644
+--- a/tenpy/algorithms/dmrg.py
++++ b/tenpy/algorithms/dmrg.py
+@@ -301,7 +301,7 @@ class Engine(NpcLinearOperator):
+         self.ortho_to_envs = []
+         self.init_env(model) # calls reset_stats
+
+-    def init_env(self, model=None):
++    def init_env(self, model: object = None) -> object:
+         """(Re-)initialize the environment.
+
+         This function is useful to re-start DMRG after with a slightly different model or
