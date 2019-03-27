@@ -19,22 +19,20 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
 
     ####################################################################################################################
 
-    # engine = f.define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min)
+    engine = f.define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min)
 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        # if phi_ext != phi_min:
-        #     M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
-        #     engine.init_env(model=M)
-        # engine.run()
-
-        (E, psi, M) = f.run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+        if phi_ext != phi_min:
+            M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+            engine.init_env(model=M)
+        engine.run()
 
         ###############
         # charge_pump #
         ###############
 
-        QL = psi.average_charge(bond=0)[0]
+        QL = engine.psi.average_charge(bond=0)[0]
 
         print("{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL))
         charge_pump_data.write("%.15f\t%.15f\n" % (phi_ext, QL))
@@ -44,7 +42,7 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
         #################
 
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-        spectrum = psi.entanglement_spectrum(by_charge=True)
+        spectrum = engine.psi.entanglement_spectrum(by_charge=True)
 
         for sector in range(0, len(spectrum[0])):
             for i in range(0, len(spectrum[0][sector][1])):

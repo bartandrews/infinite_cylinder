@@ -19,15 +19,20 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
 
     ####################################################################################################################
 
+    engine = f.define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V_min, Lx, Ly)
+
     for V in np.linspace(V_min, V_max, V_samp):
 
-        (E, psi, M) = f.run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly)
+        if V != V_min:
+            M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
+            engine.init_env(model=M)
+        engine.run()
 
         ############
         # corr_len #
         ############
 
-        xi = psi.correlation_length()
+        xi = engine.psi.correlation_length()
 
         print("{V:.15f}\t{xi:.15f}".format(V=V, xi=xi))
         corr_len_data.write("%.15f\t%.15f\n" % (V, xi))
@@ -37,7 +42,7 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
         ###################
 
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-        spectrum = psi.entanglement_spectrum(by_charge=True)
+        spectrum = engine.psi.entanglement_spectrum(by_charge=True)
 
         for sector in range(0, len(spectrum[0])):
             for i in range(0, len(spectrum[0][sector][1])):
@@ -52,6 +57,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_V_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.Lx, p.Ly,
-                V_min=0.3, V_max=1, V_samp=27)
+              V_min=0.3, V_max=1, V_samp=27)
 
     print(time.time() - t0)
