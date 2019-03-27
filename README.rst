@@ -12,7 +12,7 @@ The code is split into three independent parts to optimize performance.
 
 **phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number.
 
-**Ly_flow** is a program that varies the circumference length of the cylinder. It is used to calculate topological entropy and CFT edge counting.
+**Ly_flow** is a program that varies the circumference length of the cylinder. This is used to calculate topological entropy and CFT edge counting.
 
 **V_flow** is a program that varies the NN interaction strength potential, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI.
 
