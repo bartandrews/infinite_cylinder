@@ -18,8 +18,22 @@ The code is split into three independent parts to optimize performance.
 
 The tools employed for each 'flow' are given in the table below.
 
+========   ========
+**flow**   **tool**
+========   ========
+phi_flow   * charge_pump
+           * ent_spec_flow
+--------   --------
+Ly_flow    * ent_scal
+           * ent_spec_real
+           * ent_spec_mom
+--------   --------
+V_flow     * corr_len
+           * ent_spec_V_flow
+========   ========
+
 +--------------+----------------------------------+
-| **flow**     | **tool**                         |
+|   **flow**   | **tool**                         |
 +--------------+----------------------------------+
 | phi_flow     | * charge_pump                    |
 |              | * ent_spec_flow                  |
