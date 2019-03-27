@@ -70,12 +70,12 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = FermionicHubbardModel(model_params)
 
     elif model == 'BosonicHaldane':
-        model_params = dict(conserve='N', filling=1/2, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = BosonicHaldaneModel(model_params)
 
     elif model == 'FermionicHaldane':
-        model_params = dict(conserve='N', filling=1/2, t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
 
@@ -85,7 +85,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = FermionicTBG1Model(model_params)
 
     elif model == 'TBG2':
-        model_params = dict(conserve='N', filling=1/2, t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+        model_params = dict(conserve='N', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
         M = FermionicTBG2Model(model_params)
 

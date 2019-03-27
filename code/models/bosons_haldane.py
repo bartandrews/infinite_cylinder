@@ -17,8 +17,7 @@ class BosonicHaldaneModel(CouplingMPOModel):
     def init_sites(self, model_params):
 
         conserve = get_parameter(model_params, 'conserve', 'N', self.name)
-        filling = get_parameter(model_params, 'filling', 1/3, self.name)
-        site = BosonSite(conserve=conserve, filling=filling, Nmax=1)
+        site = BosonSite(conserve=conserve, Nmax=1)
         return site
 
     def init_terms(self, model_params):

@@ -18,8 +18,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
     def init_sites(self, model_params):
 
         conserve = get_parameter(model_params, 'conserve', 'N', self.name)
-        filling = get_parameter(model_params, 'filling', 1/3, self.name)
-        site = FermionSite(conserve=conserve, filling=filling)
+        site = FermionSite(conserve=conserve)
         return site
 
     def init_terms(self, model_params):

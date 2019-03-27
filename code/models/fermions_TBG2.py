@@ -16,8 +16,7 @@ class FermionicTBG2Model(CouplingMPOModel):
     def init_sites(self, model_params):
 
         conserve = get_parameter(model_params, 'conserve', 'N', self.name)
-        filling = get_parameter(model_params, 'filling', 1/2, self.name)
-        fs = FermionSite(conserve=conserve, filling=filling)
+        fs = FermionSite(conserve=conserve)
 
         gs = GroupedSite([fs, fs], labels=['px', 'py'], charges='same')
         gs.add_op('Ntot', gs.Npx + gs.Npy, False)
