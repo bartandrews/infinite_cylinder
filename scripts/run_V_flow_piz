@@ -15,5 +15,5 @@
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
-srun python /scratch/snx3000/adavydov/infinite_cylinder/code/V_flow.py
+srun python /scratch/snx3000/adavydov/infinite_cylinder/code/V_flow.py piz
 

@@ -1,8 +1,15 @@
 import numpy as np
 import time
+import sys
 
 import functions as f
-import parameters as p
+
+if str(sys.argv[1]) == 'laptop':
+    import param_laptop as p
+elif str(sys.argv[1]) == 'hydra':
+    import param_hydra as p
+elif str(sys.argv[1]) == 'piz':
+    import param_piz as p
 
 
 def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly_min, Ly_max, Ly_samp):
