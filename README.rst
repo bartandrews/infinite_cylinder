@@ -149,7 +149,7 @@ NB: TeNPy uses Intel MKL and so is OpenMP capable. However, neither MPI nor hype
 =========   ========   ========   ========
 machine     phi_flow   Ly_flow    V_flow
 =========   ========   ========   ========
-laptop      00:00:00   00:02:08   00:10:47
+laptop      00:14:44   00:02:08   00:10:47
 ---------   --------   --------   --------
 Hydra       00:32:27   00:05:23   00:18:38
 ---------   --------   --------   --------
@@ -182,7 +182,7 @@ Piz Daint   00:00:00   00:00:00   00:00:00
 
 ----
 
-The parameters given for the flows are as follows:
+Parameters given for the flows:
 
 **phi_flow** : phi_min=0, phi_max=1, phi_samp=41
 
