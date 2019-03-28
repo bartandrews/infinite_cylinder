@@ -142,13 +142,7 @@ These benchmarks will be updated as the code is optimized. The specifications of
 
 NB: TeNPy uses Intel MKL and so is OpenMP capable. However, neither MPI nor hyperthreading are configured at the moment.
 
-The parameters given for the flows are as follows:
-
-**phi_flow** : phi_min=0, phi_max=1, phi_samp=41
-
-**Ly_flow** : Ly_min=3, Ly_max=6, Ly_samp=2
-
-**V_flow** : V_min=0, V_max=4, V_samp=27
+----
 
 1) half-filled Haldane Chern insulator (chi = 100, Ly = 3)
 
@@ -185,3 +179,13 @@ Hydra       --:--:--   --:--:--   --:--:--
 ---------   --------   --------   --------
 Piz Daint   00:00:00   00:00:00   00:00:00
 =========   ========   ========   ========
+
+----
+
+The parameters given for the flows are as follows:
+
+**phi_flow** : phi_min=0, phi_max=1, phi_samp=41
+
+**Ly_flow** : Ly_min=3, Ly_max=6, Ly_samp=2
+
+**V_flow** : V_min=0, V_max=4, V_samp=27
