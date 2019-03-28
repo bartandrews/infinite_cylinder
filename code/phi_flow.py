@@ -10,6 +10,8 @@ elif str(sys.argv[1]) == 'hydra':
     import param_hydra as p
 elif str(sys.argv[1]) == 'piz':
     import param_piz as p
+else:
+    sys.exit('Error: Parameter file flag not specified.')
 
 
 def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp):

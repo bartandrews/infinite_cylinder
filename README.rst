@@ -128,3 +128,60 @@ NB: For a range of parameter values in an output file, we denote this by the ord
 *name = stem + leaf*
 
 Example:  data/ent\_spec\_real/ent\_spec\_real\_Hubbard\_Square\_neel\_tile\_down\_up\_chi\_100\_t_\-1\_U\_1\_mu\_0.5\_V\_0\_Lx\_2\_Ly\_2.dat
+
+Benchmarks
+----------
+
+These benchmarks will be updated as the code is optimized. The specifications of the machines is as follows:
+
+**laptop** is a Dell XPS13 9370 with a quad-core Intel Core i7-8550U CPU @ 1.80GHz and 16GB of RAM. One node with 4 OpenMP threads.
+
+**Hydra** specification is listed here: https://www.id.uzh.ch/en/scienceit/infrastructure/hydra.html Flows spread across 3 nodes with 16 OpenMP threads each.
+
+**Piz Daint** specification is listed here: https://www.cscs.ch/computers/piz-daint/ Flows spread across 3 nodes with 36 OpenMP threads each.
+
+NB: TeNPy uses Intel MKL and so is OpenMP capable. However, neither MPI nor hyperthreading are configured at the moment.
+
+The parameters given for the flows are as follows:
+
+**phi_flow** : phi_min=0, phi_max=1, phi_samp=41
+
+**Ly_flow** : Ly_min=3, Ly_max=6, Ly_samp=2
+
+**V_flow** : V_min=0, V_max=4, V_samp=27
+
+1) half-filled Haldane Chern insulator (chi = 100, Ly = 3)
+
+=========   ========   ========   ========
+machine     phi_flow   Ly_flow    V_flow
+=========   ========   ========   ========
+laptop      00:00:00   00:02:08   00:00:00
+---------   --------   --------   --------
+Hydra       00:32:27   00:05:23   00:18:38
+---------   --------   --------   --------
+Piz Daint   00:00:00   00:00:00   00:00:00
+=========   ========   ========   ========
+
+2) half-filled Haldane Chern insulator (chi = 400, Ly = 3)
+
+=========   ========   ========   ========
+machine     phi_flow   Ly_flow    V_flow
+=========   ========   ========   ========
+laptop      --:--:--   --:--:--   --:--:--
+---------   --------   --------   --------
+Hydra       00:00:00   00:00:00   00:00:00
+---------   --------   --------   --------
+Piz Daint   00:00:00   00:00:00   00:00:00
+=========   ========   ========   ========
+
+3) third-filled Haldane fractional Chern insulator (chi = 500, Ly = 6)
+
+=========   ========   ========   ========
+machine     phi_flow   Ly_flow    V_flow
+=========   ========   ========   ========
+laptop      --:--:--   --:--:--   --:--:--
+---------   --------   --------   --------
+Hydra       --:--:--   --:--:--   --:--:--
+---------   --------   --------   --------
+Piz Daint   00:00:00   00:00:00   00:00:00
+=========   ========   ========   ========
