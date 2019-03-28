@@ -14,7 +14,7 @@ elif model == 'TBG1':
 elif model == 'TBG2':
     tile_unit = ['empty_px full_py', 'empty_px full_py']
 
-chi_max = 100
+chi_max = 400
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, V = -1, 0, 1
 

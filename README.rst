@@ -151,9 +151,9 @@ machine     phi_flow   Ly_flow    V_flow
 =========   ========   ========   ========
 laptop      00:14:44   00:02:08   00:10:47
 ---------   --------   --------   --------
-Hydra       00:32:27   00:05:23   00:18:38
+Hydra       00:32:27   00:05:23   --:--:--
 ---------   --------   --------   --------
-Piz Daint   00:00:00   00:00:00   00:00:00
+Piz Daint   --:--:--   --:--:--   --:--:--
 =========   ========   ========   ========
 
 2) half-filled Haldane Chern insulator (chi = 400, Ly = 3)
@@ -163,9 +163,9 @@ machine     phi_flow   Ly_flow    V_flow
 =========   ========   ========   ========
 laptop      --:--:--   00:20:54   01:31:51
 ---------   --------   --------   --------
-Hydra       00:00:00   00:00:00   00:00:00
+Hydra       --:--:--   --:--:--   --:--:--
 ---------   --------   --------   --------
-Piz Daint   00:00:00   00:00:00   00:00:00
+Piz Daint   --:--:--   --:--:--   --:--:--
 =========   ========   ========   ========
 
 3) third-filled Haldane fractional Chern insulator (chi = 500, Ly = 6)
@@ -177,12 +177,12 @@ laptop      --:--:--   --:--:--   --:--:--
 ---------   --------   --------   --------
 Hydra       --:--:--   --:--:--   --:--:--
 ---------   --------   --------   --------
-Piz Daint   00:00:00   00:00:00   00:00:00
+Piz Daint   --:--:--   --:--:--   --:--:--
 =========   ========   ========   ========
 
 ----
 
-Parameters given for the flows:
+Parameters given for the flows are based on those in "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
 
 **phi_flow** : phi_min=0, phi_max=1, phi_samp=41
 
