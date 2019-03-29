@@ -1,3 +1,21 @@
+#!/bin/bash
+
+# supply optional command line argument 2<=n<=3 to have n sets of runs in the queue
+
 sbatch scripts/run_phi_flow_hydra &
 sbatch scripts/run_V_flow_hydra &
 sbatch scripts/run_Ly_flow_hydra &
+
+if [ $# -ne 0 ]; then
+    if (( $1==2 || $1==3 )); then
+        sbatch scripts/run_phi_flow_hydra2 &
+        sbatch scripts/run_V_flow_hydra2 &
+        sbatch scripts/run_Ly_flow_hydra2 &
+    fi
+
+    if (( $1==3 )); then
+        sbatch scripts/run_phi_flow_hydra3 &
+        sbatch scripts/run_V_flow_hydra3 &
+        sbatch scripts/run_Ly_flow_hydra3 &
+    fi
+fi

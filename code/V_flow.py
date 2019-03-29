@@ -3,15 +3,10 @@ import time
 import sys
 
 import functions as f
+import importlib
 
-if str(sys.argv[1]) == 'laptop':
-    import param_laptop as p
-elif str(sys.argv[1]) == 'hydra':
-    import param_hydra as p
-elif str(sys.argv[1]) == 'piz':
-    import param_piz as p
-else:
-    sys.exit('Error: Parameter file flag not specified.')
+parameters_module = "parameters.param_" + str(sys.argv[1])
+p = importlib.import_module(parameters_module)
 
 
 def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min, V_max, V_samp):
