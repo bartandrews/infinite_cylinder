@@ -127,7 +127,7 @@ NB: For a range of parameter values in an output file, we denote this by the ord
 
 *name = stem + leaf*
 
-Example:  ``data/ent\_spec\_real/ent\_spec\_real\_Hubbard\_Square\_neel\_tile\_down\_up\_chi\_100\_t_\-1\_U\_1\_mu\_0.5\_V\_0\_Lx\_2\_Ly\_2.dat``
+Example:  ``data/ent_spec_real/ent_spec_real_Hubbard_Square_neel_tile_down_up_chi_100_t_-1_U_1_mu_0.5_V_0_Lx_2_Ly_2.dat``
 
 Benchmarks
 ----------
@@ -153,7 +153,7 @@ laptop       00:14:44     00:02:08     00:10:47
 ---------   ----------   ----------   ----------
 Hydra        00:44:36     00:05:08     00:29:27
 ---------   ----------   ----------   ----------
-Piz Daint    queuing      queuing      queuing
+Piz Daint    queuing      00:04:56     queuing
 =========   ==========   ==========   ==========
 
 2) half-filled Haldane Chern insulator (chi = 400, Ly = 3)
@@ -195,7 +195,7 @@ Multiple batches
 
 A **batch** is defined as a set of 3 **flows** such that {phi_flow, Ly_flow, V_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
 
-1) Start the run e.g. ``./run_hydra 3`` to start a hydra run with 3 scheduled batches. The possible command-line arguments are none, ``2``, or ``3``.
+1) Start the run e.g. ``./run_hydra 3 1 2`` to start a hydra run with 3 scheduled batches: batch 3, then batch 1, then batch 2. The possible command-line arguments are [1, 2, 3]. (There is no specific order of flows within a batch.)
 
 2) This will call the SLURM scripts stored in the ``scripts`` folder. If you want to modify the expected runtime for each of the flows individually, you can do this here. Each of the flows is set to the maximum allowed runtime (24 hours) by default.
 
