@@ -89,7 +89,7 @@ Models description
 Directory structure
 -------------------
 
-**data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into keep. NB: No dat files are tracked by git due to their potentially large size.
+**data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into ``keep``. NB: No dat files are tracked by git due to their potentially large size.
 
 **code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene.
 
@@ -106,12 +106,12 @@ All output .dat files are named in the following order:
 
 *stem*
 
-- tool (e.g. corr_len)
-- model (e.g. Hubbard)
-- lattice (e.g. Honeycomb)
-- initial state (e.g. neel)
-- tile units ([0, 1] or ['up', 'down'])
-- chi (i.e. chi_max)
+- tool (e.g. ``corr_len``)
+- model (e.g. ``Hubbard``)
+- lattice (e.g. ``Honeycomb``)
+- initial state (e.g. ``neel``)
+- tile units (``[0, 1]`` or ``['up', 'down']``)
+- chi (i.e. ``chi_max``)
 
 *leaf*
 
@@ -123,11 +123,11 @@ All output .dat files are named in the following order:
 - Ly
 - phi (i.e. phi_ext)
 
-NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. V_0_1_4). Or for discrete parameters, simply by the order: min value _ max value (e.g. Ly_2_8).
+NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4``). Or for discrete parameters, simply by the order: min value _ max value (e.g. ``Ly_2_8``).
 
 *name = stem + leaf*
 
-Example:  data/ent\_spec\_real/ent\_spec\_real\_Hubbard\_Square\_neel\_tile\_down\_up\_chi\_100\_t_\-1\_U\_1\_mu\_0.5\_V\_0\_Lx\_2\_Ly\_2.dat
+Example:  ``data/ent\_spec\_real/ent\_spec\_real\_Hubbard\_Square\_neel\_tile\_down\_up\_chi\_100\_t_\-1\_U\_1\_mu\_0.5\_V\_0\_Lx\_2\_Ly\_2.dat``
 
 Benchmarks
 ----------
@@ -195,7 +195,7 @@ Multiple batches
 
 A **batch** is defined as a set of 3 **flows** such that {phi_flow, Ly_flow, V_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
 
-1) Start the run e.g. ``./run_hydra 3`` to start a hydra run with 3 scheduled batches. The possible command-line arguments are None, 2, or 3.
+1) Start the run e.g. ``./run_hydra 3`` to start a hydra run with 3 scheduled batches. The possible command-line arguments are none, ``2``, or ``3``.
 
 2) This will call the SLURM scripts stored in the ``scripts`` folder. If you want to modify the expected runtime for each of the flows individually, you can do this here. Each of the flows is set to the maximum allowed runtime (24 hours) by default.
 

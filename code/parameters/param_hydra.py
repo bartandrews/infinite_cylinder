@@ -1,7 +1,7 @@
 # configuration parameters
 model = 'FermionicHaldane'
 lattice = 'Honeycomb'
-initial_state = 'neel'
+initial_state = 'third'
 
 if model == 'BosonicHaldane':
     tile_unit = ['0', '1']
@@ -14,7 +14,7 @@ elif model == 'TBG1':
 elif model == 'TBG2':
     tile_unit = ['empty_px full_py', 'empty_px full_py']
 
-chi_max = 110
+chi_max = 500
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, V = -1, 0, 1
 
@@ -24,4 +24,4 @@ elif model in ['Hubbard', 'TBG1', 'TBG2']:
     U = 0
 
 # unit cell
-Lx, Ly = 1, 3
+Lx, Ly = 1, 6
