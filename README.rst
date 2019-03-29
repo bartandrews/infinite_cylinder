@@ -189,3 +189,14 @@ Parameters given for the flows are based on those in "Characterization and stabi
 **Ly_flow** : Ly_min=3, Ly_max=6, Ly_samp=2
 
 **V_flow** : V_min=0, V_max=4, V_samp=27
+
+Multiple batches
+----------------
+
+A **batch** is defined as a set of 3 **flows** such that {phi_flow, Ly_flow, V_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
+
+1) Start the run e.g. ``./run_hydra 3`` to start a hydra run with 3 scheduled batches. The possible command-line arguments are None, 2, or 3.
+
+2) This will call the SLURM scripts stored in the ``scripts`` folder. If you want to modify the expected runtime for each of the flows individually, you can do this here. Each of the flows is set to the maximum allowed runtime (24 hours) by default.
+
+3) The scripts then start the flows with the corresponding parameter files stored in the ``code/parameters`` folder. The command-line argument for the flow (e.g. ``./V_flow.py hydra3``) directly determines which parameter file is imported (e.g. ``param_hydra3.py``). You can edit the parameters for each batch here.
