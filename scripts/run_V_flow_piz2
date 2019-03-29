@@ -1,0 +1,19 @@
+#!/bin/bash -l
+#SBATCH --output=logs/V_flow_piz2.out
+#SBATCH --error=logs/V_flow_piz2.err
+#SBATCH --job-name=V_flow_piz2
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=bandrews@physik.uzh.ch
+#SBATCH --time=24:00:00
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-core=1
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=36
+#SBATCH --partition=normal
+#SBATCH --constraint=mc
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun python /scratch/snx3000/adavydov/infinite_cylinder/code/V_flow.py piz2
+

@@ -1,0 +1,16 @@
+#!/bin/bash
+#SBATCH --output=logs/phi_flow_hydra3.out
+#SBATCH --error=logs/phi_flow_hydra3.err
+#SBATCH --job-name=phi_flow_hydra3
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=bandrews@physik.uzh.ch
+#SBATCH --time=24:00:00 
+#SBATCH --mem=64G
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=16
+#SBATCH --ntasks-per-socket=6
+
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
+
+srun python /home/cluster/baandr/infinite_cylinder/code/phi_flow.py hydra3
