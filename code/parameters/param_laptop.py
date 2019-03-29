@@ -24,4 +24,4 @@ elif model in ['Hubbard', 'TBG1', 'TBG2']:
     U = 0
 
 # unit cell
-Lx, Ly = 1, 3
+Lx, Ly = 1, 6
