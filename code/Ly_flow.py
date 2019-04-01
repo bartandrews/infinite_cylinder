@@ -68,7 +68,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, L
 
         ################################################################################################################
 
-        (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, canonicalize=1.e-6, verbose=0)
+        (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, trunc_par={'chi_min': 1000}, canonicalize=1.e-6, verbose=0)
 
         if np.abs(np.abs(ov)-1) > 0.1:
             print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))

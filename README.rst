@@ -173,11 +173,11 @@ Piz Daint    03:09:36     00:19:58     02:10:13
 =========   ==========   ==========   ==========
 machine      phi_flow     Ly_flow      V_flow
 =========   ==========   ==========   ==========
-laptop       queuing      09:34:43     --:--:--
+laptop       time out     09:34:43     queuing
 ---------   ----------   ----------   ----------
-Hydra        running      running      running
+Hydra        time out     12:53:20     time out
 ---------   ----------   ----------   ----------
-Piz Daint    queuing      queuing      queuing
+Piz Daint    running      10:24:04     running
 =========   ==========   ==========   ==========
 
 ----
@@ -195,7 +195,7 @@ Multiple batches
 
 A **batch** is defined as a set of 3 **flows** such that {phi_flow, Ly_flow, V_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
 
-1) Start the run e.g. ``./run_hydra 3 1 2`` to start a hydra run with 3 scheduled batches: batch 3, then batch 1, then batch 2 (in run priority order - note that they will all run simultaneously if resources allow). The possible command-line arguments are [1, 2, 3]. (There is no specific run priority order of flows within a batch.)
+1) Start the run e.g. ``./run_hydra 3 1 2`` to start a hydra run with 3 simultaneously scheduled batches. The possible command-line arguments are [1, 2, 3]. (There is no specific order of flows within a batch.)
 
 2) This will call the SLURM scripts stored in the ``scripts`` folder. If you want to modify the expected runtime for each of the flows individually, you can do this here. Each of the flows is set to the maximum allowed runtime (24 hours) by default.
 
