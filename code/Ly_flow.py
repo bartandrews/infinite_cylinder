@@ -27,10 +27,10 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, L
         # ent_scal #
         ############
 
-        print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly, SvN=psi.entanglement_entropy()[0],
-                                                       Sinf=psi.entanglement_entropy(n=np.inf)[0]))
-        ent_scal_data.write("%i\t%.15f\t%.15f\n" % (Ly, psi.entanglement_entropy()[0],
-                                           psi.entanglement_entropy(n=np.inf)[0]))
+        # print("{Ly:d}\t{SvN:.15f}\t{Sinf:.15f}".format(Ly=Ly, SvN=psi.entanglement_entropy()[0],
+        #                                                Sinf=psi.entanglement_entropy(n=np.inf)[0]))
+        # ent_scal_data.write("%i\t%.15f\t%.15f\n" % (Ly, psi.entanglement_entropy()[0],
+        #                                    psi.entanglement_entropy(n=np.inf)[0]))
 
         #################
         # ent_spec_real #
@@ -44,18 +44,18 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, L
 
         ################################################################################################################
 
-        spectrum = psi.entanglement_spectrum(by_charge=True)
-
-        print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
-
-        # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-        for bond in range(0, Lx*Ly):
-            for sector in range(0, len(spectrum[bond])):
-                for i in range(0, len(spectrum[bond][sector][1])):
-                    print("{charge:d}\t{bond:d}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0], bond=bond,
-                                                                         spectrum=spectrum[bond][sector][1][i]))
-                    ent_spec_real_data.write("%i\t%i\t%.15f\n" % (spectrum[bond][sector][0][0], bond,
-                                                                  spectrum[bond][sector][1][i]))
+        # spectrum = psi.entanglement_spectrum(by_charge=True)
+        #
+        # print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
+        #
+        # # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
+        # for bond in range(0, Lx*Ly):
+        #     for sector in range(0, len(spectrum[bond])):
+        #         for i in range(0, len(spectrum[bond][sector][1])):
+        #             print("{charge:d}\t{bond:d}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0], bond=bond,
+        #                                                                  spectrum=spectrum[bond][sector][1][i]))
+        #             ent_spec_real_data.write("%i\t%i\t%.15f\n" % (spectrum[bond][sector][0][0], bond,
+        #                                                           spectrum[bond][sector][1][i]))
 
         ################
         # ent_spec_mom #
@@ -68,7 +68,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, L
 
         ################################################################################################################
 
-        (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, trunc_par={'chi_min': 1000}, canonicalize=1.e-6, verbose=0)
+        (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, trunc_par={'chi_min': 9}, canonicalize=1.e-6, verbose=0)
 
         if np.abs(np.abs(ov)-1) > 0.1:
             print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
@@ -91,6 +91,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_Ly_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.V, p.Lx,
-               Ly_min=3, Ly_max=6, Ly_samp=2)
+               Ly_min=3, Ly_max=3, Ly_samp=1)
 
     print(time.time() - t0)

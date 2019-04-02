@@ -177,7 +177,7 @@ laptop       time out     09:34:43     queuing
 ---------   ----------   ----------   ----------
 Hydra        time out     12:53:20     time out
 ---------   ----------   ----------   ----------
-Piz Daint    running      10:24:04     running
+Piz Daint    time out     10:24:04     time out
 =========   ==========   ==========   ==========
 
 ----
