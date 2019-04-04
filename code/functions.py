@@ -8,6 +8,7 @@ from tenpy.algorithms import dmrg
 
 import sys
 import random
+import pickle
 
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
@@ -15,8 +16,8 @@ def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
     if model not in ['Hubbard', 'BosonicHaldane', 'FermionicHaldane', 'TBG1', 'TBG2']:
         sys.exit('Error: Unknown model.')
 
-    stem = ("data/%s/%s_%s_%s_%s_tile_%s_%s_chi_%s_"
-            % (tool, tool, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max))
+    stem = ("%s_%s_%s_%s_tile_%s_%s_chi_%s_"
+            % (tool, model, lattice, initial_state, tile_unit[0], tile_unit[1], chi_max))
 
     return stem
 
@@ -122,6 +123,30 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
     return engine
 
 
+def define_iDMRG_engine_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly,
+                               use_pickle=False, make_pickle=False, phi_ext=0):
+
+    if use_pickle or make_pickle:
+        pickle_stem = file_name_stem("engine", model, lattice, initial_state, tile_unit, chi_max)
+        pickle_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s.pkl" % (t, U, mu, V, Lx, Ly, phi_ext))
+        pickle_file = "pickles/" + flow + "/" + pickle_stem + pickle_leaf
+
+    if use_pickle:
+
+        with open(pickle_file, 'rb') as file1:
+            engine = pickle.load(file1)
+
+    else:
+
+        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+
+        if make_pickle:
+            with open(pickle_file, 'wb') as file2:
+                pickle.dump(engine, file2)
+
+    return engine
+
+
 def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
 
     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
@@ -139,7 +164,7 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
             'svd_min': 1.e-10
         },
         # 'lanczos_params': {
-        #     'reortho': True,
+        #     'reortho': True
         #     'N_cache': 40
         # },
         'max_E_err': 1.e-10,
@@ -150,5 +175,29 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
     info = dmrg.run(psi, M, dmrg_params)
 
     E = info['E']
+
+    return E, psi, M
+
+
+def run_iDMRG_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly,
+                     use_pickle=False, make_pickle=False, phi_ext=0):
+
+    if use_pickle or make_pickle:
+        pickle_stem = file_name_stem("E_psi_M", model, lattice, initial_state, tile_unit, chi_max)
+        pickle_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s.pkl" % (t, U, mu, V, Lx, Ly, phi_ext))
+        pickle_file = "pickles/" + flow + "/" + pickle_stem + pickle_leaf
+
+    if use_pickle:
+
+        with open(pickle_file, 'rb') as file1:
+            [E, psi, M] = pickle.load(file1)
+
+    else:
+
+        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext)
+
+        if make_pickle:
+            with open(pickle_file, 'wb') as file2:
+                pickle.dump([E, psi, M], file2)
 
     return E, psi, M

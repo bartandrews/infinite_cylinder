@@ -95,6 +95,8 @@ Directory structure
 
 **scripts** contains all of the SLURM batch scripts used for Hydra and Piz Daint.
 
+**pickles** stores all of the initial pickles for a flow, in the corresponding flow subdirectory e.g. the expensive initial wavefunction used for a phi_flow run with chi=500.
+
 **logs** is used to store all of the stdout and stderr files from the Hydra and Piz Daint batch scripts. NB: No log files are tracked by git.
 
 **.idea** is used to store PyCharm configuration files, in case I would like to make changes to the code using a PyCharm project on a remote computer.
@@ -200,3 +202,8 @@ A **batch** is defined as a set of 3 **flows** such that {phi_flow, Ly_flow, V_f
 2) This will call the SLURM scripts stored in the ``scripts`` folder. If you want to modify the expected runtime for each of the flows individually, you can do this here. Each of the flows is set to the maximum allowed runtime (24 hours) by default.
 
 3) The scripts then start the flows with the corresponding parameter files stored in the ``code/parameters`` folder. The command-line argument for the flow (e.g. ``./V_flow.py hydra3``) directly determines which parameter file is imported (e.g. ``param_hydra3.py``). You can edit the parameters for each batch here.
+
+Pickling capability
+-------------------
+
+A pickling capability has been added if you would like to save the initial ``[E, psi, M]`` or ``engine`` of a flow. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. In practise, the change has been to replace ``run_iDMRG`` --> ``run_iDMRG_pickle`` and ``define_iDMRG_engine`` --> ``define_iDMRG_engine_pickle``. You can set the boolean parameters ``use_pickle`` (to use a pickled state) or ``make_pickle`` (to pickle a state for later) in the parameter files. By default, all pickling is ignored and the code works as before.

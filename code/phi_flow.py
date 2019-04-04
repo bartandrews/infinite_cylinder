@@ -11,19 +11,8 @@ p = importlib.import_module(parameters_module)
 
 def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp):
 
-    charge_pump_stem = f.file_name_stem("charge_pump", model, lattice, initial_state, tile_unit, chi_max)
-    ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max)
-    leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
-    charge_pump_file = charge_pump_stem + leaf
-    ent_spec_flow_file = ent_spec_flow_stem + leaf
-    open(charge_pump_file, "w")
-    open(ent_spec_flow_file, "w")
-    charge_pump_data = open(charge_pump_file, "a", buffering=1)
-    ent_spec_flow_data = open(ent_spec_flow_file, "a", buffering=1)
-
-    ####################################################################################################################
-
-    engine = f.define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min)
+    engine = f.define_iDMRG_engine_pickle("phi_flow", model, lattice, initial_state, tile_unit, chi_max,
+                                          t, U, mu, V, Lx, Ly, p.use_pickle, p.make_pickle, phi_min)
 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
@@ -36,6 +25,14 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
         # charge_pump #
         ###############
 
+        charge_pump_stem = f.file_name_stem("charge_pump", model, lattice, initial_state, tile_unit, chi_max)
+        leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
+        charge_pump_file = "data/charge_pump/" + charge_pump_stem + leaf
+        open(charge_pump_file, "w")
+        charge_pump_data = open(charge_pump_file, "a", buffering=1)
+
+        ################################################################################################################
+
         QL = engine.psi.average_charge(bond=0)[0]
 
         print("{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL))
@@ -44,6 +41,13 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
         #################
         # ent_spec_flow #
         #################
+
+        ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max)
+        ent_spec_flow_file = "data/ent_spec_flow/" + ent_spec_flow_stem + leaf
+        open(ent_spec_flow_file, "w")
+        ent_spec_flow_data = open(ent_spec_flow_file, "a", buffering=1)
+
+        ################################################################################################################
 
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         spectrum = engine.psi.entanglement_spectrum(by_charge=True)
