@@ -14,7 +14,11 @@ elif model == 'TBG1':
 elif model == 'TBG2':
     tile_unit = ['empty_px full_py', 'empty_px full_py']
 
-chi_max = 130
+# chi_max for DMRG
+chi_max = 100
+# chi max for compute_K
+chi_max_K = chi_max
+
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, V = -1, 0, 1
 
@@ -25,3 +29,7 @@ elif model in ['Hubbard', 'TBG1', 'TBG2']:
 
 # unit cell
 Lx, Ly = 1, 3
+
+# pickle capability
+use_pickle = False
+make_pickle = False

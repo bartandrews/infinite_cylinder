@@ -1,7 +1,7 @@
 # configuration parameters
 model = 'FermionicHaldane'
 lattice = 'Honeycomb'
-initial_state = 'neel'
+initial_state = 'third'
 
 if model == 'BosonicHaldane':
     tile_unit = ['0', '1']
@@ -15,7 +15,7 @@ elif model == 'TBG2':
     tile_unit = ['empty_px full_py', 'empty_px full_py']
 
 # chi_max for DMRG
-chi_max = 100
+chi_max = 600
 # chi max for compute_K
 chi_max_K = chi_max
 
@@ -31,5 +31,5 @@ elif model in ['Hubbard', 'TBG1', 'TBG2']:
 Lx, Ly = 1, 3
 
 # pickle capability
-use_pickle = True
-make_pickle = False
+use_pickle = False
+make_pickle = True

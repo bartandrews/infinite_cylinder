@@ -11,6 +11,18 @@ p = importlib.import_module(parameters_module)
 
 def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min, V_max, V_samp):
 
+    corr_len_stem = f.file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
+    ent_spec_V_flow_stem = f.file_name_stem("ent_spec_V_flow", model, lattice, initial_state, tile_unit, chi_max)
+    leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly))
+    corr_len_file = "data/corr_len/" + corr_len_stem + leaf
+    ent_spec_V_flow_file = "data/ent_spec_V_flow/" + ent_spec_V_flow_stem + leaf
+    open(corr_len_file, "w")
+    open(ent_spec_V_flow_file, "w")
+    corr_len_data = open(corr_len_file, "a", buffering=1)
+    ent_spec_V_flow_data = open(ent_spec_V_flow_file, "a", buffering=1)
+
+    ##################################################################################################################
+
     engine = f.define_iDMRG_engine_pickle("V_flow", model, lattice, initial_state, tile_unit, chi_max,
                                           t, U, mu, V_min, Lx, Ly, p.use_pickle, p.make_pickle)
 
@@ -25,14 +37,6 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
         # corr_len #
         ############
 
-        corr_len_stem = f.file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
-        leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly))
-        corr_len_file = "data/corr_len/" + corr_len_stem + leaf
-        open(corr_len_file, "w")
-        corr_len_data = open(corr_len_file, "a", buffering=1)
-
-        ################################################################################################################
-
         xi = engine.psi.correlation_length()
 
         print("{V:.15f}\t{xi:.15f}".format(V=V, xi=xi))
@@ -41,13 +45,6 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
         ###################
         # ent_spec_V_flow #
         ###################
-
-        ent_spec_V_flow_stem = f.file_name_stem("ent_spec_V_flow", model, lattice, initial_state, tile_unit, chi_max)
-        ent_spec_V_flow_file = "data/ent_spec_V_flow/" + ent_spec_V_flow_stem + leaf
-        open(ent_spec_V_flow_file, "w")
-        ent_spec_V_flow_data = open(ent_spec_V_flow_file, "a", buffering=1)
-
-        ################################################################################################################
 
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         spectrum = engine.psi.entanglement_spectrum(by_charge=True)
