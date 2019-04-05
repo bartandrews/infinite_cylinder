@@ -42,22 +42,40 @@ class FermionicTBG1Model(CouplingMPOModel):
 
         for u1, u2, dx in self.lat.nearest_neighbors:
 
+            # spin up
             self.add_coupling(t1, u1, 'Cdupx', u2, 'Cupx', dx, 'JW', True)
             self.add_coupling(t1, u2, 'Cdupx', u1, 'Cupx', -dx, 'JW', True)  # h.c.
             self.add_coupling(t1, u1, 'Cdupy', u2, 'Cupy', dx, 'JW', True)
             self.add_coupling(t1, u2, 'Cdupy', u1, 'Cupy', -dx, 'JW', True)  # h.c.
+            # spin down
+            self.add_coupling(t1, u1, 'Cddpx', u2, 'Cdpx', dx, 'JW', True)
+            self.add_coupling(t1, u2, 'Cddpx', u1, 'Cdpx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(t1, u1, 'Cddpy', u2, 'Cdpy', dx, 'JW', True)
+            self.add_coupling(t1, u2, 'Cddpy', u1, 'Cdpy', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.next_nearest_neighbors:
 
+            # spin up
             self.add_coupling(np.real(t2), u1, 'Cdupx', u2, 'Cupx', dx, 'JW', True)
             self.add_coupling(np.real(t2), u2, 'Cdupx', u1, 'Cupx', -dx, 'JW', True)  # h.c.
             self.add_coupling(np.real(t2), u1, 'Cdupy', u2, 'Cupy', dx, 'JW', True)
             self.add_coupling(np.real(t2), u2, 'Cdupy', u1, 'Cupy', -dx, 'JW', True)  # h.c.
+            # spin down
+            self.add_coupling(np.real(t2), u1, 'Cddpx', u2, 'Cdpx', dx, 'JW', True)
+            self.add_coupling(np.real(t2), u2, 'Cddpx', u1, 'Cdpx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(np.real(t2), u1, 'Cddpy', u2, 'Cdpy', dx, 'JW', True)
+            self.add_coupling(np.real(t2), u2, 'Cddpy', u1, 'Cdpy', -dx, 'JW', True)  # h.c.
 
+            # spin up
             self.add_coupling(np.imag(t2), u1, 'Cdupx', u2, 'Cupy', dx, 'JW', True)
             self.add_coupling(np.imag(t2), u2, 'Cdupy', u1, 'Cupx', -dx, 'JW', True)  # h.c.
             self.add_coupling(-np.imag(t2), u1, 'Cdupy', u2, 'Cupx', dx, 'JW', True)
             self.add_coupling(-np.imag(t2), u2, 'Cdupx', u1, 'Cupy', -dx, 'JW', True)  # h.c.
+            # spin down
+            self.add_coupling(np.imag(t2), u1, 'Cddpx', u2, 'Cdpy', dx, 'JW', True)
+            self.add_coupling(np.imag(t2), u2, 'Cddpy', u1, 'Cdpx', -dx, 'JW', True)  # h.c.
+            self.add_coupling(-np.imag(t2), u1, 'Cddpy', u2, 'Cdpx', dx, 'JW', True)
+            self.add_coupling(-np.imag(t2), u2, 'Cddpx', u1, 'Cdpy', -dx, 'JW', True)  # h.c.
 
             self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx, 'JW', True)
 

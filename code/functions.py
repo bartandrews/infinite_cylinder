@@ -4,6 +4,7 @@ from models.fermions_haldane import FermionicHaldaneModel
 from models.bosons_haldane import BosonicHaldaneModel
 from models.fermions_TBG1 import FermionicTBG1Model
 from models.fermions_TBG2 import FermionicTBG2Model
+from models.fermions_TBG3 import FermionicTBG3Model
 from tenpy.algorithms import dmrg
 
 import sys
@@ -13,7 +14,7 @@ import pickle
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
-    if model not in ['Hubbard', 'BosonicHaldane', 'FermionicHaldane', 'TBG1', 'TBG2']:
+    if model not in ['Hubbard', 'BosonicHaldane', 'FermionicHaldane', 'TBG1', 'TBG2', 'TBG3']:
         sys.exit('Error: Unknown model.')
 
     stem = ("%s_%s_%s_%s_tile_%s_%s_chi_%s_"
@@ -89,6 +90,11 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
         M = FermionicTBG2Model(model_params)
+
+    elif model == 'TBG3':
+        model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
+        M = FermionicTBG3Model(model_params)
 
     return M
 

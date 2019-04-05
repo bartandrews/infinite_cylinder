@@ -14,8 +14,8 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
     charge_pump_stem = f.file_name_stem("charge_pump", model, lattice, initial_state, tile_unit, chi_max)
     ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max)
     leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
-    charge_pump_file = "data/charge_pump/" + charge_pump_stem + leaf
-    ent_spec_flow_file = "data/ent_spec_flow/" + ent_spec_flow_stem + leaf
+    charge_pump_file = "data/charge_pump/" + charge_pump_stem.replace(" ", "_") + leaf
+    ent_spec_flow_file = "data/ent_spec_flow/" + ent_spec_flow_stem.replace(" ", "_") + leaf
     open(charge_pump_file, "w")
     open(ent_spec_flow_file, "w")
     charge_pump_data = open(charge_pump_file, "a", buffering=1)

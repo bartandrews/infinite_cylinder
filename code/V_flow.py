@@ -14,8 +14,8 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
     corr_len_stem = f.file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
     ent_spec_V_flow_stem = f.file_name_stem("ent_spec_V_flow", model, lattice, initial_state, tile_unit, chi_max)
     leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly))
-    corr_len_file = "data/corr_len/" + corr_len_stem + leaf
-    ent_spec_V_flow_file = "data/ent_spec_V_flow/" + ent_spec_V_flow_stem + leaf
+    corr_len_file = "data/corr_len/" + corr_len_stem.replace(" ", "_") + leaf
+    ent_spec_V_flow_file = "data/ent_spec_V_flow/" + ent_spec_V_flow_stem.replace(" ", "_") + leaf
     open(corr_len_file, "w")
     open(ent_spec_V_flow_file, "w")
     corr_len_data = open(corr_len_file, "a", buffering=1)

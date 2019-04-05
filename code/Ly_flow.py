@@ -13,7 +13,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
 
     # ent_scal_stem = f.file_name_stem("ent_scal", model, lattice, initial_state, tile_unit, chi_max)
     # ent_scal_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat" % (t, U, mu, V, Lx, Ly_min, Ly_max))
-    # ent_scal_file = "data/ent_scal/" + ent_scal_stem + ent_scal_leaf
+    # ent_scal_file = "data/ent_scal/" + ent_scal_stem.replace(" ", "_") + ent_scal_leaf
     # open(ent_scal_file, "w")
     # ent_scal_data = open(ent_scal_file, "a", buffering=1)
 
@@ -39,7 +39,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
 
         # ent_spec_real_stem = f.file_name_stem("ent_spec_real", model, lattice, initial_state, tile_unit, chi_max)
         # ent_spec_real_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V, Lx, Ly))
-        # ent_spec_real_file = "data/ent_spec_real/" + ent_spec_real_stem + ent_spec_real_leaf
+        # ent_spec_real_file = "data/ent_spec_real/" + ent_spec_real_stem.replace(" ", "_") + ent_spec_real_leaf
         # open(ent_spec_real_file, "w")
         # ent_spec_real_data = open(ent_spec_real_file, "a", buffering=1)
         #
@@ -63,31 +63,31 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
         # ent_spec_mom #
         ################
 
-        # ent_spec_mom_stem = f.file_name_stem("ent_spec_mom", model, lattice, initial_state, tile_unit, chi_max)
-        # ent_spec_mom_leaf = ("chi_K_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (chi_max_K, t, U, mu, V, Lx, Ly))
-        # ent_spec_mom_file = "data/ent_spec_mom/" + ent_spec_mom_stem + ent_spec_mom_leaf
-        # open(ent_spec_mom_file, "w")
-        # ent_spec_mom_data = open(ent_spec_mom_file, "a", buffering=1)
-        #
-        # ##############################################################################################################
-        #
-        # (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, trunc_par={'chi_max': chi_max_K}, canonicalize=1.e-6,
-        #                                           verbose=0)
-        #
-        # if np.abs(np.abs(ov)-1) > 0.1:
-        #     print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
-        #     print('Warning: State is not invariant under the permutation.')
-        # else:
-        #     print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
-        #
-        # print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=q.charges.shape[1]))
-        #
-        # # q.to_qflat()[i][0] --> q.to_qflat()[i][n] for different charge entries
-        # for i in range(len(W)):
-        #     print("{q:d}\t{K:.15f}\t{epsilon:.15f}".format(q=q.to_qflat()[i][0], K=np.angle(W[i])/np.pi,
-        #                                                    epsilon=-np.log(np.abs(W[i]))))
-        #     ent_spec_mom_data.write("%i\t%.15f\t%.15f\n" % (q.to_qflat()[i][0], np.angle(W[i])/np.pi,
-        #                                                     -np.log(np.abs(W[i]))))
+        ent_spec_mom_stem = f.file_name_stem("ent_spec_mom", model, lattice, initial_state, tile_unit, chi_max)
+        ent_spec_mom_leaf = ("chi_K_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (chi_max_K, t, U, mu, V, Lx, Ly))
+        ent_spec_mom_file = "data/ent_spec_mom/" + ent_spec_mom_stem.replace(" ", "_") + ent_spec_mom_leaf
+        open(ent_spec_mom_file, "w")
+        ent_spec_mom_data = open(ent_spec_mom_file, "a", buffering=1)
+
+        ##############################################################################################################
+
+        (Un, W, q, ov, trunc_err) = psi.compute_K(perm=M.lat, trunc_par={'chi_max': chi_max_K}, canonicalize=1.e-6,
+                                                  verbose=0)
+
+        if np.abs(np.abs(ov)-1) > 0.1:
+            print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
+            print('Warning: State is not invariant under the permutation.')
+        else:
+            print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
+
+        print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=q.charges.shape[1]))
+
+        # q.to_qflat()[i][0] --> q.to_qflat()[i][n] for different charge entries
+        for i in range(len(W)):
+            print("{q:d}\t{K:.15f}\t{epsilon:.15f}".format(q=q.to_qflat()[i][0], K=np.angle(W[i])/np.pi,
+                                                           epsilon=-np.log(np.abs(W[i]))))
+            ent_spec_mom_data.write("%i\t%.15f\t%.15f\n" % (q.to_qflat()[i][0], np.angle(W[i])/np.pi,
+                                                            -np.log(np.abs(W[i]))))
 
 
 if __name__ == '__main__':
