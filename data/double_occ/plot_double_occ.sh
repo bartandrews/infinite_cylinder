@@ -6,7 +6,7 @@ unset key
 set title noenhanced '$1'
 
 set xlabel 'U/t'
-set ylabel 'n_d U'
+set ylabel 'n_d'
 plot '$1'
 
 EOFMarker

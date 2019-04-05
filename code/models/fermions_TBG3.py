@@ -39,6 +39,7 @@ class FermionicTBG3Model(CouplingMPOModel):
 
             self.add_onsite(U, 0, 'Ntot Ntot')
             self.add_onsite(-2*U, 0, 'Ntot')
+            self.add_onsite(U, 0, 'Id')
 
         for u1, u2, dx in self.lat.nearest_neighbors:
 

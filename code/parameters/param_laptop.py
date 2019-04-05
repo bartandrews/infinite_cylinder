@@ -17,7 +17,7 @@ elif model == 'TBG3':
     tile_unit = ['down_px empty_py', 'empty_px up_py']
 
 # chi_max for DMRG
-chi_max = 10
+chi_max = 500
 # chi max for compute_K
 chi_max_K = 100
 

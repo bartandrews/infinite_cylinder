@@ -1,9 +1,9 @@
 import numpy as np
 import time
 import sys
+import importlib
 
 import functions as f
-import importlib
 
 parameters_module = "parameters.param_" + str(sys.argv[1])
 p = importlib.import_module(parameters_module)

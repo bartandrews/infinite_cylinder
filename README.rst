@@ -74,7 +74,7 @@ Models description
 
 * fermions_haldane = spinless fermion Haldane model
 
-    Equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
+    Equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
 
 * fermions_TBG1 = spinful fermions with two orbitals, Hubbard model for twisted bilayer graphene
 
@@ -83,6 +83,10 @@ Models description
 * fermions_TBG2 = spinless fermions with two orbitals, tight-binding model for twisted bilayer graphene
 
     Section III of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
+
+* fermions_TBG3 = spinful fermions with two orbitals, simplified Hubbard model for twisted bilayer graphene
+
+    Section I of "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
 
 
 

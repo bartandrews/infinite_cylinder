@@ -1,9 +1,10 @@
 import numpy as np
 import time
 import sys
+import importlib
 
 import functions as f
-import importlib
+import tenpy.linalg.np_conserved as npc
 
 parameters_module = "parameters.param_" + str(sys.argv[1])
 p = importlib.import_module(parameters_module)
@@ -33,14 +34,15 @@ def my_U_flow(model, lattice, initial_state, tile_unit, chi_max, t, mu, V, Lx, L
         # double_occ #
         ##############
 
-        # xi = engine.psi.correlation_length()
-
-        term1 = engine.psi.expectation_value(['Ntot', 'Ntot'])
+        term1 = engine.psi.expectation_value('Ntot Ntot')
         term2 = -2*engine.psi.expectation_value('Ntot')
+
         term1_2 = term1 + term2
+
         nd_summand = [x + 1 for x in term1_2]
         nd = np.average(nd_summand)
-        print("{U:.15f}\t{ndU:.15f}".format(U=U, ndU=nd))
+
+        print("{U:.15f}\t{nd:.15f}".format(U=U, nd=nd))
         double_occ_data.write("%.15f\t%.15f\n" % (U, nd))
 
 
