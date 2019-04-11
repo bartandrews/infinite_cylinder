@@ -4,6 +4,7 @@ import sys
 import importlib
 
 import functions as f
+from tenpy.networks.mps import TransferMatrix
 
 parameters_module = "parameters.param_" + str(sys.argv[1])
 p = importlib.import_module(parameters_module)
@@ -62,6 +63,22 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
         ################
         # ent_spec_mom #
         ################
+
+        TM = TransferMatrix(psi, psi, transpose=True, charge_sector=0)
+        ov, sUs = TM.eigenvectors()
+        print("overlap <psi|psi>, transpose=True", ov[0])
+        TM = TransferMatrix(psi, psi, transpose=False, charge_sector=0)
+        ov, sUs = TM.eigenvectors()
+        print("overlap <psi|psi>, transpose=False", ov[0])
+
+        psi.canonical_form()
+
+        TM = TransferMatrix(psi, psi, transpose=True, charge_sector=0)
+        ov, sUs = TM.eigenvectors()
+        print("overlap <psi|psi>, transpose=True", ov[0])
+        TM = TransferMatrix(psi, psi, transpose=False, charge_sector=0)
+        ov, sUs = TM.eigenvectors()
+        print("overlap <psi|psi>, transpose=False", ov[0])
 
         ent_spec_mom_stem = f.file_name_stem("ent_spec_mom", model, lattice, initial_state, tile_unit, chi_max)
         ent_spec_mom_leaf = ("chi_K_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (chi_max_K, t, U, mu, V, Lx, Ly))

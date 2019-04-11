@@ -4,7 +4,6 @@ import sys
 import importlib
 
 import functions as f
-import tenpy.linalg.np_conserved as npc
 
 parameters_module = "parameters.param_" + str(sys.argv[1])
 p = importlib.import_module(parameters_module)
@@ -12,10 +11,14 @@ p = importlib.import_module(parameters_module)
 
 def my_U_flow(model, lattice, initial_state, tile_unit, chi_max, t, mu, V, Lx, Ly, U_min, U_max, U_samp):
 
+    corr_len_stem = f.file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
     double_occ_stem = f.file_name_stem("double_occ", model, lattice, initial_state, tile_unit, chi_max)
-    double_occ_leaf = ("t_%s_U_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, U_min, U_max, U_samp, Lx, Ly))
-    double_occ_file = "data/double_occ/" + double_occ_stem.replace(" ", "_") + double_occ_leaf
+    leaf = ("t_%s_U_%s_%s_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, U_min, U_max, U_samp, mu, V, Lx, Ly))
+    corr_len_file = "data/corr_len/" + corr_len_stem.replace(" ", "_") + leaf
+    double_occ_file = "data/double_occ/" + double_occ_stem.replace(" ", "_") + leaf
+    open(corr_len_file, "w")
     open(double_occ_file, "w")
+    corr_len_data = open(corr_len_file, "a", buffering=1)
     double_occ_data = open(double_occ_file, "a", buffering=1)
 
     ##################################################################################################################
@@ -29,6 +32,15 @@ def my_U_flow(model, lattice, initial_state, tile_unit, chi_max, t, mu, V, Lx, L
             M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
             engine.init_env(model=M)
         engine.run()
+
+        ############
+        # corr_len #
+        ############
+
+        xi = engine.psi.correlation_length()
+
+        print("{U:.15f}\t{xi:.15f}".format(U=U, xi=xi))
+        corr_len_data.write("%.15f\t%.15f\n" % (U, xi))
 
         ##############
         # double_occ #

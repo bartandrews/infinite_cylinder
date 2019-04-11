@@ -112,3 +112,8 @@ index fdb21f7..b9bc6cb 100644
          """(Re-)initialize the environment.
 
          This function is useful to re-start DMRG after with a slightly different model or
+
+# backup of old array
+
+for u1, u2, dx in [(0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])), (0, 0, np.array([-1, 1])),
+                   (1, 1, np.array([-1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]:

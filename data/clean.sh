@@ -7,4 +7,5 @@ rm ent_spec_flow/*.dat
 rm ent_spec_mom/*.dat
 rm ent_spec_real/*.dat
 rm ent_spec_V_flow/*.dat
+rm double_occ/*.dat
 

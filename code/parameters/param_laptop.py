@@ -1,5 +1,5 @@
 # configuration parameters
-model = 'TBG3'
+model = 'FermionicHaldane'
 lattice = 'Honeycomb'
 initial_state = 'neel'
 
@@ -17,20 +17,22 @@ elif model == 'TBG3':
     tile_unit = ['down_px empty_py', 'empty_px up_py']
 
 # chi_max for DMRG
-chi_max = 500
+chi_max = 50
 # chi max for compute_K
-chi_max_K = 100
+chi_max_K = 1000
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, V = -1, 0, 1
 
 if model in ['BosonicHaldane', 'FermionicHaldane']:
     U = 0
-elif model in ['Hubbard', 'TBG1', 'TBG2', 'TBG3']:
+elif model in ['Hubbard', 'TBG1', 'TBG2']:
     U = 1
+elif model in ['TBG3']:
+    mu, V = 0, 0
 
 # unit cell
-Lx, Ly = 1, 4
+Lx, Ly = 1, 3
 
 # pickle capability
 use_pickle = False

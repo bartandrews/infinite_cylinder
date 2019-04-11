@@ -8,13 +8,15 @@ Prerequisites: TeNPy 0.3+, gnuplot, python 3+
 Workflow
 --------
 
-The code is split into three independent parts to optimize performance.
+The code is split into independent parts to optimize performance.
 
 **phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number.
 
 **Ly_flow** is a program that varies the circumference length of the cylinder. This is used to calculate topological entropy and CFT edge counting.
 
 **V_flow** is a program that varies the off-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI.
+
+**U_flow** is a program that varies the on-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to insulator.
 
 The tools employed for each 'flow' are given in the table below.
 
@@ -30,6 +32,9 @@ Ly_flow    * ent_scal
 --------   -----------------
 V_flow     * corr_len
            * ent_spec_V_flow
+--------   -----------------
+U_flow     * corr_len
+           * double_occ
 ========   =================
 
 Tools description
@@ -65,6 +70,10 @@ The initial tool set is inspired by the paper: "Characterization and stability o
 
     This function is designed to plot the equivalent of Fig. 3.c) from the paper.
 
+* double_occ = double occupancy
+
+    This function is designed to plot the equivalent of Fig. 1 from "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
+
 Models description
 ------------------
 
@@ -87,8 +96,6 @@ Models description
 * fermions_TBG3 = spinful fermions with two orbitals, simplified Hubbard model for twisted bilayer graphene
 
     Section I of "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
-
-
 
 Directory structure
 -------------------
@@ -199,7 +206,7 @@ Parameters given for the flows are based on those in "Characterization and stabi
 Multiple batches
 ----------------
 
-A **batch** is defined as a set of 3 **flows** such that {phi_flow, Ly_flow, V_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
+A **batch** is defined as a set of 4 **flows** such that {phi_flow, Ly_flow, V_flow, U_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
 
 1) Start the run e.g. ``./run_hydra 3 1 2`` to start a hydra run with 3 simultaneously scheduled batches. The possible command-line arguments are [1, 2, 3]. (There is no specific order of flows within a batch.)
 
