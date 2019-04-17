@@ -116,6 +116,8 @@ Directory structure
 
 **.idea** is used to store PyCharm configuration files, in case I would like to make changes to the code using a PyCharm project on a remote computer.
 
+**notebooks** stores Mathematica notebooks for the analysis of the models e.g. band structure of the Haldane model.
+
 File naming convention
 ----------------------
 
