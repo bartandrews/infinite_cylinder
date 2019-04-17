@@ -1,14 +1,14 @@
-"""Spinless fermion Haldane model.
+"""Hardcore boson Haldane model.
 Hamiltonian based on: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator"."""
 
 import numpy as np
 
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
-from tenpy.networks.site import FermionSite
+from tenpy.networks.site import BosonSite
 
 
-class FermionicHaldaneModel(CouplingMPOModel):
+class BosonicHaldane2Model(CouplingMPOModel):
 
     def __init__(self, model_params):
 
@@ -18,7 +18,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
     def init_sites(self, model_params):
 
         conserve = get_parameter(model_params, 'conserve', 'N', self.name)
-        site = FermionSite(conserve=conserve)
+        site = BosonSite(conserve=conserve)
         return site
 
     def init_terms(self, model_params):
@@ -39,19 +39,19 @@ class FermionicHaldaneModel(CouplingMPOModel):
         for u1, u2, dx in self.lat.nearest_neighbors:
 
             t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
-            self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True, category='t Cd_i C_j')
-            self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True, category='t Cd_i C_j h.c.')  # h.c.
+            self.add_coupling(t_phi, u1, 'Bd', u2, 'B', dx, category='t Bd_i B_j')
+            self.add_coupling(np.conj(t_phi), u2, 'Bd', u1, 'B', -dx, category='t Bd_i B_j h.c.')  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx, category='V N_i N_j')
 
         for u1, u2, dx in [(0, 0, np.array([-1, 1])), (0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])),
                            (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1])), (1, 1, np.array([-1, 0]))]:
 
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext])
-            self.add_coupling(t2_phi, u1, 'Cd', u2, 'C', dx, 'JW', True, category='t2 Cd_i C_j')
-            self.add_coupling(np.conj(t2_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True, category='t2 Cd_i C_j h.c.')  # h.c.
+            self.add_coupling(t2_phi, u1, 'Bd', u2, 'B', dx, category='t2 Bd_i B_j')
+            self.add_coupling(np.conj(t2_phi), u2, 'Bd', u1, 'B', -dx, category='t2 Bd_i B_j h.c.')  # h.c.
 
 
-class FermionicHaldaneChain(FermionicHaldaneModel, NearestNeighborModel):
+class BosonicHaldane2Chain(BosonicHaldane2Model, NearestNeighborModel):
 
     def __init__(self, model_params):
         model_params.setdefault('lattice', "Chain")

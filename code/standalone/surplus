@@ -117,3 +117,34 @@ index fdb21f7..b9bc6cb 100644
 
 for u1, u2, dx in [(0, 0, np.array([1, 0])), (0, 0, np.array([0, -1])), (0, 0, np.array([-1, 1])),
                    (1, 1, np.array([-1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]:
+
+# check canonical form of DMRG (insert after DMRG run)
+
+    from tenpy.networks.mps import TransferMatrix
+
+    TM = TransferMatrix(psi, psi, transpose=True, charge_sector=0)
+    ov, sUs = TM.eigenvectors()
+    print("overlap <psi|psi>, transpose=True", ov[0])
+    TM = TransferMatrix(psi, psi, transpose=False, charge_sector=0)
+    ov, sUs = TM.eigenvectors()
+    print("overlap <psi|psi>, transpose=False", ov[0])
+
+    psi.canonical_form()
+
+    TM = TransferMatrix(psi, psi, transpose=True, charge_sector=0)
+    ov, sUs = TM.eigenvectors()
+    print("overlap <psi|psi>, transpose=True", ov[0])
+    TM = TransferMatrix(psi, psi, transpose=False, charge_sector=0)
+    ov, sUs = TM.eigenvectors()
+    print("overlap <psi|psi>, transpose=False", ov[0])
+
+
+# print couplings with categories (e.g. inside the phi loop in phi_flow.py)
+
+import pprint
+pprint.pprint(list(M.coupling_terms['t2 Cd_i C_j'].to_TermList()))
+
+# print couplings in init_terms (e.g. in self.lat.nearest_neighbors loop in fermions_haldane.py)
+
+print(self.lat.nearest_neighbors)
+print(u1, u2, dx)

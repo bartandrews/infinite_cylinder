@@ -1,9 +1,11 @@
 # configuration parameters
-model = 'FermionicHaldane'
+model = 'BosonicHaldane2'
 lattice = 'Honeycomb'
-initial_state = 'neel'
+initial_state = 'third'
 
 if model == 'BosonicHaldane':
+    tile_unit = ['0', '1']
+elif model == 'BosonicHaldane2':
     tile_unit = ['0', '1']
 elif model == 'FermionicHaldane':
     tile_unit = ['empty', 'full']
@@ -17,14 +19,14 @@ elif model == 'TBG3':
     tile_unit = ['down_px empty_py', 'empty_px up_py']
 
 # chi_max for DMRG
-chi_max = 50
+chi_max = 500
 # chi max for compute_K
 chi_max_K = 1000
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, V = -1, 0, 1
 
-if model in ['BosonicHaldane', 'FermionicHaldane']:
+if model in ['BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane']:
     U = 0
 elif model in ['Hubbard', 'TBG1', 'TBG2']:
     U = 1

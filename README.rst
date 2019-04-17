@@ -81,6 +81,10 @@ Models description
 
     Equation 1 of "Characterizing topological order by studying the ground states of an infinite cylinder" by Lukasz Cincio and Guifre Vidal, PRL **110**, 067208 (2013). https://arxiv.org/abs/1208.2623
 
+* bosons_haldane_2 = hardcore boson Haldane model
+
+    Bosonic equivalent for equation 1 of "Characterizing topological order by studying the ground states of an infinite cylinder" by Lukasz Cincio and Guifre Vidal, PRL **110**, 067208 (2013). https://arxiv.org/abs/1208.2623
+
 * fermions_haldane = spinless fermion Haldane model
 
     Equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985

@@ -11,6 +11,7 @@ from tenpy.networks.site import BosonSite
 class BosonicHaldaneModel(CouplingMPOModel):
 
     def __init__(self, model_params):
+
         model_params.setdefault('lattice', 'Honeycomb')
         CouplingMPOModel.__init__(self, model_params)
 

@@ -29,6 +29,7 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
     for V in np.linspace(V_min, V_max, V_samp):
 
         if V != V_min:
+            del engine.DMRG_params['chi_list']
             M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
             engine.init_env(model=M)
         engine.run()
@@ -49,12 +50,14 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
         # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
         spectrum = engine.psi.entanglement_spectrum(by_charge=True)
 
-        for sector in range(0, len(spectrum[0])):
-            for i in range(0, len(spectrum[0][sector][1])):
-                print("{charge:d}\t{V:.15f}\t{spectrum:.15f}".format(charge=spectrum[0][sector][0][0],
-                                                                     V=V, spectrum=spectrum[0][sector][1][i]))
-                ent_spec_V_flow_data.write("%i\t%.15f\t%.15f\n" % (spectrum[0][sector][0][0], V,
-                                                                   spectrum[0][sector][1][i]))
+        bond = 0
+
+        for sector in range(0, len(spectrum[bond])):
+            for i in range(0, len(spectrum[bond][sector][1])):
+                print("{charge:d}\t{V:.15f}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0],
+                                                                     V=V, spectrum=spectrum[bond][sector][1][i]))
+                ent_spec_V_flow_data.write("%i\t%.15f\t%.15f\n" % (spectrum[bond][sector][0][0], V,
+                                                                   spectrum[bond][sector][1][i]))
 
 
 if __name__ == '__main__':

@@ -29,6 +29,7 @@ def my_U_flow(model, lattice, initial_state, tile_unit, chi_max, t, mu, V, Lx, L
     for U in np.linspace(U_min, U_max, U_samp):
 
         if U != U_min:
+            del engine.DMRG_params['chi_list']
             M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly)
             engine.init_env(model=M)
         engine.run()
