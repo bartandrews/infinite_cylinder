@@ -101,12 +101,23 @@ Models description
 
     Section I of "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
 
+* fermions_TBG4 = five band model for twisted bilayer graphene
+
+    Appendix D of "Faithful Tight-binding Models and Fragile Topology of Magic-angle Bilayer Graphene" by Hoi Chun Po, Liujun Zou, T. Senthil, and Ashvin Vishwanath, arXiv pre-print (2018). https://arxiv.org/abs/1808.02482
+
+Lattices description
+--------------------
+
+* five_band_model = five band model
+
+    Figure 8 of "Faithful Tight-binding Models and Fragile Topology of Magic-angle Bilayer Graphene" by Hoi Chun Po, Liujun Zou, T. Senthil, and Ashvin Vishwanath, arXiv pre-print (2018). https://arxiv.org/abs/1808.02482
+
 Directory structure
 -------------------
 
 **data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into ``keep``. NB: No dat files are tracked by git due to their potentially large size.
 
-**code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene.
+**code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene. **code/lattices** is used to store custom lattices python class files. Basic lattices are already implemented in TeNPy (e.g. honeycomb). However, in this directory we store our own lattice classes e.g. for the five-band model.
 
 **scripts** contains all of the SLURM batch scripts used for Hydra and Piz Daint.
 

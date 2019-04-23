@@ -55,7 +55,7 @@ class FermionicTBG2Model(CouplingMPOModel):
             self.add_coupling(-np.imag(t2), u2, 'Cdpx', u1, 'Cpy', -dx, 'JW', True)  # h.c.
 
 
-class FermionicTBG1Chain(FermionicTBG2Model, NearestNeighborModel):
+class FermionicTBG2Chain(FermionicTBG2Model, NearestNeighborModel):
 
     def __init__(self, model_params):
         model_params.setdefault('lattice', "Chain")
