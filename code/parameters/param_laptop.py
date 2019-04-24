@@ -20,9 +20,7 @@ elif model == 'TBG2':
 elif model == 'TBG3':
     tile_unit = ['down_px empty_py', 'empty_px up_py']
 elif model == 'TBG4':
-    tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm',
-                 'full', 'full', 'full_pz empty_pp empty_pm', 'full',
-                 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
+    tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
 
 # chi_max for DMRG
 chi_max = 600

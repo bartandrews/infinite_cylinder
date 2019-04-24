@@ -33,14 +33,14 @@ class FermionicTBG4Model(CouplingMPOModel):
         if choice != 'FiveBandLattice':
             sys.exit("Error: Please choose the FiveBandLattice for TBG4.")
 
-        Lx = get_parameter(model_params, 'Lx', 3, self.name)
+        Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 3, self.name)
 
         (fs, gs) = self.init_sites(model_params)
 
-        lat = FiveBandLattice(Lx, Ly, gs, gs, fs)
+        lat = FiveBandLattice(Lx, Ly, gs, fs)
 
-        assert issubclass(lat, lattice.Lattice)
+        # assert issubclass(lat, lattice.Lattice)
 
         print(lat.N_sites)
 
@@ -58,25 +58,25 @@ class FermionicTBG4Model(CouplingMPOModel):
 
         for u1, u2, dx in self.lat.a1_d:
 
-            self.add_coupling(a*d, u1, 'Cd', u2, 'Cpz', dx, 'JW', True)
-            self.add_coupling(np.conj(a)*d, u2, 'Cdpz', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(a*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(a)*d, u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(c*d, u1, 'Cd', u2, 'Cpp', dx, 'JW', True)
-            self.add_coupling(np.conj(c)*d, u2, 'Cdpp', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(c*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(c)*d, u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(b*d, u1, 'Cd', u2, 'Cpm', dx, 'JW', True)
-            self.add_coupling(np.conj(b)*d, u2, 'Cdpm', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(b*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(b)*d, u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.a2_d:
 
-            self.add_coupling(np.conj(a)*d, u1, 'Cd', u2, 'Cpz', dx, 'JW', True)
-            self.add_coupling(a*d, u2, 'Cdpz', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(np.conj(a)*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(a*d, u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(b*d, u1, 'Cd', u2, 'Cpp', dx, 'JW', True)
-            self.add_coupling(np.conj(b)*d, u2, 'Cdpp', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(b*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(b)*d, u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(c*d, u1, 'Cd', u2, 'Cpm', dx, 'JW', True)
-            self.add_coupling(np.conj(c)*d, u2, 'Cdpm', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(c*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(c)*d, u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.d_d:
 
