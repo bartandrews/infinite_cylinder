@@ -3,7 +3,6 @@ Lattice based on: "Faithful Tight-binding Models and Fragile Topology of Magic-a
 
 import numpy as np
 from tenpy.models import lattice
-from tenpy.networks import site
 
 
 class FiveBandLattice(lattice.Lattice):
@@ -23,8 +22,6 @@ class FiveBandLattice(lattice.Lattice):
 
         kwargs.setdefault('basis', basis)
         kwargs.setdefault('positions', pos)
-
-        site.multi_sites_combine_charges([site_a, site_d])  # independently conserved charges
 
         super().__init__([Lx, Ly], [site_a, site_d, site_d, site_a, site_d, site_d], **kwargs)
 
@@ -48,18 +45,18 @@ class FiveBandLattice(lattice.Lattice):
                     (5, 1, np.array([1, 0]))]
 
 
-def plot_lattice():
-    import matplotlib.pyplot as plt
-    ax = plt.gca()
-    site_a = site.FermionSite()
-    site_d = site.FermionSite()
-    lat = FiveBandLattice(2, 2, site_a, site_d)
-    lat.plot_sites(ax)
-    lat.plot_coupling(ax, lat.a1_d, linestyle='-', color='red')
-    lat.plot_coupling(ax, lat.a2_d, linestyle='-', color='blue')
-    lat.plot_coupling(ax, lat.d_d, linestyle='--', color='green')
-    plt.show()
-
-
-if __name__ == "__main__":
-    plot_lattice()
+# def plot_lattice():
+#     import matplotlib.pyplot as plt
+#     ax = plt.gca()
+#     site_a = site.FermionSite()
+#     site_d = site.FermionSite()
+#     lat = FiveBandLattice(2, 2, site_a, site_d)
+#     lat.plot_sites(ax)
+#     lat.plot_coupling(ax, lat.a1_d, linestyle='-', color='red')
+#     lat.plot_coupling(ax, lat.a2_d, linestyle='-', color='blue')
+#     lat.plot_coupling(ax, lat.d_d, linestyle='--', color='green')
+#     plt.show()
+#
+#
+# if __name__ == "__main__":
+#     plot_lattice()

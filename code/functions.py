@@ -32,6 +32,8 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
         lat_basis = 1
     elif lattice == "Honeycomb":
         lat_basis = 2
+    elif lattice == "FiveBandLattice":
+        lat_basis = 6
     else:
         sys.exit('Error: Unknown lattice.')
 
@@ -60,7 +62,9 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
-        product_state = ['down', 'up', 'down', 'up']
+        product_state = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full',
+                         'full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full',
+                         'full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
     else:
         sys.exit('Error: Unknown initial_state.')
 

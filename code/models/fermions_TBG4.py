@@ -8,7 +8,7 @@ from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite, GroupedSite
 from lattices.five_band_model import FiveBandLattice
-from tenpy.models import lattice
+from tenpy.networks import site
 
 
 class FermionicTBG4Model(CouplingMPOModel):
@@ -23,6 +23,8 @@ class FermionicTBG4Model(CouplingMPOModel):
 
         gs = GroupedSite([fs, fs, fs], labels=['pz', 'pp', 'pm'], charges='same')
         gs.add_op('Ntot', gs.Npz + gs.Npp + gs.Npm, False)
+
+        site.multi_sites_combine_charges([fs, gs], same_charges=[[(0, 'N'), (1, 'N')]])
 
         return fs, gs
 
@@ -40,8 +42,6 @@ class FermionicTBG4Model(CouplingMPOModel):
 
         lat = FiveBandLattice(Lx, Ly, gs, fs)
 
-        # assert issubclass(lat, lattice.Lattice)
-
         print(lat.N_sites)
 
         return lat
@@ -50,6 +50,8 @@ class FermionicTBG4Model(CouplingMPOModel):
 
         t = get_parameter(model_params, 't', 1., self.name)
         mu = get_parameter(model_params, 'mu', 0., self.name)
+        U = get_parameter(model_params, 'U', 0., self.name)
+        V = get_parameter(model_params, 'V', 0., self.name)
 
         a = -0.25j * t
         b = 0.2 * t
@@ -80,8 +82,8 @@ class FermionicTBG4Model(CouplingMPOModel):
 
         for u1, u2, dx in self.lat.d_d:
 
-            self.add_coupling(d*d, u1, 'Cd', u2, 'C', dx, 'JW', True)
-            self.add_coupling(d*d, u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
+            self.add_coupling(d*d, u1, 'C', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(d*d, u2, 'C', u1, 'Cd', -dx, 'JW', True)  # h.c.
 
 
 class FermionicTBG4Chain(FermionicTBG4Model, NearestNeighborModel):

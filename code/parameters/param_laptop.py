@@ -3,7 +3,7 @@
 # configuration parameters
 model = 'TBG4'
 lattice = 'FiveBandLattice'
-initial_state = 'neel'
+initial_state = 'custom'
 
 if model == 'BosonicHaldane':
     tile_unit = ['0', '1']
