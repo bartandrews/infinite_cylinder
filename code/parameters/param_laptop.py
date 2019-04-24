@@ -1,8 +1,8 @@
-from ..lattices.five_band_model import FiveBandLattice
+# from lattices.five_band_model import FiveBandLattice
 
 # configuration parameters
 model = 'TBG4'
-lattice = FiveBandLattice
+lattice = 'FiveBandLattice'
 initial_state = 'neel'
 
 if model == 'BosonicHaldane':
@@ -20,10 +20,12 @@ elif model == 'TBG2':
 elif model == 'TBG3':
     tile_unit = ['down_px empty_py', 'empty_px up_py']
 elif model == 'TBG4':
-    tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm']
+    tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm',
+                 'full', 'full', 'full_pz empty_pp empty_pm', 'full',
+                 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
 
 # chi_max for DMRG
-chi_max = 500
+chi_max = 600
 # chi max for compute_K
 chi_max_K = 1000
 
@@ -35,7 +37,7 @@ if model in ['BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane']:
 elif model in ['Hubbard', 'TBG1', 'TBG2']:
     U = 1
 elif model in ['TBG3', 'TBG4']:
-    mu, V = 0, 0
+    mu, V, U = 0, 0, 0
 
 # unit cell
 Lx, Ly = 1, 3

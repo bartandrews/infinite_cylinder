@@ -8,29 +8,44 @@ from tenpy.networks import site
 
 class FiveBandLattice(lattice.Lattice):
 
+    dim = 2
+
     def __init__(self, Lx, Ly, site_a1, site_a2, site_d, **kwargs):
 
-        pos = np.array([[-0.75, -0.25*np.sqrt(3)],  # left
-                        [-0.25, +0.25*np.sqrt(3)],  # up
-                        [+0.25, -0.25*np.sqrt(3)],  # down
-                        [+0.75, +0.25*np.sqrt(3)]])  # right
+        basis = [[3, 0], [0, np.sqrt(3)]]
+
+        pos = np.array([[0, 0],
+                        [0.5, 0.5*np.sqrt(3)],
+                        [1, 0],
+                        [1.5, 0.5*np.sqrt(3)],
+                        [2, 0],
+                        [2.5, 0.5*np.sqrt(3)]])
+
+        kwargs.setdefault('basis', basis)
+        kwargs.setdefault('positions', pos)
 
         site.multi_sites_combine_charges([site_a1, site_a2, site_d])  # independently conserved charges
 
-        super().__init__([Lx, Ly], [site_a1, site_d, site_d, site_a2], positions=pos, **kwargs)
+        super().__init__([Lx, Ly], [site_a1, site_d, site_d, site_a2, site_d, site_d], **kwargs)
 
-        self.a1_d = [(1, 0, np.array([0, 1])),
-                     (1, 0, np.array([0, 0])),
-                     (2, 0, np.array([0, 0])),
-                     (2, 0, np.array([1, 0]))]
-        self.a2_d = [(2, 3, np.array([0, 0])),
-                     (1, 3, np.array([0, 0])),
+        self.a1_d = [(0, 1, np.array([0, 0])),
+                     (0, 2, np.array([0, 0])),
+                     (1, 0, np.array([0, 1])),
+                     (4, 0, np.array([1, 0])),
+                     (5, 0, np.array([1, 0])),
+                     (5, 0, np.array([1, 1]))]
+        self.a2_d = [(1, 3, np.array([0, 0])),
+                     (2, 3, np.array([0, 0])),
+                     (3, 4, np.array([0, 0])),
+                     (3, 5, np.array([0, 0])),
                      (3, 2, np.array([0, 1])),
-                     (1, 3, np.array([1, 0]))]
-        self.d_d = [(1, 2, np.array([0, 1])),
-                    (1, 2, np.array([0, 0]))]
-        self.a1_a2 = [(3, 0, np.array([1, 1])),
-                      (3, 0, np.array([1, 0]))]
+                     (3, 4, np.array([0, 1]))]
+        self.d_d = [(1, 2, np.array([0, 0])),
+                    (1, 2, np.array([0, 1])),
+                    (2, 4, np.array([0, 0])),
+                    (4, 5, np.array([0, 0])),
+                    (5, 4, np.array([0, 1])),
+                    (5, 1, np.array([1, 0]))]
 
 
 def plot_lattice():
@@ -39,12 +54,11 @@ def plot_lattice():
     site_a1 = site.FermionSite()
     site_a2 = site.FermionSite()
     site_d = site.FermionSite()
-    lat = FiveBandLattice(3, 3, site_a1, site_a2, site_d, basis=[[2, 0], [0, np.sqrt(3)]])
+    lat = FiveBandLattice(2, 2, site_a1, site_a2, site_d)
     lat.plot_sites(ax)
     lat.plot_coupling(ax, lat.a1_d, linestyle='-', color='red')
     lat.plot_coupling(ax, lat.a2_d, linestyle='-', color='blue')
-    lat.plot_coupling(ax, lat.d_d, linestyle='-', color='green')
-    lat.plot_coupling(ax, lat.a1_a2, linestyle='-', color='orange')
+    lat.plot_coupling(ax, lat.d_d, linestyle='--', color='green')
     plt.show()
 
 
