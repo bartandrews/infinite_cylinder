@@ -1,5 +1,3 @@
-# from lattices.five_band_model import FiveBandLattice
-
 # configuration parameters
 model = 'TBG4'
 lattice = 'FiveBandLattice'

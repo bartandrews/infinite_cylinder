@@ -53,6 +53,8 @@ class FermionicTBG4Model(CouplingMPOModel):
         U = get_parameter(model_params, 'U', 0., self.name)
         V = get_parameter(model_params, 'V', 0., self.name)
 
+        phi_ext = 2 * np.pi * get_parameter(model_params, 'phi_ext', 0., self.name)
+
         a = 0.25 * t  # in units of 80 meV
         b = 0.2 * t
         c = 0.1 * t
@@ -60,32 +62,89 @@ class FermionicTBG4Model(CouplingMPOModel):
 
         field = np.exp(1j*(2*np.pi)*(1/3))  # magnetic field via Peierls substitution (Phi in units of Phi_0)
 
+        for u in range(self.lat.N_cells):
+
+            self.add_onsite(-0.043*t, 0, 'Npz')
+            self.add_onsite(0.05*t, 1, 'N')
+            self.add_onsite(0.05*t, 2, 'N')
+            self.add_onsite(-0.043*t, 3, 'Npz')
+            self.add_onsite(0.05*t, 4, 'N')
+            self.add_onsite(0.05*t, 5, 'N')
+
         for u1, u2, dx in self.lat.a1_d:
 
-            self.add_coupling(field*(-a*1j)*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*(-a*1j)*d), u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            coupling_1 = self.coupling_strength_add_ext_flux(field*(-a*1j)*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_1, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_1), u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(field*c*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*c*d), u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            coupling_2 = self.coupling_strength_add_ext_flux(field*c*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_2, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_2), u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(field*b*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*b*d), u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
+            coupling_3 = self.coupling_strength_add_ext_flux(field*b*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_3, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_3), u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.a2_d:
 
-            self.add_coupling(field*(a*1j)*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*(a*1j)*d), u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            coupling_4 = self.coupling_strength_add_ext_flux(field*(a*1j)*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_4, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_4), u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(field*b*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*b*d), u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            coupling_5 = self.coupling_strength_add_ext_flux(field*b*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_5, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_5), u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(field*c*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*c*d), u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
+            coupling_6 = self.coupling_strength_add_ext_flux(field*c*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_6, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_6), u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.d_d:
 
-            self.add_coupling(field*d*d, u1, 'C', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(field*d*d), u2, 'C', u1, 'Cd', -dx, 'JW', True)  # h.c.
+            coupling_7 = self.coupling_strength_add_ext_flux(field*d*d, dx, [0, phi_ext])
+            self.add_coupling(coupling_7, u1, 'C', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_7), u2, 'C', u1, 'Cd', -dx, 'JW', True)  # h.c.
+
+        for u1, u2, dx in self.lat.a_a:
+
+            # from pz orbital
+
+            coupling_8 = self.coupling_strength_add_ext_flux(field*(-1j*a)*np.conj(1j*a), dx, [0, phi_ext])
+            coupling_9 = self.coupling_strength_add_ext_flux(field*(-1j*a)*np.conj(b), dx, [0, phi_ext])
+            coupling_10 = self.coupling_strength_add_ext_flux(field*(-1j*a)*np.conj(c), dx, [0, phi_ext])
+
+            self.add_coupling(coupling_8, u1, 'Cpz', u2, 'Cdpz', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_8), u2, 'Cpz', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            self.add_coupling(coupling_9, u1, 'Cpz', u2, 'Cdpp', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_9), u2, 'Cpz', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            self.add_coupling(coupling_10, u1, 'Cpz', u2, 'Cdpm', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_10), u2, 'Cpz', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
+
+            # from pp orbital
+
+            coupling_11 = self.coupling_strength_add_ext_flux(field*c*np.conj(1j*a), dx, [0, phi_ext])
+            coupling_12 = self.coupling_strength_add_ext_flux(field*c*np.conj(b), dx, [0, phi_ext])
+            coupling_13 = self.coupling_strength_add_ext_flux(field*c*np.conj(c), dx, [0, phi_ext])
+
+            self.add_coupling(coupling_11, u1, 'Cpp', u2, 'Cdpz', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_11), u2, 'Cpp', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            self.add_coupling(coupling_12, u1, 'Cpp', u2, 'Cdpp', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_12), u2, 'Cpp', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            self.add_coupling(coupling_13, u1, 'Cpp', u2, 'Cdpm', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_13), u2, 'Cpp', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
+
+            # from pm orbital
+
+            coupling_14 = self.coupling_strength_add_ext_flux(field*b*np.conj(1j*a), dx, [0, phi_ext])
+            coupling_15 = self.coupling_strength_add_ext_flux(field*b*np.conj(b), dx, [0, phi_ext])
+            coupling_16 = self.coupling_strength_add_ext_flux(field*b*np.conj(c), dx, [0, phi_ext])
+
+            self.add_coupling(coupling_14, u1, 'Cpm', u2, 'Cdpz', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_14), u2, 'Cpm', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            self.add_coupling(coupling_15, u1, 'Cpm', u2, 'Cdpp', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_15), u2, 'Cpm', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            self.add_coupling(coupling_16, u1, 'Cpm', u2, 'Cdpm', dx, 'JW', True)
+            self.add_coupling(np.conj(coupling_16), u2, 'Cpm', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
 
 class FermionicTBG4Chain(FermionicTBG4Model, NearestNeighborModel):
