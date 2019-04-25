@@ -53,37 +53,39 @@ class FermionicTBG4Model(CouplingMPOModel):
         U = get_parameter(model_params, 'U', 0., self.name)
         V = get_parameter(model_params, 'V', 0., self.name)
 
-        a = -0.25j * t
+        a = 0.25 * t  # in units of 80 meV
         b = 0.2 * t
         c = 0.1 * t
         d = 0.67 * t  # five_band_model lattice assumes d is real
 
+        field = np.exp(1j*(2*np.pi)*(1/3))  # magnetic field via Peierls substitution (Phi in units of Phi_0)
+
         for u1, u2, dx in self.lat.a1_d:
 
-            self.add_coupling(a*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(a)*d, u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*(-a*1j)*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*(-a*1j)*d), u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(c*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(c)*d, u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*c*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*c*d), u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(b*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(b)*d, u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*b*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*b*d), u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.a2_d:
 
-            self.add_coupling(np.conj(a)*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(a*d, u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*(a*1j)*d, u1, 'Cpz', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*(a*1j)*d), u2, 'C', u1, 'Cdpz', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(b*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(b)*d, u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*b*d, u1, 'Cpp', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*b*d), u2, 'C', u1, 'Cdpp', -dx, 'JW', True)  # h.c.
 
-            self.add_coupling(c*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(np.conj(c)*d, u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*c*d, u1, 'Cpm', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*c*d), u2, 'C', u1, 'Cdpm', -dx, 'JW', True)  # h.c.
 
         for u1, u2, dx in self.lat.d_d:
 
-            self.add_coupling(d*d, u1, 'C', u2, 'Cd', dx, 'JW', True)
-            self.add_coupling(d*d, u2, 'C', u1, 'Cd', -dx, 'JW', True)  # h.c.
+            self.add_coupling(field*d*d, u1, 'C', u2, 'Cd', dx, 'JW', True)
+            self.add_coupling(np.conj(field*d*d), u2, 'C', u1, 'Cd', -dx, 'JW', True)  # h.c.
 
 
 class FermionicTBG4Chain(FermionicTBG4Model, NearestNeighborModel):

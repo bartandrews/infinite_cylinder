@@ -20,6 +20,9 @@ class FiveBandLattice(lattice.Lattice):
                         [2, 0],
                         [2.5, 0.5*np.sqrt(3)]])
 
+        kwargs.setdefault('order', 'default')
+        kwargs.setdefault('bc', 'periodic')
+        kwargs.setdefault('bc_MPS', 'infinite')
         kwargs.setdefault('basis', basis)
         kwargs.setdefault('positions', pos)
 

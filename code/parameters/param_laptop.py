@@ -23,7 +23,7 @@ elif model == 'TBG4':
     tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
 
 # chi_max for DMRG
-chi_max = 600
+chi_max = 500
 # chi max for compute_K
 chi_max_K = 1000
 
