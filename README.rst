@@ -18,6 +18,8 @@ The code is split into independent parts to optimize performance.
 
 **U_flow** is a program that varies the on-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to insulator.
 
+**J_flow** is a program that varies the coupling strength, as defined in the spin model Hamiltonian. This is used to characterize phase transitions e.g. FM(x)120 to PM.
+
 The tools employed for each 'flow' are given in the table below.
 
 ========   =================
@@ -35,6 +37,8 @@ V_flow     * corr_len
 --------   -----------------
 U_flow     * corr_len
            * double_occ
+--------   -----------------
+J_flow     * energy
 ========   =================
 
 Tools description
@@ -74,6 +78,10 @@ The initial tool set is inspired by the paper: "Characterization and stability o
 
     This function is designed to plot the equivalent of Fig. 1 from "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
 
+* energy = ground state energy
+
+    This function plots the ground state energy from DMRG, as in the inset of Fig. 1 from "Ferromagnetism and Spin-Valley liquid states in Moiré Correlated Insulators" by Xiao-Chuan Wu, Anna Keselman, Chao-Ming Jian, Kelly Ann Pawlak, and Cenke Xu, arXiv pre-print (2019). https://arxiv.org/abs/1905.00033
+
 Models description
 ------------------
 
@@ -104,6 +112,10 @@ Models description
 * fermions_TBG4 = five band model for twisted bilayer graphene
 
     Appendix D of "Faithful Tight-binding Models and Fragile Topology of Magic-angle Bilayer Graphene" by Hoi Chun Po, Liujun Zou, T. Senthil, and Ashvin Vishwanath, arXiv pre-print (2018). https://arxiv.org/abs/1808.02482
+
+* fermions_TBG5 = spin valley model for twisted bilayer graphene
+
+    Section I of "Ferromagnetism and Spin-Valley liquid states in Moiré Correlated Insulators" by Xiao-Chuan Wu, Anna Keselman, Chao-Ming Jian, Kelly Ann Pawlak, and Cenke Xu, arXiv pre-print (2019). https://arxiv.org/abs/1905.00033
 
 Lattices description
 --------------------
@@ -145,10 +157,15 @@ All output .dat files are named in the following order:
 
 *leaf*
 
-- t
+{- t
 - U
 - mu
-- V
+- V}
+/
+{- J
+- Js
+- Jv}
+
 - Lx
 - Ly
 - phi (i.e. phi_ext)

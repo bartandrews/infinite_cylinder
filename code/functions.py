@@ -7,6 +7,7 @@ from models.fermions_TBG1 import FermionicTBG1Model
 from models.fermions_TBG2 import FermionicTBG2Model
 from models.fermions_TBG3 import FermionicTBG3Model
 from models.fermions_TBG4 import FermionicTBG4Model
+from models.fermions_TBG5 import FermionicTBG5Model
 from tenpy.algorithms import dmrg
 
 import sys
@@ -17,7 +18,7 @@ import pickle
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
     if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
-                     'TBG1', 'TBG2', 'TBG3', 'TBG4']:
+                     'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5']:
         sys.exit('Error: Unknown model.')
 
     stem = ("%s_%s_%s_%s_tile_%s_%s_chi_%s_"
@@ -28,7 +29,7 @@ def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
 def select_initial_psi(model, lattice, initial_state, tile_unit):
 
-    if lattice == "Square":
+    if lattice == "Square" or lattice == "Triangular":
         lat_basis = 1
     elif lattice == "Honeycomb":
         lat_basis = 2
@@ -112,12 +113,62 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', t=t, U=U, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1)
         M = FermionicTBG4Model(model_params)
 
+    elif model == 'TBG5':
+        model_params = dict(cons_parity='parity', cons_Sz='Sz', lattice=lattice, Lx=Lx, Ly=Ly, verbose=1)
+        M = FermionicTBG5Model(model_params)
+
+    return M
+
+
+def define_iDMRG_spin_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext=0):
+
+    if model == 'TBG5':
+        model_params = dict(cons_parity='parity', cons_Sz='Sz', J=J, Js=Js, Jv=Jv, lattice=lattice, Lx=Lx, Ly=Ly,
+                            verbose=1, phi_ext=phi_ext)
+        M = FermionicTBG5Model(model_params)
+
     return M
 
 
 def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
 
     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+
+    product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
+
+    print(product_state)  # NB: two sites per basis for honeycomb crystal
+
+    psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
+
+    dmrg_params = {
+        'mixer': True,  # setting this to True helps to escape local minima
+        'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
+        'trunc_params': {
+            # 'chi_max': chi_max,
+            'svd_min': 1.e-10
+        },
+        # 'lanczos_params': {
+        #     'reortho': True,
+        #     'N_cache': 40
+        # },
+        'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
+        'max_E_err': 1.e-10,
+        'max_S_err': 1.e-6,
+        # 'norm_tol': 1.e-6,
+        # 'norm_tol_iter': 1000,
+        # 'max_sweeps': 150,
+        'verbose': 1,
+        'N_sweeps_check': 10
+    }
+
+    engine = dmrg.EngineCombine(psi, M, dmrg_params)
+
+    return engine
+
+
+def define_iDMRG_spin_engine(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext=0):
+
+    M = define_iDMRG_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext)
 
     product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
@@ -175,9 +226,69 @@ def define_iDMRG_engine_pickle(flow, model, lattice, initial_state, tile_unit, c
     return engine
 
 
+def define_iDMRG_spin_engine_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly,
+                                    use_pickle=False, make_pickle=False, phi_ext=0):
+
+    if use_pickle or make_pickle:
+        pickle_stem = file_name_stem("engine", model, lattice, initial_state, tile_unit, chi_max)
+        pickle_leaf = ("J_%s_Js_%s_Jv_%s_Lx_%s_Ly_%s_phi_%s.pkl" % (J, Js, Jv, Lx, Ly, phi_ext))
+        pickle_file = "pickles/" + flow + "/" + pickle_stem + pickle_leaf
+
+    if use_pickle:
+
+        with open(pickle_file, 'rb') as file1:
+            engine = pickle.load(file1)
+
+    else:
+
+        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext)
+
+        if make_pickle:
+            with open(pickle_file, 'wb') as file2:
+                pickle.dump(engine, file2)
+
+    return engine
+
+
 def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_ext=0):
 
     M = define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+
+    product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
+
+    print(product_state)  # NB: two sites per basis for honeycomb crystal
+
+    psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
+
+    dmrg_params = {
+        'mixer': True,  # setting this to True helps to escape local minima
+        'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
+        'trunc_params': {
+            # 'chi_max': chi_max,
+            'svd_min': 1.e-10
+        },
+        # 'lanczos_params': {
+        #     'reortho': True
+        #     'N_cache': 40
+        # },
+        'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
+        'max_E_err': 1.e-10,
+        'max_S_err': 1.e-6,
+        # 'max_sweeps': 150,
+        'verbose': 1,
+        'N_sweeps_check': 10
+    }
+
+    info = dmrg.run(psi, M, dmrg_params)
+
+    E = info['E']
+
+    return E, psi, M
+
+
+def run_iDMRG_spin(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext=0):
+
+    M = define_iDMRG_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext)
 
     product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
@@ -233,3 +344,28 @@ def run_iDMRG_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, t,
                 pickle.dump([E, psi, M], file2)
 
     return E, psi, M
+
+
+def run_iDMRG_spin_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly,
+                     use_pickle=False, make_pickle=False, phi_ext=0):
+
+    if use_pickle or make_pickle:
+        pickle_stem = file_name_stem("E_psi_M", model, lattice, initial_state, tile_unit, chi_max)
+        pickle_leaf = ("J_%s_Js_%s_Jv_%s_Lx_%s_Ly_%s_phi_%s.pkl" % (J, Js, Jv, Lx, Ly, phi_ext))
+        pickle_file = "pickles/" + flow + "/" + pickle_stem + pickle_leaf
+
+    if use_pickle:
+
+        with open(pickle_file, 'rb') as file1:
+            [E, psi, M] = pickle.load(file1)
+
+    else:
+
+        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext)
+
+        if make_pickle:
+            with open(pickle_file, 'wb') as file2:
+                pickle.dump([E, psi, M], file2)
+
+    return E, psi, M
+
