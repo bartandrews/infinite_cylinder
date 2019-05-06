@@ -20,7 +20,7 @@ elif model == 'TBG3':
 elif model == 'TBG4':
     tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
 elif model == 'TBG5':
-    tile_unit = ['up_spin down_valley', 'up_spin down_valley']
+    tile_unit = ['0.5_spin -0.5_valley', '-0.5_spin 0.5_valley']
 
 # chi_max for DMRG
 chi_max = 500

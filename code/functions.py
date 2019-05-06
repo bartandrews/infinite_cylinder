@@ -113,18 +113,14 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', t=t, U=U, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1)
         M = FermionicTBG4Model(model_params)
 
-    elif model == 'TBG5':
-        model_params = dict(cons_parity='parity', cons_Sz='Sz', lattice=lattice, Lx=Lx, Ly=Ly, verbose=1)
-        M = FermionicTBG5Model(model_params)
-
     return M
 
 
 def define_iDMRG_spin_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext=0):
 
     if model == 'TBG5':
-        model_params = dict(cons_parity='parity', cons_Sz='Sz', J=J, Js=Js, Jv=Jv, lattice=lattice, Lx=Lx, Ly=Ly,
-                            verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='Sz', J=J, Js=Js, Jv=Jv, lattice=lattice, bc_MPS='infinite',
+                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=1, phi_ext=phi_ext)
         M = FermionicTBG5Model(model_params)
 
     return M
@@ -168,7 +164,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
 
 def define_iDMRG_spin_engine(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext=0):
 
-    M = define_iDMRG_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext)
+    M = define_iDMRG_spin_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext)
 
     product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
@@ -241,7 +237,7 @@ def define_iDMRG_spin_engine_pickle(flow, model, lattice, initial_state, tile_un
 
     else:
 
-        engine = define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext)
+        engine = define_iDMRG_spin_engine(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext)
 
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
@@ -288,7 +284,7 @@ def run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx
 
 def run_iDMRG_spin(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext=0):
 
-    M = define_iDMRG_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext)
+    M = define_iDMRG_spin_model(model, lattice, J, Js, Jv, Lx, Ly, phi_ext)
 
     product_state = select_initial_psi(M, lattice, initial_state, tile_unit)
 
@@ -347,7 +343,7 @@ def run_iDMRG_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, t,
 
 
 def run_iDMRG_spin_pickle(flow, model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly,
-                     use_pickle=False, make_pickle=False, phi_ext=0):
+                          use_pickle=False, make_pickle=False, phi_ext=0):
 
     if use_pickle or make_pickle:
         pickle_stem = file_name_stem("E_psi_M", model, lattice, initial_state, tile_unit, chi_max)
@@ -361,7 +357,7 @@ def run_iDMRG_spin_pickle(flow, model, lattice, initial_state, tile_unit, chi_ma
 
     else:
 
-        (E, psi, M) = run_iDMRG(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext)
+        (E, psi, M) = run_iDMRG_spin(model, lattice, initial_state, tile_unit, chi_max, J, Js, Jv, Lx, Ly, phi_ext)
 
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
