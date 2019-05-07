@@ -20,10 +20,10 @@ class FermionicTBG5Model(CouplingMPOModel):
         conserve = get_parameter(model_params, 'conserve', 'Sz', self.name)
         ss = SpinSite(conserve=conserve)
 
-        gs = GroupedSite([ss, ss], labels=['spin', 'valley'], charges='same')
+        gs = GroupedSite([ss, ss], labels=['spin', 'valley'], charges='independent')
         # gs.add_op('Ntot', gs.Ntotpx + gs.Ntotpy, False)
 
-        site.multi_sites_combine_charges([ss, ss], same_charges=[[(0, 0), (1, 0)]])
+        # site.multi_sites_combine_charges([ss, ss], same_charges=[[(0, 0), (1, 0)]])
 
         print(sorted(gs.opnames))
         print(gs.state_labels)
