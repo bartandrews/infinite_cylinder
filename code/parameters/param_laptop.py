@@ -37,7 +37,7 @@ elif model in ['Hubbard', 'TBG1', 'TBG2']:
 elif model in ['TBG3', 'TBG4']:
     mu, V, U = 0, 0, 0
 elif model in ['TBG5']:
-    J, Jv = 1, 7
+    J, Js, Jv = 1, 0.1, 8
 
 # unit cell
 Lx, Ly = 3, 6

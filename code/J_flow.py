@@ -45,6 +45,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_J_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.J, p.Jv, p.Lx, p.Ly,
-              Js_min=0.2, Js_max=0.3, Js_samp=2)
+              Js_min=0.1, Js_max=0.1, Js_samp=1)
 
     print(time.time() - t0)
