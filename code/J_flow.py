@@ -28,13 +28,13 @@ def my_J_flow(model, lattice, initial_state, tile_unit, chi_max, J, Jv, Lx, Ly, 
             del engine.DMRG_params['chi_list']
             M = f.define_iDMRG_spin_model(model, lattice, J, Js, Jv, Lx, Ly)
             engine.init_env(model=M)
-        engine.run()
+        (E, _) = engine.run()
 
         ##########
         # energy #
         ##########
 
-        energy = engine.E
+        energy = E
 
         print("{Js:.15f}\t{energy:.15f}".format(Js=Js, energy=energy))
         energy_data.write("%.15f\t%.15f\n" % (Js, energy))
