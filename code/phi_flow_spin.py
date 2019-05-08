@@ -66,6 +66,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_phi_flow_spin(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.J, p.Js, p.Jv, p.Lx, p.Ly,
-                     phi_min=0, phi_max=1, phi_samp=3)
+                     phi_min=0, phi_max=1, phi_samp=10)
 
     print(time.time() - t0)

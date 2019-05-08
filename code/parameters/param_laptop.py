@@ -1,6 +1,6 @@
 # configuration parameters
-model = 'TBG5'
-lattice = 'Triangular'
+model = 'TBG6'
+lattice = 'Honeycomb'
 initial_state = 'neel'
 
 if model == 'BosonicHaldane':
@@ -21,14 +21,16 @@ elif model == 'TBG4':
     tile_unit = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
 elif model == 'TBG5':
     tile_unit = ['up_spin down_valley', 'up_spin up_valley']
+elif model == 'TBG6':
+    tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
 chi_max = 100
 # chi max for compute_K
-chi_max_K = 1000
+chi_max_K = 100
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, V = -1, 0, 1
+t, mu, U, V = -1, 0, 0, 1
 
 if model in ['BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane']:
     U = 0
@@ -40,7 +42,7 @@ elif model in ['TBG5']:
     J, Js, Jv = 1, 0.1, 8
 
 # unit cell
-Lx, Ly = 3, 6
+Lx, Ly = 1, 3
 
 # pickle capability
 use_pickle = False
