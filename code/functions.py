@@ -1,6 +1,7 @@
 from tenpy.networks.mps import MPS
 from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
+from models.fermions_pi_flux import FermionicPiFluxModel
 from models.bosons_haldane import BosonicHaldaneModel
 from models.bosons_haldane_2 import BosonicHaldane2Model
 from models.fermions_TBG1 import FermionicTBG1Model
@@ -19,7 +20,7 @@ import pickle
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
-    if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
+    if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane', 'FermionicPiFlux',
                      'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
 
@@ -35,6 +36,8 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
         lat_basis = 1
     elif lattice == "Honeycomb":
         lat_basis = 2
+    elif lattice == "BipartiteSquare":
+        lat_basis = 4
     elif lattice == "FiveBandLattice":
         lat_basis = 6
     else:
@@ -65,9 +68,9 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
-        product_state = ['full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full',
-                         'full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full',
-                         'full_pz empty_pp empty_pm', 'full', 'full', 'full_pz empty_pp empty_pm', 'full', 'full']
+        product_state = ['empty', 'full', 'empty', 'full',
+                         'empty', 'full', 'empty', 'full',
+                         'empty', 'full', 'empty', 'full']
     else:
         sys.exit('Error: Unknown initial_state.')
 
@@ -95,6 +98,10 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
+
+    elif model == 'FermionicPiFlux':
+        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = FermionicPiFluxModel(model_params)
 
     elif model == 'TBG1':
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',

@@ -97,6 +97,10 @@ Models description
 
     Equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
 
+* fermions_pi_flux = spinless fermion chiral-pi-flux model
+
+    Example 2 of "Fractional quantum Hall states at zero magnetic field" by Titus Neupert, Luiz Santos, Claudio Chamon, and Christopher Mudry, PRL **106**, 236804 (2011). https://arxiv.org/abs/1012.4723
+
 * fermions_TBG1 = spinful fermions with two orbitals, Hubbard model for twisted bilayer graphene
 
     Section IV of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
@@ -117,12 +121,20 @@ Models description
 
     Section I of "Ferromagnetism and Spin-Valley liquid states in Moiré Correlated Insulators" by Xiao-Chuan Wu, Anna Keselman, Chao-Ming Jian, Kelly Ann Pawlak, and Cenke Xu, arXiv pre-print (2019). https://arxiv.org/abs/1905.00033
 
+* fermions_TBG6 = twisted Haldane model
+
+    A combination of equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985 and section III of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
+
 Lattices description
 --------------------
 
 * five_band_model = five band model
 
     Figure 8 of "Faithful Tight-binding Models and Fragile Topology of Magic-angle Bilayer Graphene" by Hoi Chun Po, Liujun Zou, T. Senthil, and Ashvin Vishwanath, arXiv pre-print (2018). https://arxiv.org/abs/1808.02482
+
+* BipartiteSquare = bipartite square lattice
+
+    Lattice for chiral-pi-flux model in example 2 of "Fractional quantum Hall states at zero magnetic field" by Titus Neupert, Luiz Santos, Claudio Chamon, and Christopher Mudry, PRL **106**, 236804 (2011). https://arxiv.org/abs/1012.4723
 
 Directory structure
 -------------------

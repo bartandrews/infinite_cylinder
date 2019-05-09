@@ -1,13 +1,15 @@
 # configuration parameters
-model = 'TBG6'
-lattice = 'Honeycomb'
-initial_state = 'neel'
+model = 'FermionicPiFlux'
+lattice = 'BipartiteSquare'
+initial_state = 'custom'
 
 if model == 'BosonicHaldane':
     tile_unit = ['0', '1']
 elif model == 'BosonicHaldane2':
     tile_unit = ['0', '1']
 elif model == 'FermionicHaldane':
+    tile_unit = ['empty', 'full']
+elif model == 'FermionicPiFlux':
     tile_unit = ['empty', 'full']
 elif model == 'Hubbard':
     tile_unit = ['down', 'up']
@@ -30,7 +32,7 @@ chi_max = 100
 chi_max_K = 100
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, U, V = -1, 0, 0, 1
+t, mu, U, V = -1, 0, 0, 0
 
 if model in ['BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane']:
     U = 0
