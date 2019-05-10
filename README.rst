@@ -101,6 +101,10 @@ Models description
 
     Example 2 of "Fractional quantum Hall states at zero magnetic field" by Titus Neupert, Luiz Santos, Claudio Chamon, and Christopher Mudry, PRL **106**, 236804 (2011). https://arxiv.org/abs/1012.4723
 
+* fermions_C3_haldane = spinless fermion generalised C=3 Haldane model
+
+    Equation 1 of Topological flat band models with arbitrary Chern numbers" by Shuo Yang, Zheng-Cheng Gu, Kai Sun, and S. Das Sarma, PRB **86**, 241112 (2012). https://arxiv.org/abs/1205.5792
+
 * fermions_TBG1 = spinful fermions with two orbitals, Hubbard model for twisted bilayer graphene
 
     Section IV of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
@@ -135,6 +139,10 @@ Lattices description
 * BipartiteSquare = bipartite square lattice
 
     Lattice for chiral-pi-flux model in example 2 of "Fractional quantum Hall states at zero magnetic field" by Titus Neupert, Luiz Santos, Claudio Chamon, and Christopher Mudry, PRL **106**, 236804 (2011). https://arxiv.org/abs/1012.4723
+
+* TripartiteTriangular = tripartite triangular lattice
+
+    Lattice for the generalized C=3 Haldane model in figure 1 of "Topological flat band models with arbitrary Chern numbers" by Shuo Yang, Zheng-Cheng Gu, Kai Sun, and S. Das Sarma, PRB **86**, 241112 (2012). https://arxiv.org/abs/1205.5792
 
 Directory structure
 -------------------

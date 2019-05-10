@@ -1,6 +1,6 @@
 # configuration parameters
-model = 'FermionicPiFlux'
-lattice = 'BipartiteSquare'
+model = 'FermionicC3Haldane'
+lattice = 'TripartiteTriangular'
 initial_state = 'custom'
 
 if model == 'BosonicHaldane':
@@ -11,6 +11,8 @@ elif model == 'FermionicHaldane':
     tile_unit = ['empty', 'full']
 elif model == 'FermionicPiFlux':
     tile_unit = ['empty', 'full']
+elif model == 'FermionicC3Haldane':
+    tile_unit = ['full_A empty_B', 'empty_A full_B', 'full_A empty_B']
 elif model == 'Hubbard':
     tile_unit = ['down', 'up']
 elif model == 'TBG1':
