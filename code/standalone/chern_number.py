@@ -11,7 +11,7 @@ def hamiltonian(kx, ky, a, b, c, d):
     lat_const = 1
     t1 = 1
     t2 = 0.1
-    t2dash = 0.4
+    t2dash = 0
 
     delta = np.array([[(lat_const / 2), (lat_const / 2) * np.sqrt(3)],
                       [(lat_const / 2), -(lat_const / 2) * np.sqrt(3)],
@@ -56,19 +56,19 @@ def hamiltonian(kx, ky, a, b, c, d):
     Hamiltonian[7][6] = np.conj(f)
     Hamiltonian[7][7] = -d
 
-    # xi = 0
-    # for i in range(0, 6):
-    #     xi += t2dash * np.exp(1j * k.dot(fifthNN[i]))
-    #
-    # Hamiltonian[0][3] = xi
-    # Hamiltonian[1][2] = -np.conj(xi)
-    # Hamiltonian[2][1] = -xi
-    # Hamiltonian[3][0] = np.conj(xi)
-    #
-    # Hamiltonian[4][7] = xi
-    # Hamiltonian[5][6] = -np.conj(xi)
-    # Hamiltonian[6][5] = -xi
-    # Hamiltonian[7][4] = np.conj(xi)
+    xi = 0
+    for i in range(0, 6):
+        xi += t2dash * np.exp(1j * k.dot(fifthNN[i]))
+
+    Hamiltonian[0][3] = xi
+    Hamiltonian[1][2] = -np.conj(xi)
+    Hamiltonian[2][1] = -xi
+    Hamiltonian[3][0] = np.conj(xi)
+
+    Hamiltonian[4][7] = xi
+    Hamiltonian[5][6] = -np.conj(xi)
+    Hamiltonian[6][5] = -xi
+    Hamiltonian[7][4] = np.conj(xi)
 
     return Hamiltonian
 
@@ -109,14 +109,14 @@ if __name__ == '__main__':
     # Initialization #
     ##################
 
-    a, b, c, d = 10, 20, 30, 40
+    a, b, c, d = 0, 0, 0, 0
     tot_ber_curv_a_p, tot_ber_curv_a_m, tot_ber_curv_b_p, tot_ber_curv_b_m,\
         tot_ber_curv_c_p, tot_ber_curv_c_m, tot_ber_curv_d_p, tot_ber_curv_d_m = 0, 0, 0, 0, 0, 0, 0, 0
 
     for kx in np.linspace(min_x, max_x, samples_x):
         for ky in np.linspace(min_y, max_y, samples_y):
 
-            eigval, eigvec = np.linalg.eig(hamiltonian(kx, ky, a, b, c, d))
+            eigval, eigvec = np.linalg.eigh(hamiltonian(kx, ky, a, b, c, d))
             idx1 = np.argsort(eigval)[::-1]
             eigval_a_p = np.real(eigval[idx1])[3]
             eigval_a_m = np.real(eigval[idx1])[4]
@@ -226,9 +226,9 @@ if __name__ == '__main__':
 
     print("Chern number (a+) = ", tot_ber_curv_a_p / (2 * np.pi))
     print("Chern number (a-) = ", tot_ber_curv_a_m / (2 * np.pi))
-    print("Chern number (b+) = ", tot_ber_curv_a_p / (2 * np.pi))
-    print("Chern number (b-) = ", tot_ber_curv_a_m / (2 * np.pi))
-    print("Chern number (c+) = ", tot_ber_curv_a_p / (2 * np.pi))
-    print("Chern number (c-) = ", tot_ber_curv_a_m / (2 * np.pi))
-    print("Chern number (d+) = ", tot_ber_curv_a_p / (2 * np.pi))
-    print("Chern number (d-) = ", tot_ber_curv_a_m / (2 * np.pi))
+    print("Chern number (b+) = ", tot_ber_curv_b_p / (2 * np.pi))
+    print("Chern number (b-) = ", tot_ber_curv_b_m / (2 * np.pi))
+    print("Chern number (c+) = ", tot_ber_curv_c_p / (2 * np.pi))
+    print("Chern number (c-) = ", tot_ber_curv_c_m / (2 * np.pi))
+    print("Chern number (d+) = ", tot_ber_curv_d_p / (2 * np.pi))
+    print("Chern number (d-) = ", tot_ber_curv_d_m / (2 * np.pi))

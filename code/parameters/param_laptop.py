@@ -1,7 +1,7 @@
 # configuration parameters
-model = 'FermionicC3Haldane'
-lattice = 'TripartiteTriangular'
-initial_state = 'custom'
+model = 'BosonicHaldane2'
+lattice = 'Honeycomb'
+initial_state = 'third'
 
 if model == 'BosonicHaldane':
     tile_unit = ['0', '1']
@@ -29,12 +29,12 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 100
+chi_max = 500
 # chi max for compute_K
 chi_max_K = 100
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, U, V = -1, 0, 0, 0
+t, mu, U, V = -1, 0, 0, 1
 
 if model in ['BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane']:
     U = 0
