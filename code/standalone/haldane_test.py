@@ -2,6 +2,7 @@
 "Chareterization and stability of a fermionic nu=1/3 fractional Chern insulator"""
 
 import numpy as np
+import sys
 
 
 def hamiltonian(kx, ky):
