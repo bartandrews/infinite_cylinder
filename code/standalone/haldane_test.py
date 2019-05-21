@@ -115,6 +115,7 @@ if __name__ == '__main__':
 
     tot_ber_curv_p = 0
     tot_ber_curv_m = 0
+    count = 0
 
     for kx in np.linspace(min_x, max_x, samples_x):
         for ky in np.linspace(min_y, max_y, samples_y):
@@ -153,9 +154,11 @@ if __name__ == '__main__':
             tot_ber_curv_p += ber_curv_p
             tot_ber_curv_m += ber_curv_m
 
-            print(kx, ky, ber_curv_p, ber_curv_m)
-            band_structure.write("%.15f\t%.15f\t%.15f\t%.15f\n" % (kx, ky, eigval_p, eigval_m))
-            berry_curvature.write("%.15f\t%.15f\t%.15f\t%.15f\n" % (kx, ky, ber_curv_p, ber_curv_m))
+            count += 1
+
+            print(kx, ky, ber_curv_p, ber_curv_m, count)
+            band_structure.write("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n" % (kx, ky, eigval_p, eigval_m, count))
+            berry_curvature.write("%.15f\t%.15f\t%.15f\t%.15f\t%.15f\n" % (kx, ky, ber_curv_p, ber_curv_m, count))
         print(" ")
         band_structure.write("\n")
         berry_curvature.write("\n")

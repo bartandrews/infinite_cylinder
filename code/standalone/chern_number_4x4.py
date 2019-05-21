@@ -90,8 +90,10 @@ def hamiltonian_Haldane(k):
 
     t = 1
     t2 = np.sqrt(129)/36
-    M = 0
-    phi = np.arccos(3*np.sqrt(3/43))
+    # M=0
+    M = 3*np.sqrt(3)*t2 - 1
+    # phi = np.arccos(3*np.sqrt(3/43))
+    phi = np.pi/2
 
     # pauli spin
     s0 = np.array([[1, 0], [0, 1]])
@@ -135,7 +137,7 @@ def hamiltonian_Haldane(k):
 
         hz = M
         for i in range(3):
-            hz += 2 * t2 * np.sin(phi) * np.sin(k.dot(b[i]))
+            hz += M + 2 * t2 * np.sin(phi) * np.sin(k.dot(b[i]))
 
         return hz
 
@@ -148,10 +150,12 @@ def hamiltonian_Haldane(k):
 
 def get_eigen(k):
 
-    v, w = np.linalg.eigh(hamiltonian(k))
-    eig = np.sort(v.real)
+    eigval, eigvec = np.linalg.eigh(hamiltonian(k))
+    idx = np.argsort(eigval)[::-1]
+    eigvals = np.real(eigval[idx])
+    eigvecs = eigvec[:, idx]
 
-    return eig[0], eig[1], eig[2], eig[3]
+    return eigvals[0], eigvecs[0], eigvals[1], eigvecs[1], eigvals[2], eigvecs[2], eigvals[3], eigvecs[3]
 
 
 def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
@@ -180,8 +184,10 @@ if __name__ == '__main__':
         k = K1-K1*float(i)/float(nk-1)
         k = np.matmul(k, bvec)
         count = count+1
-        a, b, c, d = get_eigen(k)
-        band_structure.write("{} {} {} {} {}\n".format(count, a, b, c, d))
+        a, a_vec, b, b_vec, c, c_vec, d, d_vec = get_eigen(k)
+        band_structure.write("{} {} {} {} {} {} {} {} {}\n"
+                             .format(count, a, b, c, d,
+                                     abs(a_vec[0])**2, abs(b_vec[0])**2, abs(c_vec[0])**2, abs(d_vec[0])**2))
 
     for i in range(nk):
 
@@ -189,8 +195,10 @@ if __name__ == '__main__':
         k = GA+(MM-GA)*float(i)/float(nk-1)
         k = np.matmul(k, bvec)
         count = count+1
-        a, b, c, d = get_eigen(k)
-        band_structure.write("{} {} {} {} {}\n".format(count, a, b, c, d))
+        a, a_vec, b, b_vec, c, c_vec, d, d_vec = get_eigen(k)
+        band_structure.write("{} {} {} {} {} {} {} {} {}\n"
+                             .format(count, a, b, c, d,
+                                     abs(a_vec[0])**2, abs(b_vec[0])**2, abs(c_vec[0])**2, abs(d_vec[0])**2))
 
     for i in range(nk):
 
@@ -198,8 +206,10 @@ if __name__ == '__main__':
         k = MM+(K2-MM)*float(i)/float(nk-1)
         k = np.matmul(k, bvec)
         count = count+1
-        a, b, c, d = get_eigen(k)
-        band_structure.write("{} {} {} {} {}\n".format(count, a, b, c, d))
+        a, a_vec, b, b_vec, c, c_vec, d, d_vec = get_eigen(k)
+        band_structure.write("{} {} {} {} {} {} {} {} {}\n"
+                             .format(count, a, b, c, d,
+                                     abs(a_vec[0])**2, abs(b_vec[0])**2, abs(c_vec[0])**2, abs(d_vec[0])**2))
 
     ############################
     # Plot the Berry Curvature #
@@ -253,7 +263,7 @@ if __name__ == '__main__':
             tot_ber_curv_3 += ber_curv_3
 
             print(kx, ky, ber_curv_0, ber_curv_1, ber_curv_2, ber_curv_3)
-            berry_curvature.write("{} {} {} {} {} {}\n".format(kx, ky, ber_curv_0, ber_curv_1, ber_curv_2, ber_curv_3))
+            berry_curvature.write("{} {} {} {}\n".format(kx, ky, ber_curv_0, ber_curv_1, ber_curv_2, ber_curv_3))
 
         berry_curvature.write("\n")
 
