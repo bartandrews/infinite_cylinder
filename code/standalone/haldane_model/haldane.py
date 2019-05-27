@@ -41,7 +41,7 @@ print("a1 . b0 = ", avec[1, :].dot(bvec[0, :]))
 print("a0 . b1 = ", avec[0, :].dot(bvec[1, :]))
 
 # plot the lattice
-
+#
 # plt.scatter(np.matmul(K1, bvec)[0], np.matmul(K1, bvec)[1], color='blue')
 # plt.scatter(np.matmul(K2, bvec)[0], np.matmul(K2, bvec)[1], color='green')
 # plt.scatter(np.matmul(GA, bvec)[0], np.matmul(GA, bvec)[1], color='orange')
@@ -145,15 +145,17 @@ def hamiltonian(k):
     secondNN[4, :] = -avec[0, :]
     secondNN[5, :] = avec[0, :] - avec[1, :]
 
-    # plt.scatter(delta[:, 0], delta[:, 1], color='blue')
-    # plt.scatter(secondNN[0:3, 0], secondNN[0:3, 1], color='red')
-    # plt.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='red', marker='x')
-    # #
-    # plt.plot([0, avec[0, 0]], [0, avec[0, 1]], color='black')
-    # plt.plot([0, avec[1, 0]], [0, avec[1, 1]], color='black')
-    # plt.axis('equal')  # plt.gca().set_aspect('equal', adjustable='box')
-    # plt.show()
-    # sys.exit()
+    # plot the neighbors
+
+    plt.scatter(delta[:, 0], delta[:, 1], color='blue')
+    plt.scatter(secondNN[0:3, 0], secondNN[0:3, 1], color='red')
+    plt.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='red', marker='x')
+    #
+    plt.plot([0, avec[0, 0]], [0, avec[0, 1]], color='black')
+    plt.plot([0, avec[1, 0]], [0, avec[1, 1]], color='black')
+    plt.axis('equal')  # plt.gca().set_aspect('equal', adjustable='box')
+    plt.show()
+    sys.exit()
 
     Hamiltonian = np.zeros((2, 2), dtype=complex)
 

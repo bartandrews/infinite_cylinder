@@ -1,4 +1,4 @@
-set title 'Haldane Model Band Structure (3D)'
+set title 'Four Model Band Structure (3D)'
 set xlabel 'k_x'
 set ylabel 'k_y'
 set zlabel 'Energy / meV'
@@ -26,5 +26,7 @@ set size square
 set xtics ('-2π/3' -2*pi/3*0.97, 0, '2π/3' 2*pi/3*0.97)
 set ytics ('-2π/(3√3)' -2*pi/(3*sqrt(3)), 0, '2π/(3√3)' 2*pi/(3*sqrt(3)))
 
-splot '3D_haldane_band_structure.txt' u 1:2:4:6 w p lc palette,\
-      '3D_haldane_band_structure.txt' u 1:2:3:5 w p lc palette 
+splot '3D_four_band_structure.txt' u 1:2:3:7 w p lc palette,\
+      '3D_four_band_structure.txt' u 1:2:4:8 w p lc palette,\
+      '3D_four_band_structure.txt' u 1:2:5:9 w p lc palette,\
+      '3D_four_band_structure.txt' u 1:2:6:10 w p lc palette

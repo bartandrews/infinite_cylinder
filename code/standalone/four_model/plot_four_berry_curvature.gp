@@ -1,4 +1,4 @@
-set title 'Haldane Model Berry Curvature (for the 0 band)'
+set title 'Four Model Berry Curvature (for the 0 band)'
 set xlabel 'k_x'
 set ylabel 'k_y'
 
@@ -36,4 +36,4 @@ set label "M" at K1x,0 front
 set label "K" at K1x,K1y front
 set label "K'" at K1x,-K1y front
 
-splot 'haldane_berry_curvature.txt' u 1:2:3
+splot 'four_berry_curvature.txt' u 1:2:3

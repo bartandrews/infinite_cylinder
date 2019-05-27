@@ -1,6 +1,6 @@
 set title 'Haldane Model Phase Diagram (for the 0 band)'
 set xlabel 'phi'
-set ylabel 'M/t2'
+set ylabel 'M/t_2'
 
 set palette maxcolors 100
 set palette defined (0 "blue", 50 "white", 99 "red")
