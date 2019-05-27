@@ -64,15 +64,15 @@ def hamiltonian(k):
     for i in range(0, 3):
         xi += t2dash * np.exp(1j * k.dot(fifthNN[i, :]))
 
-    Hamiltonian[0][0] = f2 + np.conj(f2) #+ 3
+    Hamiltonian[0][0] = f2 + np.conj(f2)  # + 3
     Hamiltonian[0][1] = f
     Hamiltonian[1][0] = np.conj(f)
-    Hamiltonian[1][1] = f2 + np.conj(f2) #- 1
+    Hamiltonian[1][1] = f2 + np.conj(f2)  # - 1
 
-    Hamiltonian[2][2] = f2 + np.conj(f2) #+ 1
+    Hamiltonian[2][2] = f2 + np.conj(f2)  # + 1
     Hamiltonian[2][3] = f
     Hamiltonian[3][2] = np.conj(f)
-    Hamiltonian[3][3] = f2 + np.conj(f2) #- 3
+    Hamiltonian[3][3] = f2 + np.conj(f2)  # - 3
 
     Hamiltonian[0][2] = xi - np.conj(xi)
     Hamiltonian[2][0] = -xi + np.conj(xi)

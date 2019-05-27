@@ -1,6 +1,3 @@
-"""Calculate the band structure in Fig. 5.a) of
-"Maximally Localized Wannier Orbitals and the Extended Hubbard Model for Twisted Bilayer Graphene"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
@@ -127,8 +124,11 @@ print("a0 . b1 = ", avec[0, :].dot(bvec[1, :]))
 def hamiltonian(k):
 
     t1 = 1
-    t2 = np.sqrt(129)/36
+    t2 = -np.sqrt(129)/36
     phi = np.arccos(3*np.sqrt(3/43))
+    # t2 = 1
+    # phi = -np.pi/2
+    M = 0
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1/2)*np.array([1, np.sqrt(3)])
@@ -162,15 +162,15 @@ def hamiltonian(k):
         f += -t1 * np.exp(1j * k.dot(delta[i, :]))
     f1 = 0
     for i in range(0, 3):
-        f1 += t2 * np.exp(1j * k.dot(secondNN[i, :]))
+        f1 += -t2 * np.exp(1j * k.dot(secondNN[i, :]))
     f2 = 0
     for i in range(3, 6):
-        f2 += t2 * np.exp(1j * k.dot(secondNN[i, :]))
+        f2 += -t2 * np.exp(1j * k.dot(secondNN[i, :]))
 
-    Hamiltonian[0][0] = np.exp(1j * phi) * f1 + np.exp(-1j * phi) * f2
+    Hamiltonian[0][0] = np.exp(1j * phi) * f1 + np.exp(-1j * phi) * f2 + M
     Hamiltonian[0][1] = f
     Hamiltonian[1][0] = np.conj(f)
-    Hamiltonian[1][1] = np.exp(1j * phi) * f2 + np.exp(-1j * phi) * f1
+    Hamiltonian[1][1] = np.exp(1j * phi) * f2 + np.exp(-1j * phi) * f1 - M
 
     return Hamiltonian
 
@@ -219,9 +219,6 @@ def top_line(kx_value):
 
 if __name__ == '__main__':
 
-    # print(get_eigen(np.matmul(K1, bvec)))
-    # sys.exit()
-
     ##################################
     # Plot 2D Haldane Band Structure #
     ##################################
@@ -265,6 +262,7 @@ if __name__ == '__main__':
     open("haldane_berry_curvature.txt", "w")
     berry_curvature = open("haldane_berry_curvature.txt", "a", buffering=1)
 
+    # Need ~1000 samples to get accurate Chern number!
     min_x = -np.pi
     max_x = np.pi
     samples_x = 100
@@ -278,8 +276,10 @@ if __name__ == '__main__':
 
     for kx in np.linspace(min_x, max_x, samples_x):
         if abs(kx) <= abs(np.matmul(K1, bvec)[0]):
+        # if -abs(np.matmul(K1, bvec)[0]) <= kx < abs(np.matmul(K1, bvec)[0]):
             for ky in np.linspace(min_y, max_y, samples_y):
                 if abs(ky) <= abs(top_line(kx)):
+                # if bottom_line(kx) <= ky < top_line(kx):
 
                     eigval, eigvec = np.linalg.eig(hamiltonian(np.array([kx, ky])))
                     idx0 = np.argsort(eigval)[::-1]
@@ -307,7 +307,6 @@ if __name__ == '__main__':
                     tot_ber_curv_0 += ber_curv_0
                     tot_ber_curv_1 += ber_curv_1
 
-                    #print(kx, ky, ber_curv_0, ber_curv_1)
                     band_structure_3d.write("{} {} {} {} {} {}\n".format(kx, ky, eigvals[0], eigvals[1],
                                                                          abs(eigvecs[0][0])**2, abs(eigvecs[1][0])**2))
                     berry_curvature.write("{} {} {} {}\n".format(kx, ky, ber_curv_0, ber_curv_1))
