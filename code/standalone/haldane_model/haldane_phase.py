@@ -127,6 +127,30 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
     return bc
 
 
+def berry_curv2(ev, ev_alpha, ev_beta, ev_alpha_beta):
+
+    one = (np.conj(ev).dot(ev_alpha))/(abs(np.conj(ev).dot(ev_alpha)))
+    two = (np.conj(ev_alpha).dot(ev_alpha_beta))/(abs(np.conj(ev_alpha).dot(ev_alpha_beta)))
+    three = (np.conj(ev_beta).dot(ev_alpha_beta))/(abs(np.conj(ev_beta).dot(ev_alpha_beta)))
+    four = (np.conj(ev).dot(ev_beta))/(abs(np.conj(ev).dot(ev_beta)))
+
+    bc = np.real(- 1j * np.log(one*two) + 1j * np.log(three*four))
+
+    return bc
+
+
+def berry_curv3(ev, ev_alpha, ev_beta, ev_alpha_beta):
+
+    gammaAB = -np.angle((np.conj(ev).dot(ev_alpha))/(np.abs(np.conj(ev).dot(ev_alpha))))
+    gammaBC = -np.angle((np.conj(ev_alpha).dot(ev_alpha_beta))/(np.abs(np.conj(ev_alpha).dot(ev_alpha_beta))))
+    gammaCD = -np.angle((np.conj(ev_alpha_beta).dot(ev_beta))/(np.abs(np.conj(ev_alpha_beta).dot(ev_beta))))
+    gammaDA = -np.angle((np.conj(ev_beta).dot(ev))/(np.abs(np.conj(ev_beta).dot(ev))))
+
+    bc = gammaAB + gammaBC + gammaCD + gammaDA
+
+    return bc
+
+
 def bottom_line(kx_value):
 
     if kx < 0:
@@ -163,22 +187,38 @@ if __name__ == '__main__':
     # Need ~1000 samples to get accurate Chern number!
     min_x = -np.pi
     max_x = np.pi
-    samples_x = 100
+    samples_x = 50
     min_y = -np.pi
     max_y = np.pi
-    samples_y = 100
+    samples_y = 50
     delta_alpha = (max_x - min_x) / samples_x
     delta_beta = (max_y - min_y) / samples_y
 
-    for phi in np.linspace(-np.pi, np.pi, 30):
-        for M in np.linspace(-10, 10, 30):
+    for phi in np.linspace(-np.pi, np.pi, 20):
+        for M in np.linspace(-10, 10, 20):
 
             tot_ber_curv_0, tot_ber_curv_1 = 0, 0
+            counterx, countery = 0, 0
 
             for kx in np.linspace(min_x, max_x, samples_x):
                 if abs(kx) <= abs(np.matmul(K1, bvec)[0]):
+
+                    # counterx += 1
+                    # if counterx ==1:
+                    #     kx_start = kx
+                    #     print("kx_start = ", kx_start)
+                    # if kx + delta_alpha > abs(np.matmul(K1, bvec)[0]):
+                    #     print("kx_end = ", kx)
+                    #     kx = kx_start
+
                     for ky in np.linspace(min_y, max_y, samples_y):
                         if abs(ky) <= abs(top_line(kx)):
+
+                            # countery += 1
+                            # if countery == 1:
+                            #     ky_start = ky
+                            # if ky + delta_beta > abs(top_line(kx)):
+                            #     ky = ky_start
 
                             eigval, eigvec = np.linalg.eig(hamiltonian(np.array([kx, ky]), phi, M))
                             idx0 = np.argsort(eigval)[::-1]
@@ -200,13 +240,13 @@ if __name__ == '__main__':
                             eigvals_alpha_beta = np.real(eigval_alpha_beta[idx3])
                             eigvecs_alpha_beta = eigvec_alpha_beta[:, idx3]
 
-                            ber_curv_0 = berry_curv(eigvecs[0], eigvecs_alpha[0], eigvecs_beta[0], eigvecs_alpha_beta[0])
-                            ber_curv_1 = berry_curv(eigvecs[1], eigvecs_alpha[1], eigvecs_beta[1], eigvecs_alpha_beta[1])
+                            ber_curv_0 = berry_curv3(eigvecs[0], eigvecs_alpha[0], eigvecs_beta[0], eigvecs_alpha_beta[0])
+                            ber_curv_1 = berry_curv3(eigvecs[1], eigvecs_alpha[1], eigvecs_beta[1], eigvecs_alpha_beta[1])
 
                             tot_ber_curv_0 += ber_curv_0
                             tot_ber_curv_1 += ber_curv_1
 
             print(phi, M, tot_ber_curv_0 / (2 * np.pi))
-            phase_diagram.write("{} {} {}\n".format(phi, M, tot_ber_curv_0 / (2 * np.pi)))
+            phase_diagram.write("{} {} {}\n".format(phi, M, tot_ber_curv_0/(2 * np.pi)))
 
         phase_diagram.write("\n")

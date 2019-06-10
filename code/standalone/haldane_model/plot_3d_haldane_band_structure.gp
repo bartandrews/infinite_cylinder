@@ -18,13 +18,11 @@ set label "Γ" at 0,0,0
 set label "M" at K1x,0,0
 set label "K" at K1x,K1y,0
 set label "K'" at K1x,-K1y,0
- 
-unset key
 
 set size square
 
 set xtics ('-2π/3' -2*pi/3*0.97, 0, '2π/3' 2*pi/3*0.97)
 set ytics ('-2π/(3√3)' -2*pi/(3*sqrt(3)), 0, '2π/(3√3)' 2*pi/(3*sqrt(3)))
 
-splot '3D_haldane_band_structure.txt' u 1:2:4:6 w p lc palette,\
-      '3D_haldane_band_structure.txt' u 1:2:3:5 w p lc palette 
+splot '3D_haldane_band_structure.txt' u 1:2:3:5 w p lc palette title 'band 0',\
+      '3D_haldane_band_structure.txt' u 1:2:4:6 w p lc palette title 'band 1'

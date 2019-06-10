@@ -13,4 +13,5 @@ unset key
 
 set cblabel 'C'
 
-splot 'haldane_phase_diagram.txt' u 1:2:3
+# splot 'haldane_phase_diagram.txt' u 1:2:3
+plot 'haldane_phase_diagram.txt' u 1:2:3 with image

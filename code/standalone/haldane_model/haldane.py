@@ -124,10 +124,10 @@ print("a0 . b1 = ", avec[0, :].dot(bvec[1, :]))
 def hamiltonian(k):
 
     t1 = 1
-    t2 = -np.sqrt(129)/36
-    phi = np.arccos(3*np.sqrt(3/43))
-    # t2 = 1
-    # phi = -np.pi/2
+    # t2 = -np.sqrt(129)/36
+    # phi = np.arccos(3*np.sqrt(3/43))
+    t2 = 1
+    phi = np.pi/2
     M = 0
 
     delta = np.zeros((3, 2))
@@ -147,15 +147,15 @@ def hamiltonian(k):
 
     # plot the neighbors
 
-    plt.scatter(delta[:, 0], delta[:, 1], color='blue')
-    plt.scatter(secondNN[0:3, 0], secondNN[0:3, 1], color='red')
-    plt.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='red', marker='x')
-    #
-    plt.plot([0, avec[0, 0]], [0, avec[0, 1]], color='black')
-    plt.plot([0, avec[1, 0]], [0, avec[1, 1]], color='black')
-    plt.axis('equal')  # plt.gca().set_aspect('equal', adjustable='box')
-    plt.show()
-    sys.exit()
+    # plt.scatter(delta[:, 0], delta[:, 1], color='blue')
+    # plt.scatter(secondNN[0:3, 0], secondNN[0:3, 1], color='red')
+    # plt.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='red', marker='x')
+    # #
+    # plt.plot([0, avec[0, 0]], [0, avec[0, 1]], color='black')
+    # plt.plot([0, avec[1, 0]], [0, avec[1, 1]], color='black')
+    # plt.axis('equal')  # plt.gca().set_aspect('equal', adjustable='box')
+    # plt.show()
+    # sys.exit()
 
     Hamiltonian = np.zeros((2, 2), dtype=complex)
 
@@ -191,6 +191,37 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
 
     bc = - 2 * np.imag(np.log(np.conj(ev).dot(ev_alpha) * np.conj(ev_alpha).dot(ev_alpha_beta)
                               * np.conj(ev_alpha_beta).dot(ev_beta) * np.conj(ev_beta).dot(ev)))
+
+    return bc
+
+
+def berry_curv2(ev, ev_alpha, ev_beta, ev_alpha_beta):
+
+    a = (np.conj(ev).dot(ev_alpha))/(np.abs(np.conj(ev).dot(ev_alpha)))
+    b = (np.conj(ev_alpha).dot(ev_alpha_beta))/(np.abs(np.conj(ev_alpha).dot(ev_alpha_beta)))
+    c = (np.conj(ev_alpha_beta).dot(ev_beta))/(np.abs(np.conj(ev_alpha_beta).dot(ev_beta)))
+    d = (np.conj(ev_beta).dot(ev))/(np.abs(np.conj(ev_beta).dot(ev)))
+
+    if abs(np.angle(a * b * c * d) - (np.angle(a) + np.angle(b) + np.angle(c) + np.angle(d))) > 0.0000001:
+        print(a, b, c, d)
+        print(np.angle(a * b * c * d))
+        print(np.angle(a) + np.angle(b) + np.angle(c) + np.angle(d))
+        sys.exit()
+
+    # bc = - np.angle(a * b * c * d)
+    bc = - np.angle(a) - np.angle(b) - np.angle(c) - np.angle(d)
+
+    return bc
+
+
+def berry_curv3(ev, ev_alpha, ev_beta, ev_alpha_beta):
+
+    gammaAB = -np.angle((np.conj(ev).dot(ev_alpha))/(np.abs(np.conj(ev).dot(ev_alpha))))
+    gammaBC = -np.angle((np.conj(ev_alpha).dot(ev_alpha_beta))/(np.abs(np.conj(ev_alpha).dot(ev_alpha_beta))))
+    gammaCD = -np.angle((np.conj(ev_alpha_beta).dot(ev_beta))/(np.abs(np.conj(ev_alpha_beta).dot(ev_beta))))
+    gammaDA = -np.angle((np.conj(ev_beta).dot(ev))/(np.abs(np.conj(ev_beta).dot(ev))))
+
+    bc = gammaAB + gammaBC + gammaCD + gammaDA
 
     return bc
 

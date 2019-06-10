@@ -101,20 +101,26 @@ def hamiltonian(k):
     for i in range(0, 3):
         xi += t2dash * np.exp(1j * k.dot(fifthNN[i, :]))
 
-    Hamiltonian[0][0] = f2 + np.conj(f2)
+    # Zeeman coefficients
+
+    Bx = 0.2
+    By = 0.2
+    Bz = 0.2
+
+    Hamiltonian[0][0] = f2 + np.conj(f2) + Bz
     Hamiltonian[0][1] = f
     Hamiltonian[1][0] = np.conj(f)
-    Hamiltonian[1][1] = f2 + np.conj(f2)
+    Hamiltonian[1][1] = f2 + np.conj(f2) + Bz
 
-    Hamiltonian[2][2] = f2 + np.conj(f2)
+    Hamiltonian[2][2] = f2 + np.conj(f2) - Bz
     Hamiltonian[2][3] = f
     Hamiltonian[3][2] = np.conj(f)
-    Hamiltonian[3][3] = f2 + np.conj(f2)
+    Hamiltonian[3][3] = f2 + np.conj(f2) - Bz
 
-    Hamiltonian[0][2] = xi - np.conj(xi)
-    Hamiltonian[2][0] = -xi + np.conj(xi)
-    Hamiltonian[1][3] = xi - np.conj(xi)
-    Hamiltonian[3][1] = -xi + np.conj(xi)
+    Hamiltonian[0][2] = xi - np.conj(xi) + Bx - By*1j
+    Hamiltonian[2][0] = -xi + np.conj(xi) + Bx - By*1j
+    Hamiltonian[1][3] = xi - np.conj(xi) + Bx + By*1j
+    Hamiltonian[3][1] = -xi + np.conj(xi) + Bx + By*1j
 
     return Hamiltonian
 
@@ -133,6 +139,18 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
 
     bc = - 2 * np.imag(np.log(np.conj(ev).dot(ev_alpha) * np.conj(ev_alpha).dot(ev_alpha_beta)
                               * np.conj(ev_alpha_beta).dot(ev_beta) * np.conj(ev_beta).dot(ev)))
+
+    return bc
+
+
+def berry_curv3(ev, ev_alpha, ev_beta, ev_alpha_beta):
+
+    gammaAB = -np.angle((np.conj(ev).dot(ev_alpha))/(np.abs(np.conj(ev).dot(ev_alpha))))
+    gammaBC = -np.angle((np.conj(ev_alpha).dot(ev_alpha_beta))/(np.abs(np.conj(ev_alpha).dot(ev_alpha_beta))))
+    gammaCD = -np.angle((np.conj(ev_alpha_beta).dot(ev_beta))/(np.abs(np.conj(ev_alpha_beta).dot(ev_beta))))
+    gammaDA = -np.angle((np.conj(ev_beta).dot(ev))/(np.abs(np.conj(ev_beta).dot(ev))))
+
+    bc = gammaAB + gammaBC + gammaCD + gammaDA
 
     return bc
 
@@ -200,77 +218,77 @@ if __name__ == '__main__':
                                         abs(a_vec[0]) ** 2, abs(b_vec[0]) ** 2, abs(c_vec[0]) ** 2, abs(d_vec[0]) ** 2))
         count += 1
 
-        ############################################################
-        # Plot 3D Haldane Band Structure & Haldane Berry Curvature #
-        ############################################################
+    ############################################################
+    # Plot 3D Haldane Band Structure & Haldane Berry Curvature #
+    ############################################################
 
-        open("3D_four_band_structure.txt", "w")
-        band_structure_3d = open("3D_four_band_structure.txt", "a", buffering=1)
-        open("four_berry_curvature.txt", "w")
-        berry_curvature = open("four_berry_curvature.txt", "a", buffering=1)
+    open("3D_four_band_structure.txt", "w")
+    band_structure_3d = open("3D_four_band_structure.txt", "a", buffering=1)
+    open("four_berry_curvature.txt", "w")
+    berry_curvature = open("four_berry_curvature.txt", "a", buffering=1)
 
-        # Need ~1000 samples to get accurate Chern number!
-        min_x = -np.pi
-        max_x = np.pi
-        samples_x = 100
-        min_y = -np.pi
-        max_y = np.pi
-        samples_y = 100
-        delta_alpha = (max_x - min_x) / samples_x
-        delta_beta = (max_y - min_y) / samples_y
+    # Need ~1000 samples to get accurate Chern number!
+    min_x = -np.pi
+    max_x = np.pi
+    samples_x = 200
+    min_y = -np.pi
+    max_y = np.pi
+    samples_y = 200
+    delta_alpha = (max_x - min_x) / samples_x
+    delta_beta = (max_y - min_y) / samples_y
 
-        tot_ber_curv_0, tot_ber_curv_1, tot_ber_curv_2, tot_ber_curv_3 = 0, 0, 0, 0
+    tot_ber_curv_0, tot_ber_curv_1, tot_ber_curv_2, tot_ber_curv_3 = 0, 0, 0, 0
 
-        for kx in np.linspace(min_x, max_x, samples_x):
-            if abs(kx) <= abs(np.matmul(K1, bvec)[0]):
-                # if -abs(np.matmul(K1, bvec)[0]) <= kx < abs(np.matmul(K1, bvec)[0]):
-                for ky in np.linspace(min_y, max_y, samples_y):
-                    if abs(ky) <= abs(top_line(kx)):
-                        # if bottom_line(kx) <= ky < top_line(kx):
+    for kx in np.linspace(min_x, max_x, samples_x):
+        if abs(kx) <= abs(np.matmul(K1, bvec)[0]):
+            # if -abs(np.matmul(K1, bvec)[0]) <= kx < abs(np.matmul(K1, bvec)[0]):
+            for ky in np.linspace(min_y, max_y, samples_y):
+                if abs(ky) <= abs(top_line(kx)):
+                    # if bottom_line(kx) <= ky < top_line(kx):
 
-                        eigval, eigvec = np.linalg.eig(hamiltonian(np.array([kx, ky])))
-                        idx0 = np.argsort(eigval)[::-1]
-                        eigvals = np.real(eigval[idx0])
-                        eigvecs = eigvec[:, idx0]
+                    eigval, eigvec = np.linalg.eig(hamiltonian(np.array([kx, ky])))
+                    idx0 = np.argsort(eigval)[::-1]
+                    eigvals = np.real(eigval[idx0])
+                    eigvecs = eigvec[:, idx0]
 
-                        eigval_alpha, eigvec_alpha = np.linalg.eig(hamiltonian(np.array([kx + delta_alpha, ky])))
-                        idx1 = np.argsort(eigval_alpha)[::-1]
-                        eigvals_alpha = np.real(eigval_alpha[idx1])
-                        eigvecs_alpha = eigvec_alpha[:, idx1]
+                    eigval_alpha, eigvec_alpha = np.linalg.eig(hamiltonian(np.array([kx + delta_alpha, ky])))
+                    idx1 = np.argsort(eigval_alpha)[::-1]
+                    eigvals_alpha = np.real(eigval_alpha[idx1])
+                    eigvecs_alpha = eigvec_alpha[:, idx1]
 
-                        eigval_beta, eigvec_beta = np.linalg.eig(hamiltonian(np.array([kx, ky + delta_beta])))
-                        idx2 = np.argsort(eigval_beta)[::-1]
-                        eigvals_beta = np.real(eigval_beta[idx2])
-                        eigvecs_beta = eigvec_beta[:, idx2]
+                    eigval_beta, eigvec_beta = np.linalg.eig(hamiltonian(np.array([kx, ky + delta_beta])))
+                    idx2 = np.argsort(eigval_beta)[::-1]
+                    eigvals_beta = np.real(eigval_beta[idx2])
+                    eigvecs_beta = eigvec_beta[:, idx2]
 
-                        eigval_alpha_beta, eigvec_alpha_beta = np.linalg.eig(
-                            hamiltonian(np.array([kx + delta_alpha, ky + delta_beta])))
-                        idx3 = np.argsort(eigval_alpha_beta)[::-1]
-                        eigvals_alpha_beta = np.real(eigval_alpha_beta[idx3])
-                        eigvecs_alpha_beta = eigvec_alpha_beta[:, idx3]
+                    eigval_alpha_beta, eigvec_alpha_beta = np.linalg.eig(
+                        hamiltonian(np.array([kx + delta_alpha, ky + delta_beta])))
+                    idx3 = np.argsort(eigval_alpha_beta)[::-1]
+                    eigvals_alpha_beta = np.real(eigval_alpha_beta[idx3])
+                    eigvecs_alpha_beta = eigvec_alpha_beta[:, idx3]
 
-                        ber_curv_0 = berry_curv(eigvecs[0], eigvecs_alpha[0], eigvecs_beta[0], eigvecs_alpha_beta[0])
-                        ber_curv_1 = berry_curv(eigvecs[1], eigvecs_alpha[1], eigvecs_beta[1], eigvecs_alpha_beta[1])
-                        ber_curv_2 = berry_curv(eigvecs[2], eigvecs_alpha[2], eigvecs_beta[2], eigvecs_alpha_beta[2])
-                        ber_curv_3 = berry_curv(eigvecs[3], eigvecs_alpha[3], eigvecs_beta[3], eigvecs_alpha_beta[3])
+                    ber_curv_0 = berry_curv3(eigvecs[0], eigvecs_alpha[0], eigvecs_beta[0], eigvecs_alpha_beta[0])
+                    ber_curv_1 = berry_curv3(eigvecs[1], eigvecs_alpha[1], eigvecs_beta[1], eigvecs_alpha_beta[1])
+                    ber_curv_2 = berry_curv3(eigvecs[2], eigvecs_alpha[2], eigvecs_beta[2], eigvecs_alpha_beta[2])
+                    ber_curv_3 = berry_curv3(eigvecs[3], eigvecs_alpha[3], eigvecs_beta[3], eigvecs_alpha_beta[3])
 
-                        tot_ber_curv_0 += ber_curv_0
-                        tot_ber_curv_1 += ber_curv_1
-                        tot_ber_curv_2 += ber_curv_2
-                        tot_ber_curv_3 += ber_curv_3
+                    tot_ber_curv_0 += ber_curv_0
+                    tot_ber_curv_1 += ber_curv_1
+                    tot_ber_curv_2 += ber_curv_2
+                    tot_ber_curv_3 += ber_curv_3
 
-                        band_structure_3d.write("{} {} {} {} {} {} {} {} {} {}\n"
-                                                .format(kx, ky, eigvals[0], eigvals[1], eigvals[2], eigvals[3],
-                                                        abs(eigvecs[0][0]) ** 2, abs(eigvecs[1][0]) ** 2,
-                                                        abs(eigvecs[2][0]) ** 2, abs(eigvecs[3][0]) ** 2))
-                        berry_curvature.write("{} {} {} {} {} {}\n".format(kx, ky, ber_curv_0, ber_curv_1,
-                                                                           ber_curv_2, ber_curv_3))
+                    band_structure_3d.write("{} {} {} {} {} {} {} {} {} {}\n"
+                                            .format(kx, ky, eigvals[0], eigvals[1], eigvals[2], eigvals[3],
+                                                    abs(eigvecs[0][0]) ** 2, abs(eigvecs[1][0]) ** 2,
+                                                    abs(eigvecs[2][0]) ** 2, abs(eigvecs[3][0]) ** 2))
+                    berry_curvature.write("{} {} {} {} {} {}\n".format(kx, ky, ber_curv_0, ber_curv_1,
+                                                                       ber_curv_2, ber_curv_3))
 
-                berry_curvature.write("\n")
+            berry_curvature.write("\n")
 
-        print("")
-        print("Chern number (0) = ", tot_ber_curv_0 / (2 * np.pi))
-        print("Chern number (1) = ", tot_ber_curv_1 / (2 * np.pi))
-        print("Chern number (2) = ", tot_ber_curv_2 / (2 * np.pi))
-        print("Chern number (3) = ", tot_ber_curv_3 / (2 * np.pi))
+    print("")
+    print("Chern number (0) = ", tot_ber_curv_0 / (2 * np.pi))
+    print("Chern number (1) = ", tot_ber_curv_1 / (2 * np.pi))
+    print("Chern number (2) = ", tot_ber_curv_2 / (2 * np.pi))
+    print("Chern number (3) = ", tot_ber_curv_3 / (2 * np.pi))
 
