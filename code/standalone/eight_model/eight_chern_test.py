@@ -73,11 +73,11 @@ def hamiltonian(k):
 
     # values from arXiv:1805.06819
     t1 = 0.331
-    t2 = np.sqrt(129)/36 * t1  # 0.01
+    t2 = 0.01  # np.sqrt(129)/36 * t1
     t2dash = 0.097
     # Haldane hoppings in each valley
     M = 0
-    phi = np.arccos(3*np.sqrt(3/43))
+    phi = 0  # np.arccos(3*np.sqrt(3/43))
     tsec2 = -0.097
 
     delta = np.zeros((3, 2))
@@ -122,7 +122,7 @@ def hamiltonian(k):
         f += t1 * np.exp(1j * k.dot(delta[i, :]))
     f2 = 0
     for i in range(0, 3):
-        f2 += t2 * np.exp(1j * k.dot(secondNN[i, :]))
+        f2 += t2 * np.exp(1j * k.dot(fifthNN[i, :]))
     # f2_2 = 0
     # for i in range(3, 6):
     #     f2_2 += t2 * np.exp(1j * k.dot(secondNN[i, :]))
@@ -180,7 +180,7 @@ def hamiltonian(k):
 
     # orbital Zeeman contribution (Btau)
 
-    Btau_x, Btau_y, Btau_z = 0, 0, 3  # 3
+    Btau_x, Btau_y, Btau_z = 0, 0, 0  # 3
 
     for i in [0, 1, 4, 5]:
         Hamiltonian[i][i] += Btau_z
@@ -190,7 +190,7 @@ def hamiltonian(k):
 
     # spin Zeeman contribution (Bsigma)
 
-    Bsigma_x, Bsigma_y, Bsigma_z = 0, 0, 6  # 6
+    Bsigma_x, Bsigma_y, Bsigma_z = 0, 0, 0  # 6
 
     for i in range(4):
 
@@ -505,4 +505,5 @@ if __name__ == '__main__':
 
     ax3.set_aspect('equal', adjustable='box')
 
+    # fig.canvas.manager.full_screen_toggle()
     plt.show()
