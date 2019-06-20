@@ -1,5 +1,5 @@
 # configuration parameters
-model = 'BosonicHaldane2'
+model = 'FermionicHaldane'
 lattice = 'Honeycomb'
 initial_state = 'third'
 
@@ -31,12 +31,12 @@ elif model == 'TBG6':
 # chi_max for DMRG
 chi_max = 500
 # chi max for compute_K
-chi_max_K = 100
+chi_max_K = 500
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, U, V = -1, 0, 0, 1
 
-if model in ['BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane']:
+if model in ['FermionicHaldane']:
     U = 0
 elif model in ['Hubbard', 'TBG1', 'TBG2']:
     U = 1

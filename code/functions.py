@@ -71,9 +71,7 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
-        product_state = ['full_A empty_B', 'empty_A full_B', 'full_A empty_B',
-                         'empty_A full_B', 'full_A empty_B', 'empty_A full_B',
-                         'full_A empty_B', 'empty_A full_B', 'full_A empty_B']
+        product_state = [1, 0, 1, 0, 1, 0, 1, 0]
     else:
         sys.exit('Error: Unknown initial_state.')
 

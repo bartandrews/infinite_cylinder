@@ -1,6 +1,6 @@
-########################################################
-# CHERN NUMBER FOR THE EIGHT BAND MODEL (CONVENTION I) #
-########################################################
+################################
+# GRAPHENE IN A MAGNETIC FIELD #
+################################
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,24 +9,22 @@ from itertools import product
 
 # variables to set (when changing the Hamiltonian)
 
-num_bands = 8
-band_structure_file_name = "2D_eight_band_structure.dat"
-A_sites = [0, 2, 4, 6]
-x_sites = [0, 1, 4, 5]
-up_sites = [0, 1, 2, 3]
-wilson_loop_file_name = "eight_wilson_loop.dat"
-energies_file_name = "eight_energies.dat"
+num_bands = 2
+band_structure_file_name = "2D_graphene_band_structure.dat"
+A_sites = [0]
+wilson_loop_file_name = "graphene_wilson_loop.dat"
+energies_file_name = "graphene_energies.dat"
 
 # lattice vectors (normalized)
 
-a1 = (1/2) * np.array([np.sqrt(3), 1])
-a2 = (1/2) * np.array([np.sqrt(3), -1])
+a1 = np.array([np.sqrt(3), 0])
+a2 = (1/2) * np.array([np.sqrt(3), 3])
 avec = np.vstack((a1, a2))
 
 # reciprocal lattice vectors
 
-b1 = (2.*np.pi) * np.array([1/np.sqrt(3), 1])
-b2 = (2.*np.pi) * np.array([1/np.sqrt(3), -1])
+b1 = (2.*np.pi) * np.array([1/np.sqrt(3), -1/3])
+b2 = (2.*np.pi) * np.array([0, 2/3])
 bvec = np.vstack((b1, b2))
 
 # high symmetry points
@@ -75,20 +73,18 @@ tau[1, :] = (1/3)*np.array([0, 0])
 
 
 def hamiltonian(k):
-
-    # values from arXiv:1805.06819
-    t1 = 0.331
-    t2 = 0.01
-    t2dash = 0.097
-    # Haldane hoppings in each valley
-    M = 0
-    phi = np.arccos(3*np.sqrt(3/43))
-    tsec2 = -0.097
+    t = 1
 
     delta = np.zeros((3, 2))
-    delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
-    delta[1, :] = (-2 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
-    delta[2, :] = (1 / 3) * avec[0, :] + (-2 / 3) * avec[1, :]
+    # * BUG is here (I think)
+    # * this makes crystal structure to be non-equivalent to the in convetion_II script
+    # delta[0, :] = (2/3)*avec[0, :] - (1/3)*avec[1, :]
+    # delta[1, :] = (-1/3)*avec[0, :] + (2/3)*avec[1, :]
+    # delta[2, :] = (-1/3)*(avec[0, :] + avec[1, :])
+    # * I change it:
+    delta[0, :] = - (1 / 3) * avec[0, :] + (2 / 3) * avec[1, :]
+    delta[1, :] = -(1 / 3) * avec[0, :] - (1 / 3) * avec[1, :]
+    delta[2, :] = (2 / 3) * avec[0, :] - (1 / 3) * avec[1, :]
 
     secondNN = np.zeros((6, 2))
     # positive direction for A sites / negative direction for B sites
@@ -100,19 +96,11 @@ def hamiltonian(k):
     secondNN[4, :] = -avec[0, :]
     secondNN[5, :] = avec[0, :] - avec[1, :]
 
-    fifthNN = np.zeros((6, 2))
-    fifthNN[0, :] = -avec[0, :] - avec[1, :]
-    fifthNN[1, :] = -avec[0, :] + 2*avec[1, :]
-    fifthNN[2, :] = 2*avec[0, :] - avec[1, :]
-    fifthNN[3, :] = avec[0, :] + avec[1, :]
-    fifthNN[4, :] = -2*avec[0, :] + avec[1, :]
-    fifthNN[5, :] = avec[0, :] - 2*avec[1, :]
-
     # plot the neighbors
-
+    #
     # plt.scatter(delta[:, 0], delta[:, 1], color='blue')
-    # plt.scatter(fifthNN[0:3, 0], fifthNN[0:3, 1], color='red')
-    # plt.scatter(fifthNN[3:6, 0], fifthNN[3:6, 1], color='red', marker='x')
+    # plt.scatter(secondNN[0:3, 0], secondNN[0:3, 1], color='red')
+    # plt.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='red', marker='x')
     #
     # plt.plot([0, avec[0, 0]], [0, avec[0, 1]], color='black')
     # plt.plot([0, avec[1, 0]], [0, avec[1, 1]], color='black')
@@ -120,89 +108,28 @@ def hamiltonian(k):
     # plt.show()
     # sys.exit()
 
-    Hamiltonian = np.zeros((num_bands, num_bands), dtype=np.complex128)
+    Hamiltonian = np.zeros((2, 2), dtype=np.complex_)
 
     f = 0
-    for i in range(3):
-        f += t1 * np.exp(1j * k.dot(delta[i, :]))
-    f2 = 0
-    for i in range(0, 3):
-        f2 += t2 * np.exp(1j * k.dot(fifthNN[i, :]))
-    xi = 0
-    for i in range(3):
-        xi += t2dash * np.exp(1j * k.dot(fifthNN[i, :]))
-    ###
-    fsec1 = 0
-    for i in range(0, 3):
-        fsec1 += - tsec2 * np.exp(1j * k.dot(secondNN[i, :]))
-    fsec2 = 0
-    for i in range(3, 6):
-        fsec2 += - tsec2 * np.exp(1j * k.dot(secondNN[i, :]))
+    for i in range(1, 3):
+        f += - t * np.exp(1j * k.dot(delta[i, :]))
 
+    phi = -0.3 * np.pi
 
-    orbitalBz = 3
-    Bz1, Bz2, Bz3, Bz4, Bz5, Bz6, Bz7, Bz8 = +orbitalBz, +orbitalBz, -orbitalBz, -orbitalBz, \
-                                             +orbitalBz, +orbitalBz, -orbitalBz, -orbitalBz
+    Hamiltonian[0][0] = 0
+    Hamiltonian[0][1] = - t * np.exp(1j * k.dot(delta[0, :])) - t * np.exp(1j * k.dot(delta[1, :])) * np.exp(1j * phi) - t * np.exp(1j * k.dot(delta[2, :])) * np.exp(-1j * phi)
+    Hamiltonian[1][0] = np.conj(- t * np.exp(1j * k.dot(delta[0, :])) - t * np.exp(1j * k.dot(delta[1, :])) * np.exp(1j * phi) - t * np.exp(1j * k.dot(delta[2, :])) * np.exp(-1j * phi))
+    Hamiltonian[1][1] = 0
 
-    Bx1, Bx2, Bx3, Bx4 = 0, 0, 0, 0
-    By1, By2, By3, By4 = 0, 0, 0, 0
-
-    # spin up block
-
-    Hamiltonian[0][0] = np.exp(1j * phi) * fsec1 + np.exp(-1j * phi) * fsec2 + f2 + np.conj(f2) + Bz1
-    Hamiltonian[0][1] = f
-    Hamiltonian[1][0] = np.conj(f)
-    Hamiltonian[1][1] = np.exp(1j * phi) * fsec2 + np.exp(-1j * phi) * fsec1 + f2 + np.conj(f2) + Bz2
-
-    Hamiltonian[0][2] = xi - np.conj(xi)
-    Hamiltonian[1][3] = xi - np.conj(xi)
-
-    Hamiltonian[0][4] = (Bx1 - 1j*By1)
-    Hamiltonian[1][5] = (Bx2 - 1j*By2)
-    Hamiltonian[2][6] = (Bx3 - 1j*By3)
-    Hamiltonian[3][7] = (Bx4 - 1j*By4)
-
-    Hamiltonian[2][0] = -xi + np.conj(xi)
-    Hamiltonian[3][1] = -xi + np.conj(xi)
-
-    Hamiltonian[2][2] = np.exp(1j * phi) * fsec1 + np.exp(-1j * phi) * fsec2 + f2 + np.conj(f2) + Bz3
-    Hamiltonian[2][3] = f
-    Hamiltonian[3][2] = np.conj(f)
-    Hamiltonian[3][3] = np.exp(1j * phi) * fsec2 + np.exp(-1j * phi) * fsec1 + f2 + np.conj(f2) + Bz4
-
-    # spin down block
-
-    Hamiltonian[4][4] = np.exp(1j * phi) * fsec1 + np.exp(-1j * phi) * fsec2 + f2 + np.conj(f2) + Bz5
-    Hamiltonian[4][5] = f
-    Hamiltonian[5][4] = np.conj(f)
-    Hamiltonian[5][5] = np.exp(1j * phi) * fsec2 + np.exp(-1j * phi) * fsec1 + f2 + np.conj(f2) + Bz6
-
-    Hamiltonian[4][6] = xi - np.conj(xi)
-    Hamiltonian[5][7] = xi - np.conj(xi)
-
-    Hamiltonian[4][0] = np.conj(Hamiltonian[0][4])
-    Hamiltonian[5][1] = np.conj(Hamiltonian[1][5])
-    Hamiltonian[6][2] = np.conj(Hamiltonian[2][6])
-    Hamiltonian[7][3] = np.conj(Hamiltonian[3][7])
-
-    Hamiltonian[6][4] = -xi + np.conj(xi)
-    Hamiltonian[7][5] = -xi + np.conj(xi)
-
-    Hamiltonian[6][6] = np.exp(1j * phi) * fsec1 + np.exp(-1j * phi) * fsec2 + f2 + np.conj(f2) + Bz7
-    Hamiltonian[6][7] = f
-    Hamiltonian[7][6] = np.conj(f)
-    Hamiltonian[7][7] = np.exp(1j * phi) * fsec2 + np.exp(-1j * phi) * fsec1 + f2 + np.conj(f2) + Bz8
-
-    # Zeeman contribution
-
-    Bx, By, Bz = 0, 0, 6
-
-    for i in range(4):
-
-        Hamiltonian[i][i] += Bz
-        Hamiltonian[i+4][i+4] -= Bz
-        Hamiltonian[i+4][i] += (Bx - 1j*By)
-        Hamiltonian[i][i+4] += (Bx + 1j*By)
+    # Hamiltonian[0][3] = np.conj(-t * np.exp(1j * k.dot(delta[0, :])))
+    # Hamiltonian[1][2] = np.conj(-t * np.exp(1j * k.dot(delta[0, :])))
+    # Hamiltonian[2][1] = -t * np.exp(1j * k.dot(delta[0, :]))
+    # Hamiltonian[3][0] = -t * np.exp(1j * k.dot(delta[0, :]))
+    #
+    # Hamiltonian[2][2] = 0
+    # Hamiltonian[2][3] = np.conj(- t * np.exp(1j * k.dot(delta[1, :])) + - t * np.exp(1j * k.dot(delta[2, :])))
+    # Hamiltonian[3][2] = - t * np.exp(1j * k.dot(delta[1, :])) + - t * np.exp(1j * k.dot(delta[2, :]))
+    # Hamiltonian[3][3] = 0
 
     return Hamiltonian
 
@@ -234,12 +161,6 @@ def amp(vec, character):
     if character == 'site':
         for component in A_sites:
             amplitude += abs(vec[component]) ** 2
-    elif character == 'orbital':
-        for component in x_sites:
-            amplitude += abs(vec[component]) ** 2
-    elif character == 'spin':
-        for component in up_sites:
-            amplitude += abs(vec[component]) ** 2
 
     return amplitude
 
@@ -260,14 +181,10 @@ def write_eigensystem(file, count, k, eigval):
     for band in range(num_bands):
         file.write("{} ".format(eigval[band, count]))
     for band in range(num_bands):
-        file.write("{} ".format(amp(eigvec[:, band], 'site')))
-    for band in range(num_bands):
-        file.write("{} ".format(amp(eigvec[:, band], 'orbital')))
-    for band in range(num_bands):
         if band == num_bands - 1:
-            file.write("{}\n".format(amp(eigvec[:, band], 'spin')))
+            file.write("{}\n".format(amp(eigvec[:, band], 'site')))
         else:
-            file.write("{} ".format(amp(eigvec[:, band], 'spin')))
+            file.write("{} ".format(amp(eigvec[:, band], 'site')))
 
     return eigval[:, count]
 
