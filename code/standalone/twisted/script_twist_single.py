@@ -1,15 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
-import matplotlib.gridspec as gridspec
 
 
 q = 199  # prime > 7
 
 
-def matrix_eigenvalues(p, M, t2):
+def matrix_eigenvalues(p, M):
 
-    t1 = 1 - t2
+    t1, t2 = 0.5, 0.5
     k = [0, 0]
     a = 1
     c = np.sqrt(3) * a / 6
@@ -25,10 +24,10 @@ def matrix_eigenvalues(p, M, t2):
                      + 2 * np.cos(2 * np.pi * phi * (m + 3 / 2) + 6 * k[1] * c) + 3)
 
     def B(phi, m):
-        return t1 * (2*np.exp(1j * np.pi*phi/3)*np.cos(np.pi*phi*(m+1/2)+3*k[1]*c))
+        return t1 * (2 * np.exp(1j * np.pi * phi / 3) * np.cos(np.pi * phi * (m + 1 / 2) + 3 * k[1] * c))
 
     def C(phi):
-        return t1 * np.exp(1j*np.pi*phi/3)
+        return t1 * np.exp(1j * np.pi * phi / 3)
 
     def D(phi, m):
         return t2 * (2 * np.cos(np.pi * phi * (m - 5 / 2) + 3 * k[1] * c)
@@ -101,9 +100,7 @@ def matrix_eigenvalues(p, M, t2):
 
 if __name__ == '__main__':
 
-    values0 = []
-    values1 = []
-    values2 = []
+    values = []
 
     for p in range(q):
         if p % 2 == 0:
@@ -113,57 +110,20 @@ if __name__ == '__main__':
 
         alpha = float(p/q)
         alpha_list = [alpha for i in range(2*M)]
-        eigenvalues0 = matrix_eigenvalues(p, M, 0)
-        values0.append((eigenvalues0, alpha_list))
-        eigenvalues1 = matrix_eigenvalues(p, M, 0.5)
-        values1.append((eigenvalues1, alpha_list))
-        eigenvalues2 = matrix_eigenvalues(p, M, 1)
-        values2.append((eigenvalues2, alpha_list))
+        eigenvalues = matrix_eigenvalues(p, M)
+        values.append((eigenvalues, alpha_list))
 
     ##########
     # Figure #
     ##########
 
     fig = plt.figure()
+    ax = plt.subplot(1, 1, 1)
+    for eigenvalues, alphas in values:
+        ax.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
 
-    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
-
-    ax0 = plt.subplot(gs[0])
-    ax0.tick_params('x', direction='in', bottom=True)
-
-    for eigenvalues, alphas in values0:
-        ax0.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
-
-    ax1 = plt.subplot(gs[1], sharex=ax0)
-    ax1.tick_params('x', direction='in', bottom=True)
-
-    for eigenvalues, alphas in values1:
-        ax1.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
-
-    plt.setp(ax0.get_xticklabels(), visible=False)
-
-    ax2 = plt.subplot(gs[2], sharex=ax0)
-
-    for eigenvalues, alphas in values2:
-        ax2.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
-
-    plt.setp(ax1.get_xticklabels(), visible=False)
-
-    ax0.axvline(1/3, color='k', linewidth=0.5, ls="--")
-    ax0.axvline(2/3, color='k', linewidth=0.5, ls="--")
-    ax1.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
-    ax1.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
-    ax2.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
-    ax2.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
-
-    gs.update(hspace=0)
-
-    ax0.set_xlim([0, 1])
-    ax2.set_xlabel('$\phi$')
-    ax1.set_ylabel('$E$ / meV')
-
-    #ax0.text(0.4, 4.5, '(a) $t_2 = 0$', fontsize=10)
-    #ax1.text(0.4, 7, '(b) $t_2 = 0.5$', fontsize=10)
-    #ax2.text(0.4, 9.5, '(c) $t_2 = 1$', fontsize=10)
+    ax.set_xlim([0, 1])
+    ax.set_xlabel('$\phi$')
+    ax.set_ylabel('$E$ / meV')
 
     plt.show()

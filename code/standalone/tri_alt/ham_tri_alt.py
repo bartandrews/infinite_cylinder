@@ -1,13 +1,10 @@
-"""Based on: Energy Spectrum of a Triangular Lattice in a Uniform Magnetic Field:
-Effect of Next-Nearest-Neighbor Hopping"""
-
 from mpl_toolkits.mplot3d import axes3d, Axes3D
 import matplotlib.pyplot as plt
 import numpy as np
 
 
-p = 2
-q = 5
+p = 1
+q = 2
 
 
 def hamiltonian(k, M):
@@ -25,7 +22,7 @@ def hamiltonian(k, M):
     def B(k, phi, m):
         return 2 * t * np.cos(np.pi * phi * (m + 1 / 2) - k[1] * (np.sqrt(3)/2))
 
-    def D(k, phi, m):
+    def C(k, phi, m):
         return 2 * tdash * np.cos(np.pi * phi * (m + 1 / 2) - k[1] * (np.sqrt(3)/2))
 
     def delta(k, M):
@@ -40,21 +37,21 @@ def hamiltonian(k, M):
         matrix[i, i + 2] = t
         matrix[i + 2, i] = t
     for i in range(M - 3):
-        matrix[i, i + 3] = D(k, alpha, i + 2)
-        matrix[i + 3, i] = D(k, alpha, i + 2)
+        matrix[i, i + 3] = C(k, alpha, i + 2)
+        matrix[i + 3, i] = C(k, alpha, i + 2)
 
     # top-right
-    matrix[0][M - 3] = D(k, alpha, M - 1) * np.exp(-1j * delta(k, M))
-    matrix[1][M - 2] = D(k, alpha, M) * np.exp(-1j * delta(k, M))
-    matrix[2][M - 1] = D(k, alpha, 1) * np.exp(-1j * delta(k, M))
+    matrix[0][M - 3] = C(k, alpha, M - 1) * np.exp(-1j * delta(k, M))
+    matrix[1][M - 2] = C(k, alpha, M) * np.exp(-1j * delta(k, M))
+    matrix[2][M - 1] = C(k, alpha, 1) * np.exp(-1j * delta(k, M))
     matrix[0][M - 2] = t * np.exp(-1j * delta(k, M))
     matrix[1][M - 1] = t * np.exp(-1j * delta(k, M))
     matrix[0][M - 1] = B(k, alpha, M) * np.exp(-1j * delta(k, M))
 
     # bottom-left
-    matrix[M - 3][0] = D(k, alpha, M - 1) * np.exp(1j * delta(k, M))
-    matrix[M - 2][1] = D(k, alpha, M) * np.exp(1j * delta(k, M))
-    matrix[M - 1][2] = D(k, alpha, 1) * np.exp(1j * delta(k, M))
+    matrix[M - 3][0] = C(k, alpha, M - 1) * np.exp(1j * delta(k, M))
+    matrix[M - 2][1] = C(k, alpha, M) * np.exp(1j * delta(k, M))
+    matrix[M - 1][2] = C(k, alpha, 1) * np.exp(1j * delta(k, M))
     matrix[M - 2][0] = t * np.exp(1j * delta(k, M))
     matrix[M - 1][1] = t * np.exp(1j * delta(k, M))
     matrix[M - 1][0] = B(k, alpha, M) * np.exp(1j * delta(k, M))
@@ -125,43 +122,43 @@ if __name__ == '__main__':
 
     berry_flux_matrix = np.zeros((M, numb_samples - 1, numb_samples - 1))
 
-    for band in range(M):
-        for idx_x in range(numb_samples-1):
-            for idx_y in range(numb_samples-1):
-                berry_flux_matrix[band, idx_x, idx_y] = berry_curv(eigenvectors[:, band, idx_x, idx_y],
-                                                                   eigenvectors[:, band, idx_x + 1, idx_y],
-                                                                   eigenvectors[:, band, idx_x, idx_y + 1],
-                                                                   eigenvectors[:, band, idx_x + 1, idx_y + 1])
+    # for band in range(M):
+    #     for idx_x in range(numb_samples-1):
+    #         for idx_y in range(numb_samples-1):
+    #             berry_flux_matrix[band, idx_x, idx_y] = berry_curv(eigenvectors[:, band, idx_x, idx_y],
+    #                                                                eigenvectors[:, band, idx_x + 1, idx_y],
+    #                                                                eigenvectors[:, band, idx_x, idx_y + 1],
+    #                                                                eigenvectors[:, band, idx_x + 1, idx_y + 1])
 
-    # band0 = 0
-    # band1 = 1
-    #
-    # for idx_x in range(numb_samples - 1):
-    #     for idx_y in range(numb_samples - 1):
-    #         berry_flux_matrix[band0, idx_x, idx_y] = multi_berry_curv(eigenvectors[:, band0, idx_x, idx_y],
-    #                                                               eigenvectors[:, band0, idx_x + 1, idx_y],
-    #                                                               eigenvectors[:, band0, idx_x, idx_y + 1],
-    #                                                               eigenvectors[:, band0, idx_x + 1, idx_y + 1],
-    #                                                               eigenvectors[:, band1, idx_x, idx_y],
-    #                                                               eigenvectors[:, band1, idx_x + 1, idx_y],
-    #                                                               eigenvectors[:, band1, idx_x, idx_y + 1],
-    #                                                               eigenvectors[:, band1, idx_x + 1, idx_y + 1])
-    #         berry_flux_matrix[band1, idx_x, idx_y] = berry_flux_matrix[band0, idx_x, idx_y]
-    #
-    # band2 = 2
-    # band3 = 3
-    #
-    # for idx_x in range(numb_samples - 1):
-    #     for idx_y in range(numb_samples - 1):
-    #         berry_flux_matrix[band2, idx_x, idx_y] = multi_berry_curv(eigenvectors[:, band2, idx_x, idx_y],
-    #                                                                   eigenvectors[:, band2, idx_x + 1, idx_y],
-    #                                                                   eigenvectors[:, band2, idx_x, idx_y + 1],
-    #                                                                   eigenvectors[:, band2, idx_x + 1, idx_y + 1],
-    #                                                                   eigenvectors[:, band3, idx_x, idx_y],
-    #                                                                   eigenvectors[:, band3, idx_x + 1, idx_y],
-    #                                                                   eigenvectors[:, band3, idx_x, idx_y + 1],
-    #                                                                   eigenvectors[:, band3, idx_x + 1, idx_y + 1])
-    #         berry_flux_matrix[band3, idx_x, idx_y] = berry_flux_matrix[band2, idx_x, idx_y]
+    band0 = 0
+    band1 = 1
+
+    for idx_x in range(numb_samples - 1):
+        for idx_y in range(numb_samples - 1):
+            berry_flux_matrix[band0, idx_x, idx_y] = multi_berry_curv(eigenvectors[:, band0, idx_x, idx_y],
+                                                                  eigenvectors[:, band0, idx_x + 1, idx_y],
+                                                                  eigenvectors[:, band0, idx_x, idx_y + 1],
+                                                                  eigenvectors[:, band0, idx_x + 1, idx_y + 1],
+                                                                  eigenvectors[:, band1, idx_x, idx_y],
+                                                                  eigenvectors[:, band1, idx_x + 1, idx_y],
+                                                                  eigenvectors[:, band1, idx_x, idx_y + 1],
+                                                                  eigenvectors[:, band1, idx_x + 1, idx_y + 1])
+            berry_flux_matrix[band1, idx_x, idx_y] = berry_flux_matrix[band0, idx_x, idx_y]
+
+    band2 = 2
+    band3 = 3
+
+    for idx_x in range(numb_samples - 1):
+        for idx_y in range(numb_samples - 1):
+            berry_flux_matrix[band2, idx_x, idx_y] = multi_berry_curv(eigenvectors[:, band2, idx_x, idx_y],
+                                                                      eigenvectors[:, band2, idx_x + 1, idx_y],
+                                                                      eigenvectors[:, band2, idx_x, idx_y + 1],
+                                                                      eigenvectors[:, band2, idx_x + 1, idx_y + 1],
+                                                                      eigenvectors[:, band3, idx_x, idx_y],
+                                                                      eigenvectors[:, band3, idx_x + 1, idx_y],
+                                                                      eigenvectors[:, band3, idx_x, idx_y + 1],
+                                                                      eigenvectors[:, band3, idx_x + 1, idx_y + 1])
+            berry_flux_matrix[band3, idx_x, idx_y] = berry_flux_matrix[band2, idx_x, idx_y]
 
     chern_numbers = np.zeros(M)
 
