@@ -58,4 +58,5 @@ if __name__ == '__main__':
 
     ax.set_aspect('equal', adjustable='box')
 
+    plt.savefig('bz_tight.pdf', bbox_inches='tight', pad_inches=0)
     plt.show()

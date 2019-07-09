@@ -132,20 +132,20 @@ if __name__ == '__main__':
     ax0.tick_params('x', direction='in', bottom=True)
 
     for eigenvalues, alphas in values0:
-        ax0.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
+        ax0.plot(alphas, eigenvalues, '.', color='red', markersize=1.8)
 
     ax1 = plt.subplot(gs[1], sharex=ax0)
     ax1.tick_params('x', direction='in', bottom=True)
 
     for eigenvalues, alphas in values1:
-        ax1.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
+        ax1.plot(alphas, eigenvalues, '.', color='violet', markersize=1.8)
 
     plt.setp(ax0.get_xticklabels(), visible=False)
 
     ax2 = plt.subplot(gs[2], sharex=ax0)
 
     for eigenvalues, alphas in values2:
-        ax2.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
+        ax2.plot(alphas, eigenvalues, '.', color='blue', markersize=1.8)
 
     plt.setp(ax1.get_xticklabels(), visible=False)
 

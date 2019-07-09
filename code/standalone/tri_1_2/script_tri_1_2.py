@@ -11,21 +11,23 @@ q = 199  # prime > 7
 
 def matrix_eigenvalues(p, M):
 
-    t = 0
-    tdash = 1
-
-    matrix = np.zeros(shape=(M, M))
-
+    t, tdash = 0, 1
+    k = [0, 0]
+    a = 1
+    c = np.sqrt(3) * a / 2
+    delta = k[0] * M * a / 2
     alpha = float(p/q)
 
+    matrix = np.zeros(shape=(M, M), dtype=np.complex128)
+
     def A(phi, m):
-        return 2 * tdash * np.cos(2 * np.pi * phi * m)
+        return 2 * tdash * np.cos(2 * np.pi * phi * m - 2 * k[1] * c)
 
     def B(phi, m):
-        return 2 * t * np.cos(np.pi * phi * (m + 1/2))  # correction: (m + 1/2)
+        return 2 * t * np.cos(np.pi * phi * (m + 1/2) - k[1] * c)  # correction: (m + 1/2)
 
     def D(phi, m):
-        return 2 * tdash * np.cos(np.pi * phi * (m + 1/2))  # correction: (m + 1/2)
+        return 2 * tdash * np.cos(np.pi * phi * (m + 1/2) - k[1] * c)  # correction: (m + 1/2)
 
     for i in range(M):
         matrix[i][i] = A(alpha, i+1)
@@ -40,20 +42,20 @@ def matrix_eigenvalues(p, M):
         matrix[i + 3, i] = D(alpha, i+2)
 
     # top-right
-    matrix[0][M - 3] = D(alpha, M - 1)
-    matrix[1][M - 2] = D(alpha, M)
-    matrix[2][M - 1] = D(alpha, 1)
-    matrix[0][M - 2] = t
-    matrix[1][M - 1] = t
-    matrix[0][M - 1] = B(alpha, M)
+    matrix[0][M - 3] = D(alpha, M - 1) * np.exp(-1j * delta)
+    matrix[1][M - 2] = D(alpha, M) * np.exp(-1j * delta)
+    matrix[2][M - 1] = D(alpha, 1) * np.exp(-1j * delta)
+    matrix[0][M - 2] = t * np.exp(-1j * delta)
+    matrix[1][M - 1] = t * np.exp(-1j * delta)
+    matrix[0][M - 1] = B(alpha, M) * np.exp(-1j * delta)
 
     # bottom-left
-    matrix[M - 3][0] = D(alpha, M - 1)
-    matrix[M - 2][1] = D(alpha, M)
-    matrix[M - 1][2] = D(alpha, 1)
-    matrix[M - 2][0] = t
-    matrix[M - 1][1] = t
-    matrix[M - 1][0] = B(alpha, M)
+    matrix[M - 3][0] = D(alpha, M - 1) * np.exp(1j * delta)
+    matrix[M - 2][1] = D(alpha, M) * np.exp(1j * delta)
+    matrix[M - 1][2] = D(alpha, 1) * np.exp(1j * delta)
+    matrix[M - 2][0] = t * np.exp(1j * delta)
+    matrix[M - 1][1] = t * np.exp(1j * delta)
+    matrix[M - 1][0] = B(alpha, M) * np.exp(1j * delta)
 
     return np.real(np.linalg.eigvals(matrix))
 
