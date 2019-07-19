@@ -29,7 +29,7 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
         if phi_ext != phi_min:
-            del engine.DMRG_params['chi_list']
+            # del engine.DMRG_params['chi_list']
             M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
             engine.init_env(model=M)
         engine.run()

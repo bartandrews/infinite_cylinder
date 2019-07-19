@@ -73,15 +73,25 @@ if __name__ == '__main__':
 
     for band in range(q):
         for i in range(numb_samples):
-            kx = np.pi*(-1 + i * 2/(numb_samples-1))
+            #kx = np.pi*(-1 + i * 2/(numb_samples-1))
+            kx = (2 * np.pi) * (i / (numb_samples - 1))
             for j in range(numb_samples):
-                ky = (np.pi/q)*(-1 + j * 2/(numb_samples-1))
+                #ky = (np.pi/q)*(-1 + j * 2/(numb_samples-1))
+                ky = (2 * np.pi / q) * (j / (numb_samples - 1))
                 eigvals, eigvecs = np.linalg.eig(hamiltonian([kx, ky], 1/q, q))
                 idx = np.argsort(eigvals)
                 eigenvalues[band][i][j] = np.real(eigvals[idx[band]])
                 eigenvectors[:, band, i, j] = eigvecs[:, idx[band]]
 
     berry_flux_matrix = np.zeros((q, numb_samples - 1, numb_samples - 1))
+
+    # for band in range(q):
+    #     for idx_x in range(numb_samples-1):
+    #         for idx_y in range(numb_samples-1):
+    #             berry_flux_matrix[band, idx_x, idx_y] = berry_curv(eigenvectors[:, band, idx_x, idx_y],
+    #                                                                eigenvectors[:, band, idx_x + 1, idx_y],
+    #                                                                eigenvectors[:, band, idx_x, idx_y + 1],
+    #                                                                eigenvectors[:, band, idx_x + 1, idx_y + 1])
 
     for band in [0, 1, 4, 5]:
         for idx_x in range(numb_samples-1):
@@ -134,3 +144,25 @@ if __name__ == '__main__':
     ax.set_zlabel('E')
 
     plt.show()
+
+    ######################################################
+    # Berry fluxes along Wilson loops in the y direction #
+    ######################################################
+
+    # wl_berry_flux = np.ones((q, numb_samples), dtype=np.complex128)
+    # hwcc = np.zeros((q, numb_samples))
+    #
+    # for band in [0, 1, 2, 3, 4]:
+    #     for idx_x in range(numb_samples):
+    #         for idx_y in range(numb_samples - 1):
+    #             wl_berry_flux[band, idx_x] *= \
+    #                 np.conj(eigenvectors[:, band, idx_x, idx_y]).dot(eigenvectors[:, band, idx_x, idx_y + 1])
+    #             hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_x]))
+    #             print(band, hwcc[band, idx_x])
+    #
+    # fig, ax = plt.subplots()
+    #
+    # t = np.arange(0, numb_samples, 1)
+    # ax.plot(t, hwcc[0, :])
+    #
+    # plt.show()

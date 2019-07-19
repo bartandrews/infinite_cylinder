@@ -73,10 +73,11 @@ if __name__ == '__main__':
     fig = plt.figure()
     ax = plt.subplot(1, 1, 1)
     for eigenvalues, alphas in values:
-        ax.plot(alphas, eigenvalues, '.', color='r', markersize=1.8)
+        ax.plot(alphas, eigenvalues, '.', color='r', markersize=0.5)
 
     ax.set_xlim([0, 1])
     ax.set_xlabel('$\phi$')
     ax.set_ylabel('$E$ / meV')
 
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1.png", bbox_inches='tight', dpi=300)
     plt.show()

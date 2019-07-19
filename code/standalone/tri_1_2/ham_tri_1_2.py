@@ -20,7 +20,7 @@ def hamiltonian(k, M):
 
     t, tdash = 0, 1
     a = 1
-    c = np.sqrt(3) * a / 2  # ... / 6
+    c = np.sqrt(3) * a / 6  # ... / 6
     delta = 1 * k[0] * M * a / 2  # 3 * ...
     alpha = float(p / q)
 
@@ -254,14 +254,55 @@ if __name__ == '__main__':
 
     E = np.zeros(M, dtype=object)
 
+    # color index
+    colors = plt.cm.RdBu_r(np.linspace(0, 1, M))
+
     for i in range(M):
         E[i] = eigenvalues[i, KX, KY]
-        ax.plot_surface(KX, KY, E[i])
+        ax.plot_surface(KX, KY, E[i], color=colors[i])
+
+    ########################
+    # Band touching report #
+    ########################
+
+    # Using maxima and minima
+
+    maxima = np.zeros(M)
+    minima = np.zeros(M)
+    for i in range(M):
+        maxima[i] = np.max(E[i])
+        minima[i] = np.min(E[i])
+
+    gap = np.zeros(M - 1)
+    for i in range(M - 1):
+        gap[i] = minima[i + 1] - maxima[i]
+
+    for i in range(len(gap)):
+        if gap[i] < 1e-5:
+            print("Bands", i + 1, "and", i + 2, "have overlapping extrema.")
+    print(gap)
+
+    # Using robust method
+
+    threshold = 1e-5
+
+    for i in range(M - 1):
+        for kx in idx_x:
+            for ky in idx_y:
+                if abs(eigenvalues[i, kx, ky] - eigenvalues[i + 1, kx, ky]) < threshold:
+                    print("Bands", i + 1, "and", i + 2, "touch within a threshold of", threshold)
+                    break
+            if abs(eigenvalues[i, kx, ky] - eigenvalues[i + 1, kx, ky]) < threshold:
+                break
+
+    ########################
 
     ax.set_aspect('equal', adjustable='box')
 
-    ax.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=14)
-    ax.set_ylabel('$k_y / |\mathbf{B}_2|$', fontsize=14)
+    ax.tick_params(axis='x', which='major', pad=0.5)
+
+    ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=14, linespacing=0.3)
+    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=14, linespacing=1.5)
     ax.set_zlabel('$E$ / meV', fontsize=14)
 
     def custom(value, tick_number):
@@ -286,7 +327,7 @@ if __name__ == '__main__':
         start = -0.05
         stop = 0.03
         interval = (stop-start)/(3-1)
-        ax.text2D(-0.12, start+(i/3)*interval, "$C_{{{:2d}+{:2d}+{:2d}}}={:2d}$".format(i+1, i+2, i+3, int(round(chern_numbers[i]))), color="k", fontsize=14)
+        ax.text2D(-0.12, start+(i/3)*interval, "$C_{{{:2d},{:2d},{:2d}}}={:2d}$".format(i+1, i+2, i+3, int(round(chern_numbers[i]))), color="k", fontsize=14)
 
     ax.text2D(-0.107, 0.07, "(b) $\phi={}/{}$".format(p, q), color="k", fontsize=18)
 
@@ -297,4 +338,5 @@ if __name__ == '__main__':
     # plt.rc('xtick', labelsize=20)
     # plt.rc('ytick', labelsize=20)
 
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/tri_2_bands_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
     plt.show()

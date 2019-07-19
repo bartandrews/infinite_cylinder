@@ -132,20 +132,20 @@ if __name__ == '__main__':
     ax0.tick_params('x', direction='in', bottom=True)
 
     for eigenvalues, alphas in values0:
-        ax0.plot(alphas, eigenvalues, '.', color='red', markersize=1.8)
+        ax0.plot(alphas, eigenvalues, '.', color='red', markersize=0.2)
 
     ax1 = plt.subplot(gs[1], sharex=ax0)
     ax1.tick_params('x', direction='in', bottom=True)
 
     for eigenvalues, alphas in values1:
-        ax1.plot(alphas, eigenvalues, '.', color='violet', markersize=1.8)
+        ax1.plot(alphas, eigenvalues, '.', color='violet', markersize=0.2)
 
     plt.setp(ax0.get_xticklabels(), visible=False)
 
     ax2 = plt.subplot(gs[2], sharex=ax0)
 
     for eigenvalues, alphas in values2:
-        ax2.plot(alphas, eigenvalues, '.', color='blue', markersize=1.8)
+        ax2.plot(alphas, eigenvalues, '.', color='blue', markersize=0.2)
 
     plt.setp(ax1.get_xticklabels(), visible=False)
 
@@ -160,10 +160,17 @@ if __name__ == '__main__':
 
     ax0.set_xlim([0, 1])
     ax2.set_xlabel('$\phi$')
+    ax0.set_ylabel('$E$ / meV')
     ax1.set_ylabel('$E$ / meV')
+    ax2.set_ylabel('$E$ / meV')
+
+    plt.text(-0.12, 32, "(a)", fontsize=12)
+    plt.text(-0.12, 19, "(b)", fontsize=12)
+    plt.text(-0.12, 6, "(c)", fontsize=12)
 
     #ax0.text(0.4, 4.5, '(a) $t_2 = 0$', fontsize=10)
     #ax1.text(0.4, 7, '(b) $t_2 = 0.5$', fontsize=10)
     #ax2.text(0.4, 9.5, '(c) $t_2 = 1$', fontsize=10)
 
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/twist_triple.png", bbox_inches='tight', dpi=300)
     plt.show()

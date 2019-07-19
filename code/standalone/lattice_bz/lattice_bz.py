@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     fig = plt.figure()
 
-    gs = gridspec.GridSpec(1, 2, width_ratios=[2, 1])
+    gs = gridspec.GridSpec(1, 2, width_ratios=[1.7, 1])
 
     ax = plt.subplot(gs[0])
 
@@ -58,11 +58,11 @@ if __name__ == '__main__':
             ax.arrow(xcoord, ycoord, avec[0, 0], -avec[0, 1], color='black', width=0.0001, ls='--', alpha=0.5)
 
 
-    ax.scatter(delta[:, 0], delta[:, 1], color='blue')
+    ax.scatter(delta[:, 0], delta[:, 1], color='blue', zorder=2)
     # ax.scatter(secondNN[0:3, 0], secondNN[0:3, 1], color='green')
     # ax.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='green', marker='x')
-    ax.scatter(fifthNN[0:3, 0], fifthNN[0:3, 1], color='red')
-    ax.scatter(fifthNN[3:6, 0], fifthNN[3:6, 1], color='red', marker='x')
+    ax.scatter(fifthNN[0:3, 0], fifthNN[0:3, 1], color='red', zorder=2)
+    ax.scatter(fifthNN[3:6, 0], fifthNN[3:6, 1], color='red', marker='x', zorder=2)
     ax.set_xlabel('$m$')
     ax.set_ylabel('$n$')
 
@@ -98,16 +98,23 @@ if __name__ == '__main__':
     ax.xaxis.set_major_formatter(plt.FuncFormatter(xformat))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(yformat))
 
-    triangle1 = Polygon(((0, 0), (avec[0, 0], avec[0, 1]), (5*avec[0, 0], avec[0, 1]), (4*avec[0, 0], 0)),
-                        fc=(1, 1, 0, 0.2))
+    muc = Polygon(((0, 0), (avec[0, 0], avec[0, 1]), (5*avec[0, 0], avec[0, 1]), (4*avec[0, 0], 0)), fc=(1, 1, 0, 0.2))
 
-    ax.add_artist(triangle1)
+    uc = Polygon(((0, 0), (avec[0, 0], avec[0, 1]), (3 * avec[0, 0], avec[0, 1]), (2 * avec[0, 0], 0)), fill=False, ec='g')
+
+    ax.add_artist(muc)
+    ax.add_artist(uc)
 
     ax.set_aspect('equal', adjustable='box')
 
 ########################################################################################################################
 
     ax1 = plt.subplot(gs[1])
+
+    box = ax1.get_position()
+    box.y0 = box.y0 - 0.015
+    box.y1 = box.y1 - 0.015
+    ax1.set_position(box)
 
     ax1.grid(True)
     ax1.spines['left'].set_position('zero')
@@ -118,16 +125,15 @@ if __name__ == '__main__':
     ax1.arrow(0, 0, 3 * np.pi + 1, 0, color='k', head_width=0.1, length_includes_head=True)
     ax1.arrow(0, 0, 0, 4 * np.pi + 1, color='k', head_width=0.1, length_includes_head=True)
 
-    ax1.arrow(0, 0, np.pi, -np.pi, color='r', head_width=0.1, length_includes_head=True, ls="--")
-    ax1.arrow(0, 0, 2 * np.pi, 2 * np.pi, color='r', head_width=0.1, length_includes_head=True, ls="--")
+    ax1.arrow(0, 0, np.pi, -np.pi, color='r', head_width=0.1, length_includes_head=True, ls="--", zorder=3)
+    ax1.arrow(0, 0, 2 * np.pi, 2 * np.pi, color='r', head_width=0.1, length_includes_head=True, ls="--", zorder=3)
     ax1.plot([np.pi, 3 * np.pi], [-np.pi, np.pi], color='b', linestyle=':', linewidth=1)
     ax1.plot([2 * np.pi, 3 * np.pi], [2 * np.pi, np.pi], color='b', linestyle=':', linewidth=1)
 
     ax1.set_xlim([0 - 1, 3 * np.pi + 1])
     ax1.set_ylim([-np.pi - 1, 4 * np.pi + 1])
 
-    box = Polygon(((0, 0), (0, 4 * np.pi), (np.pi, 4 * np.pi), (np.pi, 0)),
-                  fc=(1, 1, 0, 0.2))
+    muc_r = Polygon(((0, 0), (0, 4 * np.pi), (0.5*np.pi, 4 * np.pi), (0.5*np.pi, 0)), fc=(1, 1, 0, 0.2))
 
     ax1.set_xticks(np.arange(0, 4 * np.pi, step=np.pi))
     ax1.set_yticks(np.arange(-np.pi, 5 * np.pi, step=np.pi))
@@ -157,13 +163,15 @@ if __name__ == '__main__':
     # ax.set_xlabel("x")
     # ax.set_ylabel("y")
 
-    ax1.add_artist(box)
+    ax1.add_artist(muc_r)
+
+    uc_r = Polygon(((0, 0), (0, 4 * np.pi), (np.pi, 4 * np.pi), (np.pi, 0)), fill=False, ec='g', zorder=2)
+    ax1.add_artist(uc_r)
 
     ax1.set_aspect('equal', adjustable='box')
 
-    plt.text(-31, 16, "(a)", fontsize=12)
-    plt.text(-3, 16, "(b)", fontsize=12)
+    plt.text(-27, 15, "(a)", fontsize=12)
+    plt.text(-3, 15, "(b)", fontsize=12)
 
-    plt.savefig('/home/bart/Documents/papers/TBG/figures/lattice_bz_tight.pdf', bbox_inches='tight', pad_inches=0)
-
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/lattice_bz.png", bbox_inches='tight', dpi=300)
     plt.show()

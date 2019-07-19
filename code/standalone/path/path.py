@@ -27,6 +27,5 @@ if __name__ == '__main__':
     ax.set_aspect('equal', adjustable='box')
     ax.axis('off')
 
-    plt.savefig('/home/bart/Documents/papers/TBG/figures/path_tight.pdf', bbox_inches='tight', pad_inches=0, transparent=True)
-
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/path.pdf", bbox_inches='tight', pad_inches=0, transparent=True, dpi=300)
     plt.show()

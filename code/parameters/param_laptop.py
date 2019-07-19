@@ -34,7 +34,7 @@ chi_max = 500
 chi_max_K = 500
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, U, V = -1, 0, 0, 1
+t, mu, U, V = -1, 0, 0, 0
 
 if model in ['FermionicHaldane']:
     U = 0

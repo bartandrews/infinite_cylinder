@@ -27,7 +27,7 @@ MM = np.array([0.5, 0.5])
 
 def hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 0.331, 0.01, 0
+    t1, t2, t2dash = 0.331, -0.01, 0
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -103,12 +103,12 @@ def hamiltonian(k, num_bands_1):
     return Hamiltonian
 
 
-def hamiltonian2(k, M):
+def hamiltonian2(k, M, p, q):
 
     t1, t2 = 0.331, -0.01
     a = 1
-    c = np.sqrt(3) * a / 6
-    eta = 3 * k[0] * M * a / 2
+    c = np.sqrt(3) * a / 6  # ... / 6
+    eta = 1 * k[0] * M * a / 2  # 3 * ...
     alpha = float(p / q)
 
     matrix = np.zeros(shape=(M, M), dtype=np.complex128)
@@ -150,27 +150,27 @@ def hamiltonian2(k, M):
         matrix[i + 6, i] = G(alpha, i + 3)
 
     # top-right
-    matrix[0][M - 1] = np.conj(B(alpha, M))
+    matrix[0][M - 1] = np.conj(B(alpha, M)) * np.exp(-1j * eta)
 
-    matrix[0][M - 2] = C(alpha)
-    matrix[1][M - 1] = C(alpha)
+    matrix[0][M - 2] = C(alpha) * np.exp(-1j * eta)
+    matrix[1][M - 1] = C(alpha) * np.exp(-1j * eta)
 
     matrix[0][M - 3] = D(alpha, M - 1) * np.exp(-1j * eta)
     matrix[1][M - 2] = D(alpha, M) * np.exp(-1j * eta)
     matrix[2][M - 1] = D(alpha, 1) * np.exp(-1j * eta)
 
-    matrix[0][M - 6] = G(alpha, M - 3)
-    matrix[1][M - 5] = G(alpha, M - 2)
-    matrix[2][M - 4] = G(alpha, M - 1)
-    matrix[3][M - 3] = G(alpha, M)
-    matrix[4][M - 2] = G(alpha, 1)
-    matrix[5][M - 1] = G(alpha, 2)
+    matrix[0][M - 6] = G(alpha, M - 3) * np.exp(-1j * eta)
+    matrix[1][M - 5] = G(alpha, M - 2) * np.exp(-1j * eta)
+    matrix[2][M - 4] = G(alpha, M - 1) * np.exp(-1j * eta)
+    matrix[3][M - 3] = G(alpha, M) * np.exp(-1j * eta)
+    matrix[4][M - 2] = G(alpha, 1) * np.exp(-1j * eta)
+    matrix[5][M - 1] = G(alpha, 2) * np.exp(-1j * eta)
 
     # bottom-left
     matrix[M - 1][0] = B(alpha, M) * np.exp(1j * eta)
 
-    matrix[M - 2][0] = np.conj(C(alpha))
-    matrix[M - 1][1] = np.conj(C(alpha))
+    matrix[M - 2][0] = np.conj(C(alpha)) * np.exp(1j * eta)
+    matrix[M - 1][1] = np.conj(C(alpha)) * np.exp(1j * eta)
 
     matrix[M - 3][0] = D(alpha, M - 1) * np.exp(1j * eta)
     matrix[M - 2][1] = D(alpha, M) * np.exp(1j * eta)
@@ -180,8 +180,8 @@ def hamiltonian2(k, M):
     matrix[M - 5][1] = G(alpha, M - 2) * np.exp(1j * eta)
     matrix[M - 4][2] = G(alpha, M - 1) * np.exp(1j * eta)
     matrix[M - 3][3] = G(alpha, M) * np.exp(1j * eta)
-    matrix[M - 2][4] = G(alpha, 1)
-    matrix[M - 1][5] = G(alpha, 2)
+    matrix[M - 2][4] = G(alpha, 1) * np.exp(1j * eta)
+    matrix[M - 1][5] = G(alpha, 2) * np.exp(1j * eta)
 
     return matrix
 
@@ -284,47 +284,52 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 2, 11
+    p, q = 12, 13
 
     if p % 2 == 0:
         M = q
     else:
         M = 2 * q
 
+    # reciprocal lattice vectors
+    b1_2 = (2. * np.pi / q) * np.array([1, -1 / np.sqrt(3)])
+    b2_2 = (2. * np.pi) * np.array([0, 2 / np.sqrt(3)])
+    bvec_2 = np.vstack((b1_2, b2_2))
+
     ####################################################################################################################
 
     count, nk = 0, 30
 
-    eigval_bands_2 = np.zeros((2*M, 3 * nk))
+    eigval_bands_2 = np.zeros((M, 3 * nk))
 
     for i in range(nk):
         k = K1 - K1 * float(i) / float(nk - 1)
         k = np.matmul(k, bvec)
-        eigvals = np.linalg.eigvals(hamiltonian2(k, M))
+        eigvals = np.linalg.eigvals(hamiltonian2(k, M, p, q))
         idx = np.argsort(eigvals)
         for band in range(M):
-            eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-            eigval_bands_2[M + band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
+            #eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
+            eigval_bands_2[(M-1) - band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
         count += 1
 
     for i in range(nk):
         k = GA + (MM - GA) * float(i) / float(nk - 1)
         k = np.matmul(k, bvec)
-        eigvals = np.linalg.eigvals(hamiltonian2(k, M))
+        eigvals = np.linalg.eigvals(hamiltonian2(k, M, p, q))
         idx = np.argsort(eigvals)
         for band in range(M):
-            eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-            eigval_bands_2[M + band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
+            #eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
+            eigval_bands_2[(M-1) - band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
         count += 1
 
     for i in range(nk):
         k = MM + (K2 - MM) * float(i) / float(nk - 1)
         k = np.matmul(k, bvec)
-        eigvals = np.linalg.eigvals(hamiltonian2(k, M))
+        eigvals = np.linalg.eigvals(hamiltonian2(k, M, p, q))
         idx = np.argsort(eigvals)
         for band in range(M):
-            eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-            eigval_bands_2[M + band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
+            #eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
+            eigval_bands_2[(M-1) - band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
         count += 1
 
     ####################################################################################################################
@@ -332,7 +337,7 @@ if __name__ == '__main__':
     samples_x, samples_y = 101, 101
     max_idx_x, max_idx_y = samples_x - 1, samples_y - 1
 
-    energy_matrix_2 = np.zeros((2*M, samples_x, samples_y))
+    energy_matrix_2 = np.zeros((M, samples_x, samples_y))
     u_matrix_2 = np.zeros((M, M, samples_x, samples_y), dtype=np.complex128)
 
     for idx_x in range(samples_x):
@@ -350,14 +355,13 @@ if __name__ == '__main__':
             # else:
             #     k_u = np.matmul(np.array([frac_kx, frac_ky]), bvec)
 
-            k_u = np.matmul(np.array([frac_kx, frac_ky]), bvec)
+            k_u = np.matmul(np.array([frac_kx, frac_ky]), bvec_2)
 
-            eigvals, eigvecs = np.linalg.eig(hamiltonian2(k_u, M))
+            eigvals, eigvecs = np.linalg.eig(hamiltonian2(k_u, M, p, q))
             idx = np.argsort(eigvals)
             for band in range(M):
-                energy_matrix_2[band, idx_x, idx_y] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-                energy_matrix_2[M + band, idx_x, idx_y] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
-                u_matrix_2[:, band, idx_x, idx_y] = eigvecs[:, idx[band]]
+                energy_matrix_2[(M-1) - band, idx_x, idx_y] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
+                u_matrix_2[:, (M-1) - band, idx_x, idx_y] = eigvecs[:, idx[band]]
 
     berry_flux_matrix_2 = np.zeros((M, samples_x - 1, samples_y - 1))
 
@@ -372,6 +376,7 @@ if __name__ == '__main__':
     chern_numbers_2 = np.zeros(M)
     for band in range(M):
         chern_numbers_2[band] = np.sum(berry_flux_matrix_2[band, :, :]) / (2 * np.pi)
+        print("Chern number ( band", band, ") = ", chern_numbers_2[band])
 
     ##############
     # Final Plot #
@@ -382,25 +387,54 @@ if __name__ == '__main__':
     gs = gridspec.GridSpec(2, 2, width_ratios=[2, 1], height_ratios=[1, 1])
 
     ax0 = plt.subplot(gs[0])
+    ax4 = plt.subplot(gs[0])
 
     # color index
     # colors = plt.cm.RdBu_r(np.linspace(0, 1, 2))
     cidx = ['b', 'b', 'b', 'b', 'r', 'r', 'r', 'r']
 
     for nb in range(num_bands_1):
-        plt.scatter(np.linspace(0, 89, 90), eigval_bands_1[nb, :], c=cidx[nb])
+        plt.scatter(np.linspace(0, 89, 90), eigval_bands_1[nb, :], c=cidx[nb], s=0.5)
+    ax0.set_ylabel('$E$ / meV')
     ax0.axvline(30, color='k', linewidth=0.5)
     ax0.axvline(60, color='k', linewidth=0.5)
     ax0.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))
     plt.setp(ax0.get_xticklabels(), visible=False)
-    ax0.text(10, 0.1, '(a) $B_z=0$')
+    # ax0.text(10, 0.1, '(a) $B_z=0$')
 
-########################################################################################################################
+    ##################################################
+
+    left, bottom, width, height = [0.2, 0.6, 0.2, 0.2]
+    ax4 = fig.add_axes([left, bottom, width, height])
+
+    hexagon = Polygon(((-1, 0), (-0.5, np.sqrt(3) / 2), (0.5, np.sqrt(3) / 2), (1, 0), (0.5, -np.sqrt(3) / 2),
+                       (-0.5, -np.sqrt(3) / 2)), fc=(1, 1, 0.8, 1), ec="g", ls="-", lw=0.5)
+
+    ax4.add_artist(hexagon)
+
+    ax4.set_xlim([-1, 1])
+    ax4.set_ylim([-1, 1])
+
+    ax4.arrow(0.5, np.sqrt(3) / 2, -0.5, -np.sqrt(3) / 2, color='k', head_width=0.05, length_includes_head=True, lw=1)
+    ax4.arrow(0, 0, 3 / 4, np.sqrt(3) / 4, color='k', head_width=0.05, length_includes_head=True, lw=1)
+    ax4.arrow(3 / 4, np.sqrt(3) / 4, 0.25, -np.sqrt(3) / 4, color='k', head_width=0.05, length_includes_head=True, lw=1)
+
+    ax4.text(-0.1, 0, "Γ")
+    ax4.text(1 / 2, np.sqrt(3) / 2, "K")
+    ax4.text(3 / 4, np.sqrt(3) / 4, "M")
+    ax4.text(1, 0, "K'")
+
+    ax4.set_aspect('equal', adjustable='box')
+    ax4.axis('off')
+
+    # ax4.plot(range(6)[::-1], color='green')
+
+    ########################################################################################################################
 
     ax1 = plt.subplot(gs[1], sharey=ax0)
     n, bins, patches = ax1.hist(np.ndarray.flatten(energy_matrix_1), 100,
-                                density=False, facecolor='k', alpha=0.75, orientation='horizontal')
+                                density=False, orientation='horizontal', histtype='step', color='k',  lw=0.5)
     plt.setp(ax1.get_yticklabels(), visible=False)
     ax1.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xticks([1000, 2000], ["1000", "2000"])
@@ -413,30 +447,36 @@ if __name__ == '__main__':
     ax2 = plt.subplot(gs[2])
 
     # color index
-    colors = plt.cm.RdBu_r(np.linspace(0, 1, 2 * M))
-    cidx = np.zeros(2 * M, dtype=int)
-    for i in range(M):
-        cidx[i] = M + i
-        cidx[M + i] = (M - 1) - i
+    # colors = plt.cm.RdBu_r(np.linspace(0, 1, 2 * M))
+    # cidx = np.zeros(2 * M, dtype=int)
+    # for i in range(M):
+    #     cidx[i] = M + i
+    #     cidx[M + i] = (M - 1) - i
 
-    for nb in range(2*M):
-        plt.scatter(np.linspace(0, 89, 90), eigval_bands_2[nb, :], c=colors[cidx[nb]])
+    for nb in range(M):
+        plt.scatter(np.linspace(0, 89, 90), eigval_bands_2[nb, :], c='b', s=0.5)
     # ax2.set_xlabel('Path')
+    ax2.set_ylabel('$E$ / meV')
     ax2.axvline(30, color='k', linewidth=0.5)
     ax2.axvline(60, color='k', linewidth=0.5)
-    ax2.axhline(0, color='k', linewidth=0.5, ls='--')
+
+    for band in range(M):
+        ax2.text(band*int(90/12), eigval_bands_2[band, band*int(90/12)], "${}$".format(int(round(chern_numbers_2[band]))))
+
+    #ax2.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))
     plt.xticks([0, 30, 60, 89], ["K", "Γ", "M", "K'"])
-    ax2.text(10, 0.2, '(b) $B_z \\neq 0$')
+    #ax2.set_ylim([-5, 0])
+    # ax2.text(10, 0.2, '(b) $B_z \\neq 0$')
 
 ########################################################################################################################
 
     ax3 = plt.subplot(gs[3], sharey=ax2)
     n, bins, patches = ax3.hist(np.ndarray.flatten(energy_matrix_2), 100,
-                                density=False, facecolor='k', alpha=0.75, orientation='horizontal')
+                                density=False, orientation='horizontal', histtype='step', color='k', lw=0.5)
     plt.setp(ax3.get_yticklabels(), visible=False)
-    ax3.set_xlabel('# States')
-    ax3.axhline(0, color='k', linewidth=0.5, ls='--')
+    ax3.set_xlabel('DOS')
+    #ax3.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xticks([1000, 2000], ["1000", "2000"])
     plt.setp(ax3.get_xticklabels(), visible=False)
     plt.tick_params(
@@ -448,6 +488,10 @@ if __name__ == '__main__':
     gs.update(wspace=0)
     gs.update(hspace=0)
 
-    fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
+    fig.text(0.01, 0.87, "(a)", fontsize=12)
+    fig.text(0.01, 0.48, "(b)", fontsize=12)
 
+    # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
+
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/band_structure.png", bbox_inches='tight', dpi=300)
     plt.show()

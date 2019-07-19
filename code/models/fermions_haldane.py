@@ -24,7 +24,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
     def init_terms(self, model_params):
 
         t = get_parameter(model_params, 't', -1., self.name, True)
-        V = get_parameter(model_params, 'V', 1, self.name, True)
+        V = get_parameter(model_params, 'V', 0, self.name, True)
         mu = get_parameter(model_params, 'mu', 0., self.name, True)
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
@@ -34,7 +34,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
         for u in range(len(self.lat.unit_cell)):
 
             self.add_onsite(mu, 0, 'N', category='mu N')
-            self.add_onsite(-mu, 1, 'N', category='mu N')
+            self.add_onsite(-mu, 0, 'N', category='mu N')
 
         for u1, u2, dx in self.lat.nearest_neighbors:
 

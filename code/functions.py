@@ -13,6 +13,7 @@ from models.fermions_TBG5 import FermionicTBG5Model
 from models.fermions_TBG6 import FermionicTBG6Model
 
 from tenpy.algorithms import dmrg
+from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
 
 import sys
 import random
@@ -157,16 +158,16 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
 
     dmrg_params = {
         'mixer': True,  # setting this to True helps to escape local minima
-        'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
+        # 'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
         'trunc_params': {
-            # 'chi_max': chi_max,
+            'chi_max': chi_max,
             'svd_min': 1.e-10
         },
         # 'lanczos_params': {
         #     'reortho': True,
         #     'N_cache': 40
         # },
-        'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
+        # 'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
         'max_E_err': 1.e-10,
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,
@@ -176,7 +177,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         'N_sweeps_check': 10
     }
 
-    engine = dmrg.EngineCombine(psi, M, dmrg_params)
+    engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
 
     return engine
 
@@ -212,7 +213,7 @@ def define_iDMRG_spin_engine(model, lattice, initial_state, tile_unit, chi_max, 
         'N_sweeps_check': 10
     }
 
-    engine = dmrg.EngineCombine(psi, M, dmrg_params)
+    engine = dmrg.OneSiteDMRGEngine(psi, M, dmrg_params)
 
     return engine
 
