@@ -6,10 +6,10 @@ import matplotlib.gridspec as gridspec
 
 def hamiltonian(k, M, p, q):
 
-    t1, t2 = 0.5, 0.5
+    t1, t2, t2dash = 0.331, -0.01, 0.097
     a = 1
-    c = np.sqrt(3) * a / 6
-    eta = 1 * k[0] * M * a / 2
+    c = np.sqrt(3) * a / 6  # ... / 6
+    eta = 1 * k[0] * M * a / 2  # 3 * ...
     alpha = float(p / q)
 
     matrix = np.zeros(shape=(M, M), dtype=np.complex128)
@@ -17,7 +17,10 @@ def hamiltonian(k, M, p, q):
     def A(phi, m):
         return t2 * (2 * np.cos(4 * np.pi * phi * m + 12 * k[1] * c)
                      + 2 * np.cos(2 * np.pi * phi * (m - 3 / 2) + 6 * k[1] * c)
-                     + 2 * np.cos(2 * np.pi * phi * (m + 3 / 2) + 6 * k[1] * c) + 3)
+                     + 2 * np.cos(2 * np.pi * phi * (m + 3 / 2) + 6 * k[1] * c) + 3) \
+               + t2dash * (-2 * np.cos(4 * np.pi * phi * m + 12 * k[1] * c)
+                     - 2 * np.cos(2 * np.pi * phi * (m - 3 / 2) + 6 * k[1] * c)
+                     - 2 * np.cos(2 * np.pi * phi * (m + 3 / 2) + 6 * k[1] * c) - 9)
 
     def B(phi, m):
         return t1 * (2 * np.exp(1j * np.pi * phi / 3) * np.cos(np.pi * phi * (m + 1 / 2) + 3 * k[1] * c))
@@ -29,11 +32,17 @@ def hamiltonian(k, M, p, q):
         return t2 * (2 * np.cos(np.pi * phi * (m - 5 / 2) + 3 * k[1] * c)
                      + 2 * np.cos(np.pi * phi * (m + 7 / 2) + 3 * k[1] * c)
                      + 2 * np.cos(3 * np.pi * phi * (m - 1 / 2) + 9 * k[1] * c)
-                     + 2 * np.cos(3 * np.pi * phi * (m + 3 / 2) + 9 * k[1] * c))
+                     + 2 * np.cos(3 * np.pi * phi * (m + 3 / 2) + 9 * k[1] * c))\
+               + t2dash * (-2 * np.cos(np.pi * phi * (m - 5 / 2) + 3 * k[1] * c)
+                     - 2 * np.cos(np.pi * phi * (m + 7 / 2) + 3 * k[1] * c)
+                     - 2 * np.cos(3 * np.pi * phi * (m - 1 / 2) + 9 * k[1] * c)
+                     - 2 * np.cos(3 * np.pi * phi * (m + 3 / 2) + 9 * k[1] * c))
 
     def G(phi, m):
         return t2 * (2 * np.cos(2 * np.pi * phi * (m + 1) + 6 * k[1] * c)
-                     + 2 * np.cos(3 * np.pi * phi))
+                     + 2 * np.cos(3 * np.pi * phi))\
+               + t2dash * (-2 * np.cos(2 * np.pi * phi * (m + 1) + 6 * k[1] * c)
+                     - 2 * np.cos(3 * np.pi * phi))
 
     for i in range(M):
         matrix[i, i] = A(alpha, i + 1)
@@ -95,7 +104,7 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
     return bc
 
 
-numb_samples = 301
+numb_samples = 101
 
 if __name__ == '__main__':
 
@@ -105,8 +114,8 @@ if __name__ == '__main__':
     # System 1 #########################################################################################################
     ############
 
-    p1 = 2
-    q1 = 7
+    p1 = 12
+    q1 = 13
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -131,9 +140,9 @@ if __name__ == '__main__':
 
                 eigvals, eigvecs = np.linalg.eig(hamiltonian(k_u, M1, p1, q1))
                 idx = np.argsort(eigvals)
-                eigenvalues1[band][idx_x][idx_y] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-                eigenvalues1[M1 + band][idx_x][idx_y] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
-                eigenvectors1[:, band, idx_x, idx_y] = eigvecs[:, idx[band]]
+                # eigenvalues1[band][idx_x][idx_y] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
+                eigenvalues1[(M1-1) - band][idx_x][idx_y] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
+                eigenvectors1[:, (M1-1) - band, idx_x, idx_y] = eigvecs[:, idx[band]]
 
     berry_flux_matrix1 = np.zeros((M1, numb_samples - 1, numb_samples - 1))
 
@@ -194,7 +203,7 @@ if __name__ == '__main__':
 
     ax = plt.subplot(gs[0], projection='3d')
 
-    E1 = np.zeros(2*M1, dtype=object)
+    E1 = np.zeros(M1, dtype=object)
 
     # # color index
     # colors = plt.cm.RdBu_r(np.linspace(0, 1, 2 * M1))
@@ -203,7 +212,7 @@ if __name__ == '__main__':
     #     cidx[i] = M1 + i
     #     cidx[M1 + i] = (M1 - 1) - i
 
-    for i in range(2*M1):
+    for i in range(13):
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i])
 
@@ -213,7 +222,7 @@ if __name__ == '__main__':
 
     ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=14, linespacing=0.3)
     ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=14, linespacing=1.5)
-    ax.set_zlabel('$E$ / meV', fontsize=14)
+    ax.set_zlabel('\n$E$ / meV', fontsize=14, linespacing=1.5)
 
     def custom(value, tick_number):
 
@@ -227,12 +236,12 @@ if __name__ == '__main__':
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    for i in range(M1):
+    for i in range(13):
         start = -0.05
         stop = 0.03
-        interval = (stop - start) / (M1 - 1)
-        ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(i + 1, int(round(chern_numbers1[i]))),
-                  color='C{}'.format(i), fontsize=14)
+        interval = (stop - start) / (13 - 1)
+        ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
+                  color='C{}'.format(i % 10), fontsize=14)
 
     ax.text2D(-0.12, 0.09, "(a)                   $\phi={}/{}$".format(p1, q1), color="k", fontsize=18)
     ax.text2D(0.15, 0.09, "(b)", color="k", fontsize=18)
@@ -259,7 +268,7 @@ if __name__ == '__main__':
     ax1.tick_params(axis="x", labelsize=14)
     ax1.tick_params(axis="y", labelsize=14)
 
-    for band in range(M1):
+    for band in range(13):
         ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=0.5)
@@ -274,21 +283,21 @@ if __name__ == '__main__':
 
     ######
 
-    maxima1 = np.zeros(2 * M1)
-    minima1 = np.zeros(2 * M1)
-    for i in range(2 * M1):
+    maxima1 = np.zeros(M1)
+    minima1 = np.zeros(M1)
+    for i in range(M1):
         maxima1[i] = np.max(E1[i])
         minima1[i] = np.min(E1[i])
 
-    # band index
-    bidx1 = np.zeros(2 * M1, dtype=int)
-    for i in range(M1):
-        bidx1[i] = (2 * M1 - 1) - i
-        bidx1[M1 + i] = i
+    # # band index
+    # bidx1 = np.zeros(M1, dtype=int)
+    # for i in range(M1):
+    #     bidx1[i] = (2 * M1 - 1) - i
+    #     bidx1[M1 + i] = i
 
-    gap1 = np.zeros(2 * M1 - 1)
-    for i in range(2 * M1 - 1):
-        gap1[i] = minima1[bidx1[i + 1]] - maxima1[bidx1[i]]
+    gap1 = np.zeros(M1 - 1)
+    for i in range(M1 - 1):
+        gap1[i] = minima1[i + 1] - maxima1[i]
 
     for i in range(len(gap1)):
         if gap1[i] < threshold:
@@ -297,16 +306,16 @@ if __name__ == '__main__':
 
     ######
 
-    for i in range(2 * M1 - 1):
+    for i in range(M1 - 1):
         for kx in idx_x:
             for ky in idx_y:
-                if abs(eigenvalues1[bidx1[i], kx, ky] - eigenvalues1[bidx1[i + 1], kx, ky]) < threshold:
+                if abs(eigenvalues1[i, kx, ky] - eigenvalues1[i + 1, kx, ky]) < threshold:
                     print("I) Bands", i + 1, "and", i + 2, "touch within a threshold of", threshold)
                     break
-            if abs(eigenvalues1[bidx1[i], kx, ky] - eigenvalues1[bidx1[i + 1], kx, ky]) < threshold:
+            if abs(eigenvalues1[i, kx, ky] - eigenvalues1[i + 1, kx, ky]) < threshold:
                 break
 
     ############
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/twist_bands_pair.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair.png", bbox_inches='tight', dpi=300)
     plt.show()

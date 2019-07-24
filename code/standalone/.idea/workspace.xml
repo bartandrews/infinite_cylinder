@@ -2,24 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89024c43-e14f-41ad-9bbb-b9de2150dd7e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_haldane.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/fermions_haldane.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../parameters/param_laptop.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parameters/param_laptop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../phi_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/band_structure/band_structure.py" beforeDir="false" afterPath="$PROJECT_DIR$/band_structure/band_structure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hex_1/ham_hex_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/hex_1/ham_hex_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_1/ham_hex_1_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/hex_1/ham_hex_1_pair.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/hex_1/script_hex_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/hex_1/script_hex_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hex_5/ham_hex_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/hex_5/ham_hex_5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hex_5/script_hex_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/hex_5/script_hex_5.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/hofstadter/ham.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/lattice_bz/lattice_bz.py" beforeDir="false" afterPath="$PROJECT_DIR$/lattice_bz/lattice_bz.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/path/path.py" beforeDir="false" afterPath="$PROJECT_DIR$/path/path.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5/ham_hex_5_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/hex_5/ham_hex_5_pair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tri_1_2/script_tri_1_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/tri_1_2/script_tri_1_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/twist/ham_twist.py" beforeDir="false" afterPath="$PROJECT_DIR$/twist/ham_twist.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/twist/script_twist.py" beforeDir="false" afterPath="$PROJECT_DIR$/twist/script_twist.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/twist/script_twist_triple.py" beforeDir="false" afterPath="$PROJECT_DIR$/twist/script_twist_triple.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/twist/ham_twist_pair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_realistic_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/twist/ham_twist_realistic_pair.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -30,59 +20,46 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/twist/script_twist.py">
+        <entry file="file://$PROJECT_DIR$/hex_1/ham_hex_1_pair.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="127" column="6" selection-start-line="127" selection-start-column="6" selection-end-line="127" selection-end-column="6" />
+            <state relative-caret-position="270">
+              <caret line="81" column="16" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#1279#1473#0" />
+                <element signature="e#1587#2795#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/band_structure/band_structure.py">
+        <entry file="file://$PROJECT_DIR$/hex_1/script_hex_1.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="411" column="65" selection-start-line="411" selection-start-column="65" selection-end-line="411" selection-end-column="65" />
+            <state>
+              <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-690">
+              <caret line="241" column="39" selection-start-line="241" selection-start-column="39" selection-end-line="241" selection-end-column="39" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
+                <element signature="e#0#47#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/lattice_bz/lattice_bz.py">
+        <entry file="file://$PROJECT_DIR$/band_structure/complete_band_structure.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1275">
-              <caret line="60" column="63" selection-start-line="60" selection-start-column="63" selection-end-line="60" selection-end-column="63" />
+            <state relative-caret-position="150">
+              <caret line="548" column="100" selection-start-line="548" selection-start-column="100" selection-end-line="548" selection-end-column="100" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hex_1/ham_hex_1_pair.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="94" column="6" selection-start-line="94" selection-start-column="4" selection-end-line="97" selection-end-column="30" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/twist/ham_twist_realistic_pair.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="215" column="61" selection-start-line="215" selection-start-column="61" selection-end-line="215" selection-end-column="61" />
-              <folding>
-                <element signature="e#0#47#0" expanded="true" />
-                <element signature="e#174#3226#0" />
-                <element signature="e#3288#3482#0" />
               </folding>
             </state>
           </provider>
@@ -91,10 +68,22 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/path/path.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="19" selection-start-line="26" selection-start-column="4" selection-end-line="27" selection-end-column="18" />
+            <state relative-caret-position="315">
+              <caret line="21" column="38" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="24" selection-end-column="36" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/twist/ham_twist_pair.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="270">
+              <caret line="213" column="7" selection-start-line="213" selection-start-column="4" selection-end-line="215" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#47#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -142,23 +131,30 @@
         <option value="$PROJECT_DIR$/hex_5/ham_hex_5_double.py" />
         <option value="$PROJECT_DIR$/path/path.py" />
         <option value="$PROJECT_DIR$/twist/script_twist_triple.py" />
-        <option value="$PROJECT_DIR$/hex_1/script_hex_1.py" />
         <option value="$PROJECT_DIR$/hex_5/script_hex_5.py" />
-        <option value="$PROJECT_DIR$/tri_1_2/script_tri_1_2.py" />
         <option value="$PROJECT_DIR$/twist/ham_twist_double.py" />
         <option value="$PROJECT_DIR$/hofstadter/ham_backup.py" />
         <option value="$PROJECT_DIR$/hofstadter/ham2.py" />
         <option value="$PROJECT_DIR$/hofstadter/ham.py" />
-        <option value="$PROJECT_DIR$/hex_1/ham_hex_1_pair.py" />
         <option value="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_double.py" />
-        <option value="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py" />
-        <option value="$PROJECT_DIR$/hex_5/ham_hex_5_pair.py" />
-        <option value="$PROJECT_DIR$/twist/ham_twist_pair.py" />
         <option value="$PROJECT_DIR$/twist/ham_twist_realistic_double.py" />
         <option value="$PROJECT_DIR$/twist/script_twist.py" />
-        <option value="$PROJECT_DIR$/twist/ham_twist_realistic_pair.py" />
         <option value="$PROJECT_DIR$/band_structure/band_structure.py" />
         <option value="$PROJECT_DIR$/lattice_bz/lattice_bz.py" />
+        <option value="$PROJECT_DIR$/tri_1_2/script_tri_1_2.py" />
+        <option value="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py" />
+        <option value="$PROJECT_DIR$/twist/ham_twist_realistic_pair.py" />
+        <option value="$PROJECT_DIR$/hex_5/ham_hex_5_pair.py" />
+        <option value="$PROJECT_DIR$/twist/ham_twist_pair.py" />
+        <option value="$PROJECT_DIR$/hex_1/ham_hex_1_pair.py" />
+        <option value="$PROJECT_DIR$/hex_5_dash/script_hex_5_dash.py" />
+        <option value="$PROJECT_DIR$/hex_1/script_hex_1.py" />
+        <option value="$PROJECT_DIR$/hex_5_hex_5_dash/script_hex_5_hex_5_dash.py" />
+        <option value="$PROJECT_DIR$/complete_twist/script_complete_twist.py" />
+        <option value="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" />
+        <option value="$PROJECT_DIR$/complete_twist/script_complete_twist_triple.py" />
+        <option value="$PROJECT_DIR$/fidget_spinner/fidget_spinner.py" />
+        <option value="$PROJECT_DIR$/band_structure/complete_band_structure.py" />
       </list>
     </option>
   </component>
@@ -184,12 +180,67 @@
             <path>
               <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="band_structure" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="bz" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="complete_twist" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="fidget_spinner" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="hex_1" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="hex_5" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="hex_5_dash" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="hex_5_hex_5_dash" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="hofstadter" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="lattice_bz" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
             <path>
               <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
               <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
               <item name="path" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="tri_1_2" type="9f88c78c:ScopeViewTreeModel$FileNode" />
+            </path>
+            <path>
+              <item name="standalone" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="~/PycharmProjects/infinite_cylinder/code/standalone" type="442cc68d:ScopeViewTreeModel$RootNode" />
+              <item name="twist" type="9f88c78c:ScopeViewTreeModel$FileNode" />
             </path>
           </expand>
           <select />
@@ -214,8 +265,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.lattice_bz">
-    <configuration name="band_structure" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.complete_band_structure">
+    <configuration name="complete_band_structure" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -227,7 +278,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/band_structure/band_structure.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/band_structure/complete_band_structure.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -236,7 +287,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ham_twist_realistic_double" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="fidget_spinner" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -244,11 +295,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/fidget_spinner" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/twist/ham_twist_realistic_double.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/fidget_spinner/fidget_spinner.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -257,7 +308,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ham_twist_realistic_pair" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="ham_complete_twist_realistic_pair" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -265,11 +316,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/twist/ham_twist_realistic_pair.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -278,7 +329,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="lattice_bz" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="script_complete_twist" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -286,11 +337,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lattice_bz" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lattice_bz/lattice_bz.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/script_complete_twist.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -299,7 +350,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="script_twist" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="script_complete_twist_triple" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -307,11 +358,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/twist/script_twist.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/script_complete_twist_triple.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -321,19 +372,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.ham_twist_realistic_double" />
-      <item itemvalue="Python.band_structure" />
-      <item itemvalue="Python.ham_twist_realistic_pair" />
-      <item itemvalue="Python.script_twist" />
-      <item itemvalue="Python.lattice_bz" />
+      <item itemvalue="Python.script_complete_twist" />
+      <item itemvalue="Python.ham_complete_twist_realistic_pair" />
+      <item itemvalue="Python.complete_band_structure" />
+      <item itemvalue="Python.script_complete_twist_triple" />
+      <item itemvalue="Python.fidget_spinner" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.lattice_bz" />
-        <item itemvalue="Python.band_structure" />
-        <item itemvalue="Python.ham_twist_realistic_pair" />
-        <item itemvalue="Python.script_twist" />
-        <item itemvalue="Python.ham_twist_realistic_double" />
+        <item itemvalue="Python.complete_band_structure" />
+        <item itemvalue="Python.fidget_spinner" />
+        <item itemvalue="Python.script_complete_twist_triple" />
+        <item itemvalue="Python.ham_complete_twist_realistic_pair" />
+        <item itemvalue="Python.script_complete_twist" />
       </list>
     </recent_temporary>
   </component>
@@ -367,18 +418,18 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32899022" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
     </layout>
     <layout-to-restore>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16921455" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16921455" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.34093377" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34093377" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3995657" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -386,7 +437,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32899022" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -399,57 +450,6 @@
     </ignored-roots>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/two_model/two_chern.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1875">
-          <caret line="128" column="66" selection-start-line="128" selection-start-column="66" selection-end-line="128" selection-end-column="66" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hofstadter/script.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="27" column="27" selection-start-line="27" selection-start-column="27" selection-end-line="27" selection-end-column="27" />
-          <folding>
-            <element signature="e#0#20#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/triangular/matrix_tri.py" />
-    <entry file="file:///usr/local/anaconda3/lib/python3.7/site-packages/numpy/core/numeric.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1273">
-          <caret line="500" selection-start-line="500" selection-end-line="500" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hofstadter/matrix.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#12#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/local/anaconda3/lib/python3.7/site-packages/matplotlib/gridspec.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="525">
-          <caret line="74" selection-start-line="74" selection-end-line="74" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/lattice/lattice.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="102" column="44" lean-forward="true" selection-start-line="102" selection-start-column="4" selection-end-line="102" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/twisted/script_twist.py" />
     <entry file="file://$PROJECT_DIR$/twisted/script_twist_single.py" />
     <entry file="file://$PROJECT_DIR$/twisted/ham_twist.py" />
@@ -463,16 +463,6 @@
         <state relative-caret-position="-1515">
           <folding>
             <element signature="e#0#47#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/bz/bz.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="53" column="24" selection-start-line="10" selection-start-column="4" selection-end-line="58" selection-end-column="44" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -554,20 +544,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/tri_1_2/script_tri_1_2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="910">
-          <caret line="94" column="67" selection-start-line="94" selection-start-column="67" selection-end-line="94" selection-end-column="67" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hex_1/script_hex_1.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="79" column="30" lean-forward="true" selection-start-line="79" selection-start-column="30" selection-end-line="79" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/eight_model/eight_chern.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="525">
@@ -620,60 +596,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hofstadter/ham2.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="188" column="45" lean-forward="true" selection-start-line="188" selection-start-column="45" selection-end-line="188" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-            <element signature="e#174#590#0" />
-            <element signature="e#652#846#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hofstadter/ham.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="930">
-          <caret line="239" column="79" selection-start-line="239" selection-start-column="79" selection-end-line="239" selection-end-column="79" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-            <element signature="e#135#551#0" />
-            <element signature="e#921#2129#0" />
-            <element signature="e#3451#3478#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hofstadter/ham2.py" />
+    <entry file="file://$PROJECT_DIR$/hofstadter/ham.py" />
     <entry file="file://$PROJECT_DIR$/haldane_model/haldane.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-4800">
           <folding>
             <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hofstadter/ham_1_6.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="91" column="67" lean-forward="true" selection-start-line="85" selection-start-column="16" selection-end-line="93" selection-end-column="73" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-            <element signature="e#174#590#0" />
-            <element signature="e#652#846#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1350">
-          <caret line="261" column="23" selection-start-line="261" selection-start-column="23" selection-end-line="261" selection-end-column="23" />
-          <folding>
-            <element signature="e#300#1885#0" />
-            <element signature="e#1947#2141#0" />
-            <element signature="e#2320#4590#0" />
           </folding>
         </state>
       </provider>
@@ -692,34 +621,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/twist/ham_twist_pair.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="108" column="10" selection-start-line="108" selection-start-column="10" selection-end-line="108" selection-end-column="10" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-            <element signature="e#174#3222#0" />
-            <element signature="e#3284#3478#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hex_5/ham_hex_5_double.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5275">
           <caret line="440" column="11" selection-start-line="440" selection-start-column="11" selection-end-line="440" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hex_5/ham_hex_5_pair.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3780">
-          <caret line="396" column="42" lean-forward="true" selection-start-line="396" selection-start-column="42" selection-end-line="396" selection-end-column="42" />
-          <folding>
-            <element signature="e#263#2454#0" />
-            <element signature="e#2516#2710#0" />
-            <element signature="e#2825#4035#0" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -735,37 +640,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/twist/script_twist.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
+        <state relative-caret-position="1875">
           <caret line="127" column="6" selection-start-line="127" selection-start-column="6" selection-end-line="127" selection-end-column="6" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hex_1/ham_hex_1_pair.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="94" column="6" selection-start-line="94" selection-start-column="4" selection-end-line="97" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/twist/ham_twist_realistic_pair.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="215" column="61" selection-start-line="215" selection-start-column="61" selection-end-line="215" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#47#0" expanded="true" />
-            <element signature="e#174#3226#0" />
-            <element signature="e#3288#3482#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/path/path.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="19" selection-start-line="26" selection-start-column="4" selection-end-line="27" selection-end-column="18" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
@@ -774,7 +650,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/band_structure/band_structure.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
+        <state relative-caret-position="6090">
           <caret line="411" column="65" selection-start-line="411" selection-start-column="65" selection-end-line="411" selection-end-column="65" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
@@ -784,8 +660,181 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/lattice_bz/lattice_bz.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1275">
+        <state relative-caret-position="-75">
           <caret line="60" column="63" selection-start-line="60" selection-start-column="63" selection-end-line="60" selection-end-column="63" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tri_1_2/script_tri_1_2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="100" column="6" selection-start-line="100" selection-start-column="6" selection-end-line="100" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hofstadter/ham_1_6.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="231" column="56" selection-start-line="210" selection-start-column="4" selection-end-line="235" selection-end-column="55" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+            <element signature="e#174#590#0" />
+            <element signature="e#652#846#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="251" column="65" selection-start-line="251" selection-start-column="65" selection-end-line="251" selection-end-column="65" />
+          <folding>
+            <element signature="e#1947#2141#0" />
+            <element signature="e#2320#4590#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/twist/ham_twist_realistic_pair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="224" column="65" selection-start-line="224" selection-start-column="65" selection-end-line="224" selection-end-column="65" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+            <element signature="e#174#3226#0" />
+            <element signature="e#3288#3482#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hex_5/ham_hex_5_pair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="115">
+          <caret line="107" column="16" selection-start-line="107" selection-start-column="16" selection-end-line="107" selection-end-column="16" />
+          <folding>
+            <element signature="e#2516#2710#0" />
+            <element signature="e#2825#4035#0" />
+            <element signature="e#7156#7167#0" />
+            <element signature="e#12056#12077#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hex_1/ham_hex_1_pair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="81" column="16" selection-start-line="81" selection-start-column="16" selection-end-line="81" selection-end-column="16" />
+          <folding>
+            <element signature="e#1279#1473#0" />
+            <element signature="e#1587#2795#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-690">
+          <caret line="241" column="39" selection-start-line="241" selection-start-column="39" selection-end-line="241" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hex_5_hex_5_dash/script_hex_5_hex_5_dash.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="435">
+          <caret line="102" column="6" selection-start-line="102" selection-start-column="6" selection-end-line="102" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hex_5_dash/script_hex_5_dash.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1560">
+          <caret line="104" column="67" selection-start-line="104" selection-start-column="67" selection-end-line="104" selection-end-column="67" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/complete_twist/script_complete_twist_triple.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="6" selection-start-line="6" selection-start-column="6" selection-end-line="6" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/complete_twist/script_complete_twist.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-825">
+          <caret line="5" column="6" selection-start-line="5" selection-start-column="6" selection-end-line="5" selection-end-column="6" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hex_1/script_hex_1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret line="17" column="14" selection-start-line="17" selection-start-column="14" selection-end-line="17" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bz/bz.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="88" lean-forward="true" selection-start-line="19" selection-start-column="4" selection-end-line="22" selection-end-column="88" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/twist/ham_twist_pair.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="213" column="7" selection-start-line="213" selection-start-column="4" selection-end-line="215" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#47#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/path/path.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="21" column="38" lean-forward="true" selection-start-line="21" selection-start-column="4" selection-end-line="24" selection-end-column="36" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/fidget_spinner/fidget_spinner.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1875">
+          <caret line="132" column="44" lean-forward="true" selection-start-line="132" selection-start-column="44" selection-end-line="132" selection-end-column="44" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/band_structure/complete_band_structure.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="548" column="100" selection-start-line="548" selection-start-column="100" selection-end-line="548" selection-end-column="100" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>

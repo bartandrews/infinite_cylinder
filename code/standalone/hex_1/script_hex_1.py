@@ -15,14 +15,15 @@ def matrix_eigenvalues(p, M):
     c = np.sqrt(3) * a / 6
     eta = 3 * k[0] * M * a / 2
     alpha = float(p / q)
+    t1 = 0.331
 
     matrix = np.zeros(shape=(M, M), dtype=np.complex128)
 
     def B(phi, m):
-        return np.exp(1j*np.pi*phi/3)*2*np.cos(np.pi*phi*(m+1/2) + 3*k[1]*c)
+        return t1 * (np.exp(1j*np.pi*phi/3)*2*np.cos(np.pi*phi*(m+1/2) + 3*k[1]*c))
 
     def C(phi):
-        return np.exp(1j * np.pi * phi / 3)
+        return t1 * (np.exp(1j * np.pi * phi / 3))
 
     for i in range(M - 1):
         matrix[i, i + 1] = B(alpha, i + 1)
@@ -79,5 +80,5 @@ if __name__ == '__main__':
     ax.set_xlabel('$\phi$')
     ax.set_ylabel('$E$ / meV')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1.png", bbox_inches='tight', dpi=300)
     plt.show()

@@ -115,8 +115,8 @@ if __name__ == '__main__':
     # System 1 #########################################################################################################
     ############
 
-    p1 = 1
-    q1 = 4
+    p1 = 2
+    q1 = 7
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -147,8 +147,16 @@ if __name__ == '__main__':
 
     berry_flux_matrix1 = np.zeros((M1, numb_samples - 1, numb_samples - 1))
 
-    band1 = 0
-    band2 = 1
+    for band in [0, 1, 2, 5, 6]:
+        for idx_x in range(numb_samples-1):
+            for idx_y in range(numb_samples-1):
+                berry_flux_matrix1[band, idx_x, idx_y] = berry_curv(eigenvectors1[:, band, idx_x, idx_y],
+                                                                    eigenvectors1[:, band, idx_x + 1, idx_y],
+                                                                    eigenvectors1[:, band, idx_x, idx_y + 1],
+                                                                    eigenvectors1[:, band, idx_x + 1, idx_y + 1])
+
+    band1 = 3
+    band2 = 4
 
     for idx_x in range(numb_samples - 1):
         for idx_y in range(numb_samples - 1):
@@ -162,50 +170,65 @@ if __name__ == '__main__':
                                                                         eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
             berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
 
-    band1 = 2
-    band2 = 3
-
-    for idx_x in range(numb_samples - 1):
-        for idx_y in range(numb_samples - 1):
-            berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
-                                                                        eigenvectors1[:, band1, idx_x + 1, idx_y],
-                                                                        eigenvectors1[:, band1, idx_x, idx_y + 1],
-                                                                        eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
-                                                                        eigenvectors1[:, band2, idx_x, idx_y],
-                                                                        eigenvectors1[:, band2, idx_x + 1, idx_y],
-                                                                        eigenvectors1[:, band2, idx_x, idx_y + 1],
-                                                                        eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
-            berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
-
-    band1 = 4
-    band2 = 5
-
-    for idx_x in range(numb_samples - 1):
-        for idx_y in range(numb_samples - 1):
-            berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
-                                                                        eigenvectors1[:, band1, idx_x + 1, idx_y],
-                                                                        eigenvectors1[:, band1, idx_x, idx_y + 1],
-                                                                        eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
-                                                                        eigenvectors1[:, band2, idx_x, idx_y],
-                                                                        eigenvectors1[:, band2, idx_x + 1, idx_y],
-                                                                        eigenvectors1[:, band2, idx_x, idx_y + 1],
-                                                                        eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
-            berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
-
-    band1 = 6
-    band2 = 7
-
-    for idx_x in range(numb_samples - 1):
-        for idx_y in range(numb_samples - 1):
-            berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
-                                                                        eigenvectors1[:, band1, idx_x + 1, idx_y],
-                                                                        eigenvectors1[:, band1, idx_x, idx_y + 1],
-                                                                        eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
-                                                                        eigenvectors1[:, band2, idx_x, idx_y],
-                                                                        eigenvectors1[:, band2, idx_x + 1, idx_y],
-                                                                        eigenvectors1[:, band2, idx_x, idx_y + 1],
-                                                                        eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
-            berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
+    # band1 = 0
+    # band2 = 1
+    #
+    # for idx_x in range(numb_samples - 1):
+    #     for idx_y in range(numb_samples - 1):
+    #         berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
+    #         berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
+    #
+    # band1 = 2
+    # band2 = 3
+    #
+    # for idx_x in range(numb_samples - 1):
+    #     for idx_y in range(numb_samples - 1):
+    #         berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
+    #         berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
+    #
+    # band1 = 4
+    # band2 = 5
+    #
+    # for idx_x in range(numb_samples - 1):
+    #     for idx_y in range(numb_samples - 1):
+    #         berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
+    #         berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
+    #
+    # band1 = 6
+    # band2 = 7
+    #
+    # for idx_x in range(numb_samples - 1):
+    #     for idx_y in range(numb_samples - 1):
+    #         berry_flux_matrix1[band1, idx_x, idx_y] = double_berry_curv(eigenvectors1[:, band1, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band1, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band1, idx_x + 1, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y],
+    #                                                                     eigenvectors1[:, band2, idx_x, idx_y + 1],
+    #                                                                     eigenvectors1[:, band2, idx_x + 1, idx_y + 1])
+    #         berry_flux_matrix1[band2, idx_x, idx_y] = berry_flux_matrix1[band1, idx_x, idx_y]
 
     chern_numbers1 = np.zeros(M1)
 
@@ -217,10 +240,37 @@ if __name__ == '__main__':
     # Berry fluxes along Wilson loops in the (non-transformed) y direction #############################################
     ########################################################################
 
-    wl_berry_flux = np.ones((8, numb_samples), dtype=np.complex128)
-    hwcc = np.zeros((8, numb_samples))
+    wl_berry_flux = np.ones((M1, numb_samples), dtype=np.complex128)
+    hwcc = np.zeros((M1, numb_samples))
 
-    for band in [0, 1]:
+    for band in [3]:
+        for idx_y in range(numb_samples):
+            for idx_x in range(numb_samples - 1):
+
+                # boundary conditions
+                if idx_x == (numb_samples - 2) and idx_y == (numb_samples - 1):
+                    idx_x_f, idx_y = 0, 0
+                elif idx_x == (numb_samples - 2):
+                    idx_x_f = 0
+                elif idx_y == (numb_samples - 1):
+                    idx_y = 0
+                else:
+                    idx_x_f = idx_x + 1
+
+                band1 = band
+                band2 = band + 1
+
+                matrix = np.zeros((2, 2), dtype=np.complex128)
+                matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(eigenvectors1[:, band1, idx_x_f, idx_y])
+                matrix[0, 1] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(eigenvectors1[:, band2, idx_x_f, idx_y])
+                matrix[1, 0] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(eigenvectors1[:, band1, idx_x_f, idx_y])
+                matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(eigenvectors1[:, band2, idx_x_f, idx_y])
+
+                wl_berry_flux[band, idx_y] *= np.linalg.det(matrix)
+                hwcc[band, idx_y] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
+                hwcc[band + 1, idx_y] = hwcc[band, idx_y]
+
+    for band in [0, 1, 2, 5, 6]:
         for idx_x in range(numb_samples):
             for idx_y in range(numb_samples - 1):
 
@@ -238,95 +288,113 @@ if __name__ == '__main__':
                     np.conj(eigenvectors1[:, band, idx_x, idx_y]).dot(eigenvectors1[:, band, idx_x, idx_y_f])
                 hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_x]))
 
-    for band in [2, 3]:
-        for idx_x in range(numb_samples):
-            for idx_y in range(numb_samples - 1):
-
-                # boundary conditions
-                if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
-                    idx_y_f, idx_x = 0, 0
-                elif idx_y == (numb_samples - 2):
-                    idx_y_f = 0
-                elif idx_x == (numb_samples - 1):
-                    idx_x = 0
-                else:
-                    idx_y_f = idx_y + 1
-
-                band1 = 2
-                band2 = 3
-
-                matrix = np.zeros((2, 2), dtype=np.complex128)
-                matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band2, idx_x, idx_y_f])
-                matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band2, idx_x, idx_y_f])
-
-                wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
-                hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
-
-    for band in [4, 5]:
-        for idx_x in range(numb_samples):
-            for idx_y in range(numb_samples - 1):
-
-                # boundary conditions
-                if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
-                    idx_y_f, idx_x = 0, 0
-                elif idx_y == (numb_samples - 2):
-                    idx_y_f = 0
-                elif idx_x == (numb_samples - 1):
-                    idx_x = 0
-                else:
-                    idx_y_f = idx_y + 1
-
-                band1 = 4
-                band2 = 5
-
-                matrix = np.zeros((2, 2), dtype=np.complex128)
-                matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band2, idx_x, idx_y_f])
-                matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band2, idx_x, idx_y_f])
-
-                wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
-                hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
-
-    for band in [6, 7]:
-        for idx_x in range(numb_samples):
-            for idx_y in range(numb_samples - 1):
-
-                # boundary conditions
-                if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
-                    idx_y_f, idx_x = 0, 0
-                elif idx_y == (numb_samples - 2):
-                    idx_y_f = 0
-                elif idx_x == (numb_samples - 1):
-                    idx_x = 0
-                else:
-                    idx_y_f = idx_y + 1
-
-                band1 = 6
-                band2 = 7
-
-                matrix = np.zeros((2, 2), dtype=np.complex128)
-                matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band2, idx_x, idx_y_f])
-                matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
-                    eigenvectors1[:, band2, idx_x, idx_y_f])
-
-                wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
-                hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
+    # for band in [0, 1]:
+    #     for idx_x in range(numb_samples):
+    #         for idx_y in range(numb_samples - 1):
+    #
+    #             # boundary conditions
+    #             if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
+    #                 idx_y_f, idx_x = 0, 0
+    #             elif idx_y == (numb_samples - 2):
+    #                 idx_y_f = 0
+    #             elif idx_x == (numb_samples - 1):
+    #                 idx_x = 0
+    #             else:
+    #                 idx_y_f = idx_y + 1
+    #
+    #             wl_berry_flux[band, idx_x] *= \
+    #                 np.conj(eigenvectors1[:, band, idx_x, idx_y]).dot(eigenvectors1[:, band, idx_x, idx_y_f])
+    #             hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_x]))
+    #
+    # for band in [2, 3]:
+    #     for idx_x in range(numb_samples):
+    #         for idx_y in range(numb_samples - 1):
+    #
+    #             # boundary conditions
+    #             if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
+    #                 idx_y_f, idx_x = 0, 0
+    #             elif idx_y == (numb_samples - 2):
+    #                 idx_y_f = 0
+    #             elif idx_x == (numb_samples - 1):
+    #                 idx_x = 0
+    #             else:
+    #                 idx_y_f = idx_y + 1
+    #
+    #             band1 = 2
+    #             band2 = 3
+    #
+    #             matrix = np.zeros((2, 2), dtype=np.complex128)
+    #             matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band1, idx_x, idx_y_f])
+    #             matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band2, idx_x, idx_y_f])
+    #             matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band1, idx_x, idx_y_f])
+    #             matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band2, idx_x, idx_y_f])
+    #
+    #             wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
+    #             hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
+    #
+    # for band in [4, 5]:
+    #     for idx_x in range(numb_samples):
+    #         for idx_y in range(numb_samples - 1):
+    #
+    #             # boundary conditions
+    #             if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
+    #                 idx_y_f, idx_x = 0, 0
+    #             elif idx_y == (numb_samples - 2):
+    #                 idx_y_f = 0
+    #             elif idx_x == (numb_samples - 1):
+    #                 idx_x = 0
+    #             else:
+    #                 idx_y_f = idx_y + 1
+    #
+    #             band1 = 4
+    #             band2 = 5
+    #
+    #             matrix = np.zeros((2, 2), dtype=np.complex128)
+    #             matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band1, idx_x, idx_y_f])
+    #             matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band2, idx_x, idx_y_f])
+    #             matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band1, idx_x, idx_y_f])
+    #             matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band2, idx_x, idx_y_f])
+    #
+    #             wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
+    #             hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
+    #
+    # for band in [6, 7]:
+    #     for idx_x in range(numb_samples):
+    #         for idx_y in range(numb_samples - 1):
+    #
+    #             # boundary conditions
+    #             if idx_y == (numb_samples - 2) and idx_x == (numb_samples - 1):
+    #                 idx_y_f, idx_x = 0, 0
+    #             elif idx_y == (numb_samples - 2):
+    #                 idx_y_f = 0
+    #             elif idx_x == (numb_samples - 1):
+    #                 idx_x = 0
+    #             else:
+    #                 idx_y_f = idx_y + 1
+    #
+    #             band1 = 6
+    #             band2 = 7
+    #
+    #             matrix = np.zeros((2, 2), dtype=np.complex128)
+    #             matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band1, idx_x, idx_y_f])
+    #             matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band2, idx_x, idx_y_f])
+    #             matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band1, idx_x, idx_y_f])
+    #             matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+    #                 eigenvectors1[:, band2, idx_x, idx_y_f])
+    #
+    #             wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
+    #             hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
 
     ##########
     # Figure ###########################################################################################################
@@ -371,25 +439,40 @@ if __name__ == '__main__':
 
         if value == 0:
             return "0"
-        elif value == 100:
+        elif value == numb_samples-1:
             return "1"
         else:
-            return "{}".format(value / 100)
+            return "{}".format(round(value / (numb_samples-1), 2))
 
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    for i in [0, 2, 4, 6]:
+    # for i in [0, 2, 4, 6]:
+    #     start = -0.05
+    #     stop = 0.03
+    #     interval = (stop - start) / (3 - 1)
+    #     if i == 0:
+    #         ax.text2D(-0.12, start+i*interval, "$C_{{\pm{:2d}, \pm{:2d}}}={:2d}$".format(i+1, i+2, 0*int(round(chern_numbers1[i]))),
+    #                   color='C{}'.format(i), fontsize=14)
+    #     else:
+    #         ax.text2D(-0.12, start + (i / 3) * interval,
+    #                   "$C_{{{:2d},{:2d}}}={:2d}$".format(i + 1, i + 2, int(round(chern_numbers1[i]))), color='C{}'.format(i),
+    #                   fontsize=14)
+
+    for i in range(M1):
+        if i == 4:
+            continue
         start = -0.05
         stop = 0.03
-        interval = (stop - start) / (3 - 1)
-        if i == 0:
-            ax.text2D(-0.12, start+i*interval, "$C_{{\pm{:2d}, \pm{:2d}}}={:2d}$".format(i+1, i+2, 0*int(round(chern_numbers1[i]))),
+        if i == 3:
+            interval = (stop - start) / (M1 - 1)
+            ax.text2D(-0.12, start + (i + 0.5) * interval,
+                      "$C_{{{:2d},{:2d}}}={:2d}$".format(i + 1, i + 2, int(round(chern_numbers1[i]))),
                       color='C{}'.format(i), fontsize=14)
         else:
-            ax.text2D(-0.12, start + (i / 3) * interval,
-                      "$C_{{{:2d},{:2d}}}={:2d}$".format(i + 1, i + 2, int(round(chern_numbers1[i]))), color='C{}'.format(i),
-                      fontsize=14)
+            interval = (stop - start) / (M1 - 1)
+            ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(i + 1, int(round(chern_numbers1[i]))),
+                      color='C{}'.format(i), fontsize=14)
 
     ax.text2D(-0.12, 0.09, "(a)                   $\phi={}/{}$".format(p1, q1), color="k", fontsize=18)
     ax.text2D(0.15, 0.09, "(b)", color="k", fontsize=18)
@@ -416,8 +499,11 @@ if __name__ == '__main__':
     ax1.tick_params(axis="x", labelsize=14)
     ax1.tick_params(axis="y", labelsize=14)
 
-    for band in [0, 2, 4, 6]:
-        ax1.scatter(np.arange(numb_samples) / 100, hwcc[band, :], s=5)
+    # for band in [0, 2, 4, 6]:
+    #     ax1.scatter(np.arange(numb_samples) / 100, hwcc[band, :], s=5)
+
+    for band in [0, 1, 2, 3, 5, 6]:
+        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5, color='C{}'.format(band))
 
     gs.update(wspace=0.5)
 

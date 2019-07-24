@@ -219,10 +219,10 @@ if __name__ == '__main__':
 
         if value == 0:
             return "0"
-        elif value == 100:
+        elif value == numb_samples-1:
             return "1"
         else:
-            return "{}".format(value / 100)
+            return "{}".format(round(value / (numb_samples-1), 2))
 
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
@@ -260,7 +260,7 @@ if __name__ == '__main__':
     ax1.tick_params(axis="y", labelsize=14)
 
     for band in range(6):
-        ax1.scatter(np.arange(numb_samples) / 100, hwcc[band, :], s=5)
+        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=0.5)
 

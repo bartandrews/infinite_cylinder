@@ -79,7 +79,7 @@ def multi_berry_curv(ev1, ev1_alpha, ev1_beta, ev1_alpha_beta, ev2, ev2_alpha, e
 
     return multi_bc
 
-numb_samples = 101
+numb_samples = 201
 
 if __name__ == '__main__':
 
@@ -90,7 +90,7 @@ if __name__ == '__main__':
     ############
 
     p1 = 2
-    q1 = 5
+    q1 = 7
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -139,8 +139,8 @@ if __name__ == '__main__':
     # Berry fluxes along Wilson loops in the (non-transformed) y direction #############################################
     ########################################################################
 
-    wl_berry_flux = np.ones((5, numb_samples), dtype=np.complex128)
-    hwcc = np.zeros((5, numb_samples))
+    wl_berry_flux = np.ones((M1, numb_samples), dtype=np.complex128)
+    hwcc = np.zeros((M1, numb_samples))
 
     for band in [0]:
         for idx_x in range(numb_samples):
@@ -160,15 +160,19 @@ if __name__ == '__main__':
                 band2 = 0
 
                 matrix = np.zeros((2, 2), dtype=np.complex128)
-                matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(eigenvectors1[:, band2, idx_x, idx_y_f])
-                matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(eigenvectors1[:, band1, idx_x, idx_y_f])
-                matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(eigenvectors1[:, band2, idx_x, idx_y_f])
+                matrix[0, 0] = np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+                    eigenvectors1[:, band1, idx_x, idx_y_f])
+                matrix[0, 1] = -np.conj(eigenvectors1[:, band1, idx_x, idx_y]).dot(
+                    eigenvectors1[:, band2, idx_x, idx_y_f])
+                matrix[1, 0] = -np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+                    eigenvectors1[:, band1, idx_x, idx_y_f])
+                matrix[1, 1] = np.conj(eigenvectors1[:, band2, idx_x, idx_y]).dot(
+                    eigenvectors1[:, band2, idx_x, idx_y_f])
 
                 wl_berry_flux[band, idx_x] *= np.linalg.det(matrix)
                 hwcc[band, idx_x] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
 
-    for band in [1, 2, 3, 4]:
+    for band in range(1, M1):
         for idx_x in range(numb_samples):
             for idx_y in range(numb_samples - 1):
 
@@ -229,10 +233,10 @@ if __name__ == '__main__':
 
         if value == 0:
             return "0"
-        elif value == 100:
+        elif value == numb_samples-1:
             return "1"
         else:
-            return "{}".format(value / 100)
+            return "{}".format(round(value / (numb_samples-1), 2))
 
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
@@ -273,8 +277,8 @@ if __name__ == '__main__':
     ax1.tick_params(axis="x", labelsize=14)
     ax1.tick_params(axis="y", labelsize=14)
 
-    for band in [0, 1, 2, 3, 4]:
-        ax1.scatter(np.arange(numb_samples) / 100, hwcc[band, :], s=5)
+    for band in range(M1):
+        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=0.5)
 

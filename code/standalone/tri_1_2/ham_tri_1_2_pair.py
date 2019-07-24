@@ -11,20 +11,20 @@ def hamiltonian(k, M, p, q):
 
     t, tdash = 0, 1
     a = 1
-    c = np.sqrt(3) * a / 6  # ... / 6
+    c = np.sqrt(3) * a / 2  # ... / 6
     delta = 1 * k[0] * M * a / 2  # 3 * ...
     alpha = float(p / q)
 
     matrix = np.zeros(shape=(M, M), dtype=np.complex128)
 
     def A(phi, m):
-        return 2 * tdash * np.cos(2 * np.pi * phi * m - 2 * k[1] * c)
+        return 2 * tdash * np.cos(2 * np.pi * phi * m + 2 * k[1] * c)
 
     def B(phi, m):
-        return 2 * t * np.cos(np.pi * phi * (m + 1 / 2) - k[1] * c)  # correction: (m + 1/2)
+        return 2 * t * np.cos(np.pi * phi * (m + 1 / 2) + k[1] * c)  # correction: (m + 1/2)
 
     def D(phi, m):
-        return 2 * tdash * np.cos(np.pi * phi * (m + 1 / 2) - k[1] * c)  # correction: (m + 1/2)
+        return 2 * tdash * np.cos(np.pi * phi * (m + 1 / 2) + k[1] * c)  # correction: (m + 1/2)
 
     for i in range(M):
         matrix[i][i] = A(alpha, i + 1)
@@ -246,10 +246,10 @@ if __name__ == '__main__':
 
         if value == 0:
             return "0"
-        elif value == 100:
+        elif value == numb_samples-1:
             return "1"
         else:
-            return "{}".format(value / 100)
+            return "{}".format(round(value / (numb_samples-1), 2))
 
 
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
@@ -288,7 +288,7 @@ if __name__ == '__main__':
     ax2.tick_params(axis="y", labelsize=14)
 
     for band in range(M1):
-        ax2.scatter(np.arange(numb_samples) / 100, hwcc[band, :], s=5)
+        ax2.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=0.5)
 
