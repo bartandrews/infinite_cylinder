@@ -530,7 +530,7 @@ if __name__ == '__main__':
     i = 7
 
     E1[i] = eigval_bands_1[i, KX, KY]
-    hex = patches.RegularPolygon((50, 50), 6, radius=50, orientation=0, facecolor='none')
+    hex = patches.RegularPolygon((50, 50), 6, radius=50, orientation=0, facecolor='none', edgecolor='k', lw=0.25)
     ax4.add_patch(hex)
     im = ax4.imshow(E1[i], cmap=plt.get_cmap('rainbow'), clip_path=hex, clip_on=True)
     cset = ax4.contour(E1[i], np.arange(0.75, 1.5, 0.05), linewidths=0.25, colors='black')
