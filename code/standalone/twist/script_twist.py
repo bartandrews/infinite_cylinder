@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import sys
 
 
-q = 13  # prime > 7
+q = 7  # prime > 7
 
 
 def matrix_eigenvalues(p, M):

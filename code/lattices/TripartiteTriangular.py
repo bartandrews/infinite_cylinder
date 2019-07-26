@@ -7,6 +7,7 @@ from tenpy.networks import site
 
 
 class TripartiteTriangular(lattice.Lattice):
+
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
         basis = np.array(([3., 0.], [0.5, 0.5*np.sqrt(3)]))
@@ -39,6 +40,7 @@ class TripartiteTriangular(lattice.Lattice):
 
 
 def plot_lattice():
+
     import matplotlib.pyplot as plt
     ax = plt.gca()
     fs = site.FermionSite()

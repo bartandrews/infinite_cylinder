@@ -67,7 +67,7 @@ def multi_berry_curv(ev1, ev1_alpha, ev1_beta, ev1_alpha_beta, ev2, ev2_alpha, e
 if __name__ == '__main__':
 
     numb_samples = 100
-    q = 5
+    q = 3
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi) * np.array([1, 0])

@@ -90,7 +90,7 @@ if __name__ == '__main__':
     ############
 
     p1 = 2
-    q1 = 7
+    q1 = 5
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -324,5 +324,5 @@ if __name__ == '__main__':
 
     ############
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1_bands_pair.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1_bands_pair.png", bbox_inches='tight', dpi=300)
     plt.show()

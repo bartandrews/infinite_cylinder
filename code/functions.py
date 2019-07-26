@@ -1,6 +1,9 @@
 from tenpy.networks.mps import MPS
 from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
+from models.fermions_hofstadter import FermionicHofstadterModel
+from models.fermions_hex_1 import FermionicHex1Model
+from models.fermions_twist import FermionicTwistModel
 from models.fermions_pi_flux import FermionicPiFluxModel
 from models.fermions_C3_haldane import FermionicC3HaldaneModel
 from models.bosons_haldane import BosonicHaldaneModel
@@ -13,7 +16,7 @@ from models.fermions_TBG5 import FermionicTBG5Model
 from models.fermions_TBG6 import FermionicTBG6Model
 
 from tenpy.algorithms import dmrg
-from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
+# from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
 
 import sys
 import random
@@ -22,8 +25,9 @@ import pickle
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
-    if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane', 'FermionicPiFlux',
-                     'FermionicC3Haldane', 'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
+    if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
+                     'FermionicHofstadter', 'FermionicHex1', 'FermionicTwist',
+                     'FermionicPiFlux', 'FermionicC3Haldane', 'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
 
     stem = ("%s_%s_%s_%s_tile_%s_%s_chi_%s_"
@@ -44,6 +48,12 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
         lat_basis = 4
     elif lattice == "FiveBandLattice":
         lat_basis = 6
+    elif lattice == "MagneticSquare":
+        lat_basis = 3
+    elif lattice == "MagneticHoneycomb":
+        lat_basis = 10
+    elif lattice == "MagneticTwist":
+        lat_basis = 14
     else:
         sys.exit('Error: Unknown lattice.')
 
@@ -72,7 +82,7 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
-        product_state = [1, 0, 1, 0, 1, 0, 1, 0]
+        product_state = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
     else:
         sys.exit('Error: Unknown initial_state.')
 
@@ -100,6 +110,18 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
+
+    elif model == 'FermionicHofstadter':
+        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = FermionicHofstadterModel(model_params)
+
+    elif model == 'FermionicHex1':
+        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = FermionicHex1Model(model_params)
+
+    elif model == 'FermionicTwist':
+        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = FermionicTwistModel(model_params)
 
     elif model == 'FermionicPiFlux':
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
@@ -167,7 +189,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         #     'reortho': True,
         #     'N_cache': 40
         # },
-        # 'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
+        'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
         'max_E_err': 1.e-10,
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,
@@ -177,7 +199,8 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         'N_sweeps_check': 10
     }
 
-    engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
+    # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
+    engine = dmrg.EngineCombine(psi, M, dmrg_params)
 
     return engine
 

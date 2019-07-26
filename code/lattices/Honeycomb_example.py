@@ -17,6 +17,8 @@ class MyLattice(lattice.Lattice):
         self.nNN = [(0, 0, np.array([1, 0])), (0, 0, np.array([0, 1])), (0, 0, np.array([1, -1])),
                     (1, 1, np.array([1, 0])), (1, 1, np.array([0, 1])), (1, 1, np.array([1, -1]))]
         self.nnNN = [(1, 0, np.array([1, 1])), (0, 1, np.array([-1, 1])), (0, 1, np.array([1, -1]))]
+        self.fourthNN = [(0, 1, np.array([0, 1])), (0, 1, np.array([1, 0])), (0, 1, np.array([1, -2])),
+                         (0, 1, np.array([0, -2])), (0, 1, np.array([-2, 0])), (0, 1, np.array([-2, 1]))]
         self.fifthNN = [(0, 0, np.array([2, -1])), (0, 0, np.array([1, 1])), (0, 0, np.array([-1, 2])),
                         (0, 0, np.array([-2, 1])), (0, 0, np.array([-1, -1])), (0, 0, np.array([1, -2]))]
 
@@ -25,11 +27,13 @@ def plot_lattice():
     import matplotlib.pyplot as plt
     ax = plt.gca()
     site1 = site.FermionSite()
-    lat = MyLattice(3, 3, site1, site1, basis=[[0.5 *np.sqrt(3), 0.5], [0, 1]])
+    lat = MyLattice(6, 6, site1, site1, basis=[[0.5 *np.sqrt(3), 0.5], [0, 1]])
     lat.plot_sites(ax)
-    lat.plot_coupling(ax, lat.fifthNN, linestyle='-', color='green')
-    # lat.plot_coupling(ax, lat.nNN, linestyle='-', color='blue')
-    # lat.plot_coupling(ax, lat.nnNN, linestyle='-', color='red')
+    #lat.plot_coupling(ax, lat.NN, linestyle='-', color='red')
+    #lat.plot_coupling(ax, lat.nNN, linestyle='-', color='blue')
+    #lat.plot_coupling(ax, lat.nnNN, linestyle='-', color='green')
+    #lat.plot_coupling(ax, lat.fourthNN, linestyle='-', color='orange')
+    lat.plot_coupling(ax, lat.fifthNN, linestyle='-', color='brown')
     ax.set_aspect('equal')
     plt.show()
 

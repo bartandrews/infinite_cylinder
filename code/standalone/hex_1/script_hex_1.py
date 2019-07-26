@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import sys
 
 
-q = 199  # prime > 7
+q = 5  # prime > 7
 
 
 def matrix_eigenvalues(p, M):
