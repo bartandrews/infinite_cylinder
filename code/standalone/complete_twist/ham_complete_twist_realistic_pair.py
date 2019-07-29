@@ -114,8 +114,8 @@ if __name__ == '__main__':
     # System 1 #########################################################################################################
     ############
 
-    p1 = 12
-    q1 = 13
+    p1 = 2
+    q1 = 7
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     #     cidx[i] = M1 + i
     #     cidx[M1 + i] = (M1 - 1) - i
 
-    for i in range(13):
+    for i in range(M1):
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i])
 
@@ -236,10 +236,10 @@ if __name__ == '__main__':
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    for i in range(13):
+    for i in range(M1):
         start = -0.05
         stop = 0.03
-        interval = (stop - start) / (13 - 1)
+        interval = (stop - start) / (M1 - 1)
         ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
                   color='C{}'.format(i % 10), fontsize=14)
 
@@ -268,7 +268,7 @@ if __name__ == '__main__':
     ax1.tick_params(axis="x", labelsize=14)
     ax1.tick_params(axis="y", labelsize=14)
 
-    for band in range(13):
+    for band in range(M1):
         ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=0.5)

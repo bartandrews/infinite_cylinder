@@ -4,6 +4,7 @@ from models.fermions_haldane import FermionicHaldaneModel
 from models.fermions_hofstadter import FermionicHofstadterModel
 from models.fermions_hex_1 import FermionicHex1Model
 from models.fermions_twist import FermionicTwistModel
+from models.fermions_complete_twist import FermionicCompleteTwistModel
 from models.fermions_pi_flux import FermionicPiFluxModel
 from models.fermions_C3_haldane import FermionicC3HaldaneModel
 from models.bosons_haldane import BosonicHaldaneModel
@@ -26,7 +27,7 @@ import pickle
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
     if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
-                     'FermionicHofstadter', 'FermionicHex1', 'FermionicTwist',
+                     'FermionicHofstadter', 'FermionicHex1', 'FermionicTwist', 'FermionicCompleteTwist',
                      'FermionicPiFlux', 'FermionicC3Haldane', 'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
 
@@ -120,8 +121,12 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = FermionicHex1Model(model_params)
 
     elif model == 'FermionicTwist':
-        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='N', t=t, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
         M = FermionicTwistModel(model_params)
+
+    elif model == 'FermionicCompleteTwist':
+        model_params = dict(conserve='N', t=t, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = FermionicCompleteTwistModel(model_params)
 
     elif model == 'FermionicPiFlux':
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
