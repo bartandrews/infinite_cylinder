@@ -460,7 +460,7 @@ if __name__ == '__main__':
     # Final Plot #
     ##############
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=(8.5, 4))
 
     gs = gridspec.GridSpec(2, 2, width_ratios=[2, 1], height_ratios=[1, 1])
 
@@ -473,7 +473,7 @@ if __name__ == '__main__':
 
     for nb in range(num_bands_1):
         plt.scatter(np.linspace(0, 89, 90), eigval_bands_1[nb, :], c=cidx[nb], s=0.5)
-    ax0.set_ylabel('$E$ / meV')
+    ax0.set_ylabel('$E$ / meV', fontsize=10)
     ax0.axvline(30, color='k', linewidth=0.5)
     ax0.axvline(60, color='k', linewidth=0.5)
     ax0.axhline(0, color='k', linewidth=0.5, ls='--')
@@ -580,7 +580,7 @@ if __name__ == '__main__':
     for nb in range(M):
         plt.scatter(np.linspace(0, 89, 90), eigval_bands_2[nb, :], c='b', s=0.5)
     # ax2.set_xlabel('Path')
-    ax2.set_ylabel('$E$ / meV')
+    ax2.set_ylabel('$E$ / meV', fontsize=10)
     ax2.axvline(30, color='k', linewidth=0.5)
     ax2.axvline(60, color='k', linewidth=0.5)
 
@@ -619,7 +619,12 @@ if __name__ == '__main__':
     fig.text(0.04, 0.87, "(a)", fontsize=12)
     fig.text(0.04, 0.48, "(b)", fontsize=12)
 
+    ax2.tick_params(axis="x", labelsize=8)
+    ax0.tick_params(axis="y", labelsize=8)
+    ax2.tick_params(axis="y", labelsize=8)
+    ax4.tick_params(axis="x", labelsize=8)
+
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_band_structure_2.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_band_structure_2_poster.png", bbox_inches='tight', dpi=300)
     plt.show()

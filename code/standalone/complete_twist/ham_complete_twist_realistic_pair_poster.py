@@ -189,7 +189,7 @@ if __name__ == '__main__':
     # Figure ###########################################################################################################
     ##########
 
-    fig = plt.figure(figsize=(12, 6))
+    fig = plt.figure(figsize=(12, 3))
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
     ###############
@@ -220,9 +220,9 @@ if __name__ == '__main__':
 
     ax.tick_params(axis='x', which='major', pad=0.5)
 
-    ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=14, linespacing=0.3)
-    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=14, linespacing=1.5)
-    ax.set_zlabel('\n$E$ / meV', fontsize=14, linespacing=1.5)
+    ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=10, linespacing=0.3)
+    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=10, linespacing=1.5)
+    ax.set_zlabel('\n$E$ / meV', fontsize=10, linespacing=1.5)
 
     def custom(value, tick_number):
 
@@ -240,15 +240,15 @@ if __name__ == '__main__':
         start = -0.05
         stop = 0.03
         interval = (stop - start) / (4 - 1)
-        ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
-                  color='C{}'.format(i % 10), fontsize=14)
+        ax.text2D(-0.14, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
+                  color='C{}'.format(i % 10), fontsize=10)
 
-    ax.text2D(-0.12, 0.09, "(a)                   $\phi={}/{}$".format(p1, q1), color="k", fontsize=18)
-    ax.text2D(0.12, 0.09, "(b)", color="k", fontsize=18)
+    ax.text2D(-0.14, 0.09, "(c)                  $\phi={}/{}$".format(p1, q1), color="k", fontsize=13)
+    ax.text2D(0.13, 0.09, "(d)", color="k", fontsize=13)
 
-    ax.tick_params(axis="x", labelsize=14)
-    ax.tick_params(axis="y", labelsize=14)
-    ax.tick_params(axis="z", labelsize=14)
+    ax.tick_params(axis="x", labelsize=9)
+    ax.tick_params(axis="y", labelsize=9)
+    ax.tick_params(axis="z", labelsize=9)
 
     ###############
     # Subfigure 2 ######################################################################################################
@@ -262,16 +262,16 @@ if __name__ == '__main__':
     ax1.set_ylim([-0.5, 0.5])
     ax1.axhline(0, color='k', linewidth=0.25, ls='--')
     ax1.axvline(0.5, color='k', linewidth=0.25, ls='--')
-    ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=14)
-    ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=14)
+    ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=11)
+    ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=11)
 
-    ax1.tick_params(axis="x", labelsize=14)
-    ax1.tick_params(axis="y", labelsize=14)
+    ax1.tick_params(axis="x", labelsize=9)
+    ax1.tick_params(axis="y", labelsize=9)
 
     for band in range(4):
         ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
-    gs.update(wspace=0.5)
+    gs.update(wspace=-0.4)
 
     print("\n***Band touching***\n")
 
@@ -322,5 +322,5 @@ if __name__ == '__main__':
 
     ############
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster.png", bbox_inches='tight', dpi=300)
     plt.show()

@@ -1,7 +1,8 @@
 from tenpy.networks.mps import MPS
-from tenpy.models.fermions_hubbard import FermionicHubbardModel
+from tenpy.models.hubbard import FermiHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
 from models.fermions_hofstadter import FermionicHofstadterModel
+from models.fermions_hofstadter_extended import FermionicHofstadterExtendedModel
 from models.fermions_hex_1 import FermionicHex1Model
 from models.fermions_twist import FermionicTwistModel
 from models.fermions_complete_twist import FermionicCompleteTwistModel
@@ -27,7 +28,7 @@ import pickle
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
     if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
-                     'FermionicHofstadter', 'FermionicHex1', 'FermionicTwist', 'FermionicCompleteTwist',
+                     'FermionicHofstadter', 'FermionicHofstadterExtended', 'FermionicHex1', 'FermionicTwist', 'FermionicCompleteTwist',
                      'FermionicPiFlux', 'FermionicC3Haldane', 'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
 
@@ -50,7 +51,9 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     elif lattice == "FiveBandLattice":
         lat_basis = 6
     elif lattice == "MagneticSquare":
-        lat_basis = 3
+        lat_basis = 5
+    elif lattice == "MagneticSquareExtended":
+        lat_basis = 10
     elif lattice == "MagneticHoneycomb":
         lat_basis = 10
     elif lattice == "MagneticTwist":
@@ -95,7 +98,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
     if model == 'Hubbard':
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
-        M = FermionicHubbardModel(model_params)
+        M = FermiHubbardModel(model_params)
 
     elif model == 'BosonicHaldane':
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
@@ -113,11 +116,15 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = FermionicHaldaneModel(model_params)
 
     elif model == 'FermionicHofstadter':
-        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
         M = FermionicHofstadterModel(model_params)
 
+    elif model == 'FermionicHofstadterExtended':
+        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = FermionicHofstadterExtendedModel(model_params)
+
     elif model == 'FermionicHex1':
-        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
         M = FermionicHex1Model(model_params)
 
     elif model == 'FermionicTwist':

@@ -63,8 +63,8 @@ if __name__ == '__main__':
     # ax.scatter(secondNN[3:6, 0], secondNN[3:6, 1], color='green', marker='x')
     ax.scatter(fifthNN[0:3, 0], fifthNN[0:3, 1], color='red', zorder=2)
     ax.scatter(fifthNN[3:6, 0], fifthNN[3:6, 1], color='red', marker='x', zorder=2)
-    ax.set_xlabel('$m$')
-    ax.set_ylabel('$n$')
+    ax.set_xlabel('$m$', fontsize=16)
+    ax.set_ylabel('$n$', fontsize=16)
 
     # ax.arrow(0, 0, avec[0, 0], avec[0, 1], color='black', head_width=0.1, length_includes_head=True)
     # ax.arrow(0, 0, avec[1, 0], avec[1, 1], color='black', head_width=0.1, length_includes_head=True)
@@ -73,15 +73,15 @@ if __name__ == '__main__':
 
     ax.annotate("", xy=(0, 0), xycoords='data', xytext=(avec[0, 0], avec[0, 1]), textcoords='data',
                 arrowprops=dict(arrowstyle="<->", connectionstyle="arc3", color='k', lw=2))
-    ax.text(0.00 * avec[0, 0], 0.5 * avec[0, 1], 'a', fontsize=12)
+    ax.text(0.00 * avec[0, 0], 0.5 * avec[0, 1], 'a', fontsize=16)
 
     ax.annotate("", xy=(0, 0), xycoords='data', xytext=(avec[0, 0], 0), textcoords='data',
                 arrowprops=dict(arrowstyle="<->", connectionstyle="arc3", color='k', lw=2))
-    ax.text(0.35 * avec[0, 0], -0.4 * avec[0, 1], 'b', fontsize=12)
+    ax.text(0.35 * avec[0, 0], -0.4 * avec[0, 1], 'b', fontsize=16)
 
     ax.annotate("", xy=(avec[0, 0], 0), xycoords='data', xytext=(avec[0, 0], (1 / 3) * avec[0, 1]), textcoords='data',
                 arrowprops=dict(arrowstyle="<->", connectionstyle="arc3", color='k', lw=2))
-    ax.text(1.2 * avec[0, 0], 0.25 * (1 / 3) * avec[0, 1], 'c', fontsize=12)
+    ax.text(1.2 * avec[0, 0], 0.25 * (1 / 3) * avec[0, 1], 'c', fontsize=16)
 
 
     def xformat(value, tick_number):
@@ -104,6 +104,9 @@ if __name__ == '__main__':
 
     ax.add_artist(muc)
     ax.add_artist(uc)
+
+    ax.tick_params(axis="x", labelsize=14)
+    ax.tick_params(axis="y", labelsize=14)
 
     ax.set_aspect('equal', adjustable='box')
 
@@ -154,11 +157,11 @@ if __name__ == '__main__':
     ax1.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax1.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    ax1.text(3 * np.pi + 1, 0.5, '$x$')
-    ax1.text(0.5, 4 * np.pi + 1, '$y$')
+    ax1.text(3 * np.pi + 1, 0.5, '$x$', fontsize=16)
+    ax1.text(0.5, 4 * np.pi + 1, '$y$', fontsize=16)
 
-    ax1.text(np.pi / 2 - 1.15, -np.pi / 2 - 0.75, '$\mathbf{b}_1$')
-    ax1.text(3 * np.pi / 2 - 1.35, 3 * np.pi / 2 + 0.2, '$\mathbf{b}_2$')
+    ax1.text(np.pi / 2 - 1.15, -np.pi / 2 - 1.2, '$\mathbf{b}_1$', fontsize=16, zorder=5)
+    ax1.text(3 * np.pi / 2 - 1.35, 3 * np.pi / 2 + 0.6, '$\mathbf{b}_2$', fontsize=16, zorder=5)
 
     # ax.set_xlabel("x")
     # ax.set_ylabel("y")
@@ -170,8 +173,11 @@ if __name__ == '__main__':
 
     ax1.set_aspect('equal', adjustable='box')
 
-    plt.text(-27, 15, "(a)", fontsize=12)
-    plt.text(-3, 15, "(b)", fontsize=12)
+    plt.text(-27, 15, "(a)", fontsize=18)
+    plt.text(-3, 15, "(b)", fontsize=18)
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/lattice_bz.png", bbox_inches='tight', dpi=300)
+    ax1.tick_params(axis="x", labelsize=14)
+    ax1.tick_params(axis="y", labelsize=14)
+
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/lattice_bz_poster.png", bbox_inches='tight', dpi=300)
     plt.show()

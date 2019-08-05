@@ -9,11 +9,16 @@ class MagneticHoneycomb(lattice.Lattice):
 
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
-        basis = np.array(([2.5 * np.sqrt(3), 2.5], [0., 1]))
+        numb_sites = 10
+
+        basis = np.array(([(numb_sites/4) * np.sqrt(3), numb_sites/4], [0., 1]))
         delta = np.array([1 / (2. * np.sqrt(3.)), 0.5])
-        pos = (-delta / 2., delta / 2, [0.5 * np.sqrt(3), 0.5] - delta / 2., [0.5 * np.sqrt(3), 0.5] + delta / 2,
-               [1 * np.sqrt(3), 1] - delta / 2., [1 * np.sqrt(3), 1] + delta / 2, [1.5 * np.sqrt(3), 1.5] - delta / 2., [1.5 * np.sqrt(3), 1.5] + delta / 2,
-               [2 * np.sqrt(3), 2] - delta / 2., [2 * np.sqrt(3), 2] + delta / 2)
+
+        pos_list = []
+        for i in range(0, int(numb_sites / 2)):
+            pos_list.append([(i / 2) * np.sqrt(3), i / 2] - delta / 2.)  # A site
+            pos_list.append([(i / 2) * np.sqrt(3), i / 2] + delta / 2.)  # B site
+        pos = tuple(pos_list)
 
         kwargs.setdefault('order', 'default')
         kwargs.setdefault('bc', 'periodic')
@@ -21,53 +26,54 @@ class MagneticHoneycomb(lattice.Lattice):
         kwargs.setdefault('basis', basis)
         kwargs.setdefault('positions', pos)
 
-        super().__init__([Lx, Ly], [siteA, siteA, siteA, siteA, siteA, siteA, siteA, siteA, siteA, siteA], **kwargs)
+        super().__init__([Lx, Ly], [siteA] * numb_sites, **kwargs)
 
-        self.NN0d = [(0, 1, np.array([0, -1]))]
-        self.NN2d = [(2, 3, np.array([0, -1]))]
-        self.NN4d = [(4, 5, np.array([0, -1]))]
-        self.NN6d = [(6, 7, np.array([0, -1]))]
-        self.NN8d = [(8, 9, np.array([0, -1]))]
+        for i in range(numb_sites):
+            if i % 2 == 0:
+                setattr(self, "NN{}d".format(i), [(i, i+1, np.array([0, -1]))])
+            else:
+                setattr(self, "NN{}u".format(i), [(i, i-1, np.array([0, 1]))])
 
-        self.NN0ul = [(0, 9, np.array([-1, 0]))]
-        self.NN2ul = [(2, 1, np.array([0, 0]))]
-        self.NN4ul = [(4, 3, np.array([0, 0]))]
-        self.NN6ul = [(6, 5, np.array([0, 0]))]
-        self.NN8ul = [(8, 7, np.array([0, 0]))]
+        for i in range(numb_sites):
+            if i % 2 == 0:
+                if i == 0:
+                    setattr(self, "NN0ul", [(i, numb_sites-1, np.array([-1, 0]))])
+                else:
+                    setattr(self, "NN{}ul".format(i), [(i, i - 1, np.array([0, 0]))])
+            else:
+                setattr(self, "NN{}bl".format(i), [(i, i-1, np.array([0, 0]))])
 
-        self.NN0ur = [(0, 1, np.array([0, 0]))]
-        self.NN2ur = [(2, 3, np.array([0, 0]))]
-        self.NN4ur = [(4, 5, np.array([0, 0]))]
-        self.NN6ur = [(6, 7, np.array([0, 0]))]
-        self.NN8ur = [(8, 9, np.array([0, 0]))]
+        for i in range(numb_sites):
+            if i % 2 == 0:
+                setattr(self, "NN{}ur".format(i), [(i, i + 1, np.array([0, 0]))])
+            else:
+                if i == numb_sites-1:
+                    setattr(self, "NN{}br".format(i), [(i, 0, np.array([1, 0]))])
+                else:
+                    setattr(self, "NN{}br".format(i), [(i, i+1, np.array([0, 0]))])
 
 
 def plot_lattice():
+
+    numb_sites = 10
 
     import matplotlib.pyplot as plt
 
     ax = plt.gca()
     fs = site.FermionSite()
-    lat = MagneticHoneycomb(5, 5, fs, basis=[[2.5 *np.sqrt(3), 2.5], [0, 1]])
+    lat = MagneticHoneycomb(5, 5, fs, basis=[[(numb_sites/4) *np.sqrt(3), numb_sites/4], [0, 1]])
     lat.plot_sites(ax)
-    # down
-    lat.plot_coupling(ax, lat.NN0d, linestyle='-', color='black')
-    lat.plot_coupling(ax, lat.NN2d, linestyle='-', color='red')
-    lat.plot_coupling(ax, lat.NN4d, linestyle='-', color='blue')
-    lat.plot_coupling(ax, lat.NN6d, linestyle='-', color='green')
-    lat.plot_coupling(ax, lat.NN8d, linestyle='-', color='orange')
-    # upper left
-    lat.plot_coupling(ax, lat.NN0ul, linestyle='-', color='black')
-    lat.plot_coupling(ax, lat.NN2ul, linestyle='-', color='red')
-    lat.plot_coupling(ax, lat.NN4ul, linestyle='-', color='blue')
-    lat.plot_coupling(ax, lat.NN6ul, linestyle='-', color='green')
-    lat.plot_coupling(ax, lat.NN8ul, linestyle='-', color='orange')
-    # upper right
-    lat.plot_coupling(ax, lat.NN0ur, linestyle='-', color='black')
-    lat.plot_coupling(ax, lat.NN2ur, linestyle='-', color='red')
-    lat.plot_coupling(ax, lat.NN4ur, linestyle='-', color='blue')
-    lat.plot_coupling(ax, lat.NN6ur, linestyle='-', color='green')
-    lat.plot_coupling(ax, lat.NN8ur, linestyle='-', color='orange')
+
+    for i in range(0, numb_sites, 2):
+        lat.plot_coupling(ax, getattr(lat, "NN{}d".format(i)), linestyle='-', color='red')
+        lat.plot_coupling(ax, getattr(lat, "NN{}ul".format(i)), linestyle='-', color='blue')
+        lat.plot_coupling(ax, getattr(lat, "NN{}ur".format(i)), linestyle='-', color='green')
+
+    for i in range(1, numb_sites, 2):
+        lat.plot_coupling(ax, getattr(lat, "NN{}u".format(i)), linestyle='-', color='red')
+        lat.plot_coupling(ax, getattr(lat, "NN{}bl".format(i)), linestyle='-', color='blue')
+        lat.plot_coupling(ax, getattr(lat, "NN{}br".format(i)), linestyle='-', color='green')
+
     ax.set_aspect('equal')
     plt.show()
 

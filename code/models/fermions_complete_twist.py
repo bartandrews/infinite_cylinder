@@ -46,7 +46,7 @@ class FermionicCompleteTwistModel(CouplingMPOModel):
         alpha = p/q
         numb_sites = 2*q
 
-        # t term ###
+        # t1 term ###
         for i in range(0, numb_sites, 2):
             for u1, u2, dx in getattr(self.lat, "NN{}d".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \

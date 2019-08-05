@@ -7,10 +7,10 @@ import sys
 from tenpy.models.model import CouplingMPOModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite
-from lattices.MagneticSquare import MagneticSquare
+from lattices.MagneticSquareExtended import MagneticSquareExtended
 
 
-class FermionicHofstadterModel(CouplingMPOModel):
+class FermionicHofstadterExtendedModel(CouplingMPOModel):
 
     def __init__(self, model_params):
         CouplingMPOModel.__init__(self, model_params)
@@ -21,13 +21,13 @@ class FermionicHofstadterModel(CouplingMPOModel):
         return site
 
     def init_lattice(self, model_params):
-        choice = get_parameter(model_params, 'lattice', 'MagneticSquare', self.name)
-        if choice != 'MagneticSquare':
-            sys.exit("Error: Please choose the MagneticSquare for hofstadter.")
+        choice = get_parameter(model_params, 'lattice', 'MagneticSquareExtended', self.name)
+        if choice != 'MagneticSquareExtended':
+            sys.exit("Error: Please choose the MagneticSquareExtended for hofstadter_extended.")
         Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 2, self.name)
         fs = self.init_sites(model_params)
-        lat = MagneticSquare(Lx, Ly, fs)
+        lat = MagneticSquareExtended(Lx, Ly, fs)
         print(lat.N_sites)
         return lat
 
@@ -48,9 +48,10 @@ class FermionicHofstadterModel(CouplingMPOModel):
             self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
 
-        for i in range(numb_sites):
+        for i in range(2*numb_sites):
             for u1, u2, dx in getattr(self.lat, "NN_h{}".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) * np.exp(-1j * 2 * np.pi * alpha * i)
+                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+                        * np.exp(-1j * 2 * np.pi * alpha * (i % numb_sites))
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx, 'JW', True)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx, 'JW', True)  # h.c.
                 self.add_coupling(V, u1, 'N', u2, 'N', dx)
