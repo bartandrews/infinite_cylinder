@@ -36,8 +36,8 @@ class FermionicHofstadterModel(CouplingMPOModel):
         V = get_parameter(model_params, 'V', 0, self.name, True)
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
-        p = 1
-        q = 5
+        p = 3
+        q = 11
 
         alpha = p / q
         numb_sites = q

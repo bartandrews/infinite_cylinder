@@ -1,6 +1,6 @@
 # configuration parameters
-model = 'FermionicHex1'
-lattice = 'MagneticHoneycomb'
+model = 'FermionicCompleteTwist'
+lattice = 'MagneticTwist'
 initial_state = 'third'
 
 if model == 'BosonicHaldane':
@@ -18,7 +18,7 @@ elif model == 'FermionicHex1':
 elif model == 'FermionicTwist':
     tile_unit = ['empty', 'full']
 elif model == 'FermionicCompleteTwist':
-    tile_unit = ['empty_x full_y', 'full_x empty_y']
+    tile_unit = ['empty_x empty_y', 'full_x full_y']
 elif model == 'FermionicPiFlux':
     tile_unit = ['empty', 'full']
 elif model == 'FermionicC3Haldane':
@@ -39,9 +39,9 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 100
+chi_max = 300
 # chi max for compute_K
-chi_max_K = 100
+chi_max_K = 300
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, U, V = -1, 0, 0, 0

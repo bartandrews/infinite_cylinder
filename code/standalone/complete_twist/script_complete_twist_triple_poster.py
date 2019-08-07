@@ -142,6 +142,8 @@ if __name__ == '__main__':
     for eigenvalues, alphas in values0:
         ax0.plot(alphas, eigenvalues, '.', color='red', markersize=0.2)
 
+    ax0.set_yticks(np.array([-2, 0, 2]))
+
     ax1 = plt.subplot(gs[1], sharex=ax0)
     ax1.tick_params('x', direction='in', bottom=True)
 
@@ -172,9 +174,9 @@ if __name__ == '__main__':
     ax1.set_ylabel('$E$ / meV', fontsize=16)
     ax2.set_ylabel('$E$ / meV', fontsize=16)
 
-    fig.text(-0.02, 0.35, "(c)", fontsize=18)
-    fig.text(-0.02, 0.605, "(b)", fontsize=18)
-    fig.text(-0.02, 0.86, "(a)", fontsize=18)
+    fig.text(-0.03, 0.35, "(c)", fontsize=18)  # -0.02
+    fig.text(-0.03, 0.605, "(b)", fontsize=18)
+    fig.text(-0.03, 0.86, "(a)", fontsize=18)
 
     ax2.tick_params(axis="x", labelsize=14)
     ax0.tick_params(axis="y", labelsize=14)

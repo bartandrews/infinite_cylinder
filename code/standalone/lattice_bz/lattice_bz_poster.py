@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     fig = plt.figure()
 
-    gs = gridspec.GridSpec(1, 2, width_ratios=[1.7, 1])
+    gs = gridspec.GridSpec(1, 2, width_ratios=[1.4, 1])
 
     ax = plt.subplot(gs[0])
 
@@ -90,8 +90,8 @@ if __name__ == '__main__':
     def yformat(value, tick_number):
         return "{}".format(int(round(value/(np.sqrt(3)/6))))
 
-    ax.set_xlim([-6*avec[0, 0], 6*avec[0, 0]])
-    ax.set_xticks(np.arange(-6 * avec[0, 0], 6 * avec[0, 0]+0.1, step=2*avec[0, 0]))
+    ax.set_xlim([-5*avec[0, 0], 5*avec[0, 0]])
+    ax.set_xticks(np.arange(-5 * avec[0, 0], 5 * avec[0, 0]+0.1, step=2*avec[0, 0]))
     ax.set_ylim([-3*avec[0, 1], 3*avec[0, 1]])
     ax.set_yticks(np.arange(-3 * avec[0, 1], 3 * avec[0, 1], step=avec[0, 1]))
 
@@ -173,8 +173,8 @@ if __name__ == '__main__':
 
     ax1.set_aspect('equal', adjustable='box')
 
-    plt.text(-27, 15, "(a)", fontsize=18)
-    plt.text(-3, 15, "(b)", fontsize=18)
+    plt.text(-23.5, 14, "(a)", fontsize=18)
+    plt.text(-3, 14, "(b)", fontsize=18)
 
     ax1.tick_params(axis="x", labelsize=14)
     ax1.tick_params(axis="y", labelsize=14)

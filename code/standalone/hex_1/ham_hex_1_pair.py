@@ -79,6 +79,7 @@ def multi_berry_curv(ev1, ev1_alpha, ev1_beta, ev1_alpha_beta, ev2, ev2_alpha, e
 
     return multi_bc
 
+
 numb_samples = 201
 
 if __name__ == '__main__':
@@ -292,9 +293,13 @@ if __name__ == '__main__':
 
     maxima1 = np.zeros(2 * M1)
     minima1 = np.zeros(2 * M1)
+    widths1 = np.zeros(2 * M1)
     for i in range(2 * M1):
         maxima1[i] = np.max(E1[i])
         minima1[i] = np.min(E1[i])
+        widths1[i] = maxima1[i] - minima1[i]
+
+    print("widths = ", widths1)
 
     # band index
     bidx1 = np.zeros(2 * M1, dtype=int)
@@ -305,6 +310,8 @@ if __name__ == '__main__':
     gap1 = np.zeros(2 * M1 - 1)
     for i in range(2 * M1 - 1):
         gap1[i] = minima1[bidx1[i + 1]] - maxima1[bidx1[i]]
+
+    print("gaps = ", gap1)
 
     for i in range(len(gap1)):
         if gap1[i] < threshold:

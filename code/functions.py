@@ -51,13 +51,13 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     elif lattice == "FiveBandLattice":
         lat_basis = 6
     elif lattice == "MagneticSquare":
-        lat_basis = 5
+        lat_basis = 11
     elif lattice == "MagneticSquareExtended":
         lat_basis = 10
     elif lattice == "MagneticHoneycomb":
         lat_basis = 10
     elif lattice == "MagneticTwist":
-        lat_basis = 14
+        lat_basis = 22
     else:
         sys.exit('Error: Unknown lattice.')
 

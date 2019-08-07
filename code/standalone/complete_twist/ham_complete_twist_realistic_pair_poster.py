@@ -114,8 +114,8 @@ if __name__ == '__main__':
     # System 1 #########################################################################################################
     ############
 
-    p1 = 12
-    q1 = 13
+    p1 = 10
+    q1 = 11
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -189,7 +189,7 @@ if __name__ == '__main__':
     # Figure ###########################################################################################################
     ##########
 
-    fig = plt.figure(figsize=(12, 3))
+    fig = plt.figure(figsize=(12, 2.5))  # 12, 3
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
     ###############
@@ -212,17 +212,17 @@ if __name__ == '__main__':
     #     cidx[i] = M1 + i
     #     cidx[M1 + i] = (M1 - 1) - i
 
-    for i in range(4):
+    for i in range(3):
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i])
 
     ax.set_aspect('equal', adjustable='box')
 
-    ax.tick_params(axis='x', which='major', pad=0.5)
+    ax.tick_params(axis='x', which='major', pad=0)  # 0.5
 
-    ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=10, linespacing=0.3)
-    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=10, linespacing=1.5)
-    ax.set_zlabel('\n$E$ / meV', fontsize=10, linespacing=1.5)
+    ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=10, linespacing=-1)  # linespacing=0.3
+    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=10)  # linespacing=1.5
+    ax.set_zlabel('\n$E$ / meV', fontsize=10)  # linespacing=1.5
 
     def custom(value, tick_number):
 
@@ -236,15 +236,15 @@ if __name__ == '__main__':
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    for i in range(4):
+    for i in range(3):
         start = -0.05
         stop = 0.03
-        interval = (stop - start) / (4 - 1)
-        ax.text2D(-0.14, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
+        interval = (stop - start) / (3 - 1)
+        ax.text2D(-0.15, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
                   color='C{}'.format(i % 10), fontsize=10)
 
-    ax.text2D(-0.14, 0.09, "(c)                  $\phi={}/{}$".format(p1, q1), color="k", fontsize=13)
-    ax.text2D(0.13, 0.09, "(d)", color="k", fontsize=13)
+    ax.text2D(-0.15, 0.09, "(c)              $\phi={}/{}$".format(p1, q1), color="k", fontsize=13)
+    ax.text2D(0.17, 0.09, "(d)", color="k", fontsize=13)
 
     ax.tick_params(axis="x", labelsize=9)
     ax.tick_params(axis="y", labelsize=9)
@@ -265,10 +265,12 @@ if __name__ == '__main__':
     ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=11)
     ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=11)
 
+    ax1.text(0.1, 0.1, '$C=-1$', fontsize=11)
+
     ax1.tick_params(axis="x", labelsize=9)
     ax1.tick_params(axis="y", labelsize=9)
 
-    for band in range(4):
+    for band in range(3):
         ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=-0.4)

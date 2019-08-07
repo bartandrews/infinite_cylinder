@@ -362,7 +362,7 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 12, 13
+    p, q = 10, 11
 
     if p % 2 == 0:
         M = q
@@ -585,7 +585,7 @@ if __name__ == '__main__':
     ax2.axvline(60, color='k', linewidth=0.5)
 
     for band in range(M):
-        ax2.text(band*int(90/12), eigval_bands_2[band, band*int(90/12)], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))))
+        ax2.text(band*(85/(M-1)), eigval_bands_2[band, band*int(89/(M-1))], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))))
 
     #ax2.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))

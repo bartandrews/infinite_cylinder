@@ -7,7 +7,7 @@ from mpl_toolkits.mplot3d import Axes3D
 
 if __name__ == '__main__':
 
-    fig = plt.figure(figsize=(7.5, 7))
+    fig = plt.figure(figsize=(8.5, 8))
     gs = gridspec.GridSpec(2, 2, width_ratios=[1, 1], height_ratios=[1, 1])
 
     ####################################################################################################################
@@ -26,15 +26,15 @@ if __name__ == '__main__':
     ax1.scatter(x, y, s=3, c='k')
 
     ax1.set_xlim([0, 1])
-    ax1.set_xlabel("$\Phi_y / 2\pi$", fontsize=10)
+    ax1.set_xlabel("$\Phi_y / 2\pi$", fontsize=14)
     #ax1.set_ylim([-1, 0])
-    ax1.set_ylabel("$\langle Q^{L}(\Phi_y) \\rangle$", fontsize=10)
+    ax1.set_ylabel("$\langle Q^{L}(\Phi_y) \\rangle$", fontsize=14)
 
-    fig.text(0.2, 0.8, '$C=2$', fontsize=10)
+    fig.text(0.15, 0.8, '$C=2$', fontsize=14)
 
-    ax1.tick_params(axis="x", labelsize=8)
-    ax1.tick_params(axis="y", labelsize=8)
-    ax1.tick_params(axis="z", labelsize=8)
+    ax1.tick_params(axis="x", labelsize=14)
+    ax1.tick_params(axis="y", labelsize=14)
+    ax1.tick_params(axis="z", labelsize=14)
 
     ############################################
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
 
     # arrow
     ax5.quiver(0, end, 0, 0, -(end + end/4), 0, arrow_length_ratio=0.06, color='k', lw=0.5)
-    ax5.text2D(-0.078, 0.006, '$\Phi_y$', fontsize=10)
+    ax5.text2D(-0.078, 0.006, '$\Phi_y$', fontsize=12)
 
     # cylinder
     angle = np.linspace(0, 2 * np.pi, 21)
@@ -99,7 +99,7 @@ if __name__ == '__main__':
     z = r * np.cos(theta)
     x = r * np.sin(theta)
     ax5.scatter(x, y, z, label='parametric curve', c='k', marker='v', s=5)
-    ax5.text2D(0.05, 0.03, '$L$', fontsize=10)
+    ax5.text2D(0.05, 0.03, '$L$', fontsize=12)
 
     ax5.view_init(elev=10., azim=-15)
     ax5.axis('off')
@@ -130,14 +130,14 @@ if __name__ == '__main__':
         ax2.scatter(xvalue, yvalue, marker='_', c='C{}'.format(value+3), label='{}'.format(value))
 
     ax2.set_ylim([0, 8])
-    ax2.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2, fontsize=10)
+    ax2.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2, fontsize=12)
     ax2.set_xlim([0, 1])
-    ax2.set_xlabel("$\Phi_y / 2\pi$", fontsize=10)
-    ax2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=10)
+    ax2.set_xlabel("$\Phi_y / 2\pi$", fontsize=14)
+    ax2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=14)
 
-    ax2.tick_params(axis="x", labelsize=8)
-    ax2.tick_params(axis="y", labelsize=8)
-    ax2.tick_params(axis="z", labelsize=8)
+    ax2.tick_params(axis="x", labelsize=14)
+    ax2.tick_params(axis="y", labelsize=14)
+    ax2.tick_params(axis="z", labelsize=14)
 
     gs.update(wspace=0.25, hspace=0.2)
     ####################################################################################################################
@@ -169,15 +169,15 @@ if __name__ == '__main__':
 
     # ax3.scatter(x, y, marker='_', c=z, label=z)
 
-    ax3.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2, fontsize=10)
+    ax3.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2, fontsize=12)
     ax3.set_xlim([-1, 1])
-    ax3.set_xlabel("$k_{\\alpha} / \pi$", fontsize=10)
+    ax3.set_xlabel("$k_{\\alpha} / \pi$", fontsize=14)
     ax3.set_ylim([0, 10])
-    ax3.set_ylabel("$\epsilon_{\\alpha}$", fontsize=10)
+    ax3.set_ylabel("$\epsilon_{\\alpha}$", fontsize=14)
 
-    ax3.tick_params(axis="x", labelsize=8)
-    ax3.tick_params(axis="y", labelsize=8)
-    ax3.tick_params(axis="z", labelsize=8)
+    ax3.tick_params(axis="x", labelsize=14)
+    ax3.tick_params(axis="y", labelsize=14)
+    ax3.tick_params(axis="z", labelsize=14)
 
     ####################################################################################################################
 
@@ -206,21 +206,21 @@ if __name__ == '__main__':
 
     ax4.axhline(-0.5, color='k', linewidth=1, ls='--')
 
-    ax4.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', fontsize=10)
+    ax4.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', fontsize=12)
     ax4.set_xlim([0, 8])
-    ax4.set_xlabel("$L$", fontsize=10)
-    ax4.set_ylabel("$S$", fontsize=10)
+    ax4.set_xlabel("$L$", fontsize=14)
+    ax4.set_ylabel("$S$", fontsize=14)
 
-    ax4.tick_params(axis="x", labelsize=8)
-    ax4.tick_params(axis="y", labelsize=8)
-    ax4.tick_params(axis="z", labelsize=8)
+    ax4.tick_params(axis="x", labelsize=14)
+    ax4.tick_params(axis="y", labelsize=14)
+    ax4.tick_params(axis="z", labelsize=14)
 
     ####################################################################################################################
 
-    fig.text(0.06, 0.875, "(a)", color="k", fontsize=12)
-    fig.text(0.06, 0.455, "(c)", color="k", fontsize=12)
-    fig.text(0.49, 0.875, "(b)", color="k", fontsize=12)
-    fig.text(0.49, 0.455, "(d)", color="k", fontsize=12)
+    fig.text(0.04, 0.875, "(a)", color="k", fontsize=14)
+    fig.text(0.04, 0.455, "(c)", color="k", fontsize=14)
+    fig.text(0.49, 0.875, "(b)", color="k", fontsize=14)
+    fig.text(0.49, 0.455, "(d)", color="k", fontsize=14)
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/CI_4x4_poster.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/CI_4x4.png", bbox_inches='tight', dpi=300)
     plt.show()

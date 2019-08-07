@@ -40,8 +40,8 @@ class FermionicCompleteTwistModel(CouplingMPOModel):
         t2 = -0.01 * t
         t2dash = 0.097 * t
 
-        p = 2
-        q = 7
+        p = 10
+        q = 11
 
         alpha = p/q
         numb_sites = 2*q

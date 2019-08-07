@@ -129,6 +129,27 @@ Models description
 
     A combination of equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985 and section III of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
 
+* fermions_hofstadter = spinless fermion Hofstadter model
+
+    Custom magnetic unit cell in Landau gauge. Based on the discussion in M. Aidelsburger, PhD Thesis p.20 (2015). https://edoc.ub.uni-muenchen.de/18148/1/Aidelsburger_Monika.pdf
+
+* fermions_hofstadter_extended = spinless fermion extended Hofstadter model
+
+    Custom magnetic unit cell in Landau gauge artificially extended in the x-direction. Based on the test recommendation by Leon Schoonderwoerd.
+
+* fermions_hex_1 = spinless fermions NN hopping on a honeycomb lattice
+
+    Custom magnetic unit cell in Landau gauge. Based on the model in R. Rammal, J. Phys. **46**, 1345 (1985). https://hal.archives-ouvertes.fr/jpa-00210078/document
+
+* fermions_twist = spinless fermions (NN + 5NN) hopping on a honeycomb lattice
+
+    Custom magnetic unit cell in Landau gauge. Based on Eq. 17 in N. Yuan and L. Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
+
+* fermions_complete_twist = spinless fermions (NN + 5NN + 5NN') on a honeycomb lattice
+
+    Custom magnetic unit cell in Landau gauge. Based on Eq. 9 in M. Koshino et al. Phys. Rev. X **8**, 031087 (2018). https://arxiv.org/abs/1805.06819
+
+
 Lattices description
 --------------------
 
@@ -144,12 +165,32 @@ Lattices description
 
     Lattice for the generalized C=3 Haldane model in figure 1 of "Topological flat band models with arbitrary Chern numbers" by Shuo Yang, Zheng-Cheng Gu, Kai Sun, and S. Das Sarma, PRB **86**, 241112 (2012). https://arxiv.org/abs/1205.5792
 
+* MagneticSquare = magnetic unit cell for the square lattice
+
+    Lattice for the fermions_hofstadter model.
+
+* MagneticSquareExtended = extended magnetic unit cell for the square lattice
+
+    Lattice for the fermions_hofstadter_extended model.
+
+* MagneticHoneycomb = magnetic unit cell for the honeycomb lattice
+
+    Lattice for the fermions_hex_1 model.
+
+* MagneticTwist = magnetic unit cell and hopping definitions for the fermions_twist model
+
+    Lattice for the fermions_twist model.
+
+* MagneticCompleteTwist = magnetic unit cell and hopping definitions for the fermions_complete_twist model
+
+    Lattice for the fermions_complete_twist model.
+
 Directory structure
 -------------------
 
 **data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into ``keep``. NB: No dat files are tracked by git due to their potentially large size.
 
-**code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene. **code/lattices** is used to store custom lattices python class files. Basic lattices are already implemented in TeNPy (e.g. honeycomb). However, in this directory we store our own lattice classes e.g. for the five-band model.
+**code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene. **code/lattices** is used to store custom lattices python class files. Basic lattices are already implemented in TeNPy (e.g. honeycomb). However, in this directory we store our own lattice classes e.g. for the five-band model. **code/standalone** is used to store standalone scripts that do not require the rest of the TeNPy library to run e.g. band structure calculations, Chern number calculations, and plotting scripts.
 
 **scripts** contains all of the SLURM batch scripts used for Hydra and Piz Daint.
 

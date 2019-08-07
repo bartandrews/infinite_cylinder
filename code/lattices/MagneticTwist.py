@@ -10,7 +10,7 @@ class MagneticTwist(lattice.Lattice):
 
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
-        numb_sites = 14
+        numb_sites = 22
 
         basis = np.array(([(numb_sites/4) * np.sqrt(3), numb_sites/4], [0., 1]))
         delta = np.array([1 / (2. * np.sqrt(3.)), 0.5])
@@ -62,7 +62,7 @@ class MagneticTwist(lattice.Lattice):
 
 def plot_lattice():
 
-    numb_sites = 14
+    numb_sites = 22
 
     ax = plt.gca()
     fs = site.FermionSite()
