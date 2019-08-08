@@ -5,12 +5,6 @@ infinite_cylinder
 
 Prerequisites: TeNPy 0.3+, gnuplot, python 3+
 
-S. White, Phys. Rev. Lett. 69, 2863 (1992) :doi:`10.1103/PhysRevLett.69.2863`
-S. White, Phys. Rev. Lett. 69, 2863 (1992) ":doi:10.1103/PhysRevLett.69.2863"
-
-G. Vidal, Phys. Rev. Lett. 93, 040502 (2004), :arxiv:`quant-ph/0310089`
-G. Vidal, Phys. Rev. Lett. 93, 040502 (2004), ":arxiv:quant-ph/0310089"
-
 Workflow
 --------
 
