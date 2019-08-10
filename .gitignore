@@ -11,3 +11,5 @@ data/ent_scal/keep/fit.log
 **/*.temp
 **/*.tmp
 **/*.backup
+data/charge_pump/complete_twist/*
+data/ent_spec_flow/complete_twist/*
