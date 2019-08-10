@@ -3,7 +3,7 @@ Hamiltonian based on: "Characterization and stability of a fermionic ν=1/3 frac
 
 import numpy as np
 
-from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
+from tenpy.models.model import CouplingMPOModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import BosonSite
 
@@ -49,10 +49,3 @@ class BosonicHaldane2Model(CouplingMPOModel):
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext])
             self.add_coupling(t2_phi, u1, 'Bd', u2, 'B', dx, category='t2 Bd_i B_j')
             self.add_coupling(np.conj(t2_phi), u2, 'Bd', u1, 'B', -dx, category='t2 Bd_i B_j h.c.')  # h.c.
-
-
-class BosonicHaldane2Chain(BosonicHaldane2Model, NearestNeighborModel):
-
-    def __init__(self, model_params):
-        model_params.setdefault('lattice', "Chain")
-        CouplingMPOModel.__init__(self, model_params)

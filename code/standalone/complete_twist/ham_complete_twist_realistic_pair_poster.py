@@ -104,7 +104,7 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
     return bc
 
 
-numb_samples = 101
+numb_samples = 301
 
 if __name__ == '__main__':
 
@@ -114,7 +114,7 @@ if __name__ == '__main__':
     # System 1 #########################################################################################################
     ############
 
-    p1 = 10
+    p1 = 2
     q1 = 11
 
     # reciprocal lattice vectors
@@ -192,6 +192,8 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(12, 2.5))  # 12, 3
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
+    bands_to_study = 4
+
     ###############
     # Subfigure 1 ######################################################################################################
     ###############
@@ -212,7 +214,7 @@ if __name__ == '__main__':
     #     cidx[i] = M1 + i
     #     cidx[M1 + i] = (M1 - 1) - i
 
-    for i in range(3):
+    for i in range(bands_to_study):
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i])
 
@@ -236,10 +238,10 @@ if __name__ == '__main__':
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    for i in range(3):
+    for i in range(bands_to_study):
         start = -0.05
         stop = 0.03
-        interval = (stop - start) / (3 - 1)
+        interval = (stop - start) / (bands_to_study - 1)
         ax.text2D(-0.15, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
                   color='C{}'.format(i % 10), fontsize=10)
 
@@ -265,12 +267,12 @@ if __name__ == '__main__':
     ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=11)
     ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=11)
 
-    ax1.text(0.1, 0.1, '$C=-1$', fontsize=11)
+    # ax1.text(0.1, 0.1, '$C=-1$', fontsize=11)
 
     ax1.tick_params(axis="x", labelsize=9)
     ax1.tick_params(axis="y", labelsize=9)
 
-    for band in range(3):
+    for band in range(2):
         ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=-0.4)
@@ -285,10 +287,10 @@ if __name__ == '__main__':
 
     ######
 
-    maxima1 = np.zeros(4)
-    minima1 = np.zeros(4)
-    width1 = np.zeros(4)
-    for i in range(4):
+    maxima1 = np.zeros(bands_to_study)
+    minima1 = np.zeros(bands_to_study)
+    width1 = np.zeros(bands_to_study)
+    for i in range(bands_to_study):
         maxima1[i] = np.max(E1[i])
         minima1[i] = np.min(E1[i])
         width1[i] = maxima1[i] - minima1[i]
@@ -301,8 +303,8 @@ if __name__ == '__main__':
     #     bidx1[i] = (2 * M1 - 1) - i
     #     bidx1[M1 + i] = i
 
-    gap1 = np.zeros(4 - 1)
-    for i in range(4 - 1):
+    gap1 = np.zeros(bands_to_study - 1)
+    for i in range(bands_to_study - 1):
         gap1[i] = minima1[i + 1] - maxima1[i]
 
     for i in range(len(gap1)):
@@ -324,5 +326,5 @@ if __name__ == '__main__':
 
     ############
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster_phi_2_11.png", bbox_inches='tight', dpi=300)
     plt.show()

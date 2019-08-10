@@ -362,7 +362,7 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 10, 11
+    p, q = 2, 11
 
     if p % 2 == 0:
         M = q

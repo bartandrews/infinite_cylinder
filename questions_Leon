@@ -1,0 +1,17 @@
+Questions about the paper:
+
+- How is the entanglement gap defined in Fig.2.b) ?
+- "Entanglement grows linearly with cyclinder circumference" (page 2) ?
+- how is the subband filling defined ?
+- is LLL split into p subbands always ?
+
+General questions:
+
+- Hermitian Hamiltonian for NN hopping on honeycomb lattice in Landau gauge
+- simplest minimal example of FCI charge pumping (i.e. smallest possible chi, smallest unit cell, etc.)
+- cheapest/easiest way to identify an FCI (is charge pumping the most robust method?)
+- what does this warning mean? It appears sometimes after a long time trying to calculate charge pumping at a particular phi:
+
+UserWarning: SVD with lapack_driver 'gesdd' failed. Use backup 'gesvd'
+
+

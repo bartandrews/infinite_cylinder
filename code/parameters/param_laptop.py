@@ -17,6 +17,8 @@ elif model == 'FermionicHex1':
     tile_unit = ['empty', 'full']
 elif model == 'FermionicTwist':
     tile_unit = ['empty', 'full']
+elif model == 'BosonicCompleteTwist':
+    tile_unit = ['empty_x empty_y', 'full_x full_y']
 elif model == 'FermionicCompleteTwist':
     tile_unit = ['empty_x empty_y', 'full_x full_y']
 elif model == 'FermionicPiFlux':
@@ -39,9 +41,9 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 300
+chi_max = 100
 # chi max for compute_K
-chi_max_K = 300
+chi_max_K = 100
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, U, V = -1, 0, 0, 0

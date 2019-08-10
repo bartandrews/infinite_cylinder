@@ -1,11 +1,13 @@
 from tenpy.networks.mps import MPS
 from tenpy.models.hubbard import FermiHubbardModel
+# from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
 from models.fermions_hofstadter import FermionicHofstadterModel
 from models.fermions_hofstadter_extended import FermionicHofstadterExtendedModel
 from models.fermions_hex_1 import FermionicHex1Model
 from models.fermions_twist import FermionicTwistModel
-from models.fermions_complete_twist import FermionicCompleteTwistModel
+from models.complete_twist import BosonicCompleteTwistModel, FermionicCompleteTwistModel
+# from models.fermions_complete_twist import FermionicCompleteTwistModel
 from models.fermions_pi_flux import FermionicPiFluxModel
 from models.fermions_C3_haldane import FermionicC3HaldaneModel
 from models.bosons_haldane import BosonicHaldaneModel
@@ -28,8 +30,9 @@ import pickle
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
     if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
-                     'FermionicHofstadter', 'FermionicHofstadterExtended', 'FermionicHex1', 'FermionicTwist', 'FermionicCompleteTwist',
-                     'FermionicPiFlux', 'FermionicC3Haldane', 'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
+                     'FermionicHofstadter', 'FermionicHofstadterExtended', 'FermionicHex1', 'FermionicTwist',
+                     'BosonicCompleteTwist', 'FermionicCompleteTwist', 'FermionicPiFlux', 'FermionicC3Haldane',
+                     'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
 
     stem = ("%s_%s_%s_%s_tile_%s_%s_chi_%s_"
@@ -57,7 +60,7 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     elif lattice == "MagneticHoneycomb":
         lat_basis = 10
     elif lattice == "MagneticTwist":
-        lat_basis = 22
+        lat_basis = 18
     else:
         sys.exit('Error: Unknown lattice.')
 
@@ -86,7 +89,86 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
-        product_state = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1]
+
+        # phi=2/7
+
+        # # bosons with filled LLL
+        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y']
+        # # bosons with 1/2-filled LLL
+        # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y']
+        # # fermions with filled LLL
+        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y']
+        # # fermions with 1/2-filled LLL
+        # product_state = ['full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y']
+
+        # phi=2/9
+
+        # # bosons with filled LLL
+        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y']
+        # # bosons with 1/2-filled LLL
+        # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y']
+        # # fermions with filled LLL
+        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y']
+        # # fermions with filled LLL
+        # product_state = ['full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y']
+
+        # phi=2/11
+
+        # # bosons with filled LLL
+        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y']
+        # # bosons with 1/2-filled LLL
+        # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y']
+        # # fermions with filled LLL
+        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y']
+        # # fermions with 1/2-filled LLL
+        # product_state = ['full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y']
+        # fermions with double-filled LLL
+        product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+                         'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+                         'empty_x empty_y', 'full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y',
+                         'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+                         'empty_x empty_y', 'empty_x empty_y']
+
     else:
         sys.exit('Error: Unknown initial_state.')
 
@@ -99,6 +181,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
         M = FermiHubbardModel(model_params)
+        # M = FermionicHubbardModel(model_params)
 
     elif model == 'BosonicHaldane':
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
@@ -131,8 +214,12 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(conserve='N', t=t, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
         M = FermionicTwistModel(model_params)
 
+    elif model == 'BosonicCompleteTwist':
+        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        M = BosonicCompleteTwistModel(model_params)
+
     elif model == 'FermionicCompleteTwist':
-        model_params = dict(conserve='N', t=t, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
         M = FermionicCompleteTwistModel(model_params)
 
     elif model == 'FermionicPiFlux':
@@ -201,7 +288,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         #     'reortho': True,
         #     'N_cache': 40
         # },
-        'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
+        # 'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
         'max_E_err': 1.e-10,
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,

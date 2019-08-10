@@ -115,7 +115,7 @@ if __name__ == '__main__':
     ############
 
     p1 = 2
-    q1 = 9
+    q1 = 7
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -192,6 +192,8 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(12, 6))
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
+    bands_to_study = 4
+
     ###############
     # Subfigure 1 ######################################################################################################
     ###############
@@ -212,7 +214,7 @@ if __name__ == '__main__':
     #     cidx[i] = M1 + i
     #     cidx[M1 + i] = (M1 - 1) - i
 
-    for i in range(4):
+    for i in range(bands_to_study):
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i])
 
@@ -236,10 +238,10 @@ if __name__ == '__main__':
     ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
     ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
 
-    for i in range(4):
+    for i in range(bands_to_study):
         start = -0.05
         stop = 0.03
-        interval = (stop - start) / (4 - 1)
+        interval = (stop - start) / (bands_to_study - 1)
         ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
                   color='C{}'.format(i % 10), fontsize=14)
 
@@ -268,7 +270,7 @@ if __name__ == '__main__':
     ax1.tick_params(axis="x", labelsize=14)
     ax1.tick_params(axis="y", labelsize=14)
 
-    for band in range(4):
+    for band in range(bands_to_study):
         ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
 
     gs.update(wspace=0.5)
@@ -283,10 +285,10 @@ if __name__ == '__main__':
 
     ######
 
-    maxima1 = np.zeros(4)
-    minima1 = np.zeros(4)
-    width1 = np.zeros(4)
-    for i in range(4):
+    maxima1 = np.zeros(bands_to_study)
+    minima1 = np.zeros(bands_to_study)
+    width1 = np.zeros(bands_to_study)
+    for i in range(bands_to_study):
         maxima1[i] = np.max(E1[i])
         minima1[i] = np.min(E1[i])
         width1[i] = maxima1[i] - minima1[i]
@@ -299,8 +301,8 @@ if __name__ == '__main__':
     #     bidx1[i] = (2 * M1 - 1) - i
     #     bidx1[M1 + i] = i
 
-    gap1 = np.zeros(4 - 1)
-    for i in range(4 - 1):
+    gap1 = np.zeros(bands_to_study - 1)
+    for i in range(bands_to_study - 1):
         gap1[i] = minima1[i + 1] - maxima1[i]
 
     for i in range(len(gap1)):
