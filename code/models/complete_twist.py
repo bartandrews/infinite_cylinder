@@ -19,7 +19,7 @@ class BosonicCompleteTwistModel(CouplingMPOModel):
     def init_sites(self, model_params):
         conserve = get_parameter(model_params, 'conserve', 'N', self.name)
 
-        nmax = 1
+        nmax = 4
         print("Nmax = ", nmax)
         bs = BosonSite(Nmax=nmax, conserve=conserve)
 

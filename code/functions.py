@@ -89,6 +89,7 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
+        # product_state = [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         # phi=2/7
 
@@ -111,12 +112,12 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
 
         # phi=2/9
 
-        # # bosons with filled LLL
-        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y']
+        # bosons with filled LLL
+        product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y',
+                         '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+                         '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+                         '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+                         '0_x 0_y', '0_x 0_y']
         # # bosons with 1/2-filled LLL
         # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
         #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
@@ -162,12 +163,12 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
         #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
         #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
         #                  'empty_x empty_y', 'empty_x empty_y']
-        # fermions with double-filled LLL
-        product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-                         'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-                         'empty_x empty_y', 'full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y',
-                         'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-                         'empty_x empty_y', 'empty_x empty_y']
+        # # fermions with double-filled LLL
+        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
+        #                  'empty_x empty_y', 'empty_x empty_y']
 
     else:
         sys.exit('Error: Unknown initial_state.')

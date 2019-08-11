@@ -2,17 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89024c43-e14f-41ad-9bbb-b9de2150dd7e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Ly_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Ly_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/MagneticTwist.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticTwist.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_haldane_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/bosons_haldane_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_complete_twist.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/complete_twist.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/complete_twist.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../parameters/param_laptop.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parameters/param_laptop.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../phi_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/complete_twist/script_complete_twist.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/script_complete_twist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../questions_Leon" beforeDir="false" afterPath="$PROJECT_DIR$/../../questions_Leon" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +47,28 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ham_complete_twist_realistic_pair">
+  <component name="RunManager" selected="Python.CI_1x2_detail_poster">
+    <configuration name="CI_1x2_detail_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="standalone" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/CI_1x2_detail" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="complete_band_structure_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -115,27 +132,6 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="lattice_bz_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="standalone" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/lattice_bz" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/lattice_bz/lattice_bz_poster.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <configuration name="script_complete_twist" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -159,18 +155,18 @@
     </configuration>
     <list>
       <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
-      <item itemvalue="Python.lattice_bz_poster" />
       <item itemvalue="Python.script_complete_twist" />
       <item itemvalue="Python.ham_complete_twist_realistic_pair" />
       <item itemvalue="Python.complete_band_structure_poster" />
+      <item itemvalue="Python.CI_1x2_detail_poster" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.CI_1x2_detail_poster" />
         <item itemvalue="Python.ham_complete_twist_realistic_pair" />
         <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
         <item itemvalue="Python.complete_band_structure_poster" />
         <item itemvalue="Python.script_complete_twist" />
-        <item itemvalue="Python.lattice_bz_poster" />
       </list>
     </recent_temporary>
   </component>

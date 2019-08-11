@@ -1,7 +1,7 @@
 # configuration parameters
-model = 'FermionicCompleteTwist'
+model = 'BosonicCompleteTwist'
 lattice = 'MagneticTwist'
-initial_state = 'third'
+initial_state = 'custom'
 
 if model == 'BosonicHaldane':
     tile_unit = ['0', '1']
