@@ -2,8 +2,14 @@ from tenpy.networks.mps import MPS
 from tenpy.models.hubbard import FermiHubbardModel
 # from tenpy.models.fermions_hubbard import FermionicHubbardModel
 from models.fermions_haldane import FermionicHaldaneModel
+from models.hofstadter import HofstadterBosons
+from models.bosons_hofstadter import BosonicHofstadterModel
 from models.fermions_hofstadter import FermionicHofstadterModel
 from models.fermions_hofstadter_extended import FermionicHofstadterExtendedModel
+from models.bosons_hex_1 import BosonicHex1Model
+from models.bosons_tri_2 import BosonicTri2Model
+from models.bosons_hex_5 import BosonicHex5Model
+from models.fermions_tri_2 import FermionicTri2Model
 from models.fermions_hex_1 import FermionicHex1Model
 from models.fermions_twist import FermionicTwistModel
 from models.complete_twist import BosonicCompleteTwistModel, FermionicCompleteTwistModel
@@ -30,7 +36,8 @@ import pickle
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
     if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
-                     'FermionicHofstadter', 'FermionicHofstadterExtended', 'FermionicHex1', 'FermionicTwist',
+                     'Hofstadter', 'BosonicHofstadter', 'FermionicHofstadter', 'FermionicHofstadterExtended',
+                     'BosonicHex1', 'BosonicTri2', 'BosonicHex5', 'FermionicTri2', 'FermionicHex1', 'FermionicTwist',
                      'BosonicCompleteTwist', 'FermionicCompleteTwist', 'FermionicPiFlux', 'FermionicC3Haldane',
                      'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
@@ -54,11 +61,17 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     elif lattice == "FiveBandLattice":
         lat_basis = 6
     elif lattice == "MagneticSquare":
-        lat_basis = 11
+        lat_basis = 4
     elif lattice == "MagneticSquareExtended":
         lat_basis = 10
     elif lattice == "MagneticHoneycomb":
-        lat_basis = 10
+        lat_basis = 8
+    elif lattice == "MagneticHoneycomb2":
+        lat_basis = 32
+    elif lattice == "MagneticHoneycomb3":
+        lat_basis = 8
+    elif lattice == "MagneticTriangular":
+        lat_basis = 4
     elif lattice == "MagneticTwist":
         lat_basis = 18
     else:
@@ -89,7 +102,8 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'custom':
-        # product_state = [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0]
 
         # phi=2/7
 
@@ -112,12 +126,12 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
 
         # phi=2/9
 
-        # bosons with filled LLL
-        product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y',
-                         '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-                         '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-                         '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-                         '0_x 0_y', '0_x 0_y']
+        # # bosons with filled LLL
+        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
+        #                  '0_x 0_y', '0_x 0_y']
         # # bosons with 1/2-filled LLL
         # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
         #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
@@ -199,17 +213,61 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = FermionicHaldaneModel(model_params)
 
+    elif model == 'BosonicHofstadter':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicHofstadterModel(model_params)
+
+    elif model == 'Hofstadter':
+        model_params = dict(conserve='N', t=t, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext,
+                            filling=(1, 8), phi=(1, 4), Nmax=1, bc_MPS='infinite', bc_x='periodic', bc_y='cylinder',
+                            order='default')
+        M = HofstadterBosons(model_params)
+
     elif model == 'FermionicHofstadter':
-        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='N', t=t, filling=(1, 3), phi=(1, 3), Lx=Lx, Ly=Ly, V=0,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHofstadterModel(model_params)
 
     elif model == 'FermionicHofstadterExtended':
         model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
         M = FermionicHofstadterExtendedModel(model_params)
 
+    elif model == 'BosonicHex1':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)
+        M = BosonicHex1Model(model_params)
+
+    elif model == 'BosonicTri2':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)
+        M = BosonicTri2Model(model_params)
+
+    elif model == 'BosonicHex5':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)
+        M = BosonicHex5Model(model_params)
+
+    # elif model == 'FermionicHex1':
+    #     model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+    #     M = FermionicHex1Model(model_params)
+
     elif model == 'FermionicHex1':
-        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)
         M = FermionicHex1Model(model_params)
+
+    elif model == 'FermionicTri2':
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)
+        M = FermionicTri2Model(model_params)
 
     elif model == 'FermionicTwist':
         model_params = dict(conserve='N', t=t, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
@@ -280,7 +338,7 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
 
     dmrg_params = {
         'mixer': True,  # setting this to True helps to escape local minima
-        # 'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
+        'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
         'trunc_params': {
             'chi_max': chi_max,
             'svd_min': 1.e-10
@@ -290,13 +348,13 @@ def define_iDMRG_engine(model, lattice, initial_state, tile_unit, chi_max, t, U,
         #     'N_cache': 40
         # },
         # 'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
-        'max_E_err': 1.e-10,
+        'max_E_err': 1.e-8,
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,
         # 'norm_tol_iter': 1000,
-        # 'max_sweeps': 150,
+        'max_sweeps': 150,
         'verbose': 1,
-        'N_sweeps_check': 10
+        # 'N_sweeps_check': 10
     }
 
     # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)

@@ -9,7 +9,7 @@ class MagneticHoneycomb(lattice.Lattice):
 
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
-        numb_sites = 10
+        numb_sites = 8
 
         basis = np.array(([(numb_sites/4) * np.sqrt(3), numb_sites/4], [0., 1]))
         delta = np.array([1 / (2. * np.sqrt(3.)), 0.5])
@@ -27,6 +27,8 @@ class MagneticHoneycomb(lattice.Lattice):
         kwargs.setdefault('positions', pos)
 
         super().__init__([Lx, Ly], [siteA] * numb_sites, **kwargs)
+
+        # nearest neighbors
 
         for i in range(numb_sites):
             if i % 2 == 0:
@@ -52,27 +54,73 @@ class MagneticHoneycomb(lattice.Lattice):
                 else:
                     setattr(self, "NN{}br".format(i), [(i, i+1, np.array([0, 0]))])
 
+        # fifth nearest neighbors
+
+        for i in range(numb_sites):
+            if i % 2 == 0:
+                if i == 0:
+                    setattr(self, "fifthNN{}u".format(i), [(i, numb_sites-2, np.array([-1, 2]))])
+                else:
+                    setattr(self, "fifthNN{}u".format(i), [(i, i-2, np.array([0, 2]))])
+            else:
+                if i == 1:
+                    setattr(self, "fifthNN{}u".format(i), [(i, numb_sites - 1, np.array([-1, 2]))])
+                else:
+                    setattr(self, "fifthNN{}u".format(i), [(i, i - 2, np.array([0, 2]))])
+
+        for i in range(numb_sites):
+            if i % 2 == 0:
+                if i == 0:
+                    setattr(self, "fifthNN{}ul".format(i), [(i, numb_sites-4, np.array([-1, 1]))])
+                elif i == 2:
+                    setattr(self, "fifthNN{}ul".format(i), [(i, numb_sites-2, np.array([-1, 1]))])
+                else:
+                    setattr(self, "fifthNN{}ul".format(i), [(i, i-4, np.array([0, 1]))])
+            else:
+                if i == 1:
+                    setattr(self, "fifthNN{}ul".format(i), [(i, numb_sites - 3, np.array([-1, 1]))])
+                elif i == 3:
+                    setattr(self, "fifthNN{}ul".format(i), [(i, numb_sites - 1, np.array([-1, 1]))])
+                else:
+                    setattr(self, "fifthNN{}ul".format(i), [(i, i - 4, np.array([0, 1]))])
+
+        for i in range(numb_sites):
+            if i % 2 == 0:
+                if i == numb_sites-2:
+                    setattr(self, "fifthNN{}ur".format(i), [(i, 0, np.array([1, 1]))])
+                else:
+                    setattr(self, "fifthNN{}ur".format(i), [(i, i+2, np.array([0, 1]))])
+            else:
+                if i == numb_sites-1:
+                    setattr(self, "fifthNN{}ur".format(i), [(i, 1, np.array([1, 1]))])
+                else:
+                    setattr(self, "fifthNN{}ur".format(i), [(i, i + 2, np.array([0, 1]))])
+
 
 def plot_lattice():
 
-    numb_sites = 10
+    numb_sites = 8
 
     import matplotlib.pyplot as plt
 
     ax = plt.gca()
     fs = site.FermionSite()
-    lat = MagneticHoneycomb(5, 5, fs, basis=[[(numb_sites/4) *np.sqrt(3), numb_sites/4], [0, 1]])
+    lat = MagneticHoneycomb(1, 1, fs, basis=[[(numb_sites/4) *np.sqrt(3), numb_sites/4], [0, 1]])
     lat.plot_sites(ax)
 
-    for i in range(0, numb_sites, 2):
-        lat.plot_coupling(ax, getattr(lat, "NN{}d".format(i)), linestyle='-', color='red')
-        lat.plot_coupling(ax, getattr(lat, "NN{}ul".format(i)), linestyle='-', color='blue')
-        lat.plot_coupling(ax, getattr(lat, "NN{}ur".format(i)), linestyle='-', color='green')
+    # for i in range(0, numb_sites, 2):
+    #     lat.plot_coupling(ax, getattr(lat, "NN{}d".format(i)), linestyle='-', color='red')
+    #     lat.plot_coupling(ax, getattr(lat, "NN{}ul".format(i)), linestyle='-', color='blue')
+    #     lat.plot_coupling(ax, getattr(lat, "NN{}ur".format(i)), linestyle='-', color='green')
+    # for i in range(1, numb_sites, 2):
+    #     lat.plot_coupling(ax, getattr(lat, "NN{}u".format(i)), linestyle='-', color='red')
+    #     lat.plot_coupling(ax, getattr(lat, "NN{}bl".format(i)), linestyle='-', color='blue')
+    #     lat.plot_coupling(ax, getattr(lat, "NN{}br".format(i)), linestyle='-', color='green')
 
-    for i in range(1, numb_sites, 2):
-        lat.plot_coupling(ax, getattr(lat, "NN{}u".format(i)), linestyle='-', color='red')
-        lat.plot_coupling(ax, getattr(lat, "NN{}bl".format(i)), linestyle='-', color='blue')
-        lat.plot_coupling(ax, getattr(lat, "NN{}br".format(i)), linestyle='-', color='green')
+    for i in range(numb_sites):
+        lat.plot_coupling(ax, getattr(lat, "fifthNN{}u".format(i)), linestyle='-', color='red')
+        lat.plot_coupling(ax, getattr(lat, "fifthNN{}ul".format(i)), linestyle='-', color='blue')
+        lat.plot_coupling(ax, getattr(lat, "fifthNN{}ur".format(i)), linestyle='-', color='green')
 
     ax.set_aspect('equal')
     plt.show()

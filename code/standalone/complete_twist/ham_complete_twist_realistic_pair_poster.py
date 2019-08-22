@@ -114,7 +114,7 @@ if __name__ == '__main__':
     # System 1 #########################################################################################################
     ############
 
-    p1 = 2
+    p1 = 10
     q1 = 11
 
     # reciprocal lattice vectors
@@ -192,7 +192,7 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(12, 2.5))  # 12, 3
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
-    bands_to_study = 4
+    bands_to_study = 3
 
     ###############
     # Subfigure 1 ######################################################################################################
@@ -326,5 +326,5 @@ if __name__ == '__main__':
 
     ############
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster_phi_2_11.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster_phi_2_11.png", bbox_inches='tight', dpi=300)
     plt.show()

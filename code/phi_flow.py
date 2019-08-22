@@ -11,13 +11,17 @@ p = importlib.import_module(parameters_module)
 
 def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp):
 
+    overlap_stem = f.file_name_stem("overlap", model, lattice, initial_state, tile_unit, chi_max)
     charge_pump_stem = f.file_name_stem("charge_pump", model, lattice, initial_state, tile_unit, chi_max)
     ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max)
     leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat" % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp))
+    overlap_file = "data/overlap/" + overlap_stem.replace(" ", "_") + leaf
     charge_pump_file = "data/charge_pump/" + charge_pump_stem.replace(" ", "_") + leaf
     ent_spec_flow_file = "data/ent_spec_flow/" + ent_spec_flow_stem.replace(" ", "_") + leaf
+    open(overlap_file, "w")
     open(charge_pump_file, "w")
     open(ent_spec_flow_file, "w")
+    overlap_data = open(overlap_file, "a", buffering=1)
     charge_pump_data = open(charge_pump_file, "a", buffering=1)
     ent_spec_flow_data = open(ent_spec_flow_file, "a", buffering=1)
 
@@ -28,11 +32,18 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
 
     for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        if phi_ext != phi_min:
+        if phi_ext == phi_min:
+            engine.run()
+        else:
+            engine.DMRG_params['mixer'] = False
             del engine.DMRG_params['chi_list']  # comment out this line for single site DMRG tests
             M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
+            psi_old = engine.psi
             engine.init_env(model=M)
-        engine.run()
+            engine.run()
+            abs_ov = abs(psi_old.overlap(engine.psi))
+            print("{phi_ext:.15f}\t{abs_ov:.15f}".format(phi_ext=phi_ext, abs_ov=abs_ov))
+            overlap_data.write("%.15f\t%.15f\n" % (phi_ext, abs_ov))
 
         ###############
         # charge_pump #
@@ -66,6 +77,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_phi_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.V, p.Lx, p.Ly,
-                phi_min=0, phi_max=2, phi_samp=7)
+                phi_min=0, phi_max=3, phi_samp=31)
 
     print(time.time() - t0)

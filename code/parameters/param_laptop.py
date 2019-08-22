@@ -1,6 +1,6 @@
 # configuration parameters
-model = 'BosonicCompleteTwist'
-lattice = 'MagneticTwist'
+model = 'FermionicTri2'
+lattice = 'MagneticTriangular'
 initial_state = 'custom'
 
 if model == 'BosonicHaldane':
@@ -9,11 +9,23 @@ elif model == 'BosonicHaldane2':
     tile_unit = ['0', '1']
 elif model == 'FermionicHaldane':
     tile_unit = ['empty', 'full']
+elif model == 'Hofstadter':
+    tile_unit = [1, 0]
+elif model == 'BosonicHofstadter':
+    tile_unit = [1, 0]
 elif model == 'FermionicHofstadter':
-    tile_unit = ['empty', 'full']
+    tile_unit = [1, 0]
 elif model == 'FermionicHofstadterExtended':
     tile_unit = ['empty', 'full']
+elif model == 'BosonicHex1':
+    tile_unit = [1, 0]
+elif model == 'BosonicTri2':
+    tile_unit = [1, 0]
+elif model == 'BosonicHex5':
+    tile_unit = [1, 0]
 elif model == 'FermionicHex1':
+    tile_unit = ['empty', 'full']
+elif model == 'FermionicTri2':
     tile_unit = ['empty', 'full']
 elif model == 'FermionicTwist':
     tile_unit = ['empty', 'full']
@@ -41,12 +53,12 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 100
+chi_max = 50
 # chi max for compute_K
-chi_max_K = 100
+chi_max_K = 50
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, U, V = -1, 0, 0, 0
+t, mu, U, V = -1, 0, 0, 10
 
 if model in ['FermionicHaldane']:
     U = 0
@@ -58,7 +70,7 @@ elif model in ['TBG5']:
     J, Js, Jv = 1, 0.1, 8
 
 # unit cell
-Lx, Ly = 1, 1
+Lx, Ly = 1, 6
 
 # pickle capability
 use_pickle = False

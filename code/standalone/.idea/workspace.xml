@@ -2,12 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89024c43-e14f-41ad-9bbb-b9de2150dd7e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Ly_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Ly_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/complete_twist.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/complete_twist.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lattices/MagneticHoneycomb.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticHoneycomb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lattices/MagneticSquare.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticSquare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/fermions_hex_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/fermions_hex_1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/fermions_hofstadter.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/fermions_hofstadter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../parameters/param_laptop.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parameters/param_laptop.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../phi_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../../questions_Leon" beforeDir="false" afterPath="$PROJECT_DIR$/../../questions_Leon" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -32,7 +35,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$USER_HOME$/TeNPy" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -163,10 +166,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.CI_1x2_detail_poster" />
-        <item itemvalue="Python.ham_complete_twist_realistic_pair" />
-        <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
         <item itemvalue="Python.complete_band_structure_poster" />
         <item itemvalue="Python.script_complete_twist" />
+        <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
+        <item itemvalue="Python.ham_complete_twist_realistic_pair" />
       </list>
     </recent_temporary>
   </component>

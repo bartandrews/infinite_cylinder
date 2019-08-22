@@ -1,19 +1,22 @@
 Questions about the paper:
 
-- How is the entanglement gap defined in Fig.2.b) ?
-- "Entanglement grows linearly with cyclinder circumference" (page 2) ?
+- pg 1. "While the literature on FCIs focuses on models where a single low-lying flat topological band mirrors the physics of the lowest Landau level (LLL)". When is this true? What about the Hofstadter model studies?  
+- How is the entanglement gap defined in Fig.2.b) ? "In the ES, we define the entanglement gap ∆ξ as the gap between the lowest two levels within the same quantum number and momentum sector".
+- Fig 2.b) "The entanglement spectrum (ES){−logλi(ky)}". Is it at k=0 ?
+- Fig. 3. Ly in units of magnetic length, how is Ly defined?
+- Second dashed line in Fig.2.f) ?
+- "Entanglement grows linearly with cyclinder circumference" (page 2) ? However, exponential with computational cost.
 - how is the subband filling defined ?
 - is LLL split into p subbands always ?
 
 General questions:
 
-- Hermitian Hamiltonian for NN hopping on honeycomb lattice in Landau gauge
-- simplest minimal example of FCI charge pumping (i.e. smallest possible chi, smallest unit cell, etc.)
+- difference between MPS unit cell and magnetic unit cell?
 - cheapest/easiest way to identify an FCI (is charge pumping the most robust method?)
+- simplest minimal example of FCI charge pumping (i.e. smallest possible chi, smallest unit cell, etc.)
 - what does this warning mean? It appears sometimes after a long time trying to calculate charge pumping at a particular phi:
 
 UserWarning: SVD with lapack_driver 'gesdd' failed. Use backup 'gesvd'
 
 - does the ent_spec_flow neccesarily have to be symmetric?
-- difference between MPS unit cell and magnetic unit cell?
-
+- Hermitian Hamiltonian for NN hopping on honeycomb lattice in Landau gauge
