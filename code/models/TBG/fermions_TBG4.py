@@ -7,7 +7,7 @@ import sys
 from tenpy.models.model import CouplingMPOModel, NearestNeighborModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite, GroupedSite
-from lattices.five_band_model import FiveBandLattice
+from lattices.FiveBandModel import FiveBandLattice
 from tenpy.networks import site
 
 

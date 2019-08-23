@@ -6,7 +6,7 @@ import sys
 from tenpy.models.model import CouplingMPOModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import FermionSite
-from lattices.MagneticTwist import MagneticTwist
+from lattices.MagneticHoneycomb import MagneticHoneycomb
 
 
 class FermionicTwistModel(CouplingMPOModel):
@@ -26,7 +26,7 @@ class FermionicTwistModel(CouplingMPOModel):
         Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 1, self.name)
         fs = self.init_sites(model_params)
-        lat = MagneticTwist(Lx, Ly, fs)
+        lat = MagneticHoneycomb(Lx, Ly, fs)
         print(lat.N_sites)
         return lat
 

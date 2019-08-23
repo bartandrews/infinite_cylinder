@@ -1,5 +1,4 @@
-"""Hofstadter model.
-Hamiltonian based on: "Square Lattice with Magnetic Field", Aidelsburger PhD thesis."""
+"""tri_2 model"""
 
 import numpy as np
 import sys
@@ -7,10 +6,10 @@ import sys
 from tenpy.models.model import CouplingMPOModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import BosonSite, FermionSite
-from lattices.MagneticSquare import MagneticSquare
+from lattices.MagneticTriangular import MagneticTriangular
 
 
-class BosonicHofstadterModel(CouplingMPOModel):
+class BosonicTri1Model(CouplingMPOModel):
 
     def __init__(self, model_params):
         CouplingMPOModel.__init__(self, model_params)
@@ -36,7 +35,7 @@ class BosonicHofstadterModel(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = MagneticSquare(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
+        lat = MagneticTriangular(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
         return lat
 
     def init_terms(self, model_params):
@@ -47,21 +46,26 @@ class BosonicHofstadterModel(CouplingMPOModel):
         phi_p, phi_q = get_parameter(model_params, 'phi', (1, 4), self.name)
         phi = 2 * np.pi * phi_p / phi_q
 
-        for u1, u2, dx in self.lat.NN_horiz:
-            print("lat_NN_horiz = ", u1, u2, dx)
-            t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
-            self.add_coupling(t_phi, u1, 'Bd', u2, 'B', dx)
-            self.add_coupling(np.conj(t_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
-
         for i in range(phi_q):
-            for u1, u2, dx in getattr(self.lat, "NN_v{}".format(i)):
-                print("lat_NN_v = ", u1, u2, dx)
-                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) * np.exp(-1j * phi * i)
+            for u1, u2, dx in getattr(self.lat, "NN_u{}".format(i)):
+                # print("lat_NN_u =", u1, u2, dx)
+                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+                        * np.exp(1j * (phi/2) * ((2*i)+1/2))
                 self.add_coupling(t_phi, u1, 'Bd', u2, 'B', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
+            for u1, u2, dx in getattr(self.lat, "NN_rd{}".format(i)):
+                # print("lat_NN_ul =", u1, u2, dx)
+                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+                        * np.exp(-1j * (phi/2) * ((2*i)+1/2))
+                self.add_coupling(t_phi, u1, 'Bd', u2, 'B', dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Bd', u1, 'B', -dx)  # h.c.
+            for u1, u2, dx in getattr(self.lat, "NN_ru{}".format(i)):
+                # print("lat_NN_ur =", u1, u2, dx)
+                self.add_coupling(t, u1, 'Bd', u2, 'B', dx)
+                self.add_coupling(np.conj(t), u2, 'Bd', u1, 'B', -dx)  # h.c.
 
 
-class FermionicHofstadterModel(CouplingMPOModel):
+class FermionicTri1Model(CouplingMPOModel):
 
     def __init__(self, model_params):
         CouplingMPOModel.__init__(self, model_params)
@@ -86,7 +90,7 @@ class FermionicHofstadterModel(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = MagneticSquare(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
+        lat = MagneticTriangular(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
         return lat
 
     def init_terms(self, model_params):
@@ -98,17 +102,23 @@ class FermionicHofstadterModel(CouplingMPOModel):
         phi_p, phi_q = get_parameter(model_params, 'phi', (1, 3), self.name)
         phi = 2 * np.pi * phi_p / phi_q
 
-        for u1, u2, dx in self.lat.NN_horiz:
-            print("lat_NN_horiz = ", u1, u2, dx)
-            t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext])
-            self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
-            self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
-            self.add_coupling(V, u1, 'N', u2, 'N', dx)
-
         for i in range(phi_q):
-            for u1, u2, dx in getattr(self.lat, "NN_v{}".format(i)):
-                print("lat_NN_v = ", u1, u2, dx)
-                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) * np.exp(-1j * phi * i)
+            for u1, u2, dx in getattr(self.lat, "NN_u{}".format(i)):
+                # print("lat_NN_u =", u1, u2, dx)
+                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+                        * np.exp(1j * (phi/2) * ((2*i)+1/2))
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
+                self.add_coupling(V, u1, 'N', u2, 'N', dx)
+            for u1, u2, dx in getattr(self.lat, "NN_rd{}".format(i)):
+                # print("lat_NN_ul =", u1, u2, dx)
+                t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+                        * np.exp(-1j * (phi/2) * ((2*i)+1/2))
+                self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
+                self.add_coupling(V, u1, 'N', u2, 'N', dx)
+            for u1, u2, dx in getattr(self.lat, "NN_ru{}".format(i)):
+                # print("lat_NN_ur =", u1, u2, dx)
+                self.add_coupling(t, u1, 'Cd', u2, 'C', dx)
+                self.add_coupling(np.conj(t), u2, 'Cd', u1, 'C', -dx)  # h.c.
                 self.add_coupling(V, u1, 'N', u2, 'N', dx)

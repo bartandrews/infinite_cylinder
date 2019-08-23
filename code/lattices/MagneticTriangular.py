@@ -1,8 +1,9 @@
-"""Triangular lattice in a perpendicular magnetic field (Landau gauge in x direction with alpha=2/5)."""
+"""Triangular lattice in a perpendicular magnetic field"""
 
 import numpy as np
 from tenpy.models import lattice
 from tenpy.networks import site
+import matplotlib.pyplot as plt
 
 
 class MagneticTriangular(lattice.Lattice):
@@ -26,31 +27,40 @@ class MagneticTriangular(lattice.Lattice):
 
         super().__init__([Lx, Ly], [siteA] * numb_sites, **kwargs)
 
-        # for i in range(numb_sites):
-        #     if i == numb_sites - 1:
-        #         setattr(self, "NN_ru{}".format(i), [(i, 0, np.array([1, 0]))])
-        #     else:
-        #         setattr(self, "NN_ru{}".format(i), [(i, i+1, np.array([0, 0]))])
-        #
-        #     if i == numb_sites - 1:
-        #         setattr(self, "NN_rd{}".format(i), [(i, 0, np.array([1, -1]))])
-        #     else:
-        #         setattr(self, "NN_rd{}".format(i), [(i, i + 1, np.array([0, -1]))])
-        #
-        #     setattr(self, "NN_u{}".format(i), [(i, i, np.array([0, 1]))])
+        # NN ###
+        for i in range(numb_sites):
+            if i == numb_sites - 1:
+                setattr(self, "NN_ru{}".format(i), [(i, 0, np.array([1, 0]))])
+            else:
+                setattr(self, "NN_ru{}".format(i), [(i, i+1, np.array([0, 0]))])
 
+            if i == numb_sites - 1:
+                setattr(self, "NN_rd{}".format(i), [(i, 0, np.array([1, -1]))])
+            else:
+                setattr(self, "NN_rd{}".format(i), [(i, i + 1, np.array([0, -1]))])
+
+            setattr(self, "NN_u{}".format(i), [(i, i, np.array([0, 1]))])
+
+        # nNN ###
         for i in range(numb_sites):
             if i == 0:
                 setattr(self, "nNN_u{}".format(i), [(i, numb_sites-1, np.array([-1, 2]))])
             else:
                 setattr(self, "nNN_u{}".format(i), [(i, i-1, np.array([0, 2]))])
 
-            if i == 0:
-                setattr(self, "nNN_ul{}".format(i), [(i, numb_sites-2, np.array([-1, 1]))])
-            elif i == 1:
-                setattr(self, "nNN_ul{}".format(i), [(i, numb_sites-1, np.array([-1, 1]))])
+            # if i == 0:
+            #     setattr(self, "nNN_ul{}".format(i), [(i, numb_sites-2, np.array([-1, 1]))])
+            # elif i == 1:
+            #     setattr(self, "nNN_ul{}".format(i), [(i, numb_sites-1, np.array([-1, 1]))])
+            # else:
+            #     setattr(self, "nNN_ul{}".format(i), [(i, i - 2, np.array([0, 1]))])
+
+            if i == numb_sites-2:
+                setattr(self, "nNN_br{}".format(i), [(i, 0, np.array([1, -1]))])
+            elif i == numb_sites-1:
+                setattr(self, "nNN_br{}".format(i), [(i, 1, np.array([1, -1]))])
             else:
-                setattr(self, "nNN_ul{}".format(i), [(i, i - 2, np.array([0, 1]))])
+                setattr(self, "nNN_br{}".format(i), [(i, i + 2, np.array([0, -1]))])
 
             if i == numb_sites-1:
                 setattr(self, "nNN_ur{}".format(i), [(i, 0, np.array([1, 1]))])
@@ -62,11 +72,9 @@ def plot_lattice():
 
     numb_sites = 3
 
-    import matplotlib.pyplot as plt
-
     ax = plt.gca()
     fs = site.FermionSite()
-    lat = MagneticTriangular(1, 4, fs, basis=[[(numb_sites/2)*np.sqrt(3), numb_sites/2], [0, 1]])
+    lat = MagneticTriangular(1, 6, fs, basis=[[(numb_sites/2)*np.sqrt(3), numb_sites/2], [0, 1]])
     lat.plot_sites(ax)
 
     for i in range(numb_sites):
@@ -75,7 +83,8 @@ def plot_lattice():
         # lat.plot_coupling(ax, getattr(lat, "NN_rd{}".format(i)), linestyle='-', color='C{}'.format(i))
 
         lat.plot_coupling(ax, getattr(lat, "nNN_u{}".format(i)), linestyle='-', color='C{}'.format(i))
-        lat.plot_coupling(ax, getattr(lat, "nNN_ul{}".format(i)), linestyle='-', color='C{}'.format(i))
+        # lat.plot_coupling(ax, getattr(lat, "nNN_ul{}".format(i)), linestyle='-', color='C{}'.format(i))
+        lat.plot_coupling(ax, getattr(lat, "nNN_br{}".format(i)), linestyle='-', color='C{}'.format(i))
         lat.plot_coupling(ax, getattr(lat, "nNN_ur{}".format(i)), linestyle='-', color='C{}'.format(i))
 
     ax.set_aspect('equal')

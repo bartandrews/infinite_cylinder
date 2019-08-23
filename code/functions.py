@@ -1,29 +1,28 @@
 from tenpy.networks.mps import MPS
 from tenpy.models.hubbard import FermiHubbardModel
-# from tenpy.models.fermions_hubbard import FermionicHubbardModel
-from models.fermions_haldane import FermionicHaldaneModel
-from models.hofstadter import HofstadterBosons
-from models.bosons_hofstadter import BosonicHofstadterModel
-from models.fermions_hofstadter import FermionicHofstadterModel
-from models.fermions_hofstadter_extended import FermionicHofstadterExtendedModel
-from models.bosons_hex_1 import BosonicHex1Model
-from models.bosons_tri_2 import BosonicTri2Model
-from models.bosons_hex_5 import BosonicHex5Model
-from models.fermions_tri_2 import FermionicTri2Model
-from models.fermions_hex_1 import FermionicHex1Model
-from models.fermions_twist import FermionicTwistModel
-from models.complete_twist import BosonicCompleteTwistModel, FermionicCompleteTwistModel
-# from models.fermions_complete_twist import FermionicCompleteTwistModel
-from models.fermions_pi_flux import FermionicPiFluxModel
-from models.fermions_C3_haldane import FermionicC3HaldaneModel
-from models.bosons_haldane import BosonicHaldaneModel
-from models.bosons_haldane_2 import BosonicHaldane2Model
-from models.fermions_TBG1 import FermionicTBG1Model
-from models.fermions_TBG2 import FermionicTBG2Model
-from models.fermions_TBG3 import FermionicTBG3Model
-from models.fermions_TBG4 import FermionicTBG4Model
-from models.fermions_TBG5 import FermionicTBG5Model
-from models.fermions_TBG6 import FermionicTBG6Model
+
+from models.haldane import BosonicHaldaneModel, FermionicHaldaneModel
+from models.hofstadter import BosonicHofstadterModel, FermionicHofstadterModel
+
+from models.hex_1 import BosonicHex1Model, FermionicHex1Model
+from models.tri_1 import BosonicTri1Model, FermionicTri1Model
+from models.tri_2 import BosonicTri2Model, FermionicTri2Model
+from models.hex_5 import BosonicHex5Model, FermionicHex5Model
+from models.hex_1_hex_5 import BosonicHex1Hex5Model, FermionicHex1Hex5Model
+from models.hex_1_hex_5_orbital import BosonicHex1Hex5OrbitalModel, FermionicHex1Hex5OrbitalModel
+
+from models.old.fermions_twist import FermionicTwistModel
+from models.old.complete_twist import BosonicCompleteTwistModel, FermionicCompleteTwistModel
+
+from models.examples.fermions_pi_flux import FermionicPiFluxModel
+from models.examples.fermions_C3_haldane import FermionicC3HaldaneModel
+
+from models.TBG.fermions_TBG1 import FermionicTBG1Model
+from models.TBG.fermions_TBG2 import FermionicTBG2Model
+from models.TBG.fermions_TBG3 import FermionicTBG3Model
+from models.TBG.fermions_TBG4 import FermionicTBG4Model
+from models.TBG.fermions_TBG5 import FermionicTBG5Model
+from models.TBG.fermions_TBG6 import FermionicTBG6Model
 
 from tenpy.algorithms import dmrg
 # from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
@@ -35,10 +34,18 @@ import pickle
 
 def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
 
-    if model not in ['Hubbard', 'BosonicHaldane', 'BosonicHaldane2', 'FermionicHaldane',
-                     'Hofstadter', 'BosonicHofstadter', 'FermionicHofstadter', 'FermionicHofstadterExtended',
-                     'BosonicHex1', 'BosonicTri2', 'BosonicHex5', 'FermionicTri2', 'FermionicHex1', 'FermionicTwist',
-                     'BosonicCompleteTwist', 'FermionicCompleteTwist', 'FermionicPiFlux', 'FermionicC3Haldane',
+    if model not in ['Hubbard',
+                     'BosonicHaldane', 'FermionicHaldane',
+                     'BosonicHofstadter', 'FermionicHofstadter',
+                     'BosonicHex1', 'FermionicHex1',
+                     'BosonicTri1', 'FermionicTri1',
+                     'BosonicTri2', 'FermionicTri2',
+                     'BosonicHex5', 'FermionicHex5',
+                     'BosonicHex1Hex5', 'FermionicHex1Hex5',
+                     'BosonicHex1Hex5Orbital', 'FermionicHex1Hex5Orbital',
+                     'FermionicTwist',
+                     'BosonicCompleteTwist', 'FermionicCompleteTwist',
+                     'FermionicPiFlux', 'FermionicC3Haldane',
                      'TBG1', 'TBG2', 'TBG3', 'TBG4', 'TBG5', 'TBG6']:
         sys.exit('Error: Unknown model.')
 
@@ -62,18 +69,12 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
         lat_basis = 6
     elif lattice == "MagneticSquare":
         lat_basis = 4
-    elif lattice == "MagneticSquareExtended":
-        lat_basis = 10
     elif lattice == "MagneticHoneycomb":
-        lat_basis = 8
-    elif lattice == "MagneticHoneycomb2":
-        lat_basis = 32
-    elif lattice == "MagneticHoneycomb3":
         lat_basis = 8
     elif lattice == "MagneticTriangular":
         lat_basis = 4
     elif lattice == "MagneticTwist":
-        lat_basis = 18
+        lat_basis = 6
     else:
         sys.exit('Error: Unknown lattice.')
 
@@ -101,89 +102,25 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
                 product_state.append(tile_unit[1])
             else:
                 product_state.append(tile_unit[0])
+    elif initial_state == 'BosonicHofstadter' or initial_state == 'BosonicTri1':
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'FermionicHofstadter' or initial_state == 'FermionicTri1':
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'BosonicHex1':
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'FermionicHex1':
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'custom':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0]
-
-        # phi=2/7
-
-        # # bosons with filled LLL
-        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y']
-        # # bosons with 1/2-filled LLL
-        # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y']
-        # # fermions with filled LLL
-        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y']
-        # # fermions with 1/2-filled LLL
-        # product_state = ['full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y']
-
-        # phi=2/9
-
-        # # bosons with filled LLL
-        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y']
-        # # bosons with 1/2-filled LLL
-        # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y']
-        # # fermions with filled LLL
-        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y']
-        # # fermions with filled LLL
-        # product_state = ['full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y']
-
-        # phi=2/11
-
-        # # bosons with filled LLL
-        # product_state = ['1_x 1_y', '1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y']
-        # # bosons with 1/2-filled LLL
-        # product_state = ['1_x 1_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y', '0_x 0_y',
-        #                  '0_x 0_y', '0_x 0_y']
-        # # fermions with filled LLL
-        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y']
-        # # fermions with 1/2-filled LLL
-        # product_state = ['full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y']
-        # # fermions with double-filled LLL
-        # product_state = ['full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'full_x full_y', 'full_x full_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y', 'empty_x empty_y',
-        #                  'empty_x empty_y', 'empty_x empty_y']
-
     else:
         sys.exit('Error: Unknown initial_state.')
 
@@ -196,17 +133,11 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         model_params = dict(cons_N='N', cons_Sz='Sz', t=t, U=U, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0)
         M = FermiHubbardModel(model_params)
-        # M = FermionicHubbardModel(model_params)
 
     elif model == 'BosonicHaldane':
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
                             order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
         M = BosonicHaldaneModel(model_params)
-
-    elif model == 'BosonicHaldane2':
-        model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
-                            order='default', Lx=Lx, Ly=Ly, bc_y='cylinder', verbose=0, phi_ext=phi_ext)
-        M = BosonicHaldane2Model(model_params)
 
     elif model == 'FermionicHaldane':
         model_params = dict(conserve='N', t=t, mu=mu, V=V, lattice=lattice, bc_MPS='infinite',
@@ -219,55 +150,87 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
                             verbose=1, phi_ext=phi_ext)  # utility
         M = BosonicHofstadterModel(model_params)
 
-    elif model == 'Hofstadter':
-        model_params = dict(conserve='N', t=t, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext,
-                            filling=(1, 8), phi=(1, 4), Nmax=1, bc_MPS='infinite', bc_x='periodic', bc_y='cylinder',
-                            order='default')
-        M = HofstadterBosons(model_params)
-
     elif model == 'FermionicHofstadter':
         model_params = dict(conserve='N', t=t, filling=(1, 3), phi=(1, 3), Lx=Lx, Ly=Ly, V=0,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHofstadterModel(model_params)
 
-    elif model == 'FermionicHofstadterExtended':
-        model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
-        M = FermionicHofstadterExtendedModel(model_params)
+    ####################################################################################################################
 
     elif model == 'BosonicHex1':
         model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
-                            verbose=1, phi_ext=phi_ext)
+                            verbose=1, phi_ext=phi_ext)  # utility
         M = BosonicHex1Model(model_params)
+
+    elif model == 'FermionicHex1':
+        model_params = dict(conserve='N', t=t, filling=(1, 6), phi=(1, 3), Lx=Lx, Ly=Ly, V=0,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicHex1Model(model_params)
+
+    elif model == 'BosonicTri1':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicTri1Model(model_params)
+
+    elif model == 'FermionicTri1':
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicTri1Model(model_params)
 
     elif model == 'BosonicTri2':
         model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
-                            verbose=1, phi_ext=phi_ext)
+                            verbose=1, phi_ext=phi_ext)  # utility
         M = BosonicTri2Model(model_params)
-
-    elif model == 'BosonicHex5':
-        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
-                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
-                            verbose=1, phi_ext=phi_ext)
-        M = BosonicHex5Model(model_params)
-
-    # elif model == 'FermionicHex1':
-    #     model_params = dict(conserve='N', t=t, V=V, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)
-    #     M = FermionicHex1Model(model_params)
-
-    elif model == 'FermionicHex1':
-        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
-                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
-                            verbose=1, phi_ext=phi_ext)
-        M = FermionicHex1Model(model_params)
 
     elif model == 'FermionicTri2':
         model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
-                            verbose=1, phi_ext=phi_ext)
+                            verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicTri2Model(model_params)
+
+    elif model == 'BosonicHex5':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicHex5Model(model_params)
+
+    elif model == 'FermionicHex5':
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicHex5Model(model_params)
+
+    elif model == 'BosonicHex1Hex5':
+        model_params = dict(conserve='N', filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicHex1Hex5Model(model_params)
+
+    elif model == 'FermionicHex1Hex5':
+        model_params = dict(conserve='N', filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicHex1Hex5Model(model_params)
+
+    elif model == 'BosonicHex1Hex5Orbital':
+        model_params = dict(conserve='N', filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicHex1Hex5OrbitalModel(model_params)
+
+    elif model == 'FermionicHex1Hex5Orbital':
+        model_params = dict(conserve='N', filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicHex1Hex5OrbitalModel(model_params)
+
+    ####################################################################################################################
 
     elif model == 'FermionicTwist':
         model_params = dict(conserve='N', t=t, lattice=lattice, Lx=Lx, Ly=Ly, verbose=1, phi_ext=phi_ext)

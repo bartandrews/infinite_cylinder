@@ -1,44 +1,36 @@
 # configuration parameters
-model = 'FermionicTri2'
-lattice = 'MagneticTriangular'
-initial_state = 'custom'
+model = 'FermionicHex1Hex5'
+lattice = 'MagneticHoneycomb'
+initial_state = 'FermionicHex1'
 
-if model == 'BosonicHaldane':
-    tile_unit = ['0', '1']
-elif model == 'BosonicHaldane2':
-    tile_unit = ['0', '1']
-elif model == 'FermionicHaldane':
-    tile_unit = ['empty', 'full']
-elif model == 'Hofstadter':
-    tile_unit = [1, 0]
-elif model == 'BosonicHofstadter':
-    tile_unit = [1, 0]
-elif model == 'FermionicHofstadter':
-    tile_unit = [1, 0]
-elif model == 'FermionicHofstadterExtended':
-    tile_unit = ['empty', 'full']
-elif model == 'BosonicHex1':
-    tile_unit = [1, 0]
-elif model == 'BosonicTri2':
-    tile_unit = [1, 0]
-elif model == 'BosonicHex5':
-    tile_unit = [1, 0]
-elif model == 'FermionicHex1':
-    tile_unit = ['empty', 'full']
-elif model == 'FermionicTri2':
-    tile_unit = ['empty', 'full']
-elif model == 'FermionicTwist':
-    tile_unit = ['empty', 'full']
-elif model == 'BosonicCompleteTwist':
+if model == 'Hubbard':
+    tile_unit = ['down', 'up']
+elif model == 'BosonicHaldane' or model == 'FermionicHaldane':
+    tile_unit = [0, 1]
+elif model == 'BosonicHofstadter' or model == 'FermionicHofstadter':
+    tile_unit = [0, 1]
+########################################################################################################################
+elif model == 'BosonicHex1' or model == 'FermionicHex1':
+    tile_unit = [0, 1]
+elif model == 'BosonicTri1' or model == 'FermionicTri1':
+    tile_unit = [0, 1]
+elif model == 'BosonicTri2' or model == 'FermionicTri2':
+    tile_unit = [0, 1]
+elif model == 'BosonicHex5' or model == 'FermionicHex5':
+    tile_unit = [0, 1]
+elif model == 'BosonicHex1Hex5' or model == 'FermionicHex1Hex5':
+    tile_unit = [0, 1]
+elif model == 'BosonicHex1Hex5Orbital' or model == 'FermionicHex1Hex5Orbital':
     tile_unit = ['empty_x empty_y', 'full_x full_y']
-elif model == 'FermionicCompleteTwist':
+########################################################################################################################
+elif model == 'FermionicTwist':
+    tile_unit = [0, 1]
+elif model == 'BosonicCompleteTwist' or model == 'FermionicCompleteTwist':
     tile_unit = ['empty_x empty_y', 'full_x full_y']
 elif model == 'FermionicPiFlux':
     tile_unit = ['empty', 'full']
 elif model == 'FermionicC3Haldane':
     tile_unit = ['full_A empty_B', 'empty_A full_B', 'full_A empty_B']
-elif model == 'Hubbard':
-    tile_unit = ['down', 'up']
 elif model == 'TBG1':
     tile_unit = ['down_px up_py', 'down_px up_py']
 elif model == 'TBG2':
@@ -53,9 +45,9 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 50
+chi_max = 100
 # chi max for compute_K
-chi_max_K = 50
+chi_max_K = 100
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, U, V = -1, 0, 0, 10
