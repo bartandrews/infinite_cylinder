@@ -169,7 +169,7 @@ if __name__ == '__main__':
     gs.update(hspace=0)
 
     ax0.set_xlim([0, 1])
-    ax2.set_xlabel('$\phi$', fontsize=16)
+    ax2.set_xlabel('$n_{\phi}$', fontsize=16)
     ax0.set_ylabel('$E$ / meV', fontsize=16)
     ax1.set_ylabel('$E$ / meV', fontsize=16)
     ax2.set_ylabel('$E$ / meV', fontsize=16)

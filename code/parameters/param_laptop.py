@@ -1,7 +1,7 @@
 # configuration parameters
-model = 'FermionicHex1Hex5'
+model = 'BosonicHex1Hex5Orbital'
 lattice = 'MagneticHoneycomb'
-initial_state = 'FermionicHex1'
+initial_state = 'BosonicHex1Hex5Orbital'
 
 if model == 'Hubbard':
     tile_unit = ['down', 'up']
@@ -45,12 +45,12 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 100
+chi_max = 50
 # chi max for compute_K
-chi_max_K = 100
+chi_max_K = 50
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, U, V = -1, 0, 0, 10
+t, mu, U, V = -1, 0, 0, 0
 
 if model in ['FermionicHaldane']:
     U = 0
@@ -62,7 +62,7 @@ elif model in ['TBG5']:
     J, Js, Jv = 1, 0.1, 8
 
 # unit cell
-Lx, Ly = 1, 6
+Lx, Ly = 1, 4
 
 # pickle capability
 use_pickle = False

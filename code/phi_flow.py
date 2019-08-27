@@ -77,6 +77,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_phi_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.V, p.Lx, p.Ly,
-                phi_min=0, phi_max=3, phi_samp=31)
+                phi_min=0, phi_max=2, phi_samp=21)
 
     print(time.time() - t0)

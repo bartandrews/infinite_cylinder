@@ -104,7 +104,7 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
     return bc
 
 
-numb_samples = 301
+numb_samples = 101
 
 if __name__ == '__main__':
 
@@ -245,7 +245,7 @@ if __name__ == '__main__':
         ax.text2D(-0.15, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
                   color='C{}'.format(i % 10), fontsize=10)
 
-    ax.text2D(-0.15, 0.09, "(c)              $\phi={}/{}$".format(p1, q1), color="k", fontsize=13)
+    ax.text2D(-0.15, 0.09, "(c)              $n_\phi={}/{}$".format(p1, q1), color="k", fontsize=13)
     ax.text2D(0.17, 0.09, "(d)", color="k", fontsize=13)
 
     ax.tick_params(axis="x", labelsize=9)
@@ -261,9 +261,10 @@ if __name__ == '__main__':
     ax1.set_aspect('equal', adjustable='box')
 
     ax1.set_xlim([0, 1])
+    ax1.set_yticks(np.arange(-0.5, 0.55, 0.2))
     ax1.set_ylim([-0.5, 0.5])
-    ax1.axhline(0, color='k', linewidth=0.25, ls='--')
-    ax1.axvline(0.5, color='k', linewidth=0.25, ls='--')
+    ax1.axhline(-0.17, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(0.33, color='k', linewidth=0.5, ls='--')
     ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=11)
     ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=11)
 
@@ -272,8 +273,11 @@ if __name__ == '__main__':
     ax1.tick_params(axis="x", labelsize=9)
     ax1.tick_params(axis="y", labelsize=9)
 
-    for band in range(2):
-        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
+    for band in range(bands_to_study):
+        print(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :])
+        hwcc[band, 0] = None
+        hwcc[band, 100] = None
+        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5, zorder=bands_to_study-band)
 
     gs.update(wspace=-0.4)
 
@@ -326,5 +330,5 @@ if __name__ == '__main__':
 
     ############
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster_phi_2_11.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair_poster_phi_10_11.png", bbox_inches='tight', dpi=300)
     plt.show()

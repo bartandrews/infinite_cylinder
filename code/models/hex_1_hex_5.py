@@ -126,15 +126,15 @@ class FermionicHex1Hex5Model(CouplingMPOModel):
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
                 self.add_coupling(V, u1, 'N', u2, 'N', dx)
-            for u1, u2, dx in getattr(self.lat, "NN{}ul".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                        * np.exp(1j * (phi / 6) * (i - 1/2))
-                self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
-                self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
-                self.add_coupling(V, u1, 'N', u2, 'N', dx)
             for u1, u2, dx in getattr(self.lat, "NN{}ur".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
                         * np.exp(1j * (phi / 6) * (i + 1/2))
+                self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
+                self.add_coupling(V, u1, 'N', u2, 'N', dx)
+            for u1, u2, dx in getattr(self.lat, "NN{}ul".format(i)):
+                t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
+                        * np.exp(1j * (phi / 6) * (i - 1/2))
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
                 self.add_coupling(V, u1, 'N', u2, 'N', dx)
@@ -146,13 +146,13 @@ class FermionicHex1Hex5Model(CouplingMPOModel):
                         * np.exp(1j * phi * i)
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                        * np.exp(-1j * (phi/2) * (i - 3/2))
-                self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
-                self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
             for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
                         * np.exp(-1j * (phi/2) * (i + 3/2))
+                self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
+            for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
+                t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
+                        * np.exp(-1j * (phi/2) * (i - 3/2))
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.

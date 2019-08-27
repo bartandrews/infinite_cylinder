@@ -108,19 +108,31 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     elif initial_state == 'FermionicHofstadter' or initial_state == 'FermionicTri1':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0]
-    elif initial_state == 'BosonicHex1':
+    elif initial_state == 'BosonicHex1' or initial_state == 'BosonicHex1Hex5':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0]
-    elif initial_state == 'FermionicHex1':
+    elif initial_state == 'FermionicHex1' or initial_state == 'FermionicHex1Hex5':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'BosonicHex1Hex5Orbital':
+        product_state = [3, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         3, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'FermionicHex1Hex5Orbital':
+        product_state = [3, 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         3, 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'custom':
-        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         1, 0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = [1, 0, 0, 0, 0, 0, 1, 0, 0,
+                         0, 0, 0, 1, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 1, 0, 0,
+                         0, 0, 0, 1, 0, 0, 0, 0, 0]
     else:
         sys.exit('Error: Unknown initial_state.')
 
@@ -165,7 +177,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHex1Model(model_params)
 
     elif model == 'FermionicHex1':
-        model_params = dict(conserve='N', t=t, filling=(1, 6), phi=(1, 3), Lx=Lx, Ly=Ly, V=0,  # system params
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex1Model(model_params)

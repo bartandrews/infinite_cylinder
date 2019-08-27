@@ -19,32 +19,34 @@ if __name__ == '__main__':
     phi_FCI = []
     FCI_charge = []
 
-    with open('charge_pump_CI.dat', 'r') as csvfile:
+    with open('charge_pump_CI.dat.hex1hex5', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             phi_CI.append(float(row[0]))
             CI_charge.append(float(row[1]))
 
-    with open('charge_pump_FCI.dat', 'r') as csvfile:
+    with open('charge_pump_FCI.dat.hex1hex5', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             phi_FCI.append(float(row[0]))
             FCI_charge.append(float(row[1]))
 
-    ax1.plot(phi_CI, CI_charge, marker='o', linestyle='--', c='C8', label='CI')
-    ax1.plot(phi_FCI, FCI_charge, marker='s', linestyle='--', c='C9', label='FCI')
-    ax1.legend(loc='lower right', handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
+    ax1.plot(phi_FCI, FCI_charge, marker='s', linestyle='--', c='C9', label='FCI', markersize=5)
+    ax1.plot(phi_CI, CI_charge, marker='o', linestyle='--', c='C8', label='CI', markersize=5)
+    ax1.legend(loc='right', handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10)
 
-    ax1.set_xticks(np.arange(0, 2.1, 0.2))
-    ax1.set_xlim([0, 2])
+    ax1.set_xticks(np.arange(0, 3.1, 0.5))
+    ax1.set_xlim([0, 3])
     ax1.set_xlabel("$\Phi_y / 2\pi$", fontsize=10)
-    ax1.set_yticks(np.arange(0, 2.1, 0.2))
-    ax1.set_ylim([0, 2])
+    ax1.set_yticks(np.arange(-3, 0.1, 0.5))
+    ax1.set_ylim([-3, 0])
     ax1.set_ylabel("$\langle Q^{L}(\Phi_y) \\rangle$", fontsize=10)
 
-    ax1.axhline(1, color='k', linewidth=0.5, ls='--')
+    ax1.axhline(-1, color='k', linewidth=0.5, ls='--')
+    ax1.axhline(-2, color='k', linewidth=0.5, ls='--')
     ax1.axvline(1, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(2, color='k', linewidth=0.5, ls='--')
 
     ax1.tick_params(axis="x", labelsize=8)
     ax1.tick_params(axis="y", labelsize=8)
@@ -52,7 +54,7 @@ if __name__ == '__main__':
 
     ############################################
 
-    left, bottom, width, height = [0.115, 0.47, 0.2, 0.4]  # left = 0.12
+    left, bottom, width, height = [0.125, 0.09, 0.2, 0.4]  # left = 0.12
     ax5 = fig.add_axes([left, bottom, width, height], projection='3d')
 
     r = 5
@@ -127,14 +129,14 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_flow_CI.dat', 'r') as csvfile:
+    with open('ent_spec_flow_CI.dat.hex1hex5', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
             y.append(float(row[2]))
             z.append(int(row[0]))
 
-    for value in np.linspace(-5, 5, 11, dtype=int):
+    for value in np.linspace(5, -5, 11, dtype=int):
         xvalue = []
         yvalue = []
         for i in range(len(x)):
@@ -143,9 +145,9 @@ if __name__ == '__main__':
                 yvalue.append(y[i])
         ax2.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value+5)%10), label='{}'.format(value))
 
-    ax2.set_ylim([0, 10])
+    ax2.set_ylim([0, 8])
     # ax2.legend(loc='upper right', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2, fontsize=10)
-    ax2.set_xlim([0, 2])
+    ax2.set_xlim([0, 3])
     ax2.set_xlabel("$\Phi_y / 2\pi$", fontsize=10)
     ax2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=10)
 
@@ -154,6 +156,7 @@ if __name__ == '__main__':
     ax2.tick_params(axis="z", labelsize=8)
 
     ax2.axvline(1, color='k', linewidth=0.5, ls='--')
+    ax2.axvline(2, color='k', linewidth=0.5, ls='--')
     # ax2.axhline(0.153205653777937, color='k', linewidth=0.5, ls=':')
     # ax2.axhline(2.073942791479203, color='k', linewidth=0.5, ls=':')
     # ax2.axhline(4.410048930142911, color='k', linewidth=0.5, ls=':')
@@ -174,14 +177,14 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_flow_FCI.dat', 'r') as csvfile:
+    with open('ent_spec_flow_FCI.dat.hex1hex5', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
             y.append(float(row[2]))
             z.append(int(row[0]))
 
-    for value in np.linspace(-5, 5, 11, dtype=int):
+    for value in np.linspace(5, -5, 11, dtype=int):
         xvalue = []
         yvalue = []
         for i in range(len(x)):
@@ -190,11 +193,11 @@ if __name__ == '__main__':
                 yvalue.append(y[i])
         ax3.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 5)%10), label='{}'.format(value))
 
-    ax3.set_yticks(np.arange(0, 12, 3))
-    ax3.set_ylim([0, 12])
+    ax3.set_yticks(np.arange(0, 8, 2))
+    ax3.set_ylim([0, 8])
     ax3.legend(loc='center left', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2,
                 fontsize=10, ncol=1, bbox_to_anchor=(1, 1))
-    ax3.set_xlim([0, 2])
+    ax3.set_xlim([0, 3])
     ax3.set_xlabel("$\Phi_y / 2\pi$", fontsize=10)
     ax3.set_ylabel("$\epsilon_{\\alpha}$", fontsize=10)
 
@@ -203,6 +206,7 @@ if __name__ == '__main__':
     ax3.tick_params(axis="z", labelsize=8)
 
     ax3.axvline(1, color='k', linewidth=0.5, ls='--')
+    ax3.axvline(2, color='k', linewidth=0.5, ls='--')
 
     fig.text(0.57, 0.46, 'FCI', fontsize=10, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 

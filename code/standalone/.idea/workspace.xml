@@ -3,41 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="89024c43-e14f-41ad-9bbb-b9de2150dd7e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/Honeycomb_example.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../lattices/MagneticHoneycomb.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticHoneycomb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/MagneticHoneycomb2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/MagneticHoneycomb3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/MagneticSquareExtended.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/MagneticTriangular.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticTriangular.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/MagneticTwist.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/example.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/five_band_model.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lattices/original_example.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_haldane.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_haldane_2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_hex_1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_hex_5.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_hofstadter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/bosons_tri_2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/complete_twist.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_C3_haldane.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_TBG1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_TBG2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_TBG3.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_TBG4.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_TBG5.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_TBG6.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_haldane.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_hex_1.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_hofstadter.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_hofstadter_extended.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_hofstadter_old.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_pi_flux.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_tri_2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/fermions_twist.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/hofstadter.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hofstadter.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/hex_1_hex_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hex_1_hex_5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/hex_1_hex_5_orbital.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hex_1_hex_5_orbital.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../parameters/param_laptop.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parameters/param_laptop.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../phi_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure.py" beforeDir="false" afterPath="$PROJECT_DIR$/band_structure/complete_band_structure.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -76,7 +53,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.CI_1x2_detail_poster">
+  <component name="RunManager" selected="Python.ham_complete_twist_realistic_pair_poster">
     <configuration name="CI_1x2_detail_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -111,27 +88,6 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="ham_complete_twist_realistic_pair" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <module name="standalone" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -182,20 +138,41 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="script_complete_twist_triple_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="standalone" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
-      <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
       <item itemvalue="Python.script_complete_twist" />
-      <item itemvalue="Python.ham_complete_twist_realistic_pair" />
+      <item itemvalue="Python.script_complete_twist_triple_poster" />
+      <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
       <item itemvalue="Python.complete_band_structure_poster" />
       <item itemvalue="Python.CI_1x2_detail_poster" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
         <item itemvalue="Python.CI_1x2_detail_poster" />
         <item itemvalue="Python.complete_band_structure_poster" />
+        <item itemvalue="Python.script_complete_twist_triple_poster" />
         <item itemvalue="Python.script_complete_twist" />
-        <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
-        <item itemvalue="Python.ham_complete_twist_realistic_pair" />
       </list>
     </recent_temporary>
   </component>

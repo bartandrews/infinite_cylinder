@@ -362,7 +362,7 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 2, 11
+    p, q = 10, 11
 
     if p % 2 == 0:
         M = q
@@ -626,5 +626,5 @@ if __name__ == '__main__':
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_band_structure_2_poster.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_band_structure_phi_10_11_poster.png", bbox_inches='tight', dpi=300)
     plt.show()
