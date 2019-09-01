@@ -362,7 +362,7 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 9, 11
+    p, q = 10, 11
 
     if p % 2 == 0:
         M = q
@@ -473,13 +473,14 @@ if __name__ == '__main__':
 
     for nb in range(num_bands_1):
         plt.scatter(np.linspace(0, 89, 90), eigval_bands_1[nb, :], c=cidx[nb], s=0.5)
-    ax0.set_ylabel('$E$ / meV')
+    ax0.set_ylabel('$E$ / meV', fontsize=11)
     ax0.axvline(30, color='k', linewidth=0.5)
     ax0.axvline(60, color='k', linewidth=0.5)
     ax0.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))
     plt.setp(ax0.get_xticklabels(), visible=False)
     # ax0.text(10, 0.1, '(a) $B_z=0$')
+    ax0.tick_params(axis='both', which='major', labelsize=10)
 
     ##################################################
 
@@ -549,10 +550,10 @@ if __name__ == '__main__':
     ax4.arrow(center, center, radius * np.cos(np.pi / 6), 0, color='k', head_width=0, head_length=0, length_includes_head=True,
               lw=1)
 
-    ax4.text(center-0.15*center, center, "Γ")
-    ax4.text(center + radius * np.cos(np.pi / 6)+0.05*center, center - radius * np.sin(np.pi / 6) + 0*center, "K")
-    ax4.text(center + radius * np.cos(np.pi / 6)+0.05*center, center + 0*center, "M")
-    ax4.text(center + radius * np.cos(np.pi / 6)+0.05*center, center + radius * np.sin(np.pi / 6) + 0*center, "K'")
+    ax4.text(center-0.15*center, center, "Γ", fontsize=11)
+    ax4.text(center + radius * np.cos(np.pi / 6)+0.05*center, center - radius * np.sin(np.pi / 6) + 0*center, "K", fontsize=11)
+    ax4.text(center + radius * np.cos(np.pi / 6)+0.05*center, center + 0*center, "M", fontsize=11)
+    ax4.text(center + radius * np.cos(np.pi / 6)+0.05*center, center + radius * np.sin(np.pi / 6) + 0*center, "K'", fontsize=11)
 
     ####################################################################################################################
 
@@ -580,16 +581,17 @@ if __name__ == '__main__':
     for nb in range(M):
         plt.scatter(np.linspace(0, 89, 90), eigval_bands_2[nb, :], c='b', s=0.5)
     # ax2.set_xlabel('Path')
-    ax2.set_ylabel('$E$ / meV')
+    ax2.set_ylabel('$E$ / meV', fontsize=11)
+    ax2.tick_params(axis='both', which='major', labelsize=10)
     ax2.axvline(30, color='k', linewidth=0.5)
     ax2.axvline(60, color='k', linewidth=0.5)
 
     for band in range(M):
-        ax2.text(band*int(90/12), eigval_bands_2[band, band*int(90/12)], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))))
+        ax2.text(band*(82/(M-1)), eigval_bands_2[band, band*int(89/(M-1))], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))), fontsize=11)
 
     #ax2.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))
-    plt.xticks([0, 30, 60, 89], ["K", "Γ", "M", "K'"])
+    plt.xticks([0, 30, 60, 89], ["K", "Γ", "M", "K'"], fontsize=11)
     #ax2.set_ylim([-5, 0])
     # ax2.text(10, 0.2, '(b) $B_z \\neq 0$')
 
@@ -599,7 +601,7 @@ if __name__ == '__main__':
     n, bins, patches = ax3.hist(np.ndarray.flatten(energy_matrix_2), 100,
                                 density=False, orientation='horizontal', histtype='step', color='k', lw=0.5)
     plt.setp(ax3.get_yticklabels(), visible=False)
-    ax3.set_xlabel('DOS')
+    ax3.set_xlabel('DOS', fontsize=11)
     #ax3.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xticks([1000, 2000], ["1000", "2000"])
     plt.setp(ax3.get_xticklabels(), visible=False)
@@ -612,14 +614,13 @@ if __name__ == '__main__':
     gs.update(wspace=0)
     gs.update(hspace=0)
 
-    # for paper
-    #fig.text(0.01, 0.87, "(a)", fontsize=12)
-    #fig.text(0.01, 0.48, "(b)", fontsize=12)
-    # for poster
-    fig.text(0.04, 0.87, "(a)", fontsize=12)
-    fig.text(0.04, 0.48, "(b)", fontsize=12)
+    fig.text(0.55, 0.83, "$n_\phi=0$", fontsize=11)
+    fig.text(0.22, 0.35, "isolated topological flat bands at $n_\phi=10/11$", fontsize=11, backgroundcolor='white')
+
+    fig.text(0, 0.87, "(a)", fontsize=12)
+    fig.text(0, 0.48, "(b)", fontsize=12)
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_band_structure_2.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
     plt.show()

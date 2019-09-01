@@ -10,7 +10,7 @@ class MagneticSquare(lattice.Lattice):
 
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
-        numb_sites = 4
+        numb_sites = 6
 
         basis = np.array(([numb_sites, 0.], [0, 1]))
 
@@ -41,7 +41,7 @@ class MagneticSquare(lattice.Lattice):
 
 def plot_lattice():
 
-    numb_sites = 4
+    numb_sites = 6
 
     import matplotlib.pyplot as plt
 

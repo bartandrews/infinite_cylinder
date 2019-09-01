@@ -189,10 +189,10 @@ if __name__ == '__main__':
     # Figure ###########################################################################################################
     ##########
 
-    fig = plt.figure(figsize=(12, 6))
+    fig = plt.figure()
     gs = gridspec.GridSpec(1, 2, width_ratios=[1, 1])
 
-    bands_to_study = 4
+    bands_to_study = 3
 
     ###############
     # Subfigure 1 ######################################################################################################
@@ -220,11 +220,16 @@ if __name__ == '__main__':
 
     ax.set_aspect('equal', adjustable='box')
 
-    ax.tick_params(axis='x', which='major', pad=0.5)
+    ax.tick_params(axis='x', which='major', pad=-4)
+    ax.tick_params(axis='y', which='major', pad=-3)
+    ax.tick_params(axis='z', which='major', pad=3)
 
-    ax.set_xlabel('\n$k_x / |\mathbf{B}_1|$', fontsize=14, linespacing=0.3)
-    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=14, linespacing=1.5)
-    ax.set_zlabel('\n$E$ / meV', fontsize=14, linespacing=1.5)
+    ax.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=11, linespacing=-1)
+    ax.set_ylabel('\n$k_y / |\mathbf{B}_2|$', fontsize=11, linespacing=1)
+    ax.set_zlabel('\n$E$ / meV', fontsize=11, linespacing=1)
+
+    ax.xaxis.labelpad = -2
+    ax.yaxis.labelpad = -2
 
     def custom(value, tick_number):
 
@@ -242,15 +247,15 @@ if __name__ == '__main__':
         start = -0.05
         stop = 0.03
         interval = (stop - start) / (bands_to_study - 1)
-        ax.text2D(-0.12, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
-                  color='C{}'.format(i % 10), fontsize=14)
+        ax.text2D(-0.16, start + i * interval, "$C_{{{:2d}}}={:2d}$".format(-M1 + i, int(round(chern_numbers1[i]))),
+                  color='C{}'.format(i % 10), fontsize=11)
 
-    ax.text2D(-0.12, 0.09, "(a)                   $\phi={}/{}$".format(p1, q1), color="k", fontsize=18)
-    ax.text2D(0.12, 0.09, "(b)", color="k", fontsize=18)
+    ax.text2D(-0.16, 0.09, "                    $n_\phi={}/{}$".format(p1, q1), color="k", fontsize=12)
+    ax.text2D(0.16, 0.09, "(d)", color="k", fontsize=12)
 
-    ax.tick_params(axis="x", labelsize=14)
-    ax.tick_params(axis="y", labelsize=14)
-    ax.tick_params(axis="z", labelsize=14)
+    ax.tick_params(axis="x", labelsize=10)
+    ax.tick_params(axis="y", labelsize=10)
+    ax.tick_params(axis="z", labelsize=10)
 
     ###############
     # Subfigure 2 ######################################################################################################
@@ -260,20 +265,27 @@ if __name__ == '__main__':
 
     ax1.set_aspect('equal', adjustable='box')
 
+    ax1.set_xticks(np.arange(0, 1.05, 0.2))
     ax1.set_xlim([0, 1])
+    ax1.set_yticks(np.arange(-0.5, 0.55, 0.2))
     ax1.set_ylim([-0.5, 0.5])
-    ax1.axhline(0, color='k', linewidth=0.25, ls='--')
-    ax1.axvline(0.5, color='k', linewidth=0.25, ls='--')
-    ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=14)
-    ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=14)
+    ax1.axhline(-0.17, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(0.33, color='k', linewidth=0.5, ls='--')
+    ax1.set_xlabel('$k_x / |\mathbf{B}_1|$', fontsize=11)
+    ax1.set_ylabel('$\Sigma \mathrm{HWCC} / 2 \pi$', fontsize=11)
 
-    ax1.tick_params(axis="x", labelsize=14)
-    ax1.tick_params(axis="y", labelsize=14)
+    ax1.tick_params(axis="x", labelsize=10)
+    ax1.tick_params(axis="y", labelsize=10)
 
     for band in range(bands_to_study):
-        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5)
+        print(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :])
+        hwcc[band, 0] = None
+        hwcc[band, numb_samples-1] = None
+        ax1.scatter(np.arange(numb_samples) / (numb_samples-1), hwcc[band, :], s=5, zorder=bands_to_study-band)
 
-    gs.update(wspace=0.5)
+    ax1.text(0.55, -0.35, "$C=-1$", fontsize=11)
+
+    gs.update(wspace=0.75)
 
     print("\n***Band touching***\n")
 
@@ -324,5 +336,5 @@ if __name__ == '__main__':
 
     ############
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_realistic_bands_pair.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/3d_band_structure_phi_{}_{}_slide.png".format(p1, q1), bbox_inches='tight', dpi=300, transparent=True)
     plt.show()

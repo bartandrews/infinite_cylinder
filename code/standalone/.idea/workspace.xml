@@ -2,19 +2,109 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89024c43-e14f-41ad-9bbb-b9de2150dd7e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Ly_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Ly_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lattices/MagneticHoneycomb.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticHoneycomb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../models/hex_1_hex_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hex_1_hex_5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lattices/MagneticSquare.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticSquare.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../models/hex_1_hex_5_orbital.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hex_1_hex_5_orbital.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../parameters/param_laptop.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parameters/param_laptop.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../phi_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure.py" beforeDir="false" afterPath="$PROJECT_DIR$/band_structure/complete_band_structure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" beforeDir="false" afterPath="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2/CI_1x2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2/CI_1x2_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2/tube.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_1x2_detail/tube.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_2x2/CI_2x2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_2x2/CI_2x2_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI_2x2/tube.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/band_structure/band_structure.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bz/bz.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/script_complete_twist.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/script_complete_twist_triple.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/eight_chern.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/eight_chern_test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/plot_2d_eight_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/plot_2d_eight_band_structure_triple.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/plot_eight_band_wilson.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/plot_eight_band_wilson_dos.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/plot_eight_wilson_loop.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/eight_model/sampleFileName.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/external_flux.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fidget_spinner/fidget_spinner.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/four_chern/four_chern.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/four_model/four.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/four_model/plot_2d_four_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/four_model/plot_3d_four_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/four_model/plot_four_berry_curvature.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphene/graphene.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/graphene/plot_2d_graphene_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hBN_model/TBG-hBN_4x4.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hBN_model/hBN_model_fixed.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hBN_model/plot_hBN_band_wilson.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/.idea/haldane_chern.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/haldane_I.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/haldane_II.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/haldane_II_phase.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/haldane_I_phase.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/plot_haldane_phase_diagram.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_chern/plot_two_wilson_loop.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/haldane.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/haldane_I.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/haldane_phase.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/plot_2d_haldane_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/plot_3d_haldane_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/plot_haldane_berry_curvature.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/haldane_model/plot_haldane_phase_diagram.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_1/ham_hex_1.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_1/ham_hex_1_double.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_1/ham_hex_1_pair.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_1/script_hex_1.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5/ham_hex_5.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5/ham_hex_5_double.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5/ham_hex_5_pair.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5/script_hex_5.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5_dash/script_hex_5_dash.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hex_5_hex_5_dash/script_hex_5_hex_5_dash.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hofstadter/ham_1_5.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hofstadter/ham_1_6.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hofstadter/ham_backup.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hofstadter/matrix.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/hofstadter/script.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lattice/lattice.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lattice_bz/lattice_bz.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lattice_bz/lattice_bz_poster.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/path/path.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_double.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tri_1_2/ham_tri_1_2_pair.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tri_1_2/script_tri_1_2.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_double.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_half.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_pair.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_realistic_double.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/ham_twist_realistic_pair.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/script_twist.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twist/script_twist_triple.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twisted_backup/ham_twist_backup.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/twisted_backup/script_twist_backup.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/two_model/plot_2d_two_band_structure.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/two_model/plot_dos.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/two_model/plot_two_band_wilson.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/two_model/plot_two_band_wilson_dos.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/two_model/plot_two_wilson_loop.gp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/two_model/two_chern.py" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -53,8 +143,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ham_complete_twist_realistic_pair_poster">
-    <configuration name="CI_1x2_detail_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.butterfly_triple">
+    <configuration name="3d_band_structure" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -62,11 +152,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/CI_1x2_detail" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/3d_band_structure" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CI_1x2_detail/CI_1x2_detail_poster.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/3d_band_structure/3d_band_structure.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -75,7 +165,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="complete_band_structure_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="CI_1x2" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -83,11 +173,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/band_structure" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/CI_1x2" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/band_structure/complete_band_structure_poster.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/CI_1x2/CI_1x2.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -96,7 +186,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ham_complete_twist_realistic_pair_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Ly_flow" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -104,11 +194,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/Ly_flow" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/ham_complete_twist_realistic_pair_poster.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/Ly_flow/Ly_flow.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -117,7 +207,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="script_complete_twist" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="butterfly_triple" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -125,11 +215,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/butterfly_triple" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/script_complete_twist.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/butterfly_triple/butterfly_triple.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -138,7 +228,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="script_complete_twist_triple_poster" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="phi_flow" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -146,11 +236,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/complete_twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/phi_flow" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/complete_twist/script_complete_twist_triple_poster.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/phi_flow/phi_flow.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -160,19 +250,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.script_complete_twist" />
-      <item itemvalue="Python.script_complete_twist_triple_poster" />
-      <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
-      <item itemvalue="Python.complete_band_structure_poster" />
-      <item itemvalue="Python.CI_1x2_detail_poster" />
+      <item itemvalue="Python.3d_band_structure" />
+      <item itemvalue="Python.CI_1x2" />
+      <item itemvalue="Python.Ly_flow" />
+      <item itemvalue="Python.butterfly_triple" />
+      <item itemvalue="Python.phi_flow" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.ham_complete_twist_realistic_pair_poster" />
-        <item itemvalue="Python.CI_1x2_detail_poster" />
-        <item itemvalue="Python.complete_band_structure_poster" />
-        <item itemvalue="Python.script_complete_twist_triple_poster" />
-        <item itemvalue="Python.script_complete_twist" />
+        <item itemvalue="Python.butterfly_triple" />
+        <item itemvalue="Python.3d_band_structure" />
+        <item itemvalue="Python.phi_flow" />
+        <item itemvalue="Python.Ly_flow" />
+        <item itemvalue="Python.CI_1x2" />
       </list>
     </recent_temporary>
   </component>

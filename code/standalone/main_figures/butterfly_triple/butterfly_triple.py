@@ -3,7 +3,6 @@ import matplotlib.pyplot as plt
 import sys
 import matplotlib.gridspec as gridspec
 
-
 q = 199  # prime > 7
 
 
@@ -157,6 +156,10 @@ if __name__ == '__main__':
 
     plt.setp(ax1.get_xticklabels(), visible=False)
 
+    ax0.tick_params(axis='both', which='major', labelsize=10)
+    ax1.tick_params(axis='both', which='major', labelsize=10)
+    ax2.tick_params(axis='both', which='major', labelsize=10)
+
     ax0.axvline(1/3, color='k', linewidth=0.5, ls="--")
     ax0.axvline(2/3, color='k', linewidth=0.5, ls="--")
     ax1.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
@@ -167,18 +170,23 @@ if __name__ == '__main__':
     gs.update(hspace=0)
 
     ax0.set_xlim([0, 1])
-    ax2.set_xlabel('$\phi$')
-    ax0.set_ylabel('$E$ / meV')
-    ax1.set_ylabel('$E$ / meV')
-    ax2.set_ylabel('$E$ / meV')
+    ax2.set_xlabel('$n_\phi$', fontsize=11)
+    ax0.set_ylabel('$E$ / meV', fontsize=11)
+    ax1.set_ylabel('$E$ / meV', fontsize=11)
+    ax2.set_ylabel('$E$ / meV', fontsize=11)
 
-    fig.text(0.038, 0.35, "(c)", fontsize=12)
-    fig.text(0.038, 0.605, "(b)", fontsize=12)
-    fig.text(0.038, 0.86, "(a)", fontsize=12)
+    # fig.text(0.035, 0.35, "(c)", fontsize=12)
+    # fig.text(0.035, 0.605, "(b)", fontsize=12)
+    # fig.text(0.035, 0.86, "(a)", fontsize=12)
+
+    fig.text(0.14, 0.86, '$(t_1, t_2, t_2\')=(1,0,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.602, '$(t_1, t_2, t_2\')=(0,1,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.346, '$(t_1, t_2, t_2\')=(0.331, -0.010, 0.097)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+
 
     #ax0.text(0.4, 4.5, '(a) $t_2 = 0$', fontsize=10)
     #ax1.text(0.4, 7, '(b) $t_2 = 0.5$', fontsize=10)
     #ax2.text(0.4, 9.5, '(c) $t_2 = 1$', fontsize=10)
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_triple.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/butterfly_triple_slide.png", bbox_inches='tight', dpi=300, transparent=True)
     plt.show()
