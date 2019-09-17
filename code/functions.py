@@ -128,8 +128,14 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
                          0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0,
                          'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0,
                          0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0]
+        # product_state = ['full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'custom':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -179,7 +185,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHex1Model(model_params)
 
     elif model == 'FermionicHex1':
-        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex1Model(model_params)
@@ -191,7 +197,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicTri1Model(model_params)
 
     elif model == 'FermionicTri1':
-        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicTri1Model(model_params)
@@ -203,7 +209,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicTri2Model(model_params)
 
     elif model == 'FermionicTri2':
-        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicTri2Model(model_params)
@@ -215,7 +221,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHex5Model(model_params)
 
     elif model == 'FermionicHex5':
-        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex5Model(model_params)
@@ -227,7 +233,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHex1Hex5Model(model_params)
 
     elif model == 'FermionicHex1Hex5':
-        model_params = dict(conserve='N', filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+        model_params = dict(conserve='N', filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex1Hex5Model(model_params)
@@ -239,7 +245,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHex1Hex5OrbitalModel(model_params)
 
     elif model == 'FermionicHex1Hex5Orbital':
-        model_params = dict(conserve='N', filling=(1, 6), phi=(1, 3), Lx=Lx, Ly=Ly, V=0,  # system params
+        model_params = dict(conserve='N', filling=(1, 6), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex1Hex5OrbitalModel(model_params)

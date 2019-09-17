@@ -622,5 +622,5 @@ if __name__ == '__main__':
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
     plt.show()

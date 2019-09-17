@@ -1,7 +1,7 @@
 # configuration parameters
-model = 'FermionicHex1'
+model = 'FermionicHex1Hex5Orbital'
 lattice = 'MagneticHoneycomb'
-initial_state = 'FermionicHex1'
+initial_state = 'FermionicHex1Hex5Orbital'
 
 if model == 'Hubbard':
     tile_unit = ['down', 'up']
@@ -45,9 +45,9 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 200
+chi_max = 500
 # chi max for compute_K
-chi_max_K = 200
+chi_max_K = 500
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, U, V = -1, 0, 0, 10

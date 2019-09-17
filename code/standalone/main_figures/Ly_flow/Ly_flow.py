@@ -21,22 +21,22 @@ if __name__ == '__main__':
     SvN = []
     Sinf = []
 
-    with open('ent_scal.dat.sample', 'r') as csvfile:
+    with open('ent_scal.dat.hex1hex5', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             Ly.append(float(row[0]))
             SvN.append(float(row[1]))
             Sinf.append(float(row[2]))
 
-    ax1.plot(Ly, SvN, '.', marker='o', c='C8', label='$S_{\mathrm{vN}}$', markersize=5)
+    ax1.plot(Ly, SvN, '.', marker='o', c='C8', label='$S_{\mathrm{vN}}$', markersize=5, zorder=2)
     c, m = polyfit(Ly, SvN, 1)
     xvalues = np.arange(max(Ly) + 20)
-    ax1.plot(xvalues, m * xvalues + c, '-', c='C8')
+    ax1.plot(xvalues, m * xvalues + c, '-', c='C8', zorder=2)
 
-    ax1.plot(Ly, Sinf, '.', marker='s', c='C9', label='$S_{\infty}$', markersize=5)
+    ax1.plot(Ly, Sinf, '.', marker='s', c='C9', label='$S_{\infty}$', markersize=5, zorder=2)
     c, m = polyfit(Ly, Sinf, 1)
     xvalues = np.arange(max(Ly) + 20)
-    ax1.plot(xvalues, m * xvalues + c, '-', c='C9')
+    ax1.plot(xvalues, m * xvalues + c, '-', c='C9', zorder=2)
 
     ax1.legend(loc='upper left', handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10, ncol=2)
@@ -44,13 +44,13 @@ if __name__ == '__main__':
     ax1.set_xticks(np.arange(0, 12.1, 3))
     ax1.set_xlim([0, 12])
     ax1.set_xlabel("$L_y$", fontsize=11)
-    ax1.set_yticks(np.arange(-4, 4.1, 2))
-    ax1.set_ylim([-4, 4])
+    ax1.set_yticks(np.arange(-1, 3.1, 1))
+    ax1.set_ylim([-1, 3])
     ax1.set_ylabel("$S$", fontsize=11)
 
     ax1.axhline(-0.5, color='k', linewidth=0.5, ls='--')
-    ax1.axvline(6, color='k', linewidth=0.5, ls='--')
-    ax1.axvline(9, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(6, color='k', linewidth=0.5, ls='-', zorder=1)
+    ax1.axvline(9, color='k', linewidth=0.5, ls='-', zorder=1)
 
     ax1.tick_params(axis="x", labelsize=10)
     ax1.tick_params(axis="y", labelsize=10)
@@ -58,7 +58,7 @@ if __name__ == '__main__':
     # ax1.xaxis.labelpad = -3
     ax1.xaxis.set_label_coords(0.635, -0.1)
 
-    ax1.set_aspect(0.5)
+    ax1.set_aspect(1)
 
     ####################################################################################################################
 
@@ -167,10 +167,10 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    Ly6_con = ConnectionPatch(xyA=(6, -4), xyB=(1, 15), coordsA="data", coordsB="data",
+    Ly6_con = ConnectionPatch(xyA=(6, -1), xyB=(1, 15), coordsA="data", coordsB="data",
                               axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=10,angleB=90", arrowstyle='->',
                               facecolor='k', edgecolor='k')
-    Ly9_con = ConnectionPatch(xyA=(9, -4), xyB=(0.25, 15), coordsA="data", coordsB="data",
+    Ly9_con = ConnectionPatch(xyA=(9, -1), xyB=(0.25, 15), coordsA="data", coordsB="data",
                               axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-10,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
 
     ax1.add_artist(Ly6_con)

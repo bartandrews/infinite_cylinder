@@ -111,6 +111,7 @@ if __name__ == '__main__':
     values0 = []
     values1 = []
     values2 = []
+    values3 = []
 
     for p in range(q):
         if p % 2 == 0:
@@ -124,8 +125,10 @@ if __name__ == '__main__':
         values0.append((eigenvalues0, alpha_list))
         eigenvalues1 = matrix_eigenvalues(p, M, 0, 1, 0)
         values1.append((eigenvalues1, alpha_list))
-        eigenvalues2 = matrix_eigenvalues(p, M, 0.331, -0.010, 0.097)
+        eigenvalues2 = matrix_eigenvalues(p, M, 0.331, -0.010, 0)
         values2.append((eigenvalues2, alpha_list))
+        eigenvalues3 = matrix_eigenvalues(p, M, 0.331, -0.010, 0.097)
+        values3.append((eigenvalues3, alpha_list))
 
     ##########
     # Figure #
@@ -133,13 +136,14 @@ if __name__ == '__main__':
 
     fig = plt.figure()
 
-    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
+    gs = gridspec.GridSpec(4, 1, height_ratios=[1, 1, 1, 1])
 
     ax0 = plt.subplot(gs[0])
     ax0.tick_params('x', direction='in', bottom=True)
 
     for eigenvalues, alphas in values0:
         ax0.plot(alphas, eigenvalues, '.', color='red', markersize=0.2)
+    ax0.set_yticks(np.arange(-2, 2.1, 2))
 
     ax1 = plt.subplot(gs[1], sharex=ax0)
     ax1.tick_params('x', direction='in', bottom=True)
@@ -150,15 +154,24 @@ if __name__ == '__main__':
     plt.setp(ax0.get_xticklabels(), visible=False)
 
     ax2 = plt.subplot(gs[2], sharex=ax0)
+    ax2.tick_params('x', direction='in', bottom=True)
 
     for eigenvalues, alphas in values2:
         ax2.plot(alphas, eigenvalues, '.', color='green', markersize=0.2)
 
     plt.setp(ax1.get_xticklabels(), visible=False)
 
+    ax3 = plt.subplot(gs[3], sharex=ax0)
+
+    for eigenvalues, alphas in values3:
+        ax3.plot(alphas, eigenvalues, '.', color='black', markersize=0.2)
+
+    plt.setp(ax2.get_xticklabels(), visible=False)
+
     ax0.tick_params(axis='both', which='major', labelsize=10)
     ax1.tick_params(axis='both', which='major', labelsize=10)
     ax2.tick_params(axis='both', which='major', labelsize=10)
+    ax3.tick_params(axis='both', which='major', labelsize=10)
 
     ax0.axvline(1/3, color='k', linewidth=0.5, ls="--")
     ax0.axvline(2/3, color='k', linewidth=0.5, ls="--")
@@ -166,22 +179,27 @@ if __name__ == '__main__':
     ax1.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
     ax2.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
     ax2.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
+    ax3.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
+    ax3.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
 
     gs.update(hspace=0)
 
     ax0.set_xlim([0, 1])
-    ax2.set_xlabel('$n_\phi$', fontsize=11)
+    ax3.set_xlabel('$n_\phi$', fontsize=11)
     ax0.set_ylabel('$E$ / meV', fontsize=11)
     ax1.set_ylabel('$E$ / meV', fontsize=11)
     ax2.set_ylabel('$E$ / meV', fontsize=11)
+    ax3.set_ylabel('$E$ / meV', fontsize=11)
 
-    fig.text(0.035, 0.35, "(c)", fontsize=12)
-    fig.text(0.035, 0.605, "(b)", fontsize=12)
     fig.text(0.035, 0.86, "(a)", fontsize=12)
+    fig.text(0.035, 0.6675, "(b)", fontsize=12)
+    fig.text(0.035, 0.475, "(c)", fontsize=12)
+    fig.text(0.035, 0.2825, "(d)", fontsize=12)
 
     fig.text(0.14, 0.86, '$(t_1, t_2, t_2\')=(1,0,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
-    fig.text(0.14, 0.602, '$(t_1, t_2, t_2\')=(0,1,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
-    fig.text(0.14, 0.346, '$(t_1, t_2, t_2\')=(0.331, -0.010, 0.097)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.6675, '$(t_1, t_2, t_2\')=(0,1,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.418, '$(t_1, t_2, t_2\')=(0.331, -0.010, 0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.2825, '$(t_1, t_2, t_2\')=(0.331, -0.010, 0.097)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/butterfly_triple.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG/figures/butterfly_quad.png", bbox_inches='tight', dpi=300)
     plt.show()

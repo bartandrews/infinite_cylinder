@@ -271,5 +271,5 @@ if __name__ == '__main__':
 
     gs.update(wspace=0.5)
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/hofstadter_bands_1_6.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/hofstadter_bands_1_6.png", bbox_inches='tight', dpi=300)
     plt.show()

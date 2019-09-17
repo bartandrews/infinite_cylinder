@@ -95,6 +95,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_Ly_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.chi_max_K, p.t, p.U, p.mu, p.V, p.Lx,
-               Ly_min=6, Ly_max=6, Ly_samp=1)
+               Ly_min=12, Ly_max=12, Ly_samp=1)
 
     print(time.time() - t0)
