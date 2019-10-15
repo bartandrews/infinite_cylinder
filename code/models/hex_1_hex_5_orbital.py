@@ -160,12 +160,19 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
         return lat
 
     def init_terms(self, model_params):
+        # t1, t2, t2dash = 0.331, -0.01, 0.097
         t1, t2, t2dash = 0.331, -0.01, 0.097
+        U = get_parameter(model_params, 'U', 0, self.name, True)
         V = get_parameter(model_params, 'V', 10, self.name, True)
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi_p, phi_q = get_parameter(model_params, 'phi', (1, 3), self.name)
         phi = 2 * np.pi * phi_p / phi_q
+
+        # # onsite interaction
+        # for u in range(len(self.lat.unit_cell)):
+        #     print("u in range(len(self.lat.unit_cell)) = ", u)
+        #     self.add_onsite(U, u, 'Nx Ny')
 
         # t1 term ###
         for i in range(0, 2*phi_q, 2):
@@ -199,18 +206,21 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+                # self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
             for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
                         * np.exp(-1j * (phi/2) * (i + 3/2))
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+                # self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
             for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
                         * np.exp(-1j * (phi/2) * (i - 3/2))
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+                # self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
 
         # t2dash term ###
         for i in range(2*phi_q):

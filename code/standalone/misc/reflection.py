@@ -1,3 +1,5 @@
+# A script to reflect the entanglement flow so that only half needs to be calculated
+
 import numpy as np
 import csv
 import matplotlib.pyplot as plt

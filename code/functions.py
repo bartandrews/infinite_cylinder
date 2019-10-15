@@ -3,8 +3,10 @@ from tenpy.models.hubbard import FermiHubbardModel
 
 from models.haldane import BosonicHaldaneModel, FermionicHaldaneModel
 from models.hofstadter import BosonicHofstadterModel, FermionicHofstadterModel
+from models.hofstadter_orbital import BosonicHofstadterOrbitalModel, FermionicHofstadterOrbitalModel
 
 from models.hex_1 import BosonicHex1Model, FermionicHex1Model
+from models.hex_1_orbital import BosonicHex1OrbitalModel, FermionicHex1OrbitalModel
 from models.tri_1 import BosonicTri1Model, FermionicTri1Model
 from models.tri_2 import BosonicTri2Model, FermionicTri2Model
 from models.hex_5 import BosonicHex5Model, FermionicHex5Model
@@ -37,7 +39,9 @@ def file_name_stem(tool, model, lattice, initial_state, tile_unit, chi_max):
     if model not in ['Hubbard',
                      'BosonicHaldane', 'FermionicHaldane',
                      'BosonicHofstadter', 'FermionicHofstadter',
+                     'BosonicHofstadterOrbital', 'FermionicHofstadterOrbital',
                      'BosonicHex1', 'FermionicHex1',
+                     'BosonicHex1Orbital', 'FermionicHex1Orbital',
                      'BosonicTri1', 'FermionicTri1',
                      'BosonicTri2', 'FermionicTri2',
                      'BosonicHex5', 'FermionicHex5',
@@ -105,18 +109,34 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
     elif initial_state == 'BosonicHofstadter' or initial_state == 'BosonicTri1':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'BosonicHofstadterOrbital':
+        product_state = ['1_x 0_y', 0, 0, 0, '0_x 0_y', 0, 0, 0,
+                         '1_x 0_y', 0, 0, 0, '0_x 0_y', 0, 0, 0]
     elif initial_state == 'FermionicHofstadter' or initial_state == 'FermionicTri1':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0]
-    elif initial_state == 'BosonicHex1' or initial_state == 'BosonicHex1Hex5':
+    elif initial_state == 'FermionicHofstadterOrbital':
+        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'BosonicHex1' or initial_state == 'BosonicHex5' or initial_state == 'BosonicHex1Hex5':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0]
-    elif initial_state == 'FermionicHex1' or initial_state == 'FermionicHex1Hex5':
+    elif initial_state == 'BosonicHex1Orbital':
+        product_state = ['1_x 0_y', 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         '1_x 0_y', 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'FermionicHex1' or initial_state == 'FermionicHex5' or initial_state == 'FermionicHex1Hex5':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0]
+    elif initial_state == 'FermionicHex1Orbital':
+        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'BosonicHex1Hex5Orbital':
         product_state = ['1_x 1_y', 0, 0, 0, 0, 0, 0, 0,
@@ -124,14 +144,10 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0,
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'FermionicHex1Hex5Orbital':
-        product_state = ['full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0,
-                         0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0,
-                         'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0,
-                         0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0]
-        # product_state = ['full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  0, 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  'full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  0, 0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'custom':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -176,6 +192,18 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHofstadterModel(model_params)
 
+    elif model == 'BosonicHofstadterOrbital':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicHofstadterOrbitalModel(model_params)
+
+    elif model == 'FermionicHofstadterOrbital':
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=10,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicHofstadterOrbitalModel(model_params)
+
     ####################################################################################################################
 
     elif model == 'BosonicHex1':
@@ -189,6 +217,18 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex1Model(model_params)
+
+    elif model == 'BosonicHex1Orbital':
+        model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = BosonicHex1OrbitalModel(model_params)
+
+    elif model == 'FermionicHex1Orbital':
+        model_params = dict(conserve='N', t=t, filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
+                            bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                            verbose=1, phi_ext=phi_ext)  # utility
+        M = FermionicHex1OrbitalModel(model_params)
 
     elif model == 'BosonicTri1':
         model_params = dict(conserve='N', t=t, filling=(1, 8), phi=(1, 4), Lx=Lx, Ly=Ly, Nmax=1,  # system params

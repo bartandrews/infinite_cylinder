@@ -2,19 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="89024c43-e14f-41ad-9bbb-b9de2150dd7e" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main_figures/butterfly_quad/butterfly_quad.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Ly_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Ly_flow.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../V_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../V_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/../functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lattices/MagneticSquare.py" beforeDir="false" afterPath="$PROJECT_DIR$/../lattices/MagneticSquare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/haldane.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/haldane.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../models/hex_1_hex_5_orbital.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hex_1_hex_5_orbital.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../models/hex_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/../models/hex_5.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../parameters/param_laptop.py" beforeDir="false" afterPath="$PROJECT_DIR$/../parameters/param_laptop.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/../phi_flow.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_figures/2d_band_structure/2d_band_structure.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_figures/2d_band_structure/2d_band_structure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_figures/3d_band_structure/3d_band_structure.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_figures/3d_band_structure/3d_band_structure.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_figures/Ly_flow/Ly_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_figures/Ly_flow/Ly_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_figures/butterfly_triple/butterfly_triple.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_figures/butterfly_triple/butterfly_triple.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main_figures/phi_flow/phi_flow.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_figures/phi_flow/phi_flow.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old/hofstadter/ham_1_6.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/hofstadter/ham_1_6.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/misc/reflection.py" beforeDir="false" afterPath="$PROJECT_DIR$/misc/reflection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/old/hofstadter/ham_1_5.py" beforeDir="false" afterPath="$PROJECT_DIR$/old/hofstadter/ham_1_5.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -29,7 +28,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RunDashboard">
@@ -44,7 +43,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.ham_1_6">
+  <component name="RunManager" selected="Python.V_flow">
     <configuration name="2d_band_structure" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -66,7 +65,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="3d_band_structure" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Ly_flow_mag" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -74,11 +73,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/3d_band_structure" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/Ly_flow_mag" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/3d_band_structure/3d_band_structure.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/Ly_flow_mag/Ly_flow_mag.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -87,7 +86,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ham_1_5" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="Ly_flow_mag_detail" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -95,11 +94,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/old/hofstadter" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/Ly_flow_mag_detail" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old/hofstadter/ham_1_5.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/Ly_flow_mag_detail/Ly_flow_mag_detail.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -108,7 +107,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="ham_1_6" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="V_flow" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -116,11 +115,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/old/hofstadter" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/main_figures/V_flow" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/old/hofstadter/ham_1_6.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main_figures/V_flow/V_flow.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -129,7 +128,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="script_twist" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="rotation" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="standalone" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -137,11 +136,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/supplementary_figures/twist" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/misc" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/supplementary_figures/twist/script_twist.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/misc/rotation.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -151,19 +150,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.3d_band_structure" />
-      <item itemvalue="Python.script_twist" />
+      <item itemvalue="Python.rotation" />
+      <item itemvalue="Python.Ly_flow_mag" />
+      <item itemvalue="Python.Ly_flow_mag_detail" />
       <item itemvalue="Python.2d_band_structure" />
-      <item itemvalue="Python.ham_1_5" />
-      <item itemvalue="Python.ham_1_6" />
+      <item itemvalue="Python.V_flow" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.ham_1_6" />
-        <item itemvalue="Python.ham_1_5" />
+        <item itemvalue="Python.V_flow" />
+        <item itemvalue="Python.Ly_flow_mag_detail" />
         <item itemvalue="Python.2d_band_structure" />
-        <item itemvalue="Python.3d_band_structure" />
-        <item itemvalue="Python.script_twist" />
+        <item itemvalue="Python.Ly_flow_mag" />
+        <item itemvalue="Python.rotation" />
       </list>
     </recent_temporary>
   </component>

@@ -65,6 +65,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_V_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.Lx, p.Ly,
-              V_min=0, V_max=4, V_samp=27)
+              V_min=0, V_max=0.1, V_samp=51)
 
     print(time.time() - t0)

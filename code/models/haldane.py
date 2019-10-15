@@ -77,7 +77,7 @@ class FermionicHaldaneModel(CouplingMPOModel):
         for u in range(len(self.lat.unit_cell)):
 
             self.add_onsite(mu, 0, 'N', category='mu N')
-            self.add_onsite(-mu, 0, 'N', category='mu N')
+            self.add_onsite(-mu, 1, 'N', category='mu N')
 
         for u1, u2, dx in self.lat.nearest_neighbors:
 

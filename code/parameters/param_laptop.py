@@ -1,7 +1,7 @@
 # configuration parameters
-model = 'FermionicHex1Hex5Orbital'
-lattice = 'MagneticHoneycomb'
-initial_state = 'FermionicHex1Hex5Orbital'
+model = 'FermionicHofstadter'
+lattice = 'MagneticSquare'
+initial_state = 'FermionicHofstadter'
 
 if model == 'Hubbard':
     tile_unit = ['down', 'up']
@@ -9,9 +9,13 @@ elif model == 'BosonicHaldane' or model == 'FermionicHaldane':
     tile_unit = [0, 1]
 elif model == 'BosonicHofstadter' or model == 'FermionicHofstadter':
     tile_unit = [0, 1]
+elif model == 'BosonicHofstadterOrbital' or model == 'FermionicHofstadterOrbital':
+    tile_unit = ['full_x empty_y', 'full_x empty_y']
 ########################################################################################################################
 elif model == 'BosonicHex1' or model == 'FermionicHex1':
     tile_unit = [0, 1]
+elif model == 'BosonicHex1Orbital' or model == 'FermionicHex1Orbital':
+    tile_unit = ['full_x empty_y', 'full_x empty_y']
 elif model == 'BosonicTri1' or model == 'FermionicTri1':
     tile_unit = [0, 1]
 elif model == 'BosonicTri2' or model == 'FermionicTri2':
@@ -45,9 +49,9 @@ elif model == 'TBG6':
     tile_unit = ['full_px empty_py full_z', 'empty_px full_py empty_z']
 
 # chi_max for DMRG
-chi_max = 500
+chi_max = 50
 # chi max for compute_K
-chi_max_K = 500
+chi_max_K = 50
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
 t, mu, U, V = -1, 0, 0, 10
