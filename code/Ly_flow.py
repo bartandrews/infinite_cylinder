@@ -9,10 +9,11 @@ parameters_module = "parameters.param_" + str(sys.argv[1])
 p = importlib.import_module(parameters_module)
 
 
-def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, U, mu, V, Lx, Ly_min, Ly_max, Ly_samp):
+def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, U, mu, V, Lx, tag,
+               Ly_min, Ly_max, Ly_samp):
 
     ent_scal_stem = f.file_name_stem("ent_scal", model, lattice, initial_state, tile_unit, chi_max)
-    ent_scal_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat" % (t, U, mu, V, Lx, Ly_min, Ly_max))
+    ent_scal_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat.%s" % (t, U, mu, V, Lx, Ly_min, Ly_max, tag))
     ent_scal_file = "data/ent_scal/" + ent_scal_stem.replace(" ", "_") + ent_scal_leaf
     open(ent_scal_file, "w")
     ent_scal_data = open(ent_scal_file, "a", buffering=1)
@@ -95,6 +96,6 @@ if __name__ == '__main__':
     t0 = time.time()
 
     my_Ly_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.chi_max_K, p.t, p.U, p.mu, p.V, p.Lx,
-               Ly_min=12, Ly_max=12, Ly_samp=1)
+               p.tag, Ly_min=4, Ly_max=6, Ly_samp=1)
 
     print(time.time() - t0)

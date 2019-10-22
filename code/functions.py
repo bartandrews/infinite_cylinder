@@ -144,10 +144,22 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0,
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'FermionicHex1Hex5Orbital':
-        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0]
+        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0]
+        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'custom':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          0, 0, 0, 0, 0, 0, 0, 0, 0,

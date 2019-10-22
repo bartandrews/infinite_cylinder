@@ -9,11 +9,11 @@ parameters_module = "parameters.param_" + str(sys.argv[1])
 p = importlib.import_module(parameters_module)
 
 
-def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, V_min, V_max, V_samp):
+def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, Ly, tag, V_min, V_max, V_samp):
 
     corr_len_stem = f.file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
     ent_spec_V_flow_stem = f.file_name_stem("ent_spec_V_flow", model, lattice, initial_state, tile_unit, chi_max)
-    leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly))
+    leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat.%s" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly, tag))
     corr_len_file = "data/corr_len/" + corr_len_stem.replace(" ", "_") + leaf
     ent_spec_V_flow_file = "data/ent_spec_V_flow/" + ent_spec_V_flow_stem.replace(" ", "_") + leaf
     open(corr_len_file, "w")
@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_V_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.Lx, p.Ly,
+    my_V_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.Lx, p.Ly, p.tag,
               V_min=0, V_max=0.1, V_samp=51)
 
     print(time.time() - t0)

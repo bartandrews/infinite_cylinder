@@ -97,6 +97,7 @@ def min_hamiltonian(k, num_bands_1):
 def hamiltonian(k, num_bands_1):
 
     t1, t2, t2dash = 0.331, -0.01, 0.097
+    # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -622,5 +623,5 @@ if __name__ == '__main__':
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
     plt.show()
