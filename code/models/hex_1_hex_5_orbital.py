@@ -160,8 +160,9 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
         return lat
 
     def init_terms(self, model_params):
-        # t1, t2, t2dash = 0.331, -0.01, 0.097
-        t1, t2, t2dash = 0.331, -0.01, 0.097
+        # t1, t2, t2dash = 2, 0.05, 0.2  # Yuan parameters
+        # t1, t2, t2dash = 0.331, -0.1, 0.097  # Koshino parameters
+        t1, t2, t2dash = 1, -0.025, (1/31 + 0.025)
         U = get_parameter(model_params, 'U', 0, self.name, True)
         V = get_parameter(model_params, 'V', 10, self.name, True)
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
@@ -179,104 +180,157 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
             for u1, u2, dx in getattr(self.lat, "NN{}d".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
                         * np.exp(-1j * (phi / 3) * i)
-                # t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                #         * np.exp(-1j * (phi / 3) * i)
+                t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+                        * np.exp(-1j * (phi / 3) * i)
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd'+orbital, u2, 'C'+orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd'+orbital, u1, 'C'+orbital, -dx, 'JW', True)  # h.c.
-                # # orbital mixing
-                # self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
-                # self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
-                # self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
-                # self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+                # NN orbital mixing
+                self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
+                self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+                self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
+                self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
                 # NN interaction
                 self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
             for u1, u2, dx in getattr(self.lat, "NN{}ur".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
                         * np.exp(1j * (phi / 6) * (i + 1/2))
-                # t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                #         * np.exp(1j * (phi / 6) * (i + 1 / 2))
+                t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+                        * np.exp(1j * (phi / 6) * (i + 1 / 2))
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
-                # # orbital mixing
-                # self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
-                # self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
-                # self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
-                # self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+                # NN orbital mixing
+                self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
+                self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+                self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
+                self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
                 # NN interaction
                 self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
             for u1, u2, dx in getattr(self.lat, "NN{}ul".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
                         * np.exp(1j * (phi / 6) * (i - 1/2))
-                # t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                #         * np.exp(1j * (phi / 6) * (i - 1 / 2))
+                t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+                        * np.exp(1j * (phi / 6) * (i - 1 / 2))
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
-                # # orbital mixing
-                # self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
-                # self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
-                # self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
-                # self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+                # NN orbital mixing
+                self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
+                self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+                self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
+                self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
                 # NN interaction
                 self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
+
+        # # intermediate interactions ###
+        # for i in range(0, 2*phi_q):
+        #     for u1, u2, dx in getattr(self.lat, "secondNN{}bl".format(i)):
+        #         self.add_coupling(V/np.sqrt(3), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "secondNN{}r".format(i)):
+        #         self.add_coupling(V/np.sqrt(3), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "secondNN{}ul".format(i)):
+        #         self.add_coupling(V/np.sqrt(3), u1, 'Ntot', u2, 'Ntot', dx)
+        # for i in range(0, 2*phi_q, 2):
+        #     for u1, u2, dx in getattr(self.lat, "thirdNN{}u".format(i)):
+        #         self.add_coupling(V/2, u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "thirdNN{}br".format(i)):
+        #         self.add_coupling(V/2, u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "thirdNN{}bl".format(i)):
+        #         self.add_coupling(V/2, u1, 'Ntot', u2, 'Ntot', dx)
+        # for i in range(0, 2*phi_q, 2):
+        #     for u1, u2, dx in getattr(self.lat, "fourthNN{}bur".format(i)):
+        #         self.add_coupling(V/np.sqrt(7), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "fourthNN{}uur".format(i)):
+        #         self.add_coupling(V/np.sqrt(7), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "fourthNN{}bul".format(i)):
+        #         self.add_coupling(V/np.sqrt(7), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "fourthNN{}uul".format(i)):
+        #         self.add_coupling(V/np.sqrt(7), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "fourthNN{}bl".format(i)):
+        #         self.add_coupling(V/np.sqrt(7), u1, 'Ntot', u2, 'Ntot', dx)
+        #     for u1, u2, dx in getattr(self.lat, "fourthNN{}br".format(i)):
+        #         self.add_coupling(V/np.sqrt(7), u1, 'Ntot', u2, 'Ntot', dx)
 
         # t2 term ###
         for i in range(2*phi_q):
             for u1, u2, dx in getattr(self.lat, "fifthNN{}u".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
                         * np.exp(1j * phi * i)
+                t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+                        * np.exp(1j * phi * i)
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
-                # self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
+                # # fifthNN orbital mixing
+                # self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
+                # self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+                # self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
+                # self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+                # # fifthNN interaction
+                # self.add_coupling(V/3, u1, 'Ntot', u2, 'Ntot', dx)
             for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
+                        * np.exp(-1j * (phi/2) * (i + 3/2))
+                t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
                         * np.exp(-1j * (phi/2) * (i + 3/2))
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
-                # self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
+                # # fifthNN orbital mixing
+                # self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
+                # self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+                # self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
+                # self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+                # # fifthNN interaction
+                # self.add_coupling(V/3, u1, 'Ntot', u2, 'Ntot', dx)
             for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
                 t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
+                        * np.exp(-1j * (phi/2) * (i - 3/2))
+                t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
                         * np.exp(-1j * (phi/2) * (i - 3/2))
                 for orbital in ['x', 'y']:
                     self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
                     self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
-                # self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
+                # # fifthNN orbital mixing
+                # self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
+                # self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+                # self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
+                # self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+                # # fifthNN interaction
+                # self.add_coupling(V/3, u1, 'Ntot', u2, 'Ntot', dx)
 
-        # t2dash term ###
-        for i in range(2*phi_q):
-            # positive term
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}u".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                        * np.exp(1j * phi * i)
-                self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx, 'JW', True)  # h.c.
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                        * np.exp(-1j * (phi/2) * (i + 3/2))
-                self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx, 'JW', True)  # h.c.
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                        * np.exp(-1j * (phi/2) * (i - 3/2))
-                self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx, 'JW', True)  # h.c.
-            # negative term
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}u".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(-t2dash, dx, [0, phi_ext]) \
-                        * np.exp(1j * phi * i)
-                self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(-t2dash, dx, [0, phi_ext]) \
-                        * np.exp(-1j * (phi/2) * (i + 3/2))
-                self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.
-            for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
-                t_phi = self.coupling_strength_add_ext_flux(-t2dash, dx, [0, phi_ext]) \
-                        * np.exp(-1j * (phi/2) * (i - 3/2))
-                self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.
+        # # t2dash term ###
+        # for i in range(2*phi_q):
+        #     # positive term
+        #     for u1, u2, dx in getattr(self.lat, "fifthNN{}u".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+        #                 * np.exp(1j * phi * i)
+        #         self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx, 'JW', True)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx, 'JW', True)  # h.c.
+        #     for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+        #                 * np.exp(-1j * (phi/2) * (i + 3/2))
+        #         self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx, 'JW', True)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx, 'JW', True)  # h.c.
+        #     for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
+        #                 * np.exp(-1j * (phi/2) * (i - 3/2))
+        #         self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx, 'JW', True)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx, 'JW', True)  # h.c.
+        #     # negative term
+        #     for u1, u2, dx in getattr(self.lat, "fifthNN{}u".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(-t2dash, dx, [0, phi_ext]) \
+        #                 * np.exp(1j * phi * i)
+        #         self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.
+        #     for u1, u2, dx in getattr(self.lat, "fifthNN{}br".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(-t2dash, dx, [0, phi_ext]) \
+        #                 * np.exp(-1j * (phi/2) * (i + 3/2))
+        #         self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.
+        #     for u1, u2, dx in getattr(self.lat, "fifthNN{}bl".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(-t2dash, dx, [0, phi_ext]) \
+        #                 * np.exp(-1j * (phi/2) * (i - 3/2))
+        #         self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.

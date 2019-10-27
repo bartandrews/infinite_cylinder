@@ -192,3 +192,29 @@ class FermionicHex1OrbitalModel(CouplingMPOModel):
                 self.add_coupling(np.conj(-t_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
                 # NN interaction
                 self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
+
+        # for i in range(0, 2*phi_q):
+        #     for u1, u2, dx in getattr(self.lat, "secondNN{}d".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+        #                 * np.exp(-1j * (phi / 3) * i)
+        #         # orbital mixing
+        #         self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+        #         self.add_coupling(-t_phi, u1, 'Cdy', u2, 'Cx', dx)
+        #         self.add_coupling(np.conj(-t_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+        #     for u1, u2, dx in getattr(self.lat, "secondNN{}ul".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+        #                 * np.exp(1j * (phi / 6) * (i - 1 / 2))
+        #         # orbital mixing
+        #         self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+        #         self.add_coupling(-t_phi, u1, 'Cdy', u2, 'Cx', dx)
+        #         self.add_coupling(np.conj(-t_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
+        #     for u1, u2, dx in getattr(self.lat, "secondNN{}ur".format(i)):
+        #         t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
+        #                 * np.exp(1j * (phi / 6) * (i + 1 / 2))
+        #         # orbital mixing
+        #         self.add_coupling(t_phi, u1, 'Cdx', u2, 'Cy', dx)
+        #         self.add_coupling(np.conj(t_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
+        #         self.add_coupling(-t_phi, u1, 'Cdy', u2, 'Cx', dx)
+        #         self.add_coupling(np.conj(-t_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.

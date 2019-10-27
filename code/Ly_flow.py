@@ -2,6 +2,7 @@ import numpy as np
 import time
 import sys
 import importlib
+import tenpy.tools.process as prc
 
 import functions as f
 
@@ -14,7 +15,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
 
     ent_scal_stem = f.file_name_stem("ent_scal", model, lattice, initial_state, tile_unit, chi_max)
     ent_scal_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_%s.dat.%s" % (t, U, mu, V, Lx, Ly_min, Ly_max, tag))
-    ent_scal_file = "data/ent_scal/" + ent_scal_stem.replace(" ", "_") + ent_scal_leaf
+    ent_scal_file = "data/ent_scal/" + model + "/" + ent_scal_stem.replace(" ", "_") + ent_scal_leaf
     open(ent_scal_file, "w")
     ent_scal_data = open(ent_scal_file, "a", buffering=1)
 
@@ -40,7 +41,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
 
         ent_spec_real_stem = f.file_name_stem("ent_spec_real", model, lattice, initial_state, tile_unit, chi_max)
         ent_spec_real_leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (t, U, mu, V, Lx, Ly))
-        ent_spec_real_file = "data/ent_spec_real/" + ent_spec_real_stem.replace(" ", "_") + ent_spec_real_leaf
+        ent_spec_real_file = "data/ent_spec_real/" + model + "/" + ent_spec_real_stem.replace(" ", "_") + ent_spec_real_leaf
         open(ent_spec_real_file, "w")
         ent_spec_real_data = open(ent_spec_real_file, "a", buffering=1)
 
@@ -66,7 +67,7 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
 
         ent_spec_mom_stem = f.file_name_stem("ent_spec_mom", model, lattice, initial_state, tile_unit, chi_max)
         ent_spec_mom_leaf = ("chi_K_%s_t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s.dat" % (chi_max_K, t, U, mu, V, Lx, Ly))
-        ent_spec_mom_file = "data/ent_spec_mom/" + ent_spec_mom_stem.replace(" ", "_") + ent_spec_mom_leaf
+        ent_spec_mom_file = "data/ent_spec_mom/" + model + "/" + ent_spec_mom_stem.replace(" ", "_") + ent_spec_mom_leaf
         open(ent_spec_mom_file, "w")
         ent_spec_mom_data = open(ent_spec_mom_file, "a", buffering=1)
 
@@ -92,6 +93,8 @@ def my_Ly_flow(model, lattice, initial_state, tile_unit, chi_max, chi_max_K, t, 
 
 
 if __name__ == '__main__':
+
+    prc.mkl_set_nthreads(1)
 
     t0 = time.time()
 

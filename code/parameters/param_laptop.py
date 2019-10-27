@@ -1,10 +1,10 @@
 # name tag
-tag = 'boson_test'
+tag = 'nphi_1_4'
 
 # configuration parameters
-model = 'BosonicHofstadter'
-lattice = 'MagneticSquare'
-initial_state = 'BosonicHofstadter'
+model = 'FermionicHex1Hex5'
+lattice = 'MagneticHoneycomb'
+initial_state = 'FermionicHex1Hex5'
 
 if model == 'Hubbard':
     tile_unit = ['down', 'up']
@@ -57,7 +57,7 @@ chi_max = 50
 chi_max_K = 50
 
 # Hamiltonian parameters (U=0 for FermionicHaldane)
-t, mu, U, V = -1, 0, 0, 0
+t, mu, U, V = -1, 0, 0, 10
 
 if model in ['FermionicHaldane']:
     U = 0
@@ -69,7 +69,7 @@ elif model in ['TBG5']:
     J, Js, Jv = 1, 0.1, 8
 
 # unit cell
-Lx, Ly = 1, 4
+Lx, Ly = 1, 6
 
 # pickle capability
 use_pickle = False

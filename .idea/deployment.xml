@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="PublishConfigData" autoUpload="Always" serverName="ubuntu@172.23.186.84:22" showAutoUploadSettingsWarning="false">
+    <serverData>
+      <paths name="ubuntu@172.23.186.82:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/ubuntu/PycharmProjects/infinite_cylinder" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/ubuntu/TeNPy" local="$USER_HOME$/TeNPy" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="ubuntu@172.23.186.83:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/ubuntu/PycharmProjects/infinite_cylinder" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/ubuntu/TeNPy" local="$USER_HOME$/TeNPy" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="ubuntu@172.23.186.84:22">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/ubuntu/PycharmProjects/infinite_cylinder" local="$PROJECT_DIR$" />
+            <mapping deploy="/home/ubuntu/TeNPy" local="$USER_HOME$/TeNPy" />
+          </mappings>
+        </serverdata>
+      </paths>
+    </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
+  </component>
+</project>

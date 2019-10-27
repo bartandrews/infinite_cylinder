@@ -107,11 +107,18 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
             else:
                 product_state.append(tile_unit[0])
     elif initial_state == 'BosonicHofstadter' or initial_state == 'BosonicTri1':
+        # nphi = 1/4
         product_state = [1, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/5
+        # product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/6
+        # product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'BosonicHofstadterOrbital':
-        product_state = ['1_x 0_y', 0, 0, 0, '0_x 0_y', 0, 0, 0,
-                         '1_x 0_y', 0, 0, 0, '0_x 0_y', 0, 0, 0]
+        product_state = ['1_x 0_y', 0, 0, 0, 0, 0, 0, 0,
+                         '1_x 0_y', 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'FermionicHofstadter' or initial_state == 'FermionicTri1':
         product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
                          1, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -119,56 +126,50 @@ def select_initial_psi(model, lattice, initial_state, tile_unit):
         product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
                          'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'BosonicHex1' or initial_state == 'BosonicHex5' or initial_state == 'BosonicHex1Hex5':
-        product_state = [1, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0,
-                         1, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0]
+        # nphi = 1/4
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/5
+        # product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/6
+        # product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'BosonicHex1Orbital':
-        product_state = ['1_x 0_y', 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0,
-                         '1_x 0_y', 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = ['1_x 0_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         '1_x 0_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'FermionicHex1' or initial_state == 'FermionicHex5' or initial_state == 'FermionicHex1Hex5':
-        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/3
+        # product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # nphi = 1/4
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/5
+        # product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'FermionicHex1Orbital':
-        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'BosonicHex1Hex5Orbital':
         product_state = ['1_x 1_y', 0, 0, 0, 0, 0, 0, 0,
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0,
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0,
                          '1_x 1_y', 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'FermionicHex1Hex5Orbital':
-        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  0, 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  0, 0, 0, 0, 0, 0, 0, 0, 0]
-        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
-        #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
-        #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
-        #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0]
-        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
-                         'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
-                         'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
-                         'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0]
-        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        #                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/4
+        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # # nphi = 1/5
+        # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     elif initial_state == 'custom':
-        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0,
-                         1, 0, 0, 0, 0, 0, 0, 0, 0,
-                         0, 0, 0, 0, 0, 0, 0, 0, 0]
+        product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                         1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     else:
         sys.exit('Error: Unknown initial_state.')
 
@@ -285,7 +286,7 @@ def define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext=0):
         M = BosonicHex1Hex5Model(model_params)
 
     elif model == 'FermionicHex1Hex5':
-        model_params = dict(conserve='N', filling=(1, 9), phi=(1, 3), Lx=Lx, Ly=Ly, V=V,  # system params
+        model_params = dict(conserve='N', filling=(1, 12), phi=(1, 4), Lx=Lx, Ly=Ly, V=V,  # system params
                             bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
                             verbose=1, phi_ext=phi_ext)  # utility
         M = FermionicHex1Hex5Model(model_params)

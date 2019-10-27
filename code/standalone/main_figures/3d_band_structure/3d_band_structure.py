@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 
 def hamiltonian(k, M, p, q):
 
-    t1, t2, t2dash = 0.331, -0.01, 0
+    t1, t2, t2dash = 0.331, -0.01, 0.097
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -115,7 +115,7 @@ if __name__ == '__main__':
     ############
 
     p1 = 10
-    q1 = 15
+    q1 = 11
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])

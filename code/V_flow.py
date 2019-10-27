@@ -2,6 +2,7 @@ import numpy as np
 import time
 import sys
 import importlib
+import tenpy.tools.process as prc
 
 import functions as f
 
@@ -14,8 +15,8 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
     corr_len_stem = f.file_name_stem("corr_len", model, lattice, initial_state, tile_unit, chi_max)
     ent_spec_V_flow_stem = f.file_name_stem("ent_spec_V_flow", model, lattice, initial_state, tile_unit, chi_max)
     leaf = ("t_%s_U_%s_mu_%s_V_%s_%s_%s_Lx_%s_Ly_%s.dat.%s" % (t, U, mu, V_min, V_max, V_samp, Lx, Ly, tag))
-    corr_len_file = "data/corr_len/" + corr_len_stem.replace(" ", "_") + leaf
-    ent_spec_V_flow_file = "data/ent_spec_V_flow/" + ent_spec_V_flow_stem.replace(" ", "_") + leaf
+    corr_len_file = "data/corr_len/" + model + "/" + corr_len_stem.replace(" ", "_") + leaf
+    ent_spec_V_flow_file = "data/ent_spec_V_flow/" + model + "/" + ent_spec_V_flow_stem.replace(" ", "_") + leaf
     open(corr_len_file, "w")
     open(ent_spec_V_flow_file, "w")
     corr_len_data = open(corr_len_file, "a", buffering=1)
@@ -61,6 +62,8 @@ def my_V_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, Lx, L
 
 
 if __name__ == '__main__':
+
+    prc.mkl_set_nthreads(1)
 
     t0 = time.time()
 

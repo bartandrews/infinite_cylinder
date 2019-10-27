@@ -1,3 +1,4 @@
+# coding=utf-8
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
@@ -96,7 +97,7 @@ def min_hamiltonian(k, num_bands_1):
 
 def hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 0.331, -0.01, 0.097
+    t1, t2, t2dash = 1, -0.025, 0.05
     # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))

@@ -2,6 +2,7 @@ import numpy as np
 import time
 import sys
 import importlib
+import tenpy.tools.process as prc
 
 import functions as f
 
@@ -17,9 +18,9 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
     ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max)
     leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat.%s"
             % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp, tag))
-    overlap_file = "data/overlap/" + overlap_stem.replace(" ", "_") + leaf
-    charge_pump_file = "data/charge_pump/" + charge_pump_stem.replace(" ", "_") + leaf
-    ent_spec_flow_file = "data/ent_spec_flow/" + ent_spec_flow_stem.replace(" ", "_") + leaf
+    overlap_file = "data/overlap/" + model + "/" + overlap_stem.replace(" ", "_") + leaf
+    charge_pump_file = "data/charge_pump/" + model + "/" + charge_pump_stem.replace(" ", "_") + leaf
+    ent_spec_flow_file = "data/ent_spec_flow/" + model + "/" + ent_spec_flow_stem.replace(" ", "_") + leaf
     open(overlap_file, "w")
     open(charge_pump_file, "w")
     open(ent_spec_flow_file, "w")
@@ -76,9 +77,11 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
 
 if __name__ == '__main__':
 
+    prc.mkl_set_nthreads(1)
+
     t0 = time.time()
 
     my_phi_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.V, p.Lx, p.Ly, p.tag,
-                phi_min=0, phi_max=2, phi_samp=21)
+                phi_min=0, phi_max=3, phi_samp=31)
 
     print(time.time() - t0)
