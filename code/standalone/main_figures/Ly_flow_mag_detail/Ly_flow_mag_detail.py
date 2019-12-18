@@ -21,16 +21,16 @@ if __name__ == '__main__':
     SvN = []
     Sinf = []
 
-    with open('ent_scal_mag_detail.dat.hex1hex5', 'r') as csvfile:
+    with open('ent_scal_mag_detail.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             Ly.append(float(row[0]))
             SvN.append(float(row[1]))
             Sinf.append(float(row[2]))
 
-    ax1.plot(Ly[0], SvN[0], '.', marker='X', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=8/9)$', markersize=5, zorder=2, fillstyle='none')
-    ax1.plot(Ly[1], SvN[1], '.', marker='p', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=10/11)$', markersize=5, zorder=2, fillstyle='none')
-    ax1.plot(Ly[2], SvN[2], '.', marker='*', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=12/13)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[0], SvN[0], '.', marker='X', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/3)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[1], SvN[1], '.', marker='p', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/4)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[2], SvN[2], '.', marker='*', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/5)$', markersize=5, zorder=2, fillstyle='none')
     ax1.plot(Ly[3], SvN[3], '.', marker='X', c='C8', markersize=5, zorder=2, fillstyle='none')
     ax1.plot(Ly[4], SvN[4], '.', marker='p', c='C8', markersize=5, zorder=2, fillstyle='none')
     ax1.plot(Ly[5], SvN[5], '.', marker='*', c='C8', markersize=5, zorder=2, fillstyle='none')
@@ -42,9 +42,9 @@ if __name__ == '__main__':
     print("SvN error in (m, c) = (",V[0][0], ",", V[1][1],")")
     ax1.text(0.2, 2.2, "$S_\mathrm{{vN}}={gradient:.2f}L_y{intercept:.2f}$".format(gradient=m, intercept=c))
 
-    ax1.plot(Ly[0], Sinf[0], '.', marker='X', c='C9', label='$S_{\infty}\;(n_\phi=8/9)$', markersize=5, zorder=2, fillstyle='none')
-    ax1.plot(Ly[1], Sinf[1], '.', marker='p', c='C9', label='$S_{\infty}\;(n_\phi=10/11)$', markersize=5, zorder=2, fillstyle='none')
-    ax1.plot(Ly[2], Sinf[2], '.', marker='*', c='C9', label='$S_{\infty}\;(n_\phi=12/13)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[0], Sinf[0], '.', marker='X', c='C9', label='$S_{\infty}\;(n_\phi=1/3)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[1], Sinf[1], '.', marker='p', c='C9', label='$S_{\infty}\;(n_\phi=1/4)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[2], Sinf[2], '.', marker='*', c='C9', label='$S_{\infty}\;(n_\phi=1/5)$', markersize=5, zorder=2, fillstyle='none')
     ax1.plot(Ly[3], Sinf[3], '.', marker='X', c='C9', markersize=5, zorder=2, fillstyle='none')
     ax1.plot(Ly[4], Sinf[4], '.', marker='p', c='C9', markersize=5, zorder=2, fillstyle='none')
     ax1.plot(Ly[5], Sinf[5], '.', marker='*', c='C9', markersize=5, zorder=2, fillstyle='none')
@@ -59,16 +59,16 @@ if __name__ == '__main__':
     ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.7), handletextpad=0, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10, ncol=2, labelspacing=0, columnspacing=0)
 
-    ax1.set_xticks(np.arange(0, 12.1, 3))
-    ax1.set_xlim([0, 12])
+    ax1.set_xticks(np.arange(0, 16.1, 4))
+    ax1.set_xlim([0, 16])
     ax1.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax1.set_yticks(np.arange(-1, 3.1, 1))
     ax1.set_ylim([-1, 3])
     ax1.set_ylabel("$S$", fontsize=11)
 
     ax1.axhline(-0.5, color='k', linewidth=0.5, ls='--')
-    ax1.axvline(6, color='k', linewidth=0.5, ls='-', zorder=1)
-    ax1.axvline(9, color='k', linewidth=0.5, ls='-', zorder=1)
+    ax1.axvline(9.33072, color='k', linewidth=0.5, ls='-', zorder=1)
+    ax1.axvline(13.99608, color='k', linewidth=0.5, ls='-', zorder=1)
 
     ax1.tick_params(axis="x", labelsize=10)
     ax1.tick_params(axis="y", labelsize=10)
@@ -78,7 +78,7 @@ if __name__ == '__main__':
     # ax1.xaxis.labelpad = -3
     ax1.xaxis.set_label_coords(0.635, -0.1)
 
-    ax1.set_aspect(0.7)
+    ax1.set_aspect(0.9)
 
     ####################################################################################################################
 
@@ -88,7 +88,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_mom_Ly_6.dat.hex1hex5.rotated', 'r') as csvfile:
+    with open('ent_spec_mom_Ly_6.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -118,8 +118,8 @@ if __name__ == '__main__':
     ax2.tick_params(axis="x", labelsize=10)
     ax2.tick_params(axis="y", labelsize=10)
 
-    ax2.plot([-np.pi/3, np.pi/3], [2.5, 14], color='k', linestyle=':', linewidth=1)
-    ax2.plot([-(0.25)*np.pi/3, np.pi/3], [0, 6], color='k', linestyle=':', linewidth=1)
+    ax2.plot([-(0.6)*np.pi/3, 1*np.pi/3], [0, 11], color='k', linestyle=':', linewidth=1)
+    ax2.plot([(0.3)*np.pi/3, 1*np.pi/3], [0, 5], color='k', linestyle=':', linewidth=1)
 
     # ax2.axhline(1, color='k', linewidth=0.5, ls='--')
     # ax2.axvline(2, color='k', linewidth=0.5, ls='--')
@@ -187,11 +187,11 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    Ly6_con = ConnectionPatch(xyA=(6, -1), xyB=(1, 15), coordsA="data", coordsB="data",
-                              axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=10,angleB=90", arrowstyle='->',
+    Ly6_con = ConnectionPatch(xyA=(9.33072, -1), xyB=(1, 15), coordsA="data", coordsB="data",
+                              axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=20", arrowstyle='->',
                               facecolor='k', edgecolor='k')
-    Ly9_con = ConnectionPatch(xyA=(9, -1), xyB=(0.25, 15), coordsA="data", coordsB="data",
-                              axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-10,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
+    Ly9_con = ConnectionPatch(xyA=(13.99608, -1), xyB=(0.45, 15), coordsA="data", coordsB="data",
+                              axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=30,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
 
     ax1.add_artist(Ly6_con)
     ax1.add_artist(Ly9_con)

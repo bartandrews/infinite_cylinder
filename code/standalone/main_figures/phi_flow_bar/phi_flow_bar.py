@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     # an array of parameters, each of our curves depend on a specific
     # value of parameters
-    chi_range = np.linspace(100, 500, 5)
+    chi_range = np.linspace(50, 150, 3)
 
     # norm is a class which, when called, can normalize data into the
     # [0.0, 1.0] interval.
@@ -45,13 +45,13 @@ if __name__ == '__main__':
     for chi in chi_range:
         FCI_charge[chi] = []
 
-    with open('charge_pump_CI.dat.hex1hex5', 'r') as csvfile:
+    with open('charge_pump_CI.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             phi_CI.append(float(row[0]))
             CI_charge.append(float(row[1]))
 
-    with open('charge_pump_FCI_bar.dat.hex1hex5', 'r') as csvfile:
+    with open('charge_pump_FCI_bar.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             phi_FCI.append(float(row[0]))
@@ -60,9 +60,9 @@ if __name__ == '__main__':
 
     for i, chi in enumerate(chi_range):
         if i == len(chi_range)-1:
-            ax1.plot(phi_FCI, FCI_charge[chi], marker='s', linestyle='--', color=s_m.to_rgba(chi), label='FCI', markersize=5, mec='k')
+            ax1.plot(phi_FCI, FCI_charge[chi], marker='s', linestyle='-', color=s_m.to_rgba(chi), label='FQH', markersize=5, mec='k', zorder=2)
         else:
-            ax1.plot(phi_FCI, FCI_charge[chi], marker='s', linestyle='--', color=s_m.to_rgba(chi), markersize=5)
+            ax1.plot(phi_FCI, FCI_charge[chi], marker='s', linestyle='-', color=s_m.to_rgba(chi), markersize=5, zorder=2)
 
     # cbax = plt.subplot()  # Place it where it should be.
     # # --------------------------------------------------------
@@ -72,16 +72,16 @@ if __name__ == '__main__':
     cbax = fig.add_axes([0.125, 0.75, 0.343, 0.025])
     cb = plt.colorbar(s_m, orientation='horizontal', cax=cbax, ticklocation='top')
     cb.set_label("$\chi$", fontsize=11, labelpad=7)
-    ax1.plot(phi_CI, CI_charge, marker='o', linestyle='--', c='C8', label='CI', markersize=5)
-    ax1.legend(loc='right', handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
+    ax1.plot(phi_CI, CI_charge, marker='o', linestyle='-', c='C8', label='IQH', markersize=5, zorder=1)
+    ax1.legend(bbox_to_anchor = [0.62, 0.53], handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10)
 
     ax1.set_xticks(np.arange(0, 3.1, 1))
     ax1.set_xlim([0, 3])
-    ax1.set_xlabel("$\Phi_y / 2\pi$", fontsize=11)
+    ax1.set_xlabel("$\Phi_x / 2\pi$", fontsize=11)
     ax1.set_yticks(np.arange(-3, 0.1, 1))
     ax1.set_ylim([-3, 0])
-    ax1.set_ylabel("$\langle Q^{L}(\Phi_y) \\rangle$", fontsize=11)
+    ax1.set_ylabel("$\langle Q^{L}(\Phi_x) \\rangle$", fontsize=11)
 
     ax1.axhline(-1, color='k', linewidth=0.5, ls='--')
     ax1.axhline(-2, color='k', linewidth=0.5, ls='--')
@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
     # arrow
     ax5.quiver(0, end, 0, 0, -(end + end/4), 0, arrow_length_ratio=0.06, color='k', lw=0.5)
-    ax5.text2D(-0.078, 0.006, '$\Phi_y$', fontsize=11)
+    ax5.text2D(-0.078, 0.006, '$\Phi_x$', fontsize=11)
 
     # cylinder
     angle = np.linspace(0, 2 * np.pi, 21)
@@ -170,7 +170,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_flow_FCI.dat.hex1hex5', 'r') as csvfile:
+    with open('ent_spec_flow_FCI.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -207,7 +207,7 @@ if __name__ == '__main__':
     # ax2.axhline(8.400756721645187, color='k', linewidth=0.5, ls=':')
     # ax2.axhline(8.802885632428440, color='k', linewidth=0.5, ls=':')
 
-    fig.text(0.57, 0.86, 'FCI', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.86, 'FQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0.2)
 
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_flow_CI.dat.hex1hex5', 'r') as csvfile:
+    with open('ent_spec_flow_CI.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -240,7 +240,7 @@ if __name__ == '__main__':
     # ax3.legend(loc='center left', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2,
     #             fontsize=12, ncol=1, bbox_to_anchor=(1, 1))
     ax3.set_xlim([0, 3])
-    ax3.set_xlabel("$\Phi_y / 2\pi$", fontsize=11)
+    ax3.set_xlabel("$\Phi_x / 2\pi$", fontsize=11)
     ax3.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
     ax3.tick_params(axis="x", labelsize=10)
@@ -249,7 +249,7 @@ if __name__ == '__main__':
     ax3.axvline(1, color='k', linewidth=0.5, ls='--')
     ax3.axvline(2, color='k', linewidth=0.5, ls='--')
 
-    fig.text(0.57, 0.475, 'CI', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.475, 'IQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0)
     plt.setp(ax2.get_xticklabels(), visible=False)
@@ -258,7 +258,7 @@ if __name__ == '__main__':
 
     CI_con = ConnectionPatch(xyA=(2, -2.1), xyB=(0, 1), coordsA="data", coordsB="data",
                           axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-90,angleB=180", arrowstyle='fancy', facecolor='C8', edgecolor='C8')
-    FCI_con = ConnectionPatch(xyA=(2, -0.7), xyB=(0, 5), coordsA="data", coordsB="data",
+    FCI_con = ConnectionPatch(xyA=(2, -0.4), xyB=(0, 5), coordsA="data", coordsB="data",
                              axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=180", arrowstyle='fancy',
                              facecolor='C9', edgecolor='C9')
     ax1.add_artist(CI_con)

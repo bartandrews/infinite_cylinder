@@ -21,7 +21,7 @@ if __name__ == '__main__':
     SvN = []
     Sinf = []
 
-    with open('ent_scal.dat.hex1hex5', 'r') as csvfile:
+    with open('ent_scal.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             Ly.append(float(row[0]))
@@ -68,7 +68,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_mom_Ly_6.dat.hex1hex5', 'r') as csvfile:
+    with open('ent_spec_mom_Ly_6.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -98,8 +98,8 @@ if __name__ == '__main__':
     ax2.tick_params(axis="x", labelsize=10)
     ax2.tick_params(axis="y", labelsize=10)
 
-    ax2.plot([-np.pi/3, np.pi/3], [4, 14], color='k', linestyle=':', linewidth=1)
-    ax2.plot([-(0.8)*np.pi/3, np.pi/3], [0, 6], color='k', linestyle=':', linewidth=1)
+    ax2.plot([-(0.6) * np.pi / 3, 1 * np.pi / 3], [0, 11], color='k', linestyle=':', linewidth=1)
+    ax2.plot([(0.3) * np.pi / 3, 1 * np.pi / 3], [0, 5], color='k', linestyle=':', linewidth=1)
 
     # ax2.axhline(1, color='k', linewidth=0.5, ls='--')
     # ax2.axvline(2, color='k', linewidth=0.5, ls='--')

@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import sys
 
 
-q = 11  # prime > 7
+q = 9  # prime > 7
 
 
 def matrix_eigenvalues(p, M):
@@ -134,5 +134,5 @@ if __name__ == '__main__':
     ax.set_xlabel('$\phi$')
     ax.set_ylabel('$E$ / meV')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_q_13.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_q_13.png", bbox_inches='tight', dpi=300)
     plt.show()
