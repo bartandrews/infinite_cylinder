@@ -32,7 +32,7 @@ MM = np.array([0.5, 0.5])
 
 def hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 0.331, -0.010, 0.097
+    t1, t2, t2dash = 1, -0.025, 1/18
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -138,7 +138,7 @@ if __name__ == '__main__':
     hex = patches.RegularPolygon((50, 50), 6, radius=50, orientation=0, facecolor='none')
     ax.add_patch(hex)
     im = ax.imshow(E1[i], cmap=plt.get_cmap('RdBu_r'), clip_path=hex, clip_on=True)
-    cset = ax.contour(E1[i], np.arange(-1, 1.5, 0.05), linewidths=1, colors='black')
+    cset = ax.contour(E1[i], np.arange(2, 4, 0.1), linewidths=1, colors='black')
     for collection in cset.collections:
         collection.set_clip_path(hex)
 

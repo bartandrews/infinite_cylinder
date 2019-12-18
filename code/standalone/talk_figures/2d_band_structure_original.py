@@ -29,7 +29,8 @@ MM = np.array([0.5, 0.5])
 
 def min_hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 0.331, -0.010, 0.097
+    # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -97,7 +98,7 @@ def min_hamiltonian(k, num_bands_1):
 
 def hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 0.331, -0.01, 0.097
     # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))
@@ -176,7 +177,8 @@ def hamiltonian(k, num_bands_1):
 
 def hamiltonian2(k, M, p, q):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 0.331, -0.01, 0.097
+    # t1, t2, t2dash = 2, 0.05, 0.2
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -274,37 +276,6 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
     return bc
 
 
-def multi_berry_curv(ev1, ev1_alpha, ev1_beta, ev1_alpha_beta, ev2, ev2_alpha, ev2_beta, ev2_alpha_beta):
-
-    matrix1 = np.zeros((2, 2), dtype=np.complex128)
-    matrix1[0][0] = np.conj(ev1).dot(ev1_alpha)
-    matrix1[0][1] = np.conj(ev1).dot(ev2_alpha)
-    matrix1[1][0] = np.conj(ev2).dot(ev1_alpha)
-    matrix1[1][1] = np.conj(ev2).dot(ev2_alpha)
-
-    matrix2 = np.zeros((2, 2), dtype=np.complex128)
-    matrix2[0][0] = np.conj(ev1_alpha).dot(ev1_alpha_beta)
-    matrix2[0][1] = np.conj(ev1_alpha).dot(ev2_alpha_beta)
-    matrix2[1][0] = np.conj(ev2_alpha).dot(ev1_alpha_beta)
-    matrix2[1][1] = np.conj(ev2_alpha).dot(ev2_alpha_beta)
-
-    matrix3 = np.zeros((2, 2), dtype=np.complex128)
-    matrix3[0][0] = np.conj(ev1_alpha_beta).dot(ev1_beta)
-    matrix3[0][1] = np.conj(ev1_alpha_beta).dot(ev2_beta)
-    matrix3[1][0] = np.conj(ev2_alpha_beta).dot(ev1_beta)
-    matrix3[1][1] = np.conj(ev2_alpha_beta).dot(ev2_beta)
-
-    matrix4 = np.zeros((2, 2), dtype=np.complex128)
-    matrix4[0][0] = np.conj(ev1_beta).dot(ev1)
-    matrix4[0][1] = np.conj(ev1_beta).dot(ev2)
-    matrix4[1][0] = np.conj(ev2_beta).dot(ev1)
-    matrix4[1][1] = np.conj(ev2_beta).dot(ev2)
-
-    multi_bc = - np.imag(np.log(np.linalg.det(matrix1) * np.linalg.det(matrix2) * np.linalg.det(matrix3) * np.linalg.det(matrix4)))
-
-    return multi_bc
-
-
 if __name__ == '__main__':
 
     ####################
@@ -391,146 +362,30 @@ if __name__ == '__main__':
     for band in range(num_bands_1):
         chern_numbers_1[band] = np.sum(berry_flux_matrix_1[band, :, :]) / (2 * np.pi)
 
-    ########################################
-    # 2) Minimal model with magnetic field #
-    ########################################
-
-    p, q = 1, 3
-
-    if p % 2 == 0:
-        M = q
-    else:
-        M = 2 * q
-
-    # reciprocal lattice vectors
-    b1_2 = (2. * np.pi / q) * np.array([1, -1 / np.sqrt(3)])
-    b2_2 = (2. * np.pi) * np.array([0, 2 / np.sqrt(3)])
-    bvec_2 = np.vstack((b1_2, b2_2))
-
-    ####################################################################################################################
-
-    count, nk = 0, 30
-
-    eigval_bands_2 = np.zeros((M, 3 * nk))
-
-    for i in range(nk):
-        k = K1 - K1 * float(i) / float(nk - 1)
-        k = np.matmul(k, bvec)
-        eigvals = np.linalg.eigvals(hamiltonian2(k, M, p, q))
-        idx = np.argsort(eigvals)
-        for band in range(M):
-            #eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-            eigval_bands_2[(M-1) - band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
-        count += 1
-
-    for i in range(nk):
-        k = GA + (MM - GA) * float(i) / float(nk - 1)
-        k = np.matmul(k, bvec)
-        eigvals = np.linalg.eigvals(hamiltonian2(k, M, p, q))
-        idx = np.argsort(eigvals)
-        for band in range(M):
-            #eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-            eigval_bands_2[(M-1) - band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
-        count += 1
-
-    for i in range(nk):
-        k = MM + (K2 - MM) * float(i) / float(nk - 1)
-        k = np.matmul(k, bvec)
-        eigvals = np.linalg.eigvals(hamiltonian2(k, M, p, q))
-        idx = np.argsort(eigvals)
-        for band in range(M):
-            #eigval_bands_2[band, count] = np.real(+np.sqrt(3 + eigvals[idx[band]]))
-            eigval_bands_2[(M-1) - band, count] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
-        count += 1
-
-    ####################################################################################################################
-
-    samples_x, samples_y = 101, 101
-    max_idx_x, max_idx_y = samples_x - 1, samples_y - 1
-
-    energy_matrix_2 = np.zeros((M, samples_x, samples_y))
-    u_matrix_2 = np.zeros((M, M, samples_x, samples_y), dtype=np.complex128)
-
-    for idx_x in range(samples_x):
-        frac_kx = idx_x / max_idx_x
-        for idx_y in range(samples_y):
-            frac_ky = idx_y / max_idx_y
-
-            # # wavevector used for u (depends on boundary conditions)
-            # if idx_x == max_idx_x and idx_y == max_idx_y:
-            #     k_u = np.matmul(np.array([0, 0]), bvec)
-            # elif idx_x == max_idx_x:
-            #     k_u = np.matmul(np.array([0, frac_ky]), bvec)
-            # elif idx_y == max_idx_y:
-            #     k_u = np.matmul(np.array([frac_kx, 0]), bvec)
-            # else:
-            #     k_u = np.matmul(np.array([frac_kx, frac_ky]), bvec)
-
-            k_u = np.matmul(np.array([frac_kx, frac_ky]), bvec_2)
-
-            eigvals, eigvecs = np.linalg.eig(hamiltonian2(k_u, M, p, q))
-            idx = np.argsort(eigvals)
-            for band in range(M):
-                energy_matrix_2[(M-1) - band, idx_x, idx_y] = np.real(-np.sqrt(3 + eigvals[idx[band]]))
-                u_matrix_2[:, (M-1) - band, idx_x, idx_y] = eigvecs[:, idx[band]]
-
-    berry_flux_matrix_2 = np.zeros((M, samples_x - 1, samples_y - 1))
-
-    # for band in range(M):
-    #     for idx_x in range(max_idx_x):
-    #         for idx_y in range(max_idx_y):
-    #             berry_flux_matrix_2[band, idx_x, idx_y] = berry_curv(u_matrix_2[:, band, idx_x, idx_y],
-    #                                                                  u_matrix_2[:, band, idx_x + 1, idx_y],
-    #                                                                  u_matrix_2[:, band, idx_x, idx_y + 1],
-    #                                                                  u_matrix_2[:, band, idx_x + 1, idx_y + 1])
-
-    for band in range(0, M, 2):
-        for idx_x in range(max_idx_x):
-            for idx_y in range(max_idx_y):
-                berry_flux_matrix_2[band, idx_x, idx_y] = multi_berry_curv(u_matrix_2[:, band, idx_x, idx_y],
-                                                                           u_matrix_2[:, band, idx_x + 1, idx_y],
-                                                                           u_matrix_2[:, band, idx_x, idx_y + 1],
-                                                                           u_matrix_2[:, band, idx_x + 1, idx_y + 1],
-                                                                           u_matrix_2[:, band+1, idx_x, idx_y],
-                                                                           u_matrix_2[:, band+1, idx_x + 1, idx_y],
-                                                                           u_matrix_2[:, band+1, idx_x, idx_y + 1],
-                                                                           u_matrix_2[:, band+1, idx_x + 1, idx_y + 1])
-                berry_flux_matrix_2[band+1, idx_x, idx_y] = berry_flux_matrix_2[band, idx_x, idx_y]
-
-    chern_numbers_2 = np.zeros(M)
-    for band in range(0, M, 2):
-        chern_numbers_2[band] = np.sum(berry_flux_matrix_2[band, :, :]) / (2 * np.pi)
-        print("Chern number ( band", band, ") = ", chern_numbers_2[band])
-
     ##############
     # Final Plot #
     ##############
 
     fig = plt.figure()  # figsize=(6, 4)
 
-    gs = gridspec.GridSpec(2, 2, width_ratios=[2, 1], height_ratios=[1, 1])
-
-    ax0 = plt.subplot(gs[0])
-    ax4 = plt.subplot(gs[0])
-
-    # color index
-    # colors = plt.cm.RdBu_r(np.linspace(0, 1, 2))
-    cidx = ['b', 'b', 'b', 'b', 'r', 'r', 'r', 'r']
+    ax0 = plt.subplot(111)
+    ax4 = plt.subplot(111)
 
     for nb in range(num_bands_1):
-        plt.scatter(np.linspace(0, 89, 90), eigval_bands_1[nb, :], c=cidx[nb], s=0.5)
+        plt.scatter(np.linspace(0, 89, 90), eigval_bands_1[nb, :], c='k', s=0.5)
     ax0.set_ylabel('$E$ / meV', fontsize=11)
     ax0.axvline(30, color='k', linewidth=0.5)
     ax0.axvline(60, color='k', linewidth=0.5)
     ax0.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))
-    plt.setp(ax0.get_xticklabels(), visible=False)
+    # plt.setp(ax0.get_xticklabels(), visible=False)
     # ax0.text(10, 0.1, '(a) $B_z=0$')
     ax0.tick_params(axis='both', which='major', labelsize=10)
+    plt.xticks([0, 30, 60, 89], ["K", "Γ", "M", "K'"], fontsize=11)
 
     ##################################################
 
-    left, bottom, width, height = [0.175, 0.585, 0.2, 0.2]
+    left, bottom, width, height = [0.2, 0.34, 0.3, 0.3]
     ax4 = fig.add_axes([left, bottom, width, height])
 
     # hexagon = Polygon(((-1, 0), (-0.5, np.sqrt(3) / 2), (0.5, np.sqrt(3) / 2), (1, 0), (0.5, -np.sqrt(3) / 2),
@@ -580,7 +435,7 @@ if __name__ == '__main__':
     hex = patches.RegularPolygon((50, 50), 6, radius=50, orientation=0, facecolor='none', edgecolor='k', lw=0.25)
     ax4.add_patch(hex)
     im = ax4.imshow(E1[i], cmap=plt.get_cmap('rainbow'), clip_path=hex, clip_on=True)
-    cset = ax4.contour(E1[i], np.arange(2, 4, 0.1), linewidths=0.25, colors='black')
+    cset = ax4.contour(E1[i], np.arange(0.75, 1.5, 0.05), linewidths=0.25, colors='black')
     for collection in cset.collections:
         collection.set_clip_path(hex)
 
@@ -603,71 +458,26 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax1 = plt.subplot(gs[1], sharey=ax0)
-    n, bins, patches = ax1.hist(np.ndarray.flatten(energy_matrix_1), 100,
-                                density=False, orientation='horizontal', histtype='step', color='k',  lw=0.5)
-    plt.setp(ax1.get_yticklabels(), visible=False)
-    ax1.axhline(0, color='k', linewidth=0.5, ls='--')
-    plt.xticks([1000, 2000], ["1000", "2000"])
-    plt.setp(ax1.get_xticklabels(), visible=False)
+    # ax1 = plt.subplot(gs[1], sharey=ax0)
+    # n, bins, patches = ax1.hist(np.ndarray.flatten(energy_matrix_1), 100,
+    #                             density=False, orientation='horizontal', histtype='step', color='k',  lw=0.5)
+    # plt.setp(ax1.get_yticklabels(), visible=False)
+    # ax1.axhline(0, color='k', linewidth=0.5, ls='--')
+    # plt.xticks([1000, 2000], ["1000", "2000"])
+    # plt.setp(ax1.get_xticklabels(), visible=False)
+    #
+    # gs.update(wspace=0)
 
-    gs.update(wspace=0)
+    fig.text(0.82, 0.83, "$B=0$", fontsize=11)
+    fig.text(0.7, 0.75, "$t_1=0.331$", fontsize=11)
+    fig.text(0.7, 0.70, "$t_2=-0.01$", fontsize=11)
+    fig.text(0.7, 0.65, "$t_2'=0.097$", fontsize=11)
+    #fig.text(0.22, 0.35, "isolated topological flat bands at $n_\phi=10/11$", fontsize=11, backgroundcolor='white')
 
-########################################################################################################################
-
-    ax2 = plt.subplot(gs[2])
-
-    # color index
-    # colors = plt.cm.RdBu_r(np.linspace(0, 1, 2 * M))
-    # cidx = np.zeros(2 * M, dtype=int)
-    # for i in range(M):
-    #     cidx[i] = M + i
-    #     cidx[M + i] = (M - 1) - i
-
-    for nb in range(M):
-        plt.scatter(np.linspace(0, 89, 90), eigval_bands_2[nb, :], c='b', s=0.5)
-    # ax2.set_xlabel('Path')
-    ax2.set_ylabel('$E$ / meV', fontsize=11)
-    ax2.tick_params(axis='both', which='major', labelsize=10)
-    ax2.axvline(30, color='k', linewidth=0.5)
-    ax2.axvline(60, color='k', linewidth=0.5)
-
-    for band in range(0, M, 2):
-        ax2.text(14+band*15, eigval_bands_2[band, band*int(89/(M-1))], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))), fontsize=11)
-
-    #ax2.axhline(0, color='k', linewidth=0.5, ls='--')
-    plt.xlim((0, 89))
-    plt.xticks([0, 30, 60, 89], ["K", "Γ", "M", "K'"], fontsize=11)
-    #ax2.set_ylim([-5, 0])
-    # ax2.text(10, 0.2, '(b) $B_z \\neq 0$')
-
-########################################################################################################################
-
-    ax3 = plt.subplot(gs[3], sharey=ax2)
-    n, bins, patches = ax3.hist(np.ndarray.flatten(energy_matrix_2), 100,
-                                density=False, orientation='horizontal', histtype='step', color='k', lw=0.5)
-    plt.setp(ax3.get_yticklabels(), visible=False)
-    ax3.set_xlabel('DOS', fontsize=11)
-    #ax3.axhline(0, color='k', linewidth=0.5, ls='--')
-    plt.xticks([1000, 2000], ["1000", "2000"])
-    plt.setp(ax3.get_xticklabels(), visible=False)
-    plt.tick_params(
-        axis='x',  # changes apply to the x-axis
-        which='both',  # both major and minor ticks are affected
-        bottom=False,  # ticks along the bottom edge are off
-        labelbottom=False)
-
-    gs.update(wspace=0)
-    gs.update(hspace=0)
-
-    fig.text(0.55, 0.83, "$n_\phi=0$", fontsize=11)
-    # fig.text(0.22, 0.35, "isolated topological flat bands at $n_\phi=10/11$", fontsize=11, backgroundcolor='white')
-    fig.text(0.525, 0.325, "$n_\phi=1/3$", fontsize=11, backgroundcolor='white')
-
-    fig.text(0, 0.87, "(a)", fontsize=12)
-    fig.text(0, 0.48, "(b)", fontsize=12)
+    #fig.text(0, 0.87, "(a)", fontsize=12)
+    #fig.text(0, 0.48, "(b)", fontsize=12)
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/2d_band_structure_original.png", bbox_inches='tight', dpi=300)
     plt.show()

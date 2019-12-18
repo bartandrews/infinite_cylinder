@@ -6,7 +6,8 @@ import matplotlib.gridspec as gridspec
 
 def hamiltonian(k, M, p, q):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    # t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 1, -0.025, 0
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -146,7 +147,7 @@ if __name__ == '__main__':
     ############
 
     p1 = 1
-    q1 = 3
+    q1 = 5
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi / q1) * np.array([1, -1 / np.sqrt(3)])
@@ -292,8 +293,8 @@ if __name__ == '__main__':
         ax.text2D(-0.18, start + i * interval, "$C_{{{:2d},{:2d}}}={:2d}$".format(-M1 + i+1, -M1 + i, int(round(chern_numbers1[i]))),
                   color='C{}'.format(i+1 % 10), fontsize=11)
 
-    ax.text2D(-0.16, 0.09, "(c)                 $n_\phi={}/{}$".format(p1, q1), color="k", fontsize=12)
-    ax.text2D(0.16, 0.09, "(d)", color="k", fontsize=12)
+    ax.text2D(-0.16, 0.09, "                       $n_\phi={}/{}$".format(p1, q1), color="k", fontsize=12)
+    #ax.text2D(0.16, 0.09, "(d)", color="k", fontsize=12)
 
     ax.tick_params(axis="x", labelsize=10)
     ax.tick_params(axis="y", labelsize=10)
@@ -378,5 +379,5 @@ if __name__ == '__main__':
 
     ############
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/3d_band_structure_phi_{}_{}.png".format(p1, q1), bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/3d_band_structure_phi_{}_{}_talk.png".format(p1, q1), bbox_inches='tight', dpi=300)
     plt.show()

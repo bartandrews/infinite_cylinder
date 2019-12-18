@@ -21,44 +21,64 @@ if __name__ == '__main__':
     SvN = []
     Sinf = []
 
-    with open('ent_scal.dat.hex1hex5orbital', 'r') as csvfile:
+    with open('ent_scal_mag_detail.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             Ly.append(float(row[0]))
             SvN.append(float(row[1]))
             Sinf.append(float(row[2]))
 
-    ax1.plot(Ly, SvN, '.', marker='o', c='C8', label='$S_{\mathrm{vN}}$', markersize=5, zorder=2)
-    c, m = polyfit(Ly, SvN, 1)
+    ax1.plot(Ly[0], SvN[0], '.', marker='X', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/3)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[1], SvN[1], '.', marker='p', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/4)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[2], SvN[2], '.', marker='*', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/5)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[3], SvN[3], '.', marker='X', c='C8', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[4], SvN[4], '.', marker='p', c='C8', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[5], SvN[5], '.', marker='*', c='C8', markersize=5, zorder=2, fillstyle='none')
+    # y = mx + c
+    parameters, V = np.polyfit(Ly, SvN, 1, cov=True)
+    m, c = parameters[0], parameters[1]
     xvalues = np.arange(max(Ly) + 20)
     ax1.plot(xvalues, m * xvalues + c, '-', c='C8', zorder=2)
+    print("SvN error in (m, c) = (",V[0][0], ",", V[1][1],")")
+    ax1.text(0.2, 2.2, "$S_\mathrm{{vN}}={gradient:.2f}L_y{intercept:.2f}$".format(gradient=m, intercept=c), fontsize=12)
 
-    ax1.plot(Ly, Sinf, '.', marker='s', c='C9', label='$S_{\infty}$', markersize=5, zorder=2)
-    c, m = polyfit(Ly, Sinf, 1)
+    ax1.plot(Ly[0], Sinf[0], '.', marker='X', c='C9', label='$S_{\infty}\;(n_\phi=1/3)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[1], Sinf[1], '.', marker='p', c='C9', label='$S_{\infty}\;(n_\phi=1/4)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[2], Sinf[2], '.', marker='*', c='C9', label='$S_{\infty}\;(n_\phi=1/5)$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[3], Sinf[3], '.', marker='X', c='C9', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[4], Sinf[4], '.', marker='p', c='C9', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[5], Sinf[5], '.', marker='*', c='C9', markersize=5, zorder=2, fillstyle='none')
+    # y = mx + c
+    parameters, V = np.polyfit(Ly, Sinf, 1, cov=True)
+    m, c = parameters[0], parameters[1]
     xvalues = np.arange(max(Ly) + 20)
     ax1.plot(xvalues, m * xvalues + c, '-', c='C9', zorder=2)
+    print("Sinf error in (m, c) = (",V[0][0], ",", V[1][1],")")
+    ax1.text(0.2, 1.4, "$S_\infty={gradient:.2f}L_y{intercept:.2f}$".format(gradient=m, intercept=c), fontsize=12)
 
-    ax1.legend(loc='upper left', handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
-               fontsize=10, ncol=2)
+    ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.8), handletextpad=0, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
+               fontsize=12, ncol=2, labelspacing=0, columnspacing=0)
 
-    ax1.set_xticks(np.arange(0, 12.1, 3))
-    ax1.set_xlim([0, 12])
-    ax1.set_xlabel("$L_y$", fontsize=11)
+    ax1.set_xticks(np.arange(0, 16.1, 4))
+    ax1.set_xlim([0, 16])
+    ax1.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax1.set_yticks(np.arange(-1, 3.1, 1))
     ax1.set_ylim([-1, 3])
     ax1.set_ylabel("$S$", fontsize=11)
 
     ax1.axhline(-0.5, color='k', linewidth=0.5, ls='--')
-    ax1.axvline(6, color='k', linewidth=0.5, ls='-', zorder=1)
-    ax1.axvline(9, color='k', linewidth=0.5, ls='-', zorder=1)
+    ax1.axvline(9.33072, color='k', linewidth=0.5, ls='-', zorder=1)
+    ax1.axvline(13.99608, color='k', linewidth=0.5, ls='-', zorder=1)
 
     ax1.tick_params(axis="x", labelsize=10)
     ax1.tick_params(axis="y", labelsize=10)
 
+    fig.subplots_adjust(top=0.8)
+
     # ax1.xaxis.labelpad = -3
     ax1.xaxis.set_label_coords(0.635, -0.1)
 
-    ax1.set_aspect(1)
+    ax1.set_aspect(0.9)
 
     ####################################################################################################################
 
@@ -98,8 +118,8 @@ if __name__ == '__main__':
     ax2.tick_params(axis="x", labelsize=10)
     ax2.tick_params(axis="y", labelsize=10)
 
-    ax2.plot([-(0.6) * np.pi / 3, 1 * np.pi / 3], [0, 11], color='k', linestyle=':', linewidth=1)
-    ax2.plot([(0.3) * np.pi / 3, 1 * np.pi / 3], [0, 5], color='k', linestyle=':', linewidth=1)
+    ax2.plot([-(0.6)*np.pi/3, 1*np.pi/3], [0, 11], color='k', linestyle=':', linewidth=1)
+    ax2.plot([(0.3)*np.pi/3, 1*np.pi/3], [0, 5], color='k', linestyle=':', linewidth=1)
 
     # ax2.axhline(1, color='k', linewidth=0.5, ls='--')
     # ax2.axvline(2, color='k', linewidth=0.5, ls='--')
@@ -111,7 +131,7 @@ if __name__ == '__main__':
     # ax2.axhline(8.400756721645187, color='k', linewidth=0.5, ls=':')
     # ax2.axhline(8.802885632428440, color='k', linewidth=0.5, ls=':')
 
-    fig.text(0.14, 0.4725, '$L_y=6$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.4625, '$L_y=6$ sites', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     # gs.update(wspace=0.25, hspace=0.2)
 
@@ -153,13 +173,13 @@ if __name__ == '__main__':
     ax3.tick_params(axis="x", labelsize=10)
     ax3.tick_params(axis="y", labelsize=10)
 
-    ax3.plot([-0.85, np.pi/3], [0, 13], color='k', linestyle=':', linewidth=1)
-    ax3.plot([0.25, np.pi / 3], [0, 4], color='k', linestyle=':', linewidth=1)
+    #ax3.plot([-0.85, np.pi/3], [0, 13], color='k', linestyle=':', linewidth=1)
+    #ax3.plot([0.25, np.pi / 3], [0, 4], color='k', linestyle=':', linewidth=1)
 
     # ax3.axvline(1, color='k', linewidth=0.5, ls='--')
     # ax3.axvline(2, color='k', linewidth=0.5, ls='--')
 
-    fig.text(0.574, 0.4725, '$L_y=9$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.574, 0.4625, '$L_y=9$ sites', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     # gs.update(wspace=0.25, hspace=0)
     plt.setp(ax3.get_yticklabels(), visible=False)
@@ -167,18 +187,18 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    Ly6_con = ConnectionPatch(xyA=(6, -1), xyB=(1, 15), coordsA="data", coordsB="data",
-                              axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=10,angleB=90", arrowstyle='->',
+    Ly6_con = ConnectionPatch(xyA=(9.33072, -1), xyB=(1, 15), coordsA="data", coordsB="data",
+                              axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=20", arrowstyle='->',
                               facecolor='k', edgecolor='k')
-    Ly9_con = ConnectionPatch(xyA=(9, -1), xyB=(0.25, 15), coordsA="data", coordsB="data",
-                              axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-10,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
+    Ly9_con = ConnectionPatch(xyA=(13.99608, -1), xyB=(0.45, 15), coordsA="data", coordsB="data",
+                              axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=30,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
 
     ax1.add_artist(Ly6_con)
     ax1.add_artist(Ly9_con)
 
-    fig.text(0.1, 0.88, "(a)", color="k", fontsize=12)
-    fig.text(0.035, 0.49, "(b)", color="k", fontsize=12)
+    # fig.text(0.035, 0.8, "(a)", color="k", fontsize=12)
+    # fig.text(0.035, 0.47, "(b)", color="k", fontsize=12)
     # fig.text(0.48, 0.49, "(c)", color="k", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/Ly_flow.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/Ly_flow_mag_detail_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

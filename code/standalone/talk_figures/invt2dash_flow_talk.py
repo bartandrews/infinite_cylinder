@@ -7,6 +7,7 @@ from itertools import product
 import matplotlib.gridspec as gridspec
 from matplotlib.patches import Polygon
 import matplotlib.patches as patches
+from matplotlib.patches import ConnectionPatch
 
 if __name__ == '__main__':
 
@@ -99,6 +100,9 @@ if __name__ == '__main__':
     ax0.tick_params('x', direction='in', bottom=True)
     ax0.axhline(0, color='k', linewidth=0.5, ls='--')
     ax0.axhline(1, color='k', linewidth=0.5, ls='--')
+
+    ax0.arrow(18.8, -1, 0, 100, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
+
     plt.setp(ax0.get_xticklabels(), visible=False)
 
     ########################################################################################################################
@@ -183,9 +187,9 @@ if __name__ == '__main__':
     # metal1 = Polygon(((16, -0.5), (18.8, -0.5), (18.8, 21), (16, 21)), fc=(0, 0, 0, 0.1))
     ax1.add_artist(metal0)
     # ax1.add_artist(metal1)
-    fig.text(0.19, 0.9, 'top. trivial', fontsize=11)
+    fig.text(0.17, 0.9, 'top. trivial', fontsize=14)
     # fig.text(0.4, 0.9, 'transition', fontsize=11)
-    fig.text(0.575, 0.9, 'FQH state', fontsize=11)
+    fig.text(0.575, 0.9, 'FQH state', fontsize=14)
 
     ax1.tick_params(axis="y", labelsize=10)
 
@@ -195,6 +199,9 @@ if __name__ == '__main__':
     ax1.set_yticks(np.arange(9, 16, 2))
     ax1.set_ylabel("$\\ln \\, \\xi$", fontsize=11)
     ax1.tick_params('x', direction='in', bottom=True)
+
+    ax1.arrow(18.8, 0, 0, 100, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
+
     plt.setp(ax1.get_xticklabels(), visible=False)
 
 ########################################################################################################################
@@ -241,9 +248,21 @@ if __name__ == '__main__':
     ax2.tick_params(axis="x", labelsize=10)
     ax2.tick_params(axis="y", labelsize=10)
 
-    fig.text(0.01, 0.87, "(a)", fontsize=12)
-    fig.text(0.01, 0.71, "(b)", fontsize=12)
-    fig.text(0.01, 0.56, "(c)", fontsize=12)
+    ax2.arrow(18.8, 0, 0, 10, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/invt2dash_flow.png", bbox_inches='tight', dpi=300)
+    #fig.text(0.6, -0.1, "$t_2'^{-1}=18.8$ \"edge of the FQH phase\"", fontsize=16)
+    #fig.text(0.6, -0.2, "(value used throughout this presentation)", fontsize=16)
+    #fig.arrow(0, 0, 1, 1, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
+    # ax2.annotate('MgII', xy=(20.0, 10.5), annotation_clip=False)
+
+    # arrow = ConnectionPatch(xyA=(18.8, 0), xyB=(20, -1), coordsA="data", coordsB="data",
+    #                           axesA=ax2, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=20", arrowstyle='->',
+    #                           facecolor='k', edgecolor='k')
+    # ax2.add_artist(arrow)
+
+    # fig.text(0.01, 0.87, "(a)", fontsize=12)
+    # fig.text(0.01, 0.71, "(b)", fontsize=12)
+    # fig.text(0.01, 0.56, "(c)", fontsize=12)
+
+    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/invt2dash_flow_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

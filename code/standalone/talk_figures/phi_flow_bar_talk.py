@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     # an array of parameters, each of our curves depend on a specific
     # value of parameters
-    chi_range = np.linspace(50, 150, 3)
+    chi_range = np.linspace(50, 250, 5)
 
     # norm is a class which, when called, can normalize data into the
     # [0.0, 1.0] interval.
@@ -51,7 +51,7 @@ if __name__ == '__main__':
             phi_CI.append(float(row[0]))
             CI_charge.append(float(row[1]))
 
-    with open('charge_pump_FCI_bar.dat.hex1hex5orbital', 'r') as csvfile:
+    with open('charge_pump_FCI_bar.dat.hex1hex5orbital_chi250', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             phi_FCI.append(float(row[0]))
@@ -81,7 +81,7 @@ if __name__ == '__main__':
     ax1.set_xlabel("$\Phi_x / 2\pi$", fontsize=11)
     ax1.set_yticks(np.arange(-3, 0.1, 1))
     ax1.set_ylim([-3, 0])
-    ax1.set_ylabel("$\langle Q^{L}(\Phi_x) \\rangle$", fontsize=11)
+    ax1.set_ylabel("$\langle Q_{\\mathrm{L}}(\Phi_x) \\rangle$", fontsize=11)
 
     ax1.axhline(-1, color='k', linewidth=0.5, ls='--')
     ax1.axhline(-2, color='k', linewidth=0.5, ls='--')
@@ -164,7 +164,7 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax2 = plt.subplot(gs[0, 1])
+    ax2 = plt.subplot(gs[1, 1])
 
     x = []
     y = []
@@ -186,12 +186,11 @@ if __name__ == '__main__':
                 yvalue.append(y[i])
         ax2.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value+4)%10), label='{}'.format(value))
 
-    ax2.set_yticks(np.arange(0, 8.1, 2))
+    ax2.set_yticks(np.arange(0, 8, 2))
     ax2.set_ylim([0, 8])
-    ax2.legend(loc='center left', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2,
-                    fontsize=12, ncol=1, bbox_to_anchor=(1, 0))
+
     ax2.set_xlim([0, 3])
-    # ax2.set_xlabel("$\Phi_y / 2\pi$", fontsize=11)
+    ax2.set_xlabel("$\Phi_y / 2\pi$", fontsize=11)
     ax2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
     ax2.tick_params(axis="x", labelsize=10)
@@ -207,13 +206,13 @@ if __name__ == '__main__':
     # ax2.axhline(8.400756721645187, color='k', linewidth=0.5, ls=':')
     # ax2.axhline(8.802885632428440, color='k', linewidth=0.5, ls=':')
 
-    fig.text(0.57, 0.86, 'FQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.86, 'IQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0.2)
 
     ####################################################################################################################
 
-    ax3 = plt.subplot(gs[1, 1])
+    ax3 = plt.subplot(gs[0, 1])
 
     x = []
     y = []
@@ -235,12 +234,14 @@ if __name__ == '__main__':
                 yvalue.append(y[i])
         ax3.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4)%10), label='{}'.format(value))
 
-    ax3.set_yticks(np.arange(0, 8, 2))
+    ax3.set_yticks(np.arange(0, 8.1, 2))
     ax3.set_ylim([0, 8])
+    ax3.legend(loc='center left', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2,
+               fontsize=12, ncol=1, bbox_to_anchor=(1, 0))
     # ax3.legend(loc='center left', handletextpad=0, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=2,
     #             fontsize=12, ncol=1, bbox_to_anchor=(1, 1))
     ax3.set_xlim([0, 3])
-    ax3.set_xlabel("$\Phi_x / 2\pi$", fontsize=11)
+    # ax3.set_xlabel("$\Phi_x / 2\pi$", fontsize=11)
     ax3.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
     ax3.tick_params(axis="x", labelsize=10)
@@ -249,24 +250,24 @@ if __name__ == '__main__':
     ax3.axvline(1, color='k', linewidth=0.5, ls='--')
     ax3.axvline(2, color='k', linewidth=0.5, ls='--')
 
-    fig.text(0.57, 0.475, 'IQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.475, 'FQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0)
-    plt.setp(ax2.get_xticklabels(), visible=False)
+    plt.setp(ax3.get_xticklabels(), visible=False)
 
     ####################################################################################################################
 
-    CI_con = ConnectionPatch(xyA=(2, -2.1), xyB=(0, 1), coordsA="data", coordsB="data",
-                          axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-90,angleB=180", arrowstyle='fancy', facecolor='C8', edgecolor='C8')
-    FCI_con = ConnectionPatch(xyA=(2, -0.4), xyB=(0, 5), coordsA="data", coordsB="data",
-                             axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=180", arrowstyle='fancy',
-                             facecolor='C9', edgecolor='C9')
-    ax1.add_artist(CI_con)
-    ax1.add_artist(FCI_con)
+    # CI_con = ConnectionPatch(xyA=(2, -2.1), xyB=(0, 1), coordsA="data", coordsB="data",
+    #                       axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-90,angleB=180", arrowstyle='fancy', facecolor='C8', edgecolor='C8')
+    # FCI_con = ConnectionPatch(xyA=(2, -0.4), xyB=(0, 5), coordsA="data", coordsB="data",
+    #                          axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=180", arrowstyle='fancy',
+    #                          facecolor='C9', edgecolor='C9')
+    # ax1.add_artist(CI_con)
+    # ax1.add_artist(FCI_con)
 
-    fig.text(0.035, 0.75, "(a)", color="k", fontsize=12)
-    fig.text(0.48, 0.875, "(b)", color="k", fontsize=12)
-    fig.text(0.48, 0.49, "(c)", color="k", fontsize=12)
+    # fig.text(0.035, 0.75, "(a)", color="k", fontsize=12)
+    # fig.text(0.48, 0.875, "(b)", color="k", fontsize=12)
+    # fig.text(0.48, 0.49, "(c)", color="k", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/phi_flow_bar.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/phi_flow_bar_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

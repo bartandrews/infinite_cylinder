@@ -29,7 +29,8 @@ MM = np.array([0.5, 0.5])
 
 def min_hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 0.331, -0.010, 0.097
+    # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -97,7 +98,7 @@ def min_hamiltonian(k, num_bands_1):
 
 def hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 0.331, -0.01, 0.097
     # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))
@@ -176,7 +177,8 @@ def hamiltonian(k, num_bands_1):
 
 def hamiltonian2(k, M, p, q):
 
-    t1, t2, t2dash = 1, -0.025, 1/18.8
+    t1, t2, t2dash = 0.331, -0.01, 0.097
+    # t1, t2, t2dash = 2, 0.05, 0.2
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -274,37 +276,6 @@ def berry_curv(ev, ev_alpha, ev_beta, ev_alpha_beta):
     return bc
 
 
-def multi_berry_curv(ev1, ev1_alpha, ev1_beta, ev1_alpha_beta, ev2, ev2_alpha, ev2_beta, ev2_alpha_beta):
-
-    matrix1 = np.zeros((2, 2), dtype=np.complex128)
-    matrix1[0][0] = np.conj(ev1).dot(ev1_alpha)
-    matrix1[0][1] = np.conj(ev1).dot(ev2_alpha)
-    matrix1[1][0] = np.conj(ev2).dot(ev1_alpha)
-    matrix1[1][1] = np.conj(ev2).dot(ev2_alpha)
-
-    matrix2 = np.zeros((2, 2), dtype=np.complex128)
-    matrix2[0][0] = np.conj(ev1_alpha).dot(ev1_alpha_beta)
-    matrix2[0][1] = np.conj(ev1_alpha).dot(ev2_alpha_beta)
-    matrix2[1][0] = np.conj(ev2_alpha).dot(ev1_alpha_beta)
-    matrix2[1][1] = np.conj(ev2_alpha).dot(ev2_alpha_beta)
-
-    matrix3 = np.zeros((2, 2), dtype=np.complex128)
-    matrix3[0][0] = np.conj(ev1_alpha_beta).dot(ev1_beta)
-    matrix3[0][1] = np.conj(ev1_alpha_beta).dot(ev2_beta)
-    matrix3[1][0] = np.conj(ev2_alpha_beta).dot(ev1_beta)
-    matrix3[1][1] = np.conj(ev2_alpha_beta).dot(ev2_beta)
-
-    matrix4 = np.zeros((2, 2), dtype=np.complex128)
-    matrix4[0][0] = np.conj(ev1_beta).dot(ev1)
-    matrix4[0][1] = np.conj(ev1_beta).dot(ev2)
-    matrix4[1][0] = np.conj(ev2_beta).dot(ev1)
-    matrix4[1][1] = np.conj(ev2_beta).dot(ev2)
-
-    multi_bc = - np.imag(np.log(np.linalg.det(matrix1) * np.linalg.det(matrix2) * np.linalg.det(matrix3) * np.linalg.det(matrix4)))
-
-    return multi_bc
-
-
 if __name__ == '__main__':
 
     ####################
@@ -395,7 +366,7 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 1, 3
+    p, q = 8, 9
 
     if p % 2 == 0:
         M = q
@@ -476,29 +447,16 @@ if __name__ == '__main__':
 
     berry_flux_matrix_2 = np.zeros((M, samples_x - 1, samples_y - 1))
 
-    # for band in range(M):
-    #     for idx_x in range(max_idx_x):
-    #         for idx_y in range(max_idx_y):
-    #             berry_flux_matrix_2[band, idx_x, idx_y] = berry_curv(u_matrix_2[:, band, idx_x, idx_y],
-    #                                                                  u_matrix_2[:, band, idx_x + 1, idx_y],
-    #                                                                  u_matrix_2[:, band, idx_x, idx_y + 1],
-    #                                                                  u_matrix_2[:, band, idx_x + 1, idx_y + 1])
-
-    for band in range(0, M, 2):
+    for band in range(M):
         for idx_x in range(max_idx_x):
             for idx_y in range(max_idx_y):
-                berry_flux_matrix_2[band, idx_x, idx_y] = multi_berry_curv(u_matrix_2[:, band, idx_x, idx_y],
-                                                                           u_matrix_2[:, band, idx_x + 1, idx_y],
-                                                                           u_matrix_2[:, band, idx_x, idx_y + 1],
-                                                                           u_matrix_2[:, band, idx_x + 1, idx_y + 1],
-                                                                           u_matrix_2[:, band+1, idx_x, idx_y],
-                                                                           u_matrix_2[:, band+1, idx_x + 1, idx_y],
-                                                                           u_matrix_2[:, band+1, idx_x, idx_y + 1],
-                                                                           u_matrix_2[:, band+1, idx_x + 1, idx_y + 1])
-                berry_flux_matrix_2[band+1, idx_x, idx_y] = berry_flux_matrix_2[band, idx_x, idx_y]
+                berry_flux_matrix_2[band, idx_x, idx_y] = berry_curv(u_matrix_2[:, band, idx_x, idx_y],
+                                                                     u_matrix_2[:, band, idx_x + 1, idx_y],
+                                                                     u_matrix_2[:, band, idx_x, idx_y + 1],
+                                                                     u_matrix_2[:, band, idx_x + 1, idx_y + 1])
 
     chern_numbers_2 = np.zeros(M)
-    for band in range(0, M, 2):
+    for band in range(M):
         chern_numbers_2[band] = np.sum(berry_flux_matrix_2[band, :, :]) / (2 * np.pi)
         print("Chern number ( band", band, ") = ", chern_numbers_2[band])
 
@@ -580,7 +538,7 @@ if __name__ == '__main__':
     hex = patches.RegularPolygon((50, 50), 6, radius=50, orientation=0, facecolor='none', edgecolor='k', lw=0.25)
     ax4.add_patch(hex)
     im = ax4.imshow(E1[i], cmap=plt.get_cmap('rainbow'), clip_path=hex, clip_on=True)
-    cset = ax4.contour(E1[i], np.arange(2, 4, 0.1), linewidths=0.25, colors='black')
+    cset = ax4.contour(E1[i], np.arange(0.75, 1.5, 0.05), linewidths=0.25, colors='black')
     for collection in cset.collections:
         collection.set_clip_path(hex)
 
@@ -632,8 +590,8 @@ if __name__ == '__main__':
     ax2.axvline(30, color='k', linewidth=0.5)
     ax2.axvline(60, color='k', linewidth=0.5)
 
-    for band in range(0, M, 2):
-        ax2.text(14+band*15, eigval_bands_2[band, band*int(89/(M-1))], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))), fontsize=11)
+    for band in range(M):
+        ax2.text(band*(82/(M-1)), eigval_bands_2[band, band*int(89/(M-1))], "$\mathbf{{{}}}$".format(int(round(chern_numbers_2[band]))), fontsize=11)
 
     #ax2.axhline(0, color='k', linewidth=0.5, ls='--')
     plt.xlim((0, 89))
@@ -661,13 +619,12 @@ if __name__ == '__main__':
     gs.update(hspace=0)
 
     fig.text(0.55, 0.83, "$n_\phi=0$", fontsize=11)
-    # fig.text(0.22, 0.35, "isolated topological flat bands at $n_\phi=10/11$", fontsize=11, backgroundcolor='white')
-    fig.text(0.525, 0.325, "$n_\phi=1/3$", fontsize=11, backgroundcolor='white')
+    #fig.text(0.22, 0.35, "isolated topological flat bands at $n_\phi=10/11$", fontsize=11, backgroundcolor='white')
 
-    fig.text(0, 0.87, "(a)", fontsize=12)
-    fig.text(0, 0.48, "(b)", fontsize=12)
+    #fig.text(0, 0.87, "(a)", fontsize=12)
+    #fig.text(0, 0.48, "(b)", fontsize=12)
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
     plt.show()

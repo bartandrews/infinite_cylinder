@@ -1,21 +1,21 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sys
+import matplotlib.gridspec as gridspec
+
+q = 199  # prime > 7
 
 
-q = 9  # prime > 7
+def matrix_eigenvalues(p, M, t1, t2, t2dash):
 
-
-def matrix_eigenvalues(p, M):
-
-    t1, t2, t2dash = 0.331, -0.01, 0.097
     k = [0, 0]
     a = 1
     c = np.sqrt(3) * a / 6
     eta = 3 * k[0] * M * a / 2
-    alpha = float(p / q)
 
     matrix = np.zeros(shape=(M, M), dtype=np.complex128)
+
+    alpha = float(p / q)
 
     def A(phi, m):
         return t2 * (2 * np.cos(4 * np.pi * phi * m + 12 * k[1] * c)
@@ -26,10 +26,10 @@ def matrix_eigenvalues(p, M):
                      - 2 * np.cos(2 * np.pi * phi * (m + 3 / 2) + 6 * k[1] * c) - 9)
 
     def B(phi, m):
-        return t1 * (2 * np.exp(1j * np.pi * phi / 3) * np.cos(np.pi * phi * (m + 1 / 2) + 3 * k[1] * c))
+        return t1 * (2*np.exp(1j * np.pi*phi/3)*np.cos(np.pi*phi*(m+1/2)+3*k[1]*c))
 
     def C(phi):
-        return t1 * np.exp(1j * np.pi * phi / 3)
+        return t1 * np.exp(1j*np.pi*phi/3)
 
     def D(phi, m):
         return t2 * (2 * np.cos(np.pi * phi * (m - 5 / 2) + 3 * k[1] * c)
@@ -108,7 +108,9 @@ def matrix_eigenvalues(p, M):
 
 if __name__ == '__main__':
 
-    values = []
+    values0 = []
+    values1 = []
+    values2 = []
 
     for p in range(q):
         if p % 2 == 0:
@@ -118,21 +120,72 @@ if __name__ == '__main__':
 
         alpha = float(p/q)
         alpha_list = [alpha for i in range(2*M)]
-        eigenvalues = matrix_eigenvalues(p, M)
-        values.append((eigenvalues, alpha_list))
+        eigenvalues0 = matrix_eigenvalues(p, M, 1, 0, 0)
+        values0.append((eigenvalues0, alpha_list))
+        eigenvalues1 = matrix_eigenvalues(p, M, 0, 1, 0)
+        values1.append((eigenvalues1, alpha_list))
+        eigenvalues2 = matrix_eigenvalues(p, M, 1, -0.025, 1/18.8)
+        values2.append((eigenvalues2, alpha_list))
 
     ##########
     # Figure #
     ##########
 
     fig = plt.figure()
-    ax = plt.subplot(1, 1, 1)
-    for eigenvalues, alphas in values:
-        ax.plot(alphas, eigenvalues, '.', color='r', markersize=0.5)
 
-    ax.set_xlim([0, 1])
-    ax.set_xlabel('$\phi$')
-    ax.set_ylabel('$E$ / meV')
+    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
 
-    # plt.savefig("/home/bart/Documents/papers/TBG/figures/complete_twist_q_13.png", bbox_inches='tight', dpi=300)
+    ax0 = plt.subplot(gs[0])
+    ax0.tick_params('x', direction='in', bottom=True)
+
+    for eigenvalues, alphas in values0:
+        ax0.plot(alphas, eigenvalues, '.', color='blue', markersize=0.2)
+
+    ax1 = plt.subplot(gs[1], sharex=ax0)
+    ax1.tick_params('x', direction='in', bottom=True)
+
+    for eigenvalues, alphas in values1:
+        ax1.plot(alphas, eigenvalues, '.', color='red', markersize=0.2)
+
+    plt.setp(ax0.get_xticklabels(), visible=False)
+
+    ax2 = plt.subplot(gs[2], sharex=ax0)
+
+    for eigenvalues, alphas in values2:
+        ax2.plot(alphas, eigenvalues, '.', color='green', markersize=0.2)
+
+    plt.setp(ax1.get_xticklabels(), visible=False)
+
+    ax0.tick_params(axis='both', which='major', labelsize=10)
+    ax1.tick_params(axis='both', which='major', labelsize=10)
+    ax2.tick_params(axis='both', which='major', labelsize=10)
+
+    ax0.axvline(1/3, color='k', linewidth=0.5, ls="--")
+    ax0.axvline(2/3, color='k', linewidth=0.5, ls="--")
+    ax1.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
+    ax1.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
+    ax2.axvline(1 / 3, color='k', linewidth=0.5, ls="--")
+    ax2.axvline(2 / 3, color='k', linewidth=0.5, ls="--")
+
+    gs.update(hspace=0)
+
+    ax0.set_xlim([0, 1])
+    ax2.set_xlabel('$n_\phi$', fontsize=11)
+    ax0.set_ylabel('$E$ / meV', fontsize=11)
+    ax1.set_ylabel('$E$ / meV', fontsize=11)
+    ax2.set_ylabel('$E$ / meV', fontsize=11)
+
+    # fig.text(0.035, 0.35, "(c)", fontsize=12)
+    # fig.text(0.035, 0.605, "(b)", fontsize=12)
+    # fig.text(0.035, 0.86, "(a)", fontsize=12)
+
+    fig.text(0.14, 0.86, '$(t_1, t_2, t_2\')=(1,0,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.602, '$(t_1, t_2, t_2\')=(0,1,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.346, '$(t_1, t_2, t_2\')=(1, -0.025, 0.053)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+
+    fig.text(0.16, 0.01, '$q=199$', fontsize=11)
+
+    fig.text(0.425, 0.925, '$(k_x,k_y)=(0,0)$', fontsize=11)
+
+    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/butterfly_triple_talk.png", bbox_inches='tight', dpi=300)
     plt.show()
