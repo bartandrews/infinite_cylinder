@@ -5,12 +5,13 @@ from tenpy.models import lattice
 from tenpy.networks import site
 import matplotlib.pyplot as plt
 
+import functions as f
 
 class MagneticHoneycomb(lattice.Lattice):
 
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
-        numb_sites = 8
+        numb_sites = int(2*f.qval)
 
         basis = np.array(([(numb_sites/4) * np.sqrt(3), numb_sites/4], [0., 1]))
         delta = np.array([1 / (2. * np.sqrt(3.)), 0.5])
@@ -128,7 +129,7 @@ class MagneticHoneycomb(lattice.Lattice):
 
 def plot_lattice():
 
-    numb_sites = 8
+    numb_sites = int(2*f.qval)
 
     ax = plt.gca()
     fs = site.FermionSite()

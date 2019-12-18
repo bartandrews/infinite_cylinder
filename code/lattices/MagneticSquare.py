@@ -5,12 +5,13 @@ import numpy as np
 from tenpy.models import lattice
 from tenpy.networks import site
 
+import functions as f
 
 class MagneticSquare(lattice.Lattice):
 
     def __init__(self, Lx, Ly, siteA, **kwargs):
 
-        numb_sites = 4
+        numb_sites = f.qval
 
         basis = np.array(([numb_sites, 0.], [0, 1]))
 
@@ -41,7 +42,7 @@ class MagneticSquare(lattice.Lattice):
 
 def plot_lattice():
 
-    numb_sites = 4
+    numb_sites = f.qval
 
     import matplotlib.pyplot as plt
 

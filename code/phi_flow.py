@@ -1,23 +1,16 @@
 import numpy as np
 import time
-import sys
-import importlib
 import tenpy.tools.process as prc
 
 import functions as f
 
-parameters_module = "parameters.param_" + str(sys.argv[1])
-p = importlib.import_module(parameters_module)
 
+def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag, use_pickle, make_pickle):
 
-def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, Lx, Ly, tag,
-                phi_min, phi_max, phi_samp):
-
-    overlap_stem = f.file_name_stem("overlap", model, lattice, initial_state, tile_unit, chi_max)
-    charge_pump_stem = f.file_name_stem("charge_pump", model, lattice, initial_state, tile_unit, chi_max)
-    ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, lattice, initial_state, tile_unit, chi_max)
-    leaf = ("t_%s_U_%s_mu_%s_V_%s_Lx_%s_Ly_%s_phi_%s_%s_%s.dat.%s"
-            % (t, U, mu, V, Lx, Ly, phi_min, phi_max, phi_samp, tag))
+    overlap_stem = f.file_name_stem("overlap", model, chi_max)
+    charge_pump_stem = f.file_name_stem("charge_pump", model, chi_max)
+    ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, chi_max)
+    leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_%s_Ly_%s_%s_%s_phi_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag))
     overlap_file = "data/overlap/" + model + "/" + overlap_stem.replace(" ", "_") + leaf
     charge_pump_file = "data/charge_pump/" + model + "/" + charge_pump_stem.replace(" ", "_") + leaf
     ent_spec_flow_file = "data/ent_spec_flow/" + model + "/" + ent_spec_flow_stem.replace(" ", "_") + leaf
@@ -30,58 +23,83 @@ def my_phi_flow(model, lattice, initial_state, tile_unit, chi_max, t, U, mu, V, 
 
     ##################################################################################################################
 
-    engine = f.define_iDMRG_engine_pickle("phi_flow", model, lattice, initial_state, tile_unit, chi_max,
-                                          t, U, mu, V, Lx, Ly, p.use_pickle, p.make_pickle, phi_min)
+    for ndvalue, qvalue in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int), np.linspace(q_min, q_max, nu_samp, dtype=int)):
+        for Ly in np.linspace(Ly_min, Ly_max, Ly_samp, dtype=int):
 
-    for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
+            if model in ["BosonicHofstadter", "FermionicHofstadter"]:
+                LylB = Ly * np.sqrt(2 * np.pi * (pvalue / qvalue))
+            else:
+                LylB = Ly * np.sqrt((4 * np.pi * (pvalue / qvalue)) / np.sqrt(3))
 
-        if phi_ext == phi_min:
-            engine.run()
-        else:
-            engine.DMRG_params['mixer'] = False
-            del engine.DMRG_params['chi_list']  # comment out this line for single site DMRG tests
-            M = f.define_iDMRG_model(model, lattice, t, U, mu, V, Lx, Ly, phi_ext)
-            psi_old = engine.psi
-            engine.init_env(model=M)
-            engine.run()
-            abs_ov = abs(psi_old.overlap(engine.psi))
-            print("{phi_ext:.15f}\t{abs_ov:.15f}".format(phi_ext=phi_ext, abs_ov=abs_ov))
-            overlap_data.write("%.15f\t%.15f\n" % (phi_ext, abs_ov))
+            if ndvalue == nd_min and qvalue == q_min and Ly == Ly_min:
+                data_line = "LylB={LylB:.15f}\n".format(LylB=LylB)
+            else:
+                data_line = "\n\nLylB={LylB:.15f}\n".format(LylB=LylB)
 
-        ###############
-        # charge_pump #
-        ###############
+            overlap_data.write(data_line)
+            charge_pump_data.write(data_line)
+            ent_spec_flow_data.write(data_line)
 
-        QL = engine.psi.average_charge(bond=0)[0]
+            engine = f.define_iDMRG_engine_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly, use_pickle, make_pickle, phi_min)
 
-        print("{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL))
-        charge_pump_data.write("%.15f\t%.15f\n" % (phi_ext, QL))
+            for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
-        #################
-        # ent_spec_flow #
-        #################
+                if phi_ext == phi_min:
+                    engine.run()
+                else:
+                    engine.DMRG_params['mixer'] = False
+                    del engine.DMRG_params['chi_list']  # comment out this line for single site DMRG tests
+                    M = f.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly, phi_ext)
+                    psi_old = engine.psi
+                    engine.init_env(model=M)
+                    engine.run()
+                    abs_ov = abs(psi_old.overlap(engine.psi))
+                    data_line = "{phi_ext:.15f}\t{abs_ov:.15f}".format(phi_ext=phi_ext, abs_ov=abs_ov)
+                    print(data_line)
+                    overlap_data.write(data_line+"\n")
 
-        # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-        spectrum = engine.psi.entanglement_spectrum(by_charge=True)
+                ###############
+                # charge_pump #
+                ###############
 
-        bond = 0
+                QL = engine.psi.average_charge(bond=0)[0]
 
-        for sector in range(0, len(spectrum[bond])):
-            for i in range(0, len(spectrum[bond][sector][1])):
-                print("{charge:d}\t{phi_ext:.15f}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0],
-                                                                           phi_ext=phi_ext,
-                                                                           spectrum=spectrum[bond][sector][1][i]))
-                ent_spec_flow_data.write("%i\t%.15f\t%.15f\n" % (spectrum[bond][sector][0][0], phi_ext,
-                                                                 spectrum[bond][sector][1][i]))
+                data_line = "{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL)
+                print(data_line)
+                charge_pump_data.write(data_line+"\n")
+
+                #################
+                # ent_spec_flow #
+                #################
+
+                # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
+                spectrum = engine.psi.entanglement_spectrum(by_charge=True)
+
+                bond = 0
+
+                for sector in range(0, len(spectrum[bond])):
+                    for i in range(0, len(spectrum[bond][sector][1])):
+                        data_line = "{charge:d}\t{phi_ext:.15f}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0], phi_ext=phi_ext, spectrum=spectrum[bond][sector][1][i])
+                        print(data_line)
+                        ent_spec_flow_data.write(data_line+"\n")
 
 
 if __name__ == '__main__':
 
-    prc.mkl_set_nthreads(1)
+    prc.mkl_set_nthreads(4)
 
     t0 = time.time()
 
-    my_phi_flow(p.model, p.lattice, p.initial_state, p.tile_unit, p.chi_max, p.t, p.U, p.mu, p.V, p.Lx, p.Ly, p.tag,
-                phi_min=0, phi_max=3, phi_samp=31)
+    my_phi_flow(model="BosonicHofstadter", chi_max=250,
+                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
+                nnvalue=1, nd_min=8, nd_max=12, pvalue=1, q_min=4, q_max=6, nu_samp=3,
+                Lx=1, Ly_min=4, Ly_max=6, Ly_samp=2, phi_min=0, phi_max=2, phi_samp=21, tag=".4",
+                use_pickle=False, make_pickle=False)
+
+    my_phi_flow(model="FermionicHofstadter", chi_max=250,
+                t1=1, t2=0, t2dash=0, U=0, mu=0, V=10,
+                nnvalue=1, nd_min=9, nd_max=15, pvalue=1, q_min=3, q_max=5, nu_samp=3,
+                Lx=1, Ly_min=6, Ly_max=9, Ly_samp=2, phi_min=0, phi_max=2, phi_samp=21, tag=".4",
+                use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)
