@@ -39,7 +39,9 @@ class BosonicHex1Hex5Model(CouplingMPOModel):
         return lat
 
     def init_terms(self, model_params):
-        t1, t2 = 0.331, -0.01
+        t1 = get_parameter(model_params, 't1', 1, self.name)
+        t2 = get_parameter(model_params, 't2', 0, self.name)
+        # t1, t2 = 1, -0.025
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi_p, phi_q = get_parameter(model_params, 'phi', (1, 4), self.name)
@@ -111,7 +113,9 @@ class FermionicHex1Hex5Model(CouplingMPOModel):
         return lat
 
     def init_terms(self, model_params):
-        t1, t2 = 0.331, -0.01
+        t1 = get_parameter(model_params, 't1', 1, self.name)
+        t2 = get_parameter(model_params, 't2', 0, self.name)
+        # t1, t2 = 1, 0
         V = get_parameter(model_params, 'V', 10, self.name, True)
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 

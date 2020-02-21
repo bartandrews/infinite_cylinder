@@ -222,7 +222,7 @@ if __name__ == '__main__':
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i])
 
-    ax.set_aspect('equal', adjustable='box')
+    # ax.set_aspect('equal', adjustable='box')
 
     ax.tick_params(axis='x', which='major', pad=0.5)
 
@@ -266,7 +266,7 @@ if __name__ == '__main__':
 
     ax1 = plt.subplot(gs[1])
 
-    ax1.set_aspect('equal', adjustable='box')
+    # ax1.set_aspect('equal', adjustable='box')
 
     ax1.set_xlim([0, 1])
     ax1.set_ylim([-0.5, 0.5])

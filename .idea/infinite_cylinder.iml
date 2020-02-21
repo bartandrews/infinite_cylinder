@@ -5,14 +5,13 @@
       <sourceFolder url="file://$MODULE_DIR$/code" isTestSource="false" />
     </content>
     <content url="file://$USER_HOME$/TeNPy" />
-    <orderEntry type="jdk" jdkName="Python 3.7 (infinite_cylinder)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="baandr3 - Remote Python 3.7.4 (sftp://ubuntu@172.23.186.84:22/home/ubuntu/anaconda3/bin/python3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
     <option name="renderExternalDocumentation" value="true" />
   </component>
   <component name="TestRunnerService">
-    <option name="projectConfiguration" value="pytest" />
     <option name="PROJECT_TEST_RUNNER" value="pytest" />
   </component>
 </module>

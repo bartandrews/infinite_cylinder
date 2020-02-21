@@ -178,7 +178,7 @@ if __name__ == '__main__':
 
     ########################
 
-    ax.set_aspect('equal', adjustable='box')
+    # ax.set_aspect('equal', adjustable='box')
 
     ax.tick_params(axis='x', which='major', pad=0.5)
 
