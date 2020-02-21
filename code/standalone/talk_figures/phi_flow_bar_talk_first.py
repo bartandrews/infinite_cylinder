@@ -271,5 +271,5 @@ if __name__ == '__main__':
 
     fig.text(0.12, 0.95, "Hall response: $\sigma_\mathrm{H}=\\frac{e^2}{h}\\nu$", color="white", fontsize=14)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/phi_flow_bar_talk_first.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/phi_flow_bar_talk_first.png", bbox_inches='tight', dpi=300)
     plt.show()

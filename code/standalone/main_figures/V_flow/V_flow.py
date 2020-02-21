@@ -91,6 +91,8 @@ if __name__ == '__main__':
 
     ax0.tick_params(axis="y", labelsize=10)
 
+    ax0.arrow(18.8, -10, 0, 100, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
+
     ax0.set_xlim([11, 26])
     ax0.set_xticks(np.arange(11, 37, 5))
     ax0.set_ylim([-0.5, 1.5])
@@ -189,6 +191,8 @@ if __name__ == '__main__':
 
     ax1.tick_params(axis="y", labelsize=10)
 
+    ax1.arrow(18.8, 0, 0, 100, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
+
     ax1.set_xlim([11, 26])
     ax1.set_xticks(np.arange(11, 37, 5))
     ax1.set_ylim([9, 16])
@@ -240,6 +244,8 @@ if __name__ == '__main__':
 
     ax2.tick_params(axis="x", labelsize=10)
     ax2.tick_params(axis="y", labelsize=10)
+
+    ax2.arrow(18.8, 0, 0, 100, width=0.01, head_width=0, fill=True, facecolor='k', zorder=3)
 
     fig.text(0.01, 0.87, "(a)", fontsize=12)
     fig.text(0.01, 0.71, "(b)", fontsize=12)

@@ -202,5 +202,5 @@ if __name__ == '__main__':
 
     fig.text(0.035, 0.9, "$l_B\sim n_\phi^{-1/2}$", color="k", fontsize=14)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/Ly_flow_mag_detail_talk_first.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/Ly_flow_mag_detail_talk_first.png", bbox_inches='tight', dpi=300)
     plt.show()

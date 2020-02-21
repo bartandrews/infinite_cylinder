@@ -277,5 +277,5 @@ if __name__ == '__main__':
     fig.text(0.45, 0.55, "o", color="k", fontsize=25)
     fig.text(0.45, 0.25, "o", color="k", fontsize=25)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/phi_flow_bar_talk_second.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/phi_flow_bar_talk_second.png", bbox_inches='tight', dpi=300)
     plt.show()

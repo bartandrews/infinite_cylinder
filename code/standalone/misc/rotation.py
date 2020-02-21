@@ -8,8 +8,8 @@ import sys
 
 if __name__ == "__main__":
 
-    input = "../main_figures/Ly_flow_mag/ent_spec_mom_Ly_6.dat.hex1hex5"
-    output = "../main_figures/Ly_flow_mag/ent_spec_mom_Ly_6.dat.hex1hex5.rotated"
+    input = "../main_figures_rev1/Ly_flow_mag_detail/ent_spec_mom_Ly_9.dat"
+    output = "../main_figures_rev1/Ly_flow_mag_detail/ent_spec_mom_Ly_9.dat.rotated"
 
     ent_spec_mom_rotated_file = output
     open(ent_spec_mom_rotated_file, "w")
@@ -27,9 +27,9 @@ if __name__ == "__main__":
             energy.append(float(row[2]))
 
     # original Ly of file
-    Ly = 6
+    Ly = 9
     # desired rotation to the left (integer)
-    shift = 5
+    shift = 7
 
     for i in range(len(mom)):
 

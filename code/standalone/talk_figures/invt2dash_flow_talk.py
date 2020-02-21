@@ -264,5 +264,5 @@ if __name__ == '__main__':
     # fig.text(0.01, 0.71, "(b)", fontsize=12)
     # fig.text(0.01, 0.56, "(c)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/invt2dash_flow_talk.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/invt2dash_flow_talk.png", bbox_inches='tight', dpi=300)
     plt.show()
