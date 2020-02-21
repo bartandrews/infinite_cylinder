@@ -161,17 +161,17 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
         # t1, t2, t2dash = 0.331, -0.01, 0.097  # Koshino parameters
         # invt2dash = get_parameter(model_params, 'invt2dash', 1, self.name, True)
         # t1, t2, t2dash = 1, -0.025, 1/invt2dash
-        U = get_parameter(model_params, 'U', 0, self.name, True)
+        U = get_parameter(model_params, 'U', 100, self.name, True)
         V = get_parameter(model_params, 'V', 10, self.name, True)
         phi_ext = 2*np.pi*get_parameter(model_params, 'phi_ext', 0., self.name)
 
         phi_p, phi_q = get_parameter(model_params, 'phi', (1, 3), self.name)
         phi = 2 * np.pi * phi_p / phi_q
 
-        # # onsite interaction
-        # for u in range(len(self.lat.unit_cell)):
-        #     print("u in range(len(self.lat.unit_cell)) = ", u)
-        #     self.add_onsite(U, u, 'Nx Ny')
+        # onsite interaction
+        for u in range(len(self.lat.unit_cell)):
+            print("u in range(len(self.lat.unit_cell)) = ", u)
+            self.add_onsite(U, u, 'Nx Ny')
 
         # t1 term ###
         for i in range(0, 2*phi_q, 2):

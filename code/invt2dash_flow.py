@@ -73,9 +73,15 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_invt2dash_flow(model="BosonicHex1Hex5Orbital", chi_max=50,
-                      t1=1, t2=-0.025, invt2dash_min=10, invt2dash_max=30, invt2dash_samp=101, U=0, mu=0, V=0,
-                      nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
+    # my_invt2dash_flow(model="BosonicHex1Hex5Orbital", chi_max=50,
+    #                   t1=1, t2=-0.025, invt2dash_min=10, invt2dash_max=30, invt2dash_samp=101, U=0, mu=0, V=0,
+    #                   nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
+    #                   Lx=1, Ly_min=4, Ly_max=4, Ly_samp=1, tag="",
+    #                   use_pickle=False, make_pickle=False)
+
+    my_invt2dash_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
+                      t1=1, t2=-0.025, invt2dash_min=10, invt2dash_max=100, invt2dash_samp=19, U=0, mu=0, V=10,
+                      nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
                       Lx=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
                       use_pickle=False, make_pickle=False)
 

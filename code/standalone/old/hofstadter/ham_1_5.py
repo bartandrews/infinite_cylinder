@@ -67,7 +67,7 @@ def multi_berry_curv(ev1, ev1_alpha, ev1_beta, ev1_alpha_beta, ev2, ev2_alpha, e
 if __name__ == '__main__':
 
     numb_samples = 100
-    q = 4
+    q = 3
 
     # reciprocal lattice vectors
     b1 = (2. * np.pi) * np.array([1, 0])
@@ -158,7 +158,7 @@ if __name__ == '__main__':
         E[i] = eigenvalues[i, KX, KY]
         ax.plot_surface(KX, KY, E[i])
 
-    ax.set_aspect('equal', adjustable='box')
+    # ax.set_aspect('equal', adjustable='box')
 
     ax.tick_params(axis='x', which='major', pad=0.5)
 

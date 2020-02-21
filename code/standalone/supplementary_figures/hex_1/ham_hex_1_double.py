@@ -186,7 +186,7 @@ if __name__ == '__main__':
         E1[i] = eigenvalues1[i, KX, KY]
         ax.plot_surface(KX, KY, E1[i], color=colors[cidx[i]])
 
-    ax.set_aspect('equal', adjustable='box')
+    # ax.set_aspect('equal', adjustable='box')
 
     ax.tick_params(axis='x', which='major', pad=0.5)
 
@@ -242,7 +242,7 @@ if __name__ == '__main__':
         E2[i] = eigenvalues2[i, KX, KY]
         ax1.plot_surface(KX, KY, E2[i], color=colors[cidx[i]])
 
-    ax1.set_aspect('equal', adjustable='box')
+    # ax1.set_aspect('equal', adjustable='box')
 
     ax1.tick_params(axis='x', which='major', pad=0.5)
 
@@ -357,5 +357,5 @@ if __name__ == '__main__':
 
     ############
 
-    plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1_bands.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG/figures/hex_1_bands.png", bbox_inches='tight', dpi=300)
     plt.show()

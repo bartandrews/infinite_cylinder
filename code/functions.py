@@ -39,29 +39,43 @@ def file_name_stem(tool, model, chi_max):
 def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
 
     if model == 'BosonicHofstadter':
-        if (nnvalue, ndvalue) == (1, 8) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 4):
-            product_state = [1, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0]
-        elif (nnvalue, ndvalue) == (1, 8) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 6):
-            product_state = [1, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0]
-        elif (nnvalue, ndvalue) == (1, 10) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 4):
-            product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        elif (nnvalue, ndvalue) == (1, 10) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 6):
-            product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        elif (nnvalue, ndvalue) == (1, 12) and (pvalue, qvalue) == (1, 6) and (Lx, Ly) == (1, 4):
-            product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-        elif (nnvalue, ndvalue) == (1, 12) and (pvalue, qvalue) == (1, 6) and (Lx, Ly) == (1, 6):
-            product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                             1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        if int((nnvalue / ndvalue) / (pvalue / qvalue)) == 1:
+            if (nnvalue, ndvalue) == (1, 4) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 4):
+                product_state = [1, 0, 0, 0, 1, 0, 0, 0,
+                                 1, 0, 0, 0, 1, 0, 0, 0]
         else:
-            sys.exit('Error: Unknown initial_state configuration.')
+            if (nnvalue, ndvalue) == (1, 6) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 4):
+                product_state = [1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (4, 9) and (pvalue, qvalue) == (4, 3) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 1, 0, 1, 0, 1, 0, 0,
+                                 1, 0, 1, 0, 1, 0, 1, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 8) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 4):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 8) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 10) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 4):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 10) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 12) and (pvalue, qvalue) == (1, 6) and (Lx, Ly) == (1, 4):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 12) and (pvalue, qvalue) == (1, 6) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            else:
+                sys.exit('Error: Unknown initial_state configuration.')
     elif model == 'FermionicHofstadter':
         if (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
             product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -91,6 +105,9 @@ def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
             if (nnvalue, ndvalue) == (1, 4) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 4):
                 product_state = [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 3) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
             elif (nnvalue, ndvalue) == (1, 5) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 4):
                 product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -103,6 +120,9 @@ def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
             if (nnvalue, ndvalue) == (1, 8) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 4):
                 product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
+                    product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             elif (nnvalue, ndvalue) == (1, 8) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 6):
                 product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -137,7 +157,37 @@ def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
             else:
                 sys.exit('Error: Unknown initial_state configuration.')
         else:
-            if (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
+            if (nnvalue, ndvalue) == (1, 15) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 5):
+                # polarized2 (gives same results as unpolarized2 but faster)
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 15) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 10):
+                # polarized2 (gives same results as unpolarized2 but faster)
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 20) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 5):
+                # polarized2
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 20) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 5):
+                # polarized2
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 25) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 5):
+                # polarized2
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 25) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 5):
+                # polarized2
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
                 product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             elif (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 9):
@@ -158,6 +208,42 @@ def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
                 product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (2, 21) and (pvalue, qvalue) == (2, 7) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (2, 21) and (pvalue, qvalue) == (2, 7) and (Lx, Ly) == (1, 9):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (8, 27) and (pvalue, qvalue) == (8, 9) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (8, 27) and (pvalue, qvalue) == (8, 9) and (Lx, Ly) == (1, 9):
+                product_state = [1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (10, 33) and (pvalue, qvalue) == (10, 11) and (Lx, Ly) == (1, 6):
+                product_state = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (10, 33) and (pvalue, qvalue) == (10, 11) and (Lx, Ly) == (1, 9):
+                product_state = [1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0]
             else:
                 sys.exit('Error: Unknown initial_state configuration.')
     elif model == 'BosonicHex1Hex5Orbital':
@@ -199,9 +285,59 @@ def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
                 sys.exit('Error: Unknown initial_state configuration.')
     elif model == 'FermionicHex1Hex5Orbital':
         if int((nnvalue / ndvalue) / (pvalue / qvalue)) == 1:
-            if (nnvalue, ndvalue) == (1, 3) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
-                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
-                                 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0]
+            if (nnvalue, ndvalue) == (1, 3) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 5):  # working IQH
+                # polarized2 (expected to give same results as unpolarized2 but faster)
+                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0,
+                                 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0]
+                # unpolarized2
+                # product_state = ['full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0,
+                #                  'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0]
+                # full1
+                # product_state = ['full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0,
+                #                  0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0]
+                # polarized2d
+                # product_state = ['full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0,
+                #                  'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0, 'full_x empty_y', 'full_x empty_y', 0]
+                # unpolarized2d
+                # product_state = ['full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0,
+                #                  'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 0]
+                # full1d
+                # product_state = ['full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0,
+                #                  'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0]
+            elif (nnvalue, ndvalue) == (6, 7) and (pvalue, qvalue) == (6, 7) and (Lx, Ly) == (1, 6):
+                # fill2
+                # product_state = ['full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0,
+                #                  'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0,
+                #                  'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0,
+                #                  'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0,
+                #                  'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0,
+                #                  'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0, 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 'full_x empty_y', 'empty_x full_y', 0]
+                # fill3
+                product_state = ['full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0, 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0,
+                                 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0, 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0,
+                                 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0, 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0,
+                                 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0, 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0,
+                                 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0, 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0,
+                                 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0, 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 'full_x full_y', 0]
+            elif (nnvalue, ndvalue) == (1, 3) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
+                # polarized1 (original)
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
+                #                  'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0]
+                # polarized2 (double_fill)
+                product_state = ['full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0,
+                                 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0, 'full_x empty_y', 0, 0]
+                # unpolarized1
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 'empty_x full_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0,
+                #                  'empty_x full_y', 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 'empty_x full_y', 0, 0, 0, 0, 0]
+                # unpolarized2
+                # product_state = ['full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0,
+                #                  'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0, 'full_x empty_y', 0, 0, 'empty_x full_y', 0, 0]
+                # full1 (double_fill2)
+                # product_state = ['full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0,
+                #                  'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0]
+                # full2 (double_fill3)
+                # product_state = ['full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0,
+                #                  'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0, 'full_x full_y', 0, 0]
             elif (nnvalue, ndvalue) == (1, 4) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 6):
                 product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0,
                                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0]
@@ -211,9 +347,49 @@ def select_initial_psi(model, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly):
             else:
                 sys.exit('Error: Unknown initial_state configuration.')
         else:
-            if (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
-                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            if (nnvalue, ndvalue) == (1, 15) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 5):  # working FQH
+                # polarized2 (gives same results as unpolarized2 but faster)
+                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                # unpolarized2
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  'empty_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                # full1
+                # product_state = ['full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 15) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 10):
+                # polarized2 (gives same results as unpolarized2 but faster)
+                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 20) and (pvalue, qvalue) == (1, 4) and (Lx, Ly) == (1, 5):
+                # polarized2
+                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 25) and (pvalue, qvalue) == (1, 5) and (Lx, Ly) == (1, 5):
+                # polarized2
+                product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            elif (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 6):
+                # polarized1 (original)
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                # polarized2
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0]
+                # unpolarized1
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  'empty_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                # unpolarized2
+                # product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 'empty_x full_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 'empty_x full_y', 0, 0, 0, 0, 0, 0, 0, 0]
+                # full1
+                product_state = ['full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                 'full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+                # full2
+                # product_state = ['full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0,
+                #                  'full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0, 'full_x full_y', 0, 0, 0, 0, 0, 0, 0, 0]
             elif (nnvalue, ndvalue) == (1, 9) and (pvalue, qvalue) == (1, 3) and (Lx, Ly) == (1, 9):
                 product_state = ['full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                  'full_x empty_y', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

@@ -92,16 +92,16 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_Ly_flow(model="BosonicHofstadter", chi_max=250, chi_max_K=250,
-               t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
-               nnvalue=1, nd_min=8, nd_max=12, pvalue=1, q_min=4, q_max=6, nu_samp=3,
-               Lx=1, Ly_min=4, Ly_max=6, Ly_samp=2, tag="",
+    my_Ly_flow(model="FermionicHex1Hex5", chi_max=400, chi_max_K=500,
+               t1=1, t2=-0.005, t2dash=0.02, U=100, mu=0, V=10,
+               nnvalue=1, nd_min=15, nd_max=15, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+               Lx=1, Ly_min=10, Ly_max=10, Ly_samp=1, tag=".polarized2",
                use_pickle=False, make_pickle=False)
 
-    my_Ly_flow(model="FermionicHofstadter", chi_max=250, chi_max_K=250,
-               t1=1, t2=0, t2dash=0, U=0, mu=0, V=10,
-               nnvalue=1, nd_min=9, nd_max=15, pvalue=1, q_min=3, q_max=5, nu_samp=3,
-               Lx=1, Ly_min=6, Ly_max=9, Ly_samp=2, tag="",
-               use_pickle=False, make_pickle=False)
+    # my_Ly_flow(model="FermionicHex1Hex5Orbital", chi_max=400, chi_max_K=500,
+    #            t1=1, t2=-0.01, t2dash=0.04, U=100, mu=0, V=10,
+    #            nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+    #            Lx=1, Ly_min=9, Ly_max=9, Ly_samp=1, tag="",
+    #            use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)

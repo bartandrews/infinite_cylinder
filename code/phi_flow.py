@@ -86,20 +86,20 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
 
 if __name__ == '__main__':
 
-    prc.mkl_set_nthreads(4)
+    prc.mkl_set_nthreads(1)
 
     t0 = time.time()
 
-    my_phi_flow(model="BosonicHofstadter", chi_max=250,
-                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
-                nnvalue=1, nd_min=8, nd_max=12, pvalue=1, q_min=4, q_max=6, nu_samp=3,
-                Lx=1, Ly_min=4, Ly_max=6, Ly_samp=2, phi_min=0, phi_max=2, phi_samp=21, tag=".4",
+    my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=150,
+                t1=1, t2=-0.025, t2dash=0.1, U=100, mu=0, V=10,
+                nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+                Lx=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag=".polarized2",
                 use_pickle=False, make_pickle=False)
 
-    my_phi_flow(model="FermionicHofstadter", chi_max=250,
-                t1=1, t2=0, t2dash=0, U=0, mu=0, V=10,
-                nnvalue=1, nd_min=9, nd_max=15, pvalue=1, q_min=3, q_max=5, nu_samp=3,
-                Lx=1, Ly_min=6, Ly_max=9, Ly_samp=2, phi_min=0, phi_max=2, phi_samp=21, tag=".4",
-                use_pickle=False, make_pickle=False)
+    # my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
+    #             t1=1, t2=-0.01, t2dash=0.04, U=0, mu=0, V=0,
+    #             nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+    #             Lx=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag=".full2",
+    #             use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)

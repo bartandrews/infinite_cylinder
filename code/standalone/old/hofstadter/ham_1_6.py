@@ -158,7 +158,7 @@ if __name__ == '__main__':
         E[i] = eigenvalues[i, KX, KY]
         ax.plot_surface(KX, KY, E[i])
 
-    ax.set_aspect('equal', adjustable='box')
+    # ax.set_aspect('equal', adjustable='box')
 
     ax.tick_params(axis='x', which='major', pad=0.5)
 
@@ -254,7 +254,7 @@ if __name__ == '__main__':
                 hwcc[band, idx_y] = -(1 / (2 * np.pi)) * np.imag(np.log(wl_berry_flux[band, idx_y]))
                 #print(band, hwcc[band, idx_y])
 
-    ax1.set_aspect('equal', adjustable='box')
+    # ax1.set_aspect('equal', adjustable='box')
 
     ax1.set_xlim([0, 1])
     ax1.set_ylim([-0.5, 0.5])
