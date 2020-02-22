@@ -81,5 +81,5 @@ if __name__ == '__main__':
 
     fig.subplots_adjust(top=1, bottom=0, right=1, left=0, hspace=0, wspace=0)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/cylinder_talk.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/cylinder_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

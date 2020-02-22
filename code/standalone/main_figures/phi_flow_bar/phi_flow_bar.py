@@ -170,7 +170,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_flow_FCI.dat.hex1hex5orbital', 'r') as csvfile:
+    with open('ent_spec_flow_CI.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -207,7 +207,7 @@ if __name__ == '__main__':
     # ax2.axhline(8.400756721645187, color='k', linewidth=0.5, ls=':')
     # ax2.axhline(8.802885632428440, color='k', linewidth=0.5, ls=':')
 
-    fig.text(0.57, 0.86, 'FQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.86, 'IQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0.2)
 
@@ -219,7 +219,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_flow_CI.dat.hex1hex5orbital', 'r') as csvfile:
+    with open('ent_spec_flow_FCI.dat.hex1hex5orbital', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -249,20 +249,20 @@ if __name__ == '__main__':
     ax3.axvline(1, color='k', linewidth=0.5, ls='--')
     ax3.axvline(2, color='k', linewidth=0.5, ls='--')
 
-    fig.text(0.57, 0.475, 'IQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.475, 'FQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0)
     plt.setp(ax2.get_xticklabels(), visible=False)
 
     ####################################################################################################################
 
-    CI_con = ConnectionPatch(xyA=(2, -2.1), xyB=(0, 1), coordsA="data", coordsB="data",
-                          axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-90,angleB=180", arrowstyle='fancy', facecolor='C8', edgecolor='C8')
-    FCI_con = ConnectionPatch(xyA=(2, -0.4), xyB=(0, 5), coordsA="data", coordsB="data",
-                             axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=180", arrowstyle='fancy',
-                             facecolor='C9', edgecolor='C9')
-    ax1.add_artist(CI_con)
-    ax1.add_artist(FCI_con)
+    # CI_con = ConnectionPatch(xyA=(2, -2.1), xyB=(0, 1), coordsA="data", coordsB="data",
+    #                       axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=-90,angleB=180", arrowstyle='fancy', facecolor='C8', edgecolor='C8')
+    # FCI_con = ConnectionPatch(xyA=(2, -0.4), xyB=(0, 5), coordsA="data", coordsB="data",
+    #                          axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=90,angleB=180", arrowstyle='fancy',
+    #                          facecolor='C9', edgecolor='C9')
+    # ax1.add_artist(CI_con)
+    # ax1.add_artist(FCI_con)
 
     fig.text(0.035, 0.75, "(a)", color="k", fontsize=12)
     fig.text(0.48, 0.875, "(b)", color="k", fontsize=12)

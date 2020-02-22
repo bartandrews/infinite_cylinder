@@ -177,5 +177,5 @@ if __name__ == '__main__':
     # plt.text(-23, 14, "(a)", fontsize=12)
     # plt.text(-3, 14, "(b)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/lattice_talk.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/lattice_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

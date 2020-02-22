@@ -187,5 +187,5 @@ if __name__ == '__main__':
 
     fig.text(0.425, 0.925, '$(k_x,k_y)=(0,0)$', fontsize=11)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/butterfly_triple_talk.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/butterfly_triple_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

@@ -200,5 +200,5 @@ if __name__ == '__main__':
     # fig.text(0.035, 0.47, "(b)", color="k", fontsize=12)
     # fig.text(0.48, 0.49, "(c)", color="k", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/Ly_flow_mag_detail_talk.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/Ly_flow_mag_detail_talk.png", bbox_inches='tight', dpi=300)
     plt.show()

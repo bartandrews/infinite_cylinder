@@ -290,5 +290,5 @@ if __name__ == '__main__':
 
     fig.text(0.3, 0.05, "$\epsilon_\\alpha\equiv-\log\Lambda_\\alpha^2$", color="k", fontsize=14)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_talk/figures/phi_flow_bar_talk_third.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/presentations/2019_12_13/figures/phi_flow_bar_talk_third.png", bbox_inches='tight', dpi=300)
     plt.show()
