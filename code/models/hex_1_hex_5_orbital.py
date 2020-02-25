@@ -32,6 +32,7 @@ class BosonicHex1Hex5OrbitalModel(CouplingMPOModel):
         site = self.init_sites(model_params)
         Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 4, self.name)
+        qvalue = get_parameter(model_params, 'phi', (1, 4), self.name)[1]
         bc_x = 'periodic' if bc_MPS == 'infinite' else 'open'  # Next line needs default
         bc_x = get_parameter(model_params, 'bc_x', bc_x, self.name)
         bc_y = get_parameter(model_params, 'bc_y', 'cylinder', self.name)
@@ -39,7 +40,7 @@ class BosonicHex1Hex5OrbitalModel(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = MagneticHoneycomb(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
+        lat = MagneticHoneycomb(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS, qvalue=qvalue)
         return lat
 
     def init_terms(self, model_params):
@@ -143,6 +144,7 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
         site = self.init_sites(model_params)
         Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 6, self.name)
+        qvalue = get_parameter(model_params, 'phi', (1, 6), self.name)[1]
         bc_x = 'periodic' if bc_MPS == 'infinite' else 'open'  # Next line needs default
         bc_x = get_parameter(model_params, 'bc_x', bc_x, self.name)
         bc_y = get_parameter(model_params, 'bc_y', 'cylinder', self.name)
@@ -150,7 +152,7 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = MagneticHoneycomb(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
+        lat = MagneticHoneycomb(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS, qvalue=qvalue)
         return lat
 
     def init_terms(self, model_params):
@@ -332,3 +334,10 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
         #                 * np.exp(-1j * (phi/2) * (i - 3/2))
         #         self.add_coupling(t_phi, u1, 'Cdy', u2, 'Cx', dx, 'JW', True)
         #         self.add_coupling(np.conj(t_phi), u2, 'Cdx', u1, 'Cy', -dx, 'JW', True)  # h.c.
+
+if __name__ == "__main__":
+    model_params = dict(conserve='N', t1=1, t2=-0.025, t2dash=0.1, filling=(int(1), int(9)), phi=(int(1), int(3)), Lx=1, Ly=6, V=10,  # system params
+                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                        verbose=1, phi_ext=1.)  # utility
+    M = FermionicHex1Hex5OrbitalModel(model_params)
+    print("MPO bond dimension = ", M.H_MPO.chi)

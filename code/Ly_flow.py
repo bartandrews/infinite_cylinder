@@ -1,8 +1,25 @@
 import numpy as np
 import time
 import tenpy.tools.process as prc
+import sys
 
 import functions as f
+
+
+class Logger(object):
+    def __init__(self, model, leaf):
+        self.terminal = sys.stdout
+        self.log = open("data/stdout/Ly_flow/" + model + "/" + "stdout_Ly_flow_" + model + "_" + leaf, 'w', buffering=1)
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by doing nothing.
+        # you might want to specify some extra behavior here.
+        pass
 
 
 def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag, use_pickle, make_pickle):
@@ -11,6 +28,7 @@ def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_
     ent_spec_real_stem = f.file_name_stem("ent_spec_real", model, chi_max)
     ent_spec_mom_stem = f.file_name_stem("ent_spec_mom", model, chi_max)
     leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_%s_Ly_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag))
+    sys.stdout = Logger(model, leaf)
     ent_scal_file = "data/ent_scal/" + model + "/" + ent_scal_stem.replace(" ", "_") + leaf
     ent_spec_real_file = "data/ent_spec_real/" + model + "/" + ent_spec_real_stem.replace(" ", "_") + leaf
     ent_spec_mom_file = "data/ent_spec_mom/" + model + "/" + ent_spec_mom_stem.replace(" ", "_") + ("chi_K_%s_" % chi_max_K) + leaf
@@ -92,10 +110,10 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_Ly_flow(model="FermionicHex1Hex5", chi_max=400, chi_max_K=500,
-               t1=1, t2=-0.005, t2dash=0.02, U=100, mu=0, V=10,
-               nnvalue=1, nd_min=15, nd_max=15, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-               Lx=1, Ly_min=10, Ly_max=10, Ly_samp=1, tag=".polarized2",
+    my_Ly_flow(model="BosonicHofstadter", chi_max=250, chi_max_K=500,
+               t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
+               nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
+               Lx=1, Ly_min=4, Ly_max=4, Ly_samp=1, tag="",
                use_pickle=False, make_pickle=False)
 
     # my_Ly_flow(model="FermionicHex1Hex5Orbital", chi_max=400, chi_max_K=500,

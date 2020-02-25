@@ -1,8 +1,25 @@
 import numpy as np
 import time
 import tenpy.tools.process as prc
+import sys
 
 import functions as f
+
+
+class Logger(object):
+    def __init__(self, model, leaf):
+        self.terminal = sys.stdout
+        self.log = open("data/stdout/Ly_flow/" + model + "/" + "stdout_Ly_flow_" + model + "_" + leaf, 'w', buffering=1)
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        # this flush method is needed for python 3 compatibility.
+        # this handles the flush command by doing nothing.
+        # you might want to specify some extra behavior here.
+        pass
 
 
 def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag, use_pickle, make_pickle):
@@ -10,6 +27,7 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
     corr_len_kappa_flow_stem = f.file_name_stem("corr_len_kappa_flow", model, chi_max)
     ent_spec_kappa_flow_stem = f.file_name_stem("ent_spec_kappa_flow", model, chi_max)
     leaf = ("t1_%s_t2_%s_t2dash_%s_kappa_%s_%s_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_%s_Ly_%s_%s_%s.dat%s" % (t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag))
+    sys.stdout = Logger(model, leaf)
     corr_len_kappa_flow_file = "data/corr_len_kappa_flow/" + model + "/" + corr_len_kappa_flow_stem.replace(" ", "_") + leaf
     ent_spec_kappa_flow_file = "data/ent_spec_kappa_flow/" + model + "/" + ent_spec_kappa_flow_stem.replace(" ", "_") + leaf
     open(corr_len_kappa_flow_file, "w")

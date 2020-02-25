@@ -521,7 +521,7 @@ def define_iDMRG_engine(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndval
         #     'N_cache': 40
         # },
         'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
-        'max_E_err': 1.e-10,
+        'max_E_err': 1.e-6,
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,
         # 'norm_tol_iter': 1000,
@@ -553,7 +553,7 @@ def define_iDMRG_engine(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndval
     # }
 
     # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
-    engine = dmrg.EngineCombine(psi, M, dmrg_params)
+    engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
 
     return engine
 
@@ -606,7 +606,7 @@ def run_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue
         #     'N_cache': 40
         # },
         'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
-        'max_E_err': 1.e-10,
+        'max_E_err': 1.e-6,
         'max_S_err': 1.e-6,
         # 'max_sweeps': 150,
         'verbose': 1,

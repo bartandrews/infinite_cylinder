@@ -29,6 +29,7 @@ class BosonicHofstadterModel(CouplingMPOModel):
         site = self.init_sites(model_params)
         Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 4, self.name)
+        qvalue = get_parameter(model_params, 'phi', (1, 4), self.name)[1]
         bc_x = 'periodic' if bc_MPS == 'infinite' else 'open'  # Next line needs default
         bc_x = get_parameter(model_params, 'bc_x', bc_x, self.name)
         bc_y = get_parameter(model_params, 'bc_y', 'cylinder', self.name)
@@ -36,7 +37,7 @@ class BosonicHofstadterModel(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = MagneticSquare(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
+        lat = MagneticSquare(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS, qvalue=qvalue)
         return lat
 
     def init_terms(self, model_params):
@@ -79,6 +80,7 @@ class FermionicHofstadterModel(CouplingMPOModel):
         site = self.init_sites(model_params)
         Lx = get_parameter(model_params, 'Lx', 1, self.name)
         Ly = get_parameter(model_params, 'Ly', 6, self.name)
+        qvalue = get_parameter(model_params, 'phi', (1, 6), self.name)[1]
         bc_x = 'periodic' if bc_MPS == 'infinite' else 'open'  # Next line needs default
         bc_x = get_parameter(model_params, 'bc_x', bc_x, self.name)
         bc_y = get_parameter(model_params, 'bc_y', 'cylinder', self.name)
@@ -86,7 +88,7 @@ class FermionicHofstadterModel(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = MagneticSquare(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS)
+        lat = MagneticSquare(Lx, Ly, site, order=order, bc=[bc_x, bc_y], bc_MPS=bc_MPS, qvalue=qvalue)
         return lat
 
     def init_terms(self, model_params):

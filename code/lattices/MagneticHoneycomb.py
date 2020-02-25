@@ -5,13 +5,13 @@ from tenpy.models import lattice
 from tenpy.networks import site
 import matplotlib.pyplot as plt
 
-import functions as f
+# import functions as f
 
 class MagneticHoneycomb(lattice.Lattice):
 
-    def __init__(self, Lx, Ly, siteA, **kwargs):
+    def __init__(self, Lx, Ly, siteA, qvalue, **kwargs):
 
-        numb_sites = int(2*f.qval)
+        numb_sites = 2*qvalue
 
         basis = np.array(([(numb_sites/4) * np.sqrt(3), numb_sites/4], [0., 1]))
         delta = np.array([1 / (2. * np.sqrt(3.)), 0.5])
@@ -127,23 +127,23 @@ class MagneticHoneycomb(lattice.Lattice):
                 setattr(self, "fifthNN{}br".format(i), [(i, i+4, np.array([0, -1]))])
 
 
-def plot_lattice():
+def plot_lattice(qvalue):
 
-    numb_sites = int(2*f.qval)
+    numb_sites = 2*qvalue
 
     ax = plt.gca()
     fs = site.FermionSite()
-    lat = MagneticHoneycomb(1, 4, fs, basis=[[(numb_sites/4) * np.sqrt(3), numb_sites/4], [0, 1]])
+    lat = MagneticHoneycomb(1, 4, fs, basis=[[(numb_sites/4) * np.sqrt(3), numb_sites/4], [0, 1]], qvalue=qvalue)
     lat.plot_sites(ax)
 
-    # for i in range(0, numb_sites, 2):
-    #     lat.plot_coupling(ax, getattr(lat, "NN{}d".format(i)), linestyle='-', color='red')
-    #     lat.plot_coupling(ax, getattr(lat, "NN{}ul".format(i)), linestyle='-', color='blue')
-    #     lat.plot_coupling(ax, getattr(lat, "NN{}ur".format(i)), linestyle='-', color='green')
-    for i in range(0, numb_sites):
-        lat.plot_coupling(ax, getattr(lat, "secondNN{}bl".format(i)), linestyle='-', color='red')
-        lat.plot_coupling(ax, getattr(lat, "secondNN{}r".format(i)), linestyle='-', color='blue')
-        lat.plot_coupling(ax, getattr(lat, "secondNN{}ul".format(i)), linestyle='-', color='green')
+    for i in range(0, numb_sites, 2):
+        lat.plot_coupling(ax, getattr(lat, "NN{}d".format(i)), linestyle='-', color='red')
+        lat.plot_coupling(ax, getattr(lat, "NN{}ul".format(i)), linestyle='-', color='blue')
+        lat.plot_coupling(ax, getattr(lat, "NN{}ur".format(i)), linestyle='-', color='green')
+    # for i in range(0, numb_sites):
+    #     lat.plot_coupling(ax, getattr(lat, "secondNN{}bl".format(i)), linestyle='-', color='red')
+    #     lat.plot_coupling(ax, getattr(lat, "secondNN{}r".format(i)), linestyle='-', color='blue')
+    #     lat.plot_coupling(ax, getattr(lat, "secondNN{}ul".format(i)), linestyle='-', color='green')
     # for i in range(0, numb_sites, 2):
     #     lat.plot_coupling(ax, getattr(lat, "thirdNN{}u".format(i)), linestyle='-', color='red')
     #     lat.plot_coupling(ax, getattr(lat, "thirdNN{}br".format(i)), linestyle='-', color='blue')
@@ -155,10 +155,10 @@ def plot_lattice():
     #     lat.plot_coupling(ax, getattr(lat, "fourthNN{}uul".format(i)), linestyle='-', color='orange')
     #     lat.plot_coupling(ax, getattr(lat, "fourthNN{}bl".format(i)), linestyle='-', color='purple')
     #     lat.plot_coupling(ax, getattr(lat, "fourthNN{}br".format(i)), linestyle='-', color='black')
-    # for i in range(0, numb_sites):
-    #     lat.plot_coupling(ax, getattr(lat, "fifthNN{}u".format(i)), linestyle='-', color='orange')
-    #     lat.plot_coupling(ax, getattr(lat, "fifthNN{}bl".format(i)), linestyle='-', color='purple')
-    #     lat.plot_coupling(ax, getattr(lat, "fifthNN{}br".format(i)), linestyle='-', color='black')
+    for i in range(0, numb_sites):
+        lat.plot_coupling(ax, getattr(lat, "fifthNN{}u".format(i)), linestyle='-', color='orange')
+        lat.plot_coupling(ax, getattr(lat, "fifthNN{}bl".format(i)), linestyle='-', color='purple')
+        lat.plot_coupling(ax, getattr(lat, "fifthNN{}br".format(i)), linestyle='-', color='black')
 
     ax.set_aspect('equal')
     plt.show()
@@ -166,4 +166,4 @@ def plot_lattice():
 
 if __name__ == "__main__":
 
-    plot_lattice()
+    plot_lattice(qvalue=2)
