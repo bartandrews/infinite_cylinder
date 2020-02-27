@@ -8,8 +8,8 @@ import functions as f
 
 class Logger(object):
     def __init__(self, model, leaf):
-        self.terminal = sys.stdout
-        self.log = open("data/stdout/phi_flow/" + model + "/" + "stdout_phi_flow_" + model + "_" + leaf, 'w', buffering=1)
+        self.terminal = sys.stdout or sys.stderr
+        self.log = open("data/output/phi_flow/" + model + "/" + "output_phi_flow_" + model + "_" + leaf, 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)
@@ -22,13 +22,13 @@ class Logger(object):
         pass
 
 
-def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag, use_pickle, make_pickle):
+def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag, use_pickle, make_pickle):
 
     overlap_stem = f.file_name_stem("overlap", model, chi_max)
     charge_pump_stem = f.file_name_stem("charge_pump", model, chi_max)
     ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, chi_max)
-    leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_%s_Ly_%s_%s_%s_phi_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag))
-    sys.stdout = Logger(model, leaf)
+    leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_MUC_%s_Ly_%s_%s_%s_phi_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag))
+    sys.stdout = sys.stderr = Logger(model, leaf)
     overlap_file = "data/overlap/" + model + "/" + overlap_stem.replace(" ", "_") + leaf
     charge_pump_file = "data/charge_pump/" + model + "/" + charge_pump_stem.replace(" ", "_") + leaf
     ent_spec_flow_file = "data/ent_spec_flow/" + model + "/" + ent_spec_flow_stem.replace(" ", "_") + leaf
@@ -58,7 +58,7 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
             charge_pump_data.write(data_line)
             ent_spec_flow_data.write(data_line)
 
-            engine = f.define_iDMRG_engine_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly, use_pickle, make_pickle, phi_min)
+            engine = f.define_iDMRG_engine_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min)
 
             for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
@@ -67,7 +67,7 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
                 else:
                     engine.engine_params['mixer'] = False
                     del engine.engine_params['chi_list']  # comment out this line for single site DMRG tests
-                    M = f.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly, phi_ext)
+                    M = f.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi_ext)
                     psi_old = engine.psi
                     engine.init_env(model=M)
                     engine.run()
@@ -108,16 +108,16 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_phi_flow(model="BosonicHofstadter", chi_max=50,
-                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
-                nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
-                Lx=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",
-                use_pickle=False, make_pickle=False)
-
-    # my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
-    #             t1=1, t2=-0.025, t2dash=0.1, U=100, mu=0, V=10,
-    #             nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-    #             Lx=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
+    # my_phi_flow(model="BosonicHofstadter", chi_max=50,
+    #             t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
+    #             nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
+    #             Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",
     #             use_pickle=False, make_pickle=False)
+
+    my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
+                t1=1, t2=-0.0125, t2dash=0.05, U=100, mu=0, V=10,
+                nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+                Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
+                use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)

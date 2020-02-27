@@ -6,6 +6,6 @@ do
     for model in BosonicHofstadter FermionicHofstadter BosonicHex1 FermionicHex1 BosonicHex1Hex5 FermionicHex1Hex5 BosonicHex1Hex5Orbital FermionicHex1Hex5Orbital 
     do
         #mkdir -p $tool/$model
-        printf '%s\n%s' '*' '!.gitignore' > stdout/$tool/$model/.gitignore
+        printf '%s\n%s' '*' '!.gitignore' > output/$tool/$model/.gitignore
     done
 done

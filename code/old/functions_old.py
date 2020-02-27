@@ -5,13 +5,13 @@ from models.haldane import BosonicHaldaneModel, FermionicHaldaneModel
 from models.hofstadter import BosonicHofstadterModel, FermionicHofstadterModel
 from models.hofstadter_orbital import BosonicHofstadterOrbitalModel, FermionicHofstadterOrbitalModel
 
-from models.hex_1 import BosonicHex1Model, FermionicHex1Model
+from models.hex_1_old import BosonicHex1Model, FermionicHex1Model
 from models.hex_1_orbital import BosonicHex1OrbitalModel, FermionicHex1OrbitalModel
 from models.tri_1 import BosonicTri1Model, FermionicTri1Model
 from models.tri_2 import BosonicTri2Model, FermionicTri2Model
 from models.hex_5 import BosonicHex5Model, FermionicHex5Model
-from models.hex_1_hex_5 import BosonicHex1Hex5Model, FermionicHex1Hex5Model
-from models.hex_1_hex_5_orbital import BosonicHex1Hex5OrbitalModel, FermionicHex1Hex5OrbitalModel
+from models.hex_1_hex_5_old import BosonicHex1Hex5Model, FermionicHex1Hex5Model
+from models.hex_1_hex_5_orbital_old import BosonicHex1Hex5OrbitalModel, FermionicHex1Hex5OrbitalModel
 
 from models.old.fermions_twist import FermionicTwistModel
 from models.old.complete_twist import BosonicCompleteTwistModel, FermionicCompleteTwistModel

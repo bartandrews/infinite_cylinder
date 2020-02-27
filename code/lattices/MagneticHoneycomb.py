@@ -30,10 +30,15 @@ class MagneticHoneycomb(lattice.Lattice):
 
         super().__init__([Lx, Ly], [siteA] * numb_sites, **kwargs)
 
+        # redefine order of the MPS sites
+        self.order = lattice.get_order_grouped([Lx, Ly, numb_sites],
+                                               [(i, i+1) for i in range(0, numb_sites, 2)])
+
         # NN ###
         for i in range(0, numb_sites, 2):
 
             setattr(self, "NN{}d".format(i), [(i, i+1, np.array([0, -1]))])
+            #self.pairs["NN{}d".format(i)] = [(i, i+1, np.array([0, -1]))]
 
             if i == 0:
                 setattr(self, "NN0ul", [(0, numb_sites-1, np.array([-1, 0]))])
@@ -155,15 +160,16 @@ def plot_lattice(qvalue):
     #     lat.plot_coupling(ax, getattr(lat, "fourthNN{}uul".format(i)), linestyle='-', color='orange')
     #     lat.plot_coupling(ax, getattr(lat, "fourthNN{}bl".format(i)), linestyle='-', color='purple')
     #     lat.plot_coupling(ax, getattr(lat, "fourthNN{}br".format(i)), linestyle='-', color='black')
-    for i in range(0, numb_sites):
-        lat.plot_coupling(ax, getattr(lat, "fifthNN{}u".format(i)), linestyle='-', color='orange')
-        lat.plot_coupling(ax, getattr(lat, "fifthNN{}bl".format(i)), linestyle='-', color='purple')
-        lat.plot_coupling(ax, getattr(lat, "fifthNN{}br".format(i)), linestyle='-', color='black')
-
+    # for i in range(0, numb_sites):
+    #     lat.plot_coupling(ax, getattr(lat, "fifthNN{}u".format(i)), linestyle='-', color='orange')
+    #     lat.plot_coupling(ax, getattr(lat, "fifthNN{}bl".format(i)), linestyle='-', color='purple')
+    #     lat.plot_coupling(ax, getattr(lat, "fifthNN{}br".format(i)), linestyle='-', color='black')
+    lat.plot_order(ax)
     ax.set_aspect('equal')
     plt.show()
 
 
 if __name__ == "__main__":
 
-    plot_lattice(qvalue=2)
+    plot_lattice(qvalue=6)
+

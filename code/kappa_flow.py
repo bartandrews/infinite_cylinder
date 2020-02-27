@@ -8,8 +8,8 @@ import functions as f
 
 class Logger(object):
     def __init__(self, model, leaf):
-        self.terminal = sys.stdout
-        self.log = open("data/stdout/Ly_flow/" + model + "/" + "stdout_Ly_flow_" + model + "_" + leaf, 'w', buffering=1)
+        self.terminal = sys.stdout or sys.stderr
+        self.log = open("data/output/Ly_flow/" + model + "/" + "output_Ly_flow_" + model + "_" + leaf, 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)
@@ -26,8 +26,8 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
 
     corr_len_kappa_flow_stem = f.file_name_stem("corr_len_kappa_flow", model, chi_max)
     ent_spec_kappa_flow_stem = f.file_name_stem("ent_spec_kappa_flow", model, chi_max)
-    leaf = ("t1_%s_t2_%s_t2dash_%s_kappa_%s_%s_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_%s_Ly_%s_%s_%s.dat%s" % (t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag))
-    sys.stdout = Logger(model, leaf)
+    leaf = ("t1_%s_t2_%s_t2dash_%s_kappa_%s_%s_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_MUC_%s_Ly_%s_%s_%s.dat%s" % (t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, tag))
+    sys.stdout = sys.stderr = Logger(model, leaf)
     corr_len_kappa_flow_file = "data/corr_len_kappa_flow/" + model + "/" + corr_len_kappa_flow_stem.replace(" ", "_") + leaf
     ent_spec_kappa_flow_file = "data/ent_spec_kappa_flow/" + model + "/" + ent_spec_kappa_flow_stem.replace(" ", "_") + leaf
     open(corr_len_kappa_flow_file, "w")
@@ -37,7 +37,7 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
 
     ##################################################################################################################
 
-    # engine = f.define_iDMRG_engine_pickle("kappa_flow", model, chi_max, t1, kappa_min*t2, kappa_min*t2dash, U, mu, V, Lx, Ly, use_pickle, make_pickle)
+    # engine = f.define_iDMRG_engine_pickle("kappa_flow", model, chi_max, t1, kappa_min*t2, kappa_min*t2dash, U, mu, V, Lx_MUC, Ly, use_pickle, make_pickle)
 
     for ndvalue, qvalue in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int), np.linspace(q_min, q_max, nu_samp, dtype=int)):
         for Ly in np.linspace(Ly_min, Ly_max, Ly_samp, dtype=int):
@@ -57,7 +57,7 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
 
             for kappa in np.linspace(kappa_min, kappa_max, kappa_samp):
 
-                (E, psi, M) = f.run_iDMRG_pickle("kappa_flow", model, chi_max, t1, kappa*t2, kappa*t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly, use_pickle, make_pickle)
+                (E, psi, M) = f.run_iDMRG_pickle("kappa_flow", model, chi_max, t1, kappa*t2, kappa*t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle)
 
                 ###########################
                 # corr_len_kappa_flow #
@@ -94,13 +94,13 @@ if __name__ == '__main__':
     my_kappa_flow(model="FermionicHex1Hex5Orbital", chi_max=150,
                   t1=1, t2=-0.025, t2dash=0.1, kappa_min=0, kappa_max=1, kappa_samp=11, U=100, mu=0, V=10,
                   nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-                  Lx=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag=".polarized2",
+                  Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag=".polarized2",
                   use_pickle=False, make_pickle=False)
 
     # my_kappa_flow(model="FermionicHex1Hex5Orbital", chi_max=150,
     #               t1=1, t2=-0.025, t2dash=0.1, kappa_min=0.4, kappa_max=1, kappa_samp=7, U=100, mu=0, V=10,
     #               nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-    #               Lx=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
+    #               Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
     #               use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)

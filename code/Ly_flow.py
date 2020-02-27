@@ -8,8 +8,8 @@ import functions as f
 
 class Logger(object):
     def __init__(self, model, leaf):
-        self.terminal = sys.stdout
-        self.log = open("data/stdout/Ly_flow/" + model + "/" + "stdout_Ly_flow_" + model + "_" + leaf, 'w', buffering=1)
+        self.terminal = sys.stdout or sys.stderr
+        self.log = open("data/output/Ly_flow/" + model + "/" + "output_Ly_flow_" + model + "_" + leaf, 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)
@@ -22,13 +22,13 @@ class Logger(object):
         pass
 
 
-def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag, use_pickle, make_pickle):
+def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, tag, use_pickle, make_pickle):
 
     ent_scal_stem = f.file_name_stem("ent_scal", model, chi_max)
     ent_spec_real_stem = f.file_name_stem("ent_spec_real", model, chi_max)
     ent_spec_mom_stem = f.file_name_stem("ent_spec_mom", model, chi_max)
-    leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_%s_Ly_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx, Ly_min, Ly_max, Ly_samp, tag))
-    sys.stdout = Logger(model, leaf)
+    leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_MUC_%s_Ly_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, tag))
+    sys.stdout = sys.stderr = Logger(model, leaf)
     ent_scal_file = "data/ent_scal/" + model + "/" + ent_scal_stem.replace(" ", "_") + leaf
     ent_spec_real_file = "data/ent_spec_real/" + model + "/" + ent_spec_real_stem.replace(" ", "_") + leaf
     ent_spec_mom_file = "data/ent_spec_mom/" + model + "/" + ent_spec_mom_stem.replace(" ", "_") + ("chi_K_%s_" % chi_max_K) + leaf
@@ -57,7 +57,7 @@ def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_
             ent_spec_real_data.write(data_line)
             ent_spec_mom_data.write(data_line)
 
-            (E, psi, M) = f.run_iDMRG_pickle("Ly_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx, Ly, use_pickle, make_pickle)
+            (E, psi, M) = f.run_iDMRG_pickle("Ly_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle)
 
             ############
             # ent_scal #
@@ -76,7 +76,7 @@ def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_
             print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
 
             # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-            for bond in range(0, Lx*Ly):
+            for bond in range(0, Lx_MUC*Ly):
                 for sector in range(0, len(spectrum[bond])):
                     for i in range(0, len(spectrum[bond][sector][1])):
                         data_line = "{charge:d}\t{bond:d}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0], bond=bond, spectrum=spectrum[bond][sector][1][i])
@@ -110,16 +110,16 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_Ly_flow(model="BosonicHofstadter", chi_max=250, chi_max_K=500,
-               t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
-               nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
-               Lx=1, Ly_min=4, Ly_max=4, Ly_samp=1, tag="",
+    my_Ly_flow(model="FermionicHex1", chi_max=500, chi_max_K=500,
+               t1=1, t2=0, t2dash=0, U=100, mu=0, V=10,
+               nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+               Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
                use_pickle=False, make_pickle=False)
 
     # my_Ly_flow(model="FermionicHex1Hex5Orbital", chi_max=400, chi_max_K=500,
     #            t1=1, t2=-0.01, t2dash=0.04, U=100, mu=0, V=10,
     #            nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-    #            Lx=1, Ly_min=9, Ly_max=9, Ly_samp=1, tag="",
+    #            Lx_MUC=1, Ly_min=9, Ly_max=9, Ly_samp=1, tag="",
     #            use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)
