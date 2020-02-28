@@ -114,13 +114,16 @@ class FermionicHex1Model(CouplingMPOModel):
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
                 self.add_coupling(V, u1, 'N', u2, 'N', dx)
+
             for u1, u2, dx in getattr(self.lat, "NN{}ul".format(i)):
                 print("lat_NN_ul =", u1, u2, dx)
                 t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \
-                        * np.exp(1j * (phi / 6) * (i - 1 / 2))
+                        * np.exp(1j * (phi / 6) * (i-1/2))
+                print(t_phi)
                 self.add_coupling(t_phi, u1, 'Cd', u2, 'C', dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Cd', u1, 'C', -dx)  # h.c.
                 self.add_coupling(V, u1, 'N', u2, 'N', dx)
+
             for u1, u2, dx in getattr(self.lat, "NN{}ur".format(i)):
                 print("lat_NN_ur =", u1, u2, dx)
                 t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_ext]) \

@@ -1,0 +1,40 @@
+from models.hofstadter_old import BosonicHofstadterModel as BosonicHofstadterModel_old
+from models.hofstadter import BosonicHofstadterModel
+from models.hofstadter_old import FermionicHofstadterModel as FermionicHofstadterModel_old
+from models.hofstadter import FermionicHofstadterModel
+from models.hex_1_old import BosonicHex1Model as BosonicHex1Model_old
+from models.hex_1 import BosonicHex1Model
+from models.hex_1_old import FermionicHex1Model as FermionicHex1Model_old
+from models.hex_1 import FermionicHex1Model
+from models.hex_1_hex_5_old import BosonicHex1Hex5Model as BosonicHex1Hex5Model_old
+from models.hex_1_hex_5 import BosonicHex1Hex5Model
+from models.hex_1_hex_5_old import FermionicHex1Hex5Model as FermionicHex1Hex5Model_old
+from models.hex_1_hex_5 import FermionicHex1Hex5Model
+from models.hex_1_hex_5_orbital_old import BosonicHex1Hex5OrbitalModel as BosonicHex1Hex5OrbitalModel_old
+from models.hex_1_hex_5_orbital import BosonicHex1Hex5OrbitalModel
+from models.hex_1_hex_5_orbital_old import FermionicHex1Hex5OrbitalModel as FermionicHex1Hex5OrbitalModel_old
+from models.hex_1_hex_5_orbital import FermionicHex1Hex5OrbitalModel
+
+if __name__ == "__main__":
+
+    model_params = dict(conserve='N', t=1, filling=(int(1), int(3)), phi=(int(1), int(3)), Lx_MUC=1, Ly=6, V=10,  # system params
+                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',  # MPS params
+                        verbose=1, phi_ext=1.1)  # utility
+
+    M1 = BosonicHofstadterModel_old(model_params)
+    M2 = BosonicHofstadterModel(model_params)
+
+    # print(M1.coupling_terms['Cd_i C_j'].to_TermList())
+    # print('='*80)
+    # print(M2.coupling_terms['Cd_i C_j'].to_TermList())
+
+    assert M1.H_MPO.L == M2.H_MPO.L
+    assert M1.H_MPO.is_hermitian()
+    assert M2.H_MPO.is_hermitian()
+    assert M1.H_MPO.is_equal(M2.H_MPO)
+
+    # import matplotlib.pyplot as plt
+    # ax=plt.gca()
+    # M1.lat.plot_order(ax)
+    # M2.lat.plot_order(ax)
+    # plt.show()

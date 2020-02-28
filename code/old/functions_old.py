@@ -2,7 +2,7 @@ from tenpy.networks.mps import MPS
 from tenpy.models.hubbard import FermiHubbardModel
 
 from models.haldane import BosonicHaldaneModel, FermionicHaldaneModel
-from models.hofstadter import BosonicHofstadterModel, FermionicHofstadterModel
+from models.hofstadter_old import BosonicHofstadterModel, FermionicHofstadterModel
 from models.hofstadter_orbital import BosonicHofstadterOrbitalModel, FermionicHofstadterOrbitalModel
 
 from models.hex_1_old import BosonicHex1Model, FermionicHex1Model

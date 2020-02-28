@@ -1,9 +1,9 @@
 from tenpy.networks.mps import MPS
 
-from models.hofstadter import BosonicHofstadterModel, FermionicHofstadterModel
-from models.hex_1_old import BosonicHex1Model, FermionicHex1Model
-from models.hex_1_hex_5_old import BosonicHex1Hex5Model, FermionicHex1Hex5Model
-from models.hex_1_hex_5_orbital_old import BosonicHex1Hex5OrbitalModel, FermionicHex1Hex5OrbitalModel
+from models.hofstadter_old import BosonicHofstadterModel, FermionicHofstadterModel
+from models.hex_1 import BosonicHex1Model, FermionicHex1Model
+from models.hex_1_hex_5 import BosonicHex1Hex5Model, FermionicHex1Hex5Model
+from models.hex_1_hex_5_orbital import BosonicHex1Hex5OrbitalModel, FermionicHex1Hex5OrbitalModel
 
 from tenpy.algorithms import dmrg
 # from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
@@ -488,10 +488,6 @@ def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue
 
 def define_iDMRG_engine_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle=False, make_pickle=False, phi_ext=0):
 
-    # # update q for corresponding Lattice class
-    # global qval
-    # qval = qvalue
-
     if use_pickle or make_pickle:
         pickle_stem = file_name_stem("engine", model, chi_max)
         pickle_leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_nphi_%s_%s_Lx_MUC_%s_Ly_%s_phi_%s.pkl" % (t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi_ext))
@@ -516,7 +512,6 @@ def define_iDMRG_engine(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndval
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
-    # refined
     dmrg_params = {
         'mixer': True,  # setting this to True helps to escape local minima
         'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
@@ -533,32 +528,11 @@ def define_iDMRG_engine(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndval
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,
         # 'norm_tol_iter': 1000,
-        # 'max_sweeps': 150,
+        'max_sweeps': 1000,
         'verbose': 1,
-        'N_sweeps_check': 10
+        'N_sweeps_check': 10,
+        # 'diag_method': 'lanczos'
     }
-
-    # unrefined
-    # dmrg_params = {
-    #     'mixer': True,  # setting this to True helps to escape local minima
-    #     'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
-    #     'trunc_params': {
-    #         'chi_max': chi_max,
-    #         'svd_min': 1.e-10
-    #     },
-    #     # 'lanczos_params': {
-    #     #     'reortho': True,
-    #     #     'N_cache': 40
-    #     # },
-    #     # 'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
-    #     'max_E_err': 1.e-8,
-    #     'max_S_err': 1.e-6,
-    #     # 'norm_tol': 1.e-6,
-    #     # 'norm_tol_iter': 1000,
-    #     'max_sweeps': 150,
-    #     'verbose': 1,
-    #     # 'N_sweeps_check': 10
-    # }
 
     # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
     engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
@@ -572,10 +546,6 @@ def define_iDMRG_engine(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndval
 
 
 def run_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle=False, make_pickle=False, phi_ext=0):
-
-    # # update q for corresponding Lattice class
-    # global qval
-    # qval = qvalue
 
     if use_pickle or make_pickle:
         pickle_stem = file_name_stem("E_psi_M", model, chi_max)
@@ -601,7 +571,6 @@ def run_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
-    # refined
     dmrg_params = {
         'mixer': True,  # setting this to True helps to escape local minima
         'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
@@ -616,32 +585,11 @@ def run_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue
         'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
         'max_E_err': 1.e-6,
         'max_S_err': 1.e-6,
-        # 'max_sweeps': 150,
+        'max_sweeps': 1000,
         'verbose': 1,
-        'N_sweeps_check': 10
+        'N_sweeps_check': 10,
+        # 'diag_method': 'lanczos'
     }
-
-    # unrefined
-    # dmrg_params = {
-    #     'mixer': True,  # setting this to True helps to escape local minima
-    #     'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
-    #     'trunc_params': {
-    #         'chi_max': chi_max,
-    #         'svd_min': 1.e-10
-    #     },
-    #     # 'lanczos_params': {
-    #     #     'reortho': True,
-    #     #     'N_cache': 40
-    #     # },
-    #     # 'chi_list': {0: 9, 10: 49, 20: 100, 40: chi_max},
-    #     'max_E_err': 1.e-8,
-    #     'max_S_err': 1.e-6,
-    #     # 'norm_tol': 1.e-6,
-    #     # 'norm_tol_iter': 1000,
-    #     'max_sweeps': 150,
-    #     'verbose': 1,
-    #     # 'N_sweeps_check': 10
-    # }
 
     info = dmrg.run(psi, M, dmrg_params)
     E = info['E']

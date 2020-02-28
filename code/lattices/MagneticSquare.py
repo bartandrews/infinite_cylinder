@@ -28,6 +28,12 @@ class MagneticSquare(lattice.Lattice):
 
         super().__init__([Lx, Ly], [siteA] * numb_sites, **kwargs)
 
+        # print(lattice.get_order_grouped([Lx, Ly, numb_sites], [(i,) for i in range(0, numb_sites)]))
+
+        # redefine order of the MPS sites
+        self.order = lattice.get_order_grouped([Lx, Ly, numb_sites],
+                                              [(i,) for i in range(0, numb_sites)])
+
         NN_horiz_list=[]
         for i in range(numb_sites):
             if i == numb_sites-1:
@@ -55,6 +61,7 @@ def plot_lattice(qvalue):
     for i in range(numb_sites):
         lat.plot_coupling(ax, getattr(lat, "NN_v{}".format(i)), linestyle='-', color='C{}'.format(i))
 
+    lat.plot_order(ax)
     ax.set_aspect('equal')
     plt.show()
 

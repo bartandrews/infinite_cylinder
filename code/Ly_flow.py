@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_Ly_flow(model="FermionicHex1", chi_max=500, chi_max_K=500,
+    my_Ly_flow(model="FermionicHex1", chi_max=50, chi_max_K=500,
                t1=1, t2=0, t2dash=0, U=100, mu=0, V=10,
                nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
                Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",

@@ -76,6 +76,8 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
                     print(data_line)
                     overlap_data.write(data_line+"\n")
 
+                print("max entanglement = ", max(engine.psi.entanglement_entropy()))
+
                 ###############
                 # charge_pump #
                 ###############
@@ -108,16 +110,16 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    # my_phi_flow(model="BosonicHofstadter", chi_max=50,
-    #             t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
-    #             nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
-    #             Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",
-    #             use_pickle=False, make_pickle=False)
-
     my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
-                t1=1, t2=-0.0125, t2dash=0.05, U=100, mu=0, V=10,
+                t1=1, t2=0, t2dash=0, U=100, mu=0, V=10,
                 nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
                 Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
                 use_pickle=False, make_pickle=False)
+
+    # my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
+    #             t1=1, t2=-0.0125, t2dash=0.05, U=100, mu=0, V=10,
+    #             nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+    #             Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
+    #             use_pickle=False, make_pickle=False)
 
     print(time.time() - t0)

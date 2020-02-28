@@ -64,22 +64,25 @@ class BosonicHex1Hex5OrbitalModel(CouplingMPOModel):
         # t1 term ######################################################################################################
 
         u1, u2, dx = (0, 1, np.array([0, -1]))  # down
+        m = np.arange(0, 2 * phi_q * Lx_MUC, 2)
         t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                * np.exp(-1j * (phi / 3) * np.arange(0, 2 * phi_q * Lx_MUC, 2))[:, np.newaxis]
-        for orbital in ['x', 'y']:
-            self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
-            self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
-
-        u1, u2, dx = (0, 1, np.array([0, 0]))  # upper right
-        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                * np.exp(1j * (phi / 6) * (np.arange(0, 2 * phi_q * Lx_MUC, 2) + 1 / 2))[:, np.newaxis]
+                * np.exp(-1j * (phi / 3) * m)[:, np.newaxis]
         for orbital in ['x', 'y']:
             self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
             self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
 
         u1, u2, dx = (0, 1, np.array([-1, 0]))  # upper left
+        m = np.roll(np.arange(0, 2 * phi_q * Lx_MUC, 2), -1)  # match convention for strength argument of add_coupling
         t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                * np.exp(1j * (phi / 6) * (np.arange(0, 2 * phi_q * Lx_MUC, 2) - 1 / 2))[:, np.newaxis]
+                * np.exp(1j * (phi / 6) * (m - 1 / 2))[:, np.newaxis]
+        for orbital in ['x', 'y']:
+            self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
+            self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
+
+        u1, u2, dx = (0, 1, np.array([0, 0]))  # upper right
+        m = np.arange(0, 2 * phi_q * Lx_MUC, 2)
+        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
+                * np.exp(1j * (phi / 6) * (m + 1 / 2))[:, np.newaxis]
         for orbital in ['x', 'y']:
             self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
             self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
@@ -89,10 +92,12 @@ class BosonicHex1Hex5OrbitalModel(CouplingMPOModel):
         for sublattice in [0, 1]:  # A and B sublattices
 
             u1, u2, dx = (sublattice, sublattice, np.array([-1, 2]))  # up
+            m = np.roll(np.arange(sublattice, 2 * phi_q * Lx_MUC, 2),
+                        -1)  # match convention for strength argument of add_coupling
             t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                    * np.exp(1j * phi * np.arange(sublattice, 2 * phi_q * Lx_MUC, 2))[:, np.newaxis]
+                    * np.exp(1j * phi * m)[:, np.newaxis]
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                         * np.exp(1j * phi * np.arange(sublattice, 2 * phi_q * Lx_MUC, 2))[:, np.newaxis]
+                         * np.exp(1j * phi * m)[:, np.newaxis]
             for orbital in ['x', 'y']:
                 self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
@@ -103,11 +108,12 @@ class BosonicHex1Hex5OrbitalModel(CouplingMPOModel):
             self.add_coupling(np.conj(-t2dash_phi), u2, 'Bdx', u1, 'By', -dx)  # h.c.
 
             u1, u2, dx = (sublattice, sublattice, np.array([-2, 1]))  # bottom right
+            m = np.roll(np.arange(sublattice, 2 * phi_q * Lx_MUC, 2),
+                        -2)  # match convention for strength argument of add_coupling
             t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                    * np.exp(-1j * (phi / 2) * (np.arange(sublattice, 2 * phi_q * Lx_MUC, 2) + 3 / 2))[:, np.newaxis]
+                    * np.exp(-1j * (phi / 2) * (m + 3 / 2))[:, np.newaxis]
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                         * np.exp(-1j * (phi / 2) * (np.arange(sublattice, 2 * phi_q * Lx_MUC, 2) + 3 / 2))[:,
-                           np.newaxis]
+                         * np.exp(-1j * (phi / 2) * (m + 3 / 2))[:, np.newaxis]
             for orbital in ['x', 'y']:
                 self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
@@ -118,11 +124,12 @@ class BosonicHex1Hex5OrbitalModel(CouplingMPOModel):
             self.add_coupling(np.conj(-t2dash_phi), u2, 'Bdx', u1, 'By', -dx)  # h.c.
 
             u1, u2, dx = (sublattice, sublattice, np.array([-1, -1]))  # bottom left
+            m = np.roll(np.arange(sublattice, 2 * phi_q * Lx_MUC, 2),
+                        -1)  # match convention for strength argument of add_coupling
             t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                    * np.exp(-1j * (phi / 2) * (np.arange(sublattice, 2 * phi_q * Lx_MUC, 2) - 3 / 2))[:, np.newaxis]
+                    * np.exp(-1j * (phi / 2) * (m - 3 / 2))[:, np.newaxis]
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                         * np.exp(-1j * (phi / 2) * (np.arange(sublattice, 2 * phi_q * Lx_MUC, 2) - 3 / 2))[:,
-                           np.newaxis]
+                         * np.exp(-1j * (phi / 2) * (m - 3 / 2))[:, np.newaxis]
             for orbital in ['x', 'y']:
                 self.add_coupling(t_phi, u1, 'Bd' + orbital, u2, 'B' + orbital, dx)
                 self.add_coupling(np.conj(t_phi), u2, 'Bd' + orbital, u1, 'B' + orbital, -dx)  # h.c.
@@ -185,30 +192,33 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
 
         # t1 term ######################################################################################################
 
-        u1, u2, dx = (0, 1, np.array([0, -1]))  #down
+        u1, u2, dx = (0, 1, np.array([0, -1]))  # down
+        m = np.arange(0, 2*phi_q*Lx_MUC, 2)
         t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                * np.exp(-1j * (phi / 3) * np.arange(0, 2*phi_q*Lx_MUC, 2))[:, np.newaxis]
+                * np.exp(-1j * (phi / 3) * m)[:, np.newaxis]
         for orbital in ['x', 'y']:
-            self.add_coupling(t_phi, u1, 'Cd'+orbital, u2, 'C'+orbital, dx, 'JW', True)
-            self.add_coupling(np.conj(t_phi), u2, 'Cd'+orbital, u1, 'C'+orbital, -dx, 'JW', True)  # h.c.
+            self.add_coupling(t_phi, u1, 'Cd'+orbital, u2, 'C'+orbital, dx)
+            self.add_coupling(np.conj(t_phi), u2, 'Cd'+orbital, u1, 'C'+orbital, -dx)  # h.c.
+        # NN interaction
+        self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
+
+        u1, u2, dx = (0, 1, np.array([-1, 0]))  # upper left
+        m = np.roll(np.arange(0, 2 * phi_q * Lx_MUC, 2), -1)  # match convention for strength argument of add_coupling
+        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
+                * np.exp(1j * (phi / 6) * (m - 1 / 2))[:, np.newaxis]
+        for orbital in ['x', 'y']:
+            self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx)
+            self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx)  # h.c.
         # NN interaction
         self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
 
         u1, u2, dx = (0, 1, np.array([0, 0]))  #upper right
+        m = np.arange(0, 2*phi_q*Lx_MUC, 2)
         t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                * np.exp(1j * (phi / 6) * (np.arange(0, 2*phi_q*Lx_MUC, 2) + 1/2))[:, np.newaxis]
+                * np.exp(1j * (phi / 6) * (m + 1/2))[:, np.newaxis]
         for orbital in ['x', 'y']:
-            self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
-            self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
-        # NN interaction
-        self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
-
-        u1, u2, dx = (0, 1, np.array([-1, 0]))  #upper left
-        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext]) \
-                * np.exp(1j * (phi / 6) * (np.arange(0, 2*phi_q*Lx_MUC, 2) - 1/2))[:, np.newaxis]
-        for orbital in ['x', 'y']:
-            self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
-            self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+            self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx)
+            self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx)  # h.c.
         # NN interaction
         self.add_coupling(V, u1, 'Ntot', u2, 'Ntot', dx)
 
@@ -216,42 +226,45 @@ class FermionicHex1Hex5OrbitalModel(CouplingMPOModel):
 
         for sublattice in [0, 1]:  #A and B sublattices
 
-            u1, u2, dx = (sublattice, sublattice, np.array([-1, 2]))  #up
+            u1, u2, dx = (sublattice, sublattice, np.array([-1, 2]))  # up
+            m = np.roll(np.arange(sublattice, 2*phi_q*Lx_MUC, 2), -1)  # match convention for strength argument of add_coupling
             t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                    * np.exp(1j * phi * np.arange(sublattice, 2*phi_q*Lx_MUC, 2))[:, np.newaxis]
+                    * np.exp(1j * phi * m)[:, np.newaxis]
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                    * np.exp(1j * phi * np.arange(sublattice, 2*phi_q*Lx_MUC, 2))[:, np.newaxis]
+                    * np.exp(1j * phi * m)[:, np.newaxis]
             for orbital in ['x', 'y']:
-                self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+                self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx)  # h.c.
             # fifthNN orbital mixing
             self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
             self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
             self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
             self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
 
-            u1, u2, dx = (sublattice, sublattice, np.array([-2, 1]))  #bottom right
+            u1, u2, dx = (sublattice, sublattice, np.array([-2, 1]))  # bottom right
+            m = np.roll(np.arange(sublattice, 2*phi_q*Lx_MUC, 2), -2)  # match convention for strength argument of add_coupling
             t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                    * np.exp(-1j * (phi/2) * (np.arange(sublattice, 2*phi_q*Lx_MUC, 2) + 3/2))[:, np.newaxis]
+                    * np.exp(-1j * (phi/2) * (m + 3/2))[:, np.newaxis]
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                    * np.exp(-1j * (phi/2) * (np.arange(sublattice, 2*phi_q*Lx_MUC, 2) + 3/2))[:, np.newaxis]
+                    * np.exp(-1j * (phi/2) * (m + 3/2))[:, np.newaxis]
             for orbital in ['x', 'y']:
-                self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+                self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx)  # h.c.
             # fifthNN orbital mixing
             self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
             self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.
             self.add_coupling(-t2dash_phi, u1, 'Cdy', u2, 'Cx', dx)
             self.add_coupling(np.conj(-t2dash_phi), u2, 'Cdx', u1, 'Cy', -dx)  # h.c.
 
-            u1, u2, dx = (sublattice, sublattice, np.array([-1, -1]))  #bottom left
+            u1, u2, dx = (sublattice, sublattice, np.array([-1, -1]))  # bottom left
+            m = np.roll(np.arange(sublattice, 2*phi_q*Lx_MUC, 2), -1)  # match convention for strength argument of add_coupling
             t_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_ext]) \
-                    * np.exp(-1j * (phi/2) * (np.arange(sublattice, 2*phi_q*Lx_MUC, 2) - 3/2))[:, np.newaxis]
+                    * np.exp(-1j * (phi/2) * (m - 3/2))[:, np.newaxis]
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_ext]) \
-                    * np.exp(-1j * (phi/2) * (np.arange(sublattice, 2*phi_q*Lx_MUC, 2) - 3/2))[:, np.newaxis]
+                    * np.exp(-1j * (phi/2) * (m - 3/2))[:, np.newaxis]
             for orbital in ['x', 'y']:
-                self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx, 'JW', True)
-                self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx, 'JW', True)  # h.c.
+                self.add_coupling(t_phi, u1, 'Cd' + orbital, u2, 'C' + orbital, dx)
+                self.add_coupling(np.conj(t_phi), u2, 'Cd' + orbital, u1, 'C' + orbital, -dx)  # h.c.
             # fifthNN orbital mixing
             self.add_coupling(t2dash_phi, u1, 'Cdx', u2, 'Cy', dx)
             self.add_coupling(np.conj(t2dash_phi), u2, 'Cdy', u1, 'Cx', -dx)  # h.c.

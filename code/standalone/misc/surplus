@@ -148,3 +148,7 @@ pprint.pprint(list(M.coupling_terms['t2 Cd_i C_j'].to_TermList()))
 
 print(self.lat.nearest_neighbors)
 print(u1, u2, dx)
+
+# debug the dmrg.py
+
+import pdb; pdb.set_trace()
