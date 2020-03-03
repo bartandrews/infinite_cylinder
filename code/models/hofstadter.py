@@ -12,6 +12,51 @@ from tenpy.models.lattice import Square
 
 
 class BosonicHofstadterModel(CouplingMPOModel):
+    r"""Hardcore bosonic Haldane model.
+
+        The Hamiltonian reads:
+
+        .. math ::
+            H = \sum_{ij} t_{ij} b_i^\dagger b_j + \sum_i \mu (n_{A, i} - n_{B, i})
+            + V \sum_{\langle ij \rangle, i<j} n_{A, i} n_{B, j}
+
+
+        Here, :math:`\langle i,j \rangle, i< j` denotes nearest neighbor pairs and :math:`n_A, n_B` are the number operators
+        on the A and B sites. Hopping is allowed to nearest and next-nearest neighbor sites with amplitudes
+        :math:`t_{\langle ij \rangle}=t_1 \in \mathbb{R}` and
+        :math:`t_{\langle\langle ij \rangle\rangle}=t_2 e^{\pm\mathrm{i}\phi} \in \mathbb{C}` respectively, where
+        :math:`\pm\phi` is the phase acquired by a boson hopping between atoms in the same sublattice with a sign
+        given by the direction of the hopping. This Hamiltonian is translated from [Grushin2015]_.
+        All parameters are collected in a single dictionary `model_params` and read out with
+        :func:`~tenpy.tools.params.get_parameter`.
+
+        Parameters
+        ----------
+        conserve : 'best' | 'N' | 'parity' | None
+            What should be conserved. See :class:`~tenpy.networks.Site.BosonSite`.
+            For ``'best'``, we check the parameters that can be preserved.
+        t1, t2, V, mu : float | array
+            Hopping, interaction and chemical potential as defined for the Hamiltonian above.
+            The default value for t2 is chosen to achieve the optimal band flatness ratio.
+        bc_MPS : {'finite' | 'infinte'}
+            MPS boundary conditions along the x-direction.
+            For 'infinite' boundary conditions, repeat the unit cell in x-direction.
+            Coupling boundary conditions in x-direction are chosen accordingly.
+            Only used if `lattice` is a string.
+        order : string
+            Ordering of the sites in the MPS, e.g. 'default', 'snake';
+            see :meth:`~tenpy.models.lattice.Lattice.ordering`.
+            Only used if `lattice` is a string.
+        L : int
+            Lenght of the lattice.
+            Only used if `lattice` is the name of a 1D Lattice.
+        Lx, Ly : int
+            Length of the lattice in x- and y-direction.
+            Only used if `lattice` is the name of a 2D Lattice.
+        bc_y : 'ladder' | 'cylinder'
+            Boundary conditions in y-direction.
+            Only used if `lattice` is the name of a 2D Lattice.
+        """
 
     def __init__(self, model_params):
         CouplingMPOModel.__init__(self, model_params)
