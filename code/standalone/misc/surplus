@@ -152,3 +152,6 @@ print(u1, u2, dx)
 # debug the dmrg.py
 
 import pdb; pdb.set_trace()
+
+if npc.norm(theta_guess) < 1.e-10:
+    import pdb; pdb.set_trace()

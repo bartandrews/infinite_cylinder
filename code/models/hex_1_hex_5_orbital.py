@@ -278,7 +278,7 @@ if __name__ == "__main__":
 
     model_params = dict(conserve='N', t1=1, t2=-0.025, t2dash=0.1, filling=(int(1), int(9)), phi=(int(1), int(3)),
                         Lx_MUC=1, Ly=6, V=10,  # system params
-                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='default',  # MPS params
+                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',  # MPS params
                         verbose=1, phi_ext=1.)  # utility
     M = FermionicHex1Hex5OrbitalModel(model_params)
     print("max MPO bond dimension = ", max(M.H_MPO.chi))

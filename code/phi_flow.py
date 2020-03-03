@@ -58,7 +58,9 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
             charge_pump_data.write(data_line)
             ent_spec_flow_data.write(data_line)
 
-            engine = f.define_iDMRG_engine_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min)
+            # engine = f.define_iDMRG_engine_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min)
+            engine = f.my_iDMRG_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue,
+                                       qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min, run=False)
 
             for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
@@ -76,7 +78,7 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
                     print(data_line)
                     overlap_data.write(data_line+"\n")
 
-                print("max entanglement = ", max(engine.psi.entanglement_entropy()))
+                # print("max entanglement = ", max(engine.psi.entanglement_entropy()))
 
                 ###############
                 # charge_pump #
@@ -110,7 +112,7 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
+    my_phi_flow(model="BosonicHofstadter", chi_max=50,
                 t1=1, t2=0, t2dash=0, U=100, mu=0, V=10,
                 nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
                 Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",

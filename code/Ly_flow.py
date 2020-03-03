@@ -57,7 +57,20 @@ def my_Ly_flow(model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V, nnvalue, nd_
             ent_spec_real_data.write(data_line)
             ent_spec_mom_data.write(data_line)
 
-            (E, psi, M) = f.run_iDMRG_pickle("Ly_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle)
+            (E, psi, M) = f.my_iDMRG_pickle("Ly_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue,
+                                            pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle, run=True)
+
+            ###
+
+            if "Orbital" in model:
+                op = "Ntot"
+            else:
+                op = "N"
+            NN = psi.correlation_function("N", "N", sites1=range(0, 2*psi.L), sites2=[0])[:, 0]
+            # NN_reshaped = M.lat.mps2lat_values(NN)
+            # print(NN_reshaped.shape, M.lat.shape)
+            import pdb; pdb.set_trace()
+            return
 
             ############
             # ent_scal #
@@ -110,10 +123,10 @@ if __name__ == '__main__':
 
     t0 = time.time()
 
-    my_Ly_flow(model="FermionicHex1", chi_max=50, chi_max_K=500,
+    my_Ly_flow(model="BosonicHofstadter", chi_max=50, chi_max_K=500,
                t1=1, t2=0, t2dash=0, U=100, mu=0, V=10,
-               nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-               Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
+               nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
+               Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, tag="",
                use_pickle=False, make_pickle=False)
 
     # my_Ly_flow(model="FermionicHex1Hex5Orbital", chi_max=400, chi_max_K=500,

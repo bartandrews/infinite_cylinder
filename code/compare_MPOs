@@ -21,8 +21,8 @@ if __name__ == "__main__":
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',  # MPS params
                         verbose=1, phi_ext=1.1)  # utility
 
-    M1 = BosonicHofstadterModel_old(model_params)
-    M2 = BosonicHofstadterModel(model_params)
+    M1 = FermionicHex1Hex5OrbitalModel_old(model_params)
+    M2 = FermionicHex1Hex5OrbitalModel(model_params)
 
     # print(M1.coupling_terms['Cd_i C_j'].to_TermList())
     # print('='*80)
