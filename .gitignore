@@ -1,15 +1,10 @@
 .idea/workspace.xml
 .idea/tasks.xml
-lattice_plots/
-git_instructions
 **/*.dat
 **/*.txt
 **/*.dat.*
 **/__pycache__/*
 data/ent_scal/fit.log
-data/ent_scal/keep/fit.log
 **/*.temp
 **/*.tmp
 **/*.backup
-data/charge_pump/complete_twist/*
-data/ent_spec_flow/complete_twist/*

@@ -2,6 +2,8 @@
 import sys
 import os
 import numpy as np
+# --- TeNPy imports
+from tenpy.models.model import CouplingMPOModel
 
 
 ###############################################
@@ -10,6 +12,7 @@ import numpy as np
 
 
 def file_name_stem(tool, model, chi_max):
+
     if model not in ['BosonicHofstadter', 'FermionicHofstadter',
                      'BosonicHex1', 'FermionicHex1',
                      'BosonicHex1Hex5', 'FermionicHex1Hex5',
@@ -27,6 +30,7 @@ def file_name_stem(tool, model, chi_max):
 
 
 def prepare_output_files(tools, model, chi_max, leaf, chi_max_K=0):
+
     stem, file, data = [dict()]*3
     for tool in tools:
         stem.update({tool: file_name_stem(tool, model, chi_max)})
@@ -49,8 +53,8 @@ def prepare_output_files(tools, model, chi_max, leaf, chi_max_K=0):
 class Logger(object):
     def __init__(self, flow, model, leaf):
         self.terminal = sys.stdout or sys.stderr
-        os.makedirs(f"data/output/{flow}/{model}/", exist_ok=True)
-        self.log = open(f"data/output/{flow}/{model}/output_{flow}_{model}_{leaf}", 'w', buffering=1)
+        os.makedirs(f"logs/{flow}/{model}/", exist_ok=True)
+        self.log = open(f"logs/{flow}/{model}/output_{flow}_{model}_{leaf}", 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)
@@ -82,3 +86,11 @@ def print_LylB_headings(model, Ly, ndvalue, nd_min, pvalue, qvalue, q_min, Ly_mi
         data_line = f"\n\nLylB={LylB:.15f}\n"
 
     return data_line, LylB
+
+
+if __name__ == '__main__':
+
+    models = []
+    for m in CouplingMPOModel.__subclasses__():
+        models.append(m.__name__)
+    print(models)

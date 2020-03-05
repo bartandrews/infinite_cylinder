@@ -53,7 +53,7 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V,
                     engine.run()
 
                     ###########
-                    # Overlap #
+                    # overlap #
                     ###########
 
                     abs_ov = abs(psi_old.overlap(engine.psi))

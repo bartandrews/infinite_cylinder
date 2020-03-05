@@ -1,0 +1,14 @@
+git diff   #check files vs local repository
+git remote show origin   #compare local and remote repos
+
+git status #check differences from local repository
+
+git add -A # stage all untracked files for commit (i.e. change from red to green)
+git add <filename> # add a specific file
+
+git commit -m "<message>" # commit staged changes to local repo (i.e. those that are green with "git status")
+
+git commit -a -m "<message>" # equivalent to git add -A; git commit -m "<message>"
+
+git push origin master    # push local commits to remote
+git pull origin master    # pull commits from remote

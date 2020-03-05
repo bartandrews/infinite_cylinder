@@ -21,7 +21,7 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
            f"Lx_MUC_{Lx_MUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}.dat{tag}"
     sys.stdout = sys.stderr = fp.Logger("kappa_flow", model, leaf)
 
-    tools = ["corr_len", "ent_spec"]
+    tools = ["corr_len_kappa_flow", "ent_spec_kappa_flow"]
     data = fp.prepare_output_files(tools, model, chi_max, leaf)
 
     ####################################################################################################################
@@ -83,5 +83,5 @@ if __name__ == '__main__':
     my_kappa_flow(model="FermionicHex1Hex5Orbital", chi_max=150,
                   t1=1, t2=-0.025, t2dash=0.1, kappa_min=0, kappa_max=1, kappa_samp=11, U=100, mu=0, V=10,
                   nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-                  Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag=".polarized2",
+                  Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
                   use_pickle=False, make_pickle=False)
