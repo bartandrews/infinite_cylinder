@@ -9,10 +9,12 @@ import functions.file_proc as fp
 import functions.dmrg as fd
 
 
-def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V,
+def my_kappa_flow(threads, model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V,
                   nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp,
                   Lx_MUC, Ly_min, Ly_max, Ly_samp, tag,
                   use_pickle, make_pickle):
+
+    prc.mkl_set_nthreads(threads)
 
     t0 = time.time()
 
@@ -78,9 +80,7 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
 
 if __name__ == '__main__':
 
-    prc.mkl_set_nthreads(1)
-
-    my_kappa_flow(model="FermionicHex1Hex5Orbital", chi_max=150,
+    my_kappa_flow(threads=1, model="FermionicHex1Hex5Orbital", chi_max=150,
                   t1=1, t2=-0.025, t2dash=0.1, kappa_min=0, kappa_max=1, kappa_samp=11, U=100, mu=0, V=10,
                   nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
                   Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",

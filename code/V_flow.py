@@ -9,10 +9,12 @@ import functions.file_proc as fp
 import functions.dmrg as fd
 
 
-def my_V_flow(model, chi_max, t1, t2, t2dash, U, mu, V_min, V_max, V_samp,
+def my_V_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V_min, V_max, V_samp,
               nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp,
               Lx_MUC, Ly_min, Ly_max, Ly_samp, tag,
               use_pickle, make_pickle):
+
+    prc.mkl_set_nthreads(threads)
 
     t0 = time.time()
 
@@ -72,9 +74,7 @@ def my_V_flow(model, chi_max, t1, t2, t2dash, U, mu, V_min, V_max, V_samp,
 
 if __name__ == '__main__':
 
-    prc.mkl_set_nthreads(1)
-
-    my_V_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
+    my_V_flow(threads=1, model="FermionicHex1Hex5Orbital", chi_max=50,
               t1=1, t2=-0.025, t2dash=0.1, U=0, mu=0, V_min=0, V_max=10, V_samp=100,
               nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
               Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
