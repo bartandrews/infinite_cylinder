@@ -3,6 +3,14 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/code" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/code/functions/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/lattices/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/models/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/utilities/old" />
+      <excludeFolder url="file://$MODULE_DIR$/data/old" />
+      <excludeFolder url="file://$MODULE_DIR$/old" />
     </content>
     <content url="file://$USER_HOME$/TeNPy_latest" />
     <orderEntry type="jdk" jdkName="Python 3.7 (infinite_cylinder)" jdkType="Python SDK" />

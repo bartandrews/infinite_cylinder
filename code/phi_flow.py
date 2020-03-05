@@ -1,66 +1,49 @@
-import numpy as np
+# --- python imports
 import time
-import tenpy.tools.process as prc
 import sys
-
-import functions as f
-
-
-class Logger(object):
-    def __init__(self, model, leaf):
-        self.terminal = sys.stdout or sys.stderr
-        self.log = open("data/output/phi_flow/" + model + "/" + "output_phi_flow_" + model + "_" + leaf, 'w', buffering=1)
-
-    def write(self, message):
-        self.terminal.write(message)
-        self.log.write(message)
-
-    def flush(self):
-        # this flush method is needed for python 3 compatibility.
-        # this handles the flush command by doing nothing.
-        # you might want to specify some extra behavior here.
-        pass
+import numpy as np
+# --- TeNPy imports
+import tenpy.tools.process as prc
+# --- infinite_cylinder imports
+import functions.file_proc as fp
+import functions.dmrg as fd
 
 
-def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag, use_pickle, make_pickle):
+def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V,
+                nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp,
+                Lx_MUC, Ly_min, Ly_max, Ly_samp,
+                phi_min, phi_max, phi_samp, tag,
+                use_pickle, make_pickle):
 
-    overlap_stem = f.file_name_stem("overlap", model, chi_max)
-    charge_pump_stem = f.file_name_stem("charge_pump", model, chi_max)
-    ent_spec_flow_stem = f.file_name_stem("ent_spec_flow", model, chi_max)
-    leaf = ("t1_%s_t2_%s_t2dash_%s_U_%s_mu_%s_V_%s_n_%s_%s_%s_%s_nphi_%s_%s_%s_%s_Lx_MUC_%s_Ly_%s_%s_%s_phi_%s_%s_%s.dat%s" % (t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_max, nu_samp, pvalue, q_min, q_max, nu_samp, Lx_MUC, Ly_min, Ly_max, Ly_samp, phi_min, phi_max, phi_samp, tag))
-    sys.stdout = sys.stderr = Logger(model, leaf)
-    overlap_file = "data/overlap/" + model + "/" + overlap_stem.replace(" ", "_") + leaf
-    charge_pump_file = "data/charge_pump/" + model + "/" + charge_pump_stem.replace(" ", "_") + leaf
-    ent_spec_flow_file = "data/ent_spec_flow/" + model + "/" + ent_spec_flow_stem.replace(" ", "_") + leaf
-    open(overlap_file, "w")
-    open(charge_pump_file, "w")
-    open(ent_spec_flow_file, "w")
-    overlap_data = open(overlap_file, "a", buffering=1)
-    charge_pump_data = open(charge_pump_file, "a", buffering=1)
-    ent_spec_flow_data = open(ent_spec_flow_file, "a", buffering=1)
+    t0 = time.time()
 
-    ##################################################################################################################
+    leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_n_{nnvalue}_{nd_min}_{nd_max}_{nu_samp}_" \
+           f"nphi_{pvalue}_{q_min}_{q_max}_{nu_samp}_Lx_MUC_{Lx_MUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}_" \
+           f"phi_{phi_min}_{phi_max}_{phi_samp}.dat{tag}"
+    sys.stdout = sys.stderr = fp.Logger("phi_flow", model, leaf)
 
-    for ndvalue, qvalue in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int), np.linspace(q_min, q_max, nu_samp, dtype=int)):
+    tools = ["overlap", "charge_pump", "ent_spec_flow"]
+
+    stem, file, data = [dict()]*3
+    for tool in tools:
+        stem.update({tool: fp.file_name_stem(tool, model, chi_max)})
+        file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + leaf})
+        open(file[tool], "w")
+        data[tool] = open(file[tool], "a", buffering=1)
+
+    ####################################################################################################################
+
+    for ndvalue, qvalue in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int),
+                               np.linspace(q_min, q_max, nu_samp, dtype=int)):
         for Ly in np.linspace(Ly_min, Ly_max, Ly_samp, dtype=int):
 
-            if model in ["BosonicHofstadter", "FermionicHofstadter"]:
-                LylB = Ly * np.sqrt(2 * np.pi * (pvalue / qvalue))
-            else:
-                LylB = Ly * np.sqrt((4 * np.pi * (pvalue / qvalue)) / np.sqrt(3))
+            if nu_samp != 1 or Ly_samp != 1:
+                (data_line, _) = fp.print_LylB_headings(model, Ly, ndvalue, nd_min, pvalue, qvalue, q_min, Ly_min)
+                for tool in tools:
+                    data[tool].write(data_line)
 
-            if ndvalue == nd_min and qvalue == q_min and Ly == Ly_min:
-                data_line = "LylB={LylB:.15f}\n".format(LylB=LylB)
-            else:
-                data_line = "\n\nLylB={LylB:.15f}\n".format(LylB=LylB)
-
-            overlap_data.write(data_line)
-            charge_pump_data.write(data_line)
-            ent_spec_flow_data.write(data_line)
-
-            # engine = f.define_iDMRG_engine_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min)
-            engine = f.my_iDMRG_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue,
-                                       qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min, run=False)
+            engine = fd.my_iDMRG_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue,
+                                        qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min, run=False)
 
             for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
 
@@ -69,16 +52,20 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
                 else:
                     engine.engine_params['mixer'] = False
                     del engine.engine_params['chi_list']  # comment out this line for single site DMRG tests
-                    M = f.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi_ext)
+                    M = fd.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue,
+                                              Lx_MUC, Ly, phi_ext)
                     psi_old = engine.psi
                     engine.init_env(model=M)
                     engine.run()
-                    abs_ov = abs(psi_old.overlap(engine.psi))
-                    data_line = "{phi_ext:.15f}\t{abs_ov:.15f}".format(phi_ext=phi_ext, abs_ov=abs_ov)
-                    print(data_line)
-                    overlap_data.write(data_line+"\n")
 
-                # print("max entanglement = ", max(engine.psi.entanglement_entropy()))
+                    ###########
+                    # Overlap #
+                    ###########
+
+                    abs_ov = abs(psi_old.overlap(engine.psi))
+                    data_line = f"{phi_ext:.15f}\t{abs_ov:.15f}"
+                    print(data_line)
+                    data['overlap'].write(data_line+"\n")
 
                 ###############
                 # charge_pump #
@@ -86,9 +73,9 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
 
                 QL = engine.psi.average_charge(bond=0)[0]
 
-                data_line = "{phi_ext:.15f}\t{QL:.15f}".format(phi_ext=phi_ext, QL=QL)
+                data_line = f"{phi_ext:.15f}\t{QL:.15f}"
                 print(data_line)
-                charge_pump_data.write(data_line+"\n")
+                data['charge_pump'].write(data_line+"\n")
 
                 #################
                 # ent_spec_flow #
@@ -101,27 +88,22 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, nd_min, nd_ma
 
                 for sector in range(0, len(spectrum[bond])):
                     for i in range(0, len(spectrum[bond][sector][1])):
-                        data_line = "{charge:d}\t{phi_ext:.15f}\t{spectrum:.15f}".format(charge=spectrum[bond][sector][0][0], phi_ext=phi_ext, spectrum=spectrum[bond][sector][1][i])
+                        data_line = "{charge:d}\t{phi_ext:.15f}\t{spectrum:.15f}"\
+                            .format(charge=spectrum[bond][sector][0][0],
+                                    phi_ext=phi_ext,
+                                    spectrum=spectrum[bond][sector][1][i])
                         print(data_line)
-                        ent_spec_flow_data.write(data_line+"\n")
+                        data['ent_spec_flow'].write(data_line+"\n")
+
+    print("Total time taken (seconds) = ", time.time() - t0)
 
 
 if __name__ == '__main__':
 
     prc.mkl_set_nthreads(1)
 
-    t0 = time.time()
-
     my_phi_flow(model="BosonicHofstadter", chi_max=50,
-                t1=1, t2=0, t2dash=0, U=100, mu=0, V=10,
-                nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-                Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
+                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
+                nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
+                Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",
                 use_pickle=False, make_pickle=False)
-
-    # my_phi_flow(model="FermionicHex1Hex5Orbital", chi_max=50,
-    #             t1=1, t2=-0.0125, t2dash=0.05, U=100, mu=0, V=10,
-    #             nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-    #             Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
-    #             use_pickle=False, make_pickle=False)
-
-    print(time.time() - t0)
