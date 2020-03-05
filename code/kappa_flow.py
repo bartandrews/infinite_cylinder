@@ -22,13 +22,7 @@ def my_kappa_flow(model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_sa
     sys.stdout = sys.stderr = fp.Logger("kappa_flow", model, leaf)
 
     tools = ["corr_len", "ent_spec"]
-
-    stem, file, data = [dict()] * 3
-    for tool in tools:
-        stem.update({tool: fp.file_name_stem(tool, model, chi_max)})
-        file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + leaf})
-        open(file[tool], "w")
-        data[tool] = open(file[tool], "a", buffering=1)
+    data = fp.prepare_output_files(tools, model, chi_max, leaf)
 
     ####################################################################################################################
 

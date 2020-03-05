@@ -1,5 +1,6 @@
 # --- python imports
 import sys
+import os
 import pickle
 # --- TeNPy imports
 from tenpy.networks.mps import MPS
@@ -166,7 +167,8 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndv
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
         pickle_leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_" \
                       f"n_{nnvalue}_{ndvalue}_nphi_{pvalue}_{qvalue}_Lx_MUC_{Lx_MUC}_Ly_{Ly}_phi_{phi_ext}.pkl"
-        pickle_file = f"pickles/{flow}/" + pickle_stem + pickle_leaf
+        os.makedirs(f"pickles/{flow}/{model}/", exist_ok=True)
+        pickle_file = f"pickles/{flow}/{model}/" + pickle_stem + pickle_leaf
 
     if use_pickle:
         with open(pickle_file, 'rb') as file1:

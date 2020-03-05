@@ -1,5 +1,6 @@
 # --- python imports
 import sys
+import os
 import numpy as np
 
 
@@ -13,11 +14,31 @@ def file_name_stem(tool, model, chi_max):
                      'BosonicHex1', 'FermionicHex1',
                      'BosonicHex1Hex5', 'FermionicHex1Hex5',
                      'BosonicHex1Hex5Orbital', 'FermionicHex1Hex5Orbital']:
-        sys.exit('Error: Unknown model.')
+        sys.exit('Error: Unknown model for the file_name_stem function.')
 
     stem = f"{tool}_{model}_chi_{chi_max}_"
 
     return stem
+
+
+##################################################################
+# prepare_output_files (creates the output directories and files) #
+##################################################################
+
+
+def prepare_output_files(tools, model, chi_max, leaf, chi_max_K=0):
+    stem, file, data = [dict()]*3
+    for tool in tools:
+        stem.update({tool: file_name_stem(tool, model, chi_max)})
+        os.makedirs(f"data/{tool}/{model}/", exist_ok=True)
+        if tool == 'ent_spec_mom':
+            file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + f"chi_K_{chi_max_K}_" + leaf})
+        else:
+            file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + leaf})
+        open(file[tool], "w")
+        data[tool] = open(file[tool], "a", buffering=1)
+
+    return data
 
 
 ######################################################################
@@ -28,6 +49,7 @@ def file_name_stem(tool, model, chi_max):
 class Logger(object):
     def __init__(self, flow, model, leaf):
         self.terminal = sys.stdout or sys.stderr
+        os.makedirs(f"data/output/{flow}/{model}/", exist_ok=True)
         self.log = open(f"data/output/{flow}/{model}/output_{flow}_{model}_{leaf}", 'w', buffering=1)
 
     def write(self, message):

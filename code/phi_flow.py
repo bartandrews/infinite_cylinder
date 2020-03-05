@@ -23,13 +23,7 @@ def my_phi_flow(model, chi_max, t1, t2, t2dash, U, mu, V,
     sys.stdout = sys.stderr = fp.Logger("phi_flow", model, leaf)
 
     tools = ["overlap", "charge_pump", "ent_spec_flow"]
-
-    stem, file, data = [dict()]*3
-    for tool in tools:
-        stem.update({tool: fp.file_name_stem(tool, model, chi_max)})
-        file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + leaf})
-        open(file[tool], "w")
-        data[tool] = open(file[tool], "a", buffering=1)
+    data = fp.prepare_output_files(tools, model, chi_max, leaf)
 
     ####################################################################################################################
 
