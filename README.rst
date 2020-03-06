@@ -1,62 +1,72 @@
 infinite_cylinder
 =================
 
-2D DMRG models on an infinite cylinder
+This code is an experimental set of tools for TeNPy, and in due course these are added to the official TeNPy repository. The code focuses on 2D DMRG models on an infinite cylinder.
 
-Prerequisites: TeNPy 0.3+, gnuplot, python 3+
+Prerequisites: TeNPy 0.5+, gnuplot, python 3.6+
 
 Workflow
 --------
 
 The code is split into independent parts to optimize performance.
 
-**phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number.
+Occasionally, when a system is simple or predictable enough, it is possible to run iDMRG and plot at the same time. We call these programs 'flows', since they vary the selected independent variable and compute a variety of dependent variables of interest.
 
-**Ly_flow** is a program that varies the circumference length of the cylinder. This is used to calculate topological entropy and CFT edge counting.
+**phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number. Since the evolution is adiabatic, this flow reuses the state on each iteration.
 
-**V_flow** is a program that varies the off-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI.
+**Ly_flow** is a program that varies the circumference length of the cylinder. This is used to calculate topological entropy and CFT edge counting. Since the evolution is not adiabatic, this flow recalculates the state on each iteration.
 
-**U_flow** is a program that varies the on-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to insulator.
+**U_flow** is a program that varies the on-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to insulator. Since the evolution is generally not adiabatic, this flow recalculates the state on each iteration.
 
-**J_flow** is a program that varies the coupling strength, as defined in the spin model Hamiltonian. This is used to characterize phase transitions e.g. FM(x)120 to PM.
+**V_flow** is a program that varies the off-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to FCI. Since the evolution is generally not adiabatic, this flow recalculates the state on each iteration.
+
+**kappa_flow** is a program that varies a lattice parameter coefficient to tune between Hamiltonians. This is used to characterize phase transitions e.g. Hofstadter to TBG. Since the evolution is generally not adiabatic, this flow recalculates the state on each iteration.
 
 The tools employed for each 'flow' are given in the table below.
 
-========   =================
-**flow**   **tool**
-========   =================
-phi_flow   * charge_pump
-           * ent_spec_flow
---------   -----------------
-Ly_flow    * ent_scal
-           * ent_spec_real
-           * ent_spec_mom
---------   -----------------
-V_flow     * corr_len
-           * ent_spec_V_flow
---------   -----------------
-U_flow     * corr_len
-           * double_occ
---------   -----------------
-J_flow     * energy
-========   =================
+==========   =====================
+**flow**     **tool**
+==========   =====================
+phi_flow     * corr_len
+             * charge_pump
+             * ent_spec_flow
+----------   ---------------------
+Ly_flow      * ent_scal
+             * ent_spec_real
+             * ent_spec_mom
+----------   ---------------------
+U_flow       * corr_len_U_flow
+             * double_occ_U_flow
+----------   ---------------------
+V_flow       * corr_len_V_flow
+             * ent_spec_V_flow
+----------   ---------------------
+kappa_flow   * corr_len_kappa_flow
+             * ent_spec_kappa_flow
+==========   =====================
+
+In cases where the system is not simple to analyze or unpredictable, we need to instead save the state that we produce for each iDMRG run. Afterwards, we can load this state and compute our observables of interest individually.
+
+The (non-trivial) observables that are currently implemented for computation are:
+
+* ent_spec_real
+* ent_spec_mom
+* corr_func
 
 Tools description
 -----------------
 
-The initial tool set is inspired by the paper: "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
-
 * charge_pump = charge pump
 
-    This function is designed to plot the equivalent of Figs. 2.a,c) from the paper.
+    This function is designed to plot the equivalent of Figs. 2.a,c) from [Grushin15].
 
 * ent_spec_flow = entanglement spectrum flow
 
-    This function is designed to plot the equivalent of Figs. 2.b,d) from the paper.
+    This function is designed to plot the equivalent of Figs. 2.b,d) from [Grushin15].
 
 * ent_scal = entanglement scaling
 
-    This function is designed to plot the equivalent of Fig. 3.a) from the paper.
+    This function is designed to plot the equivalent of Fig. 3.a) from [Grushin15].
 
 * ent_spec_real = entanglement spectrum in real space
 
@@ -64,143 +74,57 @@ The initial tool set is inspired by the paper: "Characterization and stability o
 
 * ent_spec_mom = entanglement spectrum in momentum space
 
-    This function is designed to plot the equivalent of Fig. 3.b) from the paper.
+    This function is designed to plot the equivalent of Fig. 3.b) from [Grushin15].
 
-* corr_len = correlation length
+* corr_len_X_flow = correlation length flow with respect to X
 
-    This function is designed to plot the equivalent of the inset in Fig. 3.c) from the paper.
+    This function is designed to plot the equivalent of the inset in Fig. 3.c) from [Grushin15].
 
-* ent_spec_V_flow = entanglement spectrum flow with respect to V
+* ent_spec_X_flow = entanglement spectrum flow with respect to X
 
-    This function is designed to plot the equivalent of Fig. 3.c) from the paper.
+    This function is designed to plot the equivalent of Fig. 3.c) from [Grushin15].
 
-* double_occ = double occupancy
+* double_occ_X_flow = double occupancy flow with respect to X
 
-    This function is designed to plot the equivalent of Fig. 1 from "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
+    This function is designed to plot the equivalent of Fig. 1 from [Zhu19].
 
-* energy = ground state energy
+* corr_func = two-particle correlation function
 
-    This function plots the ground state energy from DMRG, as in the inset of Fig. 1 from "Ferromagnetism and Spin-Valley liquid states in Moiré Correlated Insulators" by Xiao-Chuan Wu, Anna Keselman, Chao-Ming Jian, Kelly Ann Pawlak, and Cenke Xu, arXiv pre-print (2019). https://arxiv.org/abs/1905.00033
+    This function is designed to plot the equivalent of Fig. 6 from [Schoond19].
 
 Models description
 ------------------
 
-* bosons_haldane = hardcore boson Haldane model
+* hofstader = Hofstadter model with 1st-NN hoppings on a square lattice
 
-    Equation 1 of "Characterizing topological order by studying the ground states of an infinite cylinder" by Lukasz Cincio and Guifre Vidal, PRL **110**, 067208 (2013). https://arxiv.org/abs/1208.2623
+* hex_1 = Hofstadter model with 1st-NN hoppings on a honeycomb lattice
 
-* bosons_haldane_2 = hardcore boson Haldane model
+* hex_1_hex_5 = Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice
 
-    Bosonic equivalent for equation 1 of "Characterizing topological order by studying the ground states of an infinite cylinder" by Lukasz Cincio and Guifre Vidal, PRL **110**, 067208 (2013). https://arxiv.org/abs/1208.2623
-
-* fermions_haldane = spinless fermion Haldane model
-
-    Equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
-
-* fermions_pi_flux = spinless fermion chiral-pi-flux model
-
-    Example 2 of "Fractional quantum Hall states at zero magnetic field" by Titus Neupert, Luiz Santos, Claudio Chamon, and Christopher Mudry, PRL **106**, 236804 (2011). https://arxiv.org/abs/1012.4723
-
-* fermions_C3_haldane = spinless fermion generalised C=3 Haldane model
-
-    Equation 1 of Topological flat band models with arbitrary Chern numbers" by Shuo Yang, Zheng-Cheng Gu, Kai Sun, and S. Das Sarma, PRB **86**, 241112 (2012). https://arxiv.org/abs/1205.5792
-
-* fermions_TBG1 = spinful fermions with two orbitals, Hubbard model for twisted bilayer graphene
-
-    Section IV of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
-
-* fermions_TBG2 = spinless fermions with two orbitals, tight-binding model for twisted bilayer graphene
-
-    Section III of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
-
-* fermions_TBG3 = spinful fermions with two orbitals, simplified Hubbard model for twisted bilayer graphene
-
-    Section I of "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
-
-* fermions_TBG4 = five band model for twisted bilayer graphene
-
-    Appendix D of "Faithful Tight-binding Models and Fragile Topology of Magic-angle Bilayer Graphene" by Hoi Chun Po, Liujun Zou, T. Senthil, and Ashvin Vishwanath, arXiv pre-print (2018). https://arxiv.org/abs/1808.02482
-
-* fermions_TBG5 = spin valley model for twisted bilayer graphene
-
-    Section I of "Ferromagnetism and Spin-Valley liquid states in Moiré Correlated Insulators" by Xiao-Chuan Wu, Anna Keselman, Chao-Ming Jian, Kelly Ann Pawlak, and Cenke Xu, arXiv pre-print (2019). https://arxiv.org/abs/1905.00033
-
-* fermions_TBG6 = twisted Haldane model
-
-    A combination of equation 1 of "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, and Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985 and section III of "Model for the metal-insulator transition in graphene superlattices and beyond" by Noah F. Q. Yuan and Liang Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
-
-* fermions_hofstadter = spinless fermion Hofstadter model
-
-    Custom magnetic unit cell in Landau gauge. Based on the discussion in M. Aidelsburger, PhD Thesis p.20 (2015). https://edoc.ub.uni-muenchen.de/18148/1/Aidelsburger_Monika.pdf
-
-* fermions_hofstadter_extended = spinless fermion extended Hofstadter model
-
-    Custom magnetic unit cell in Landau gauge artificially extended in the x-direction. Based on the test recommendation by Leon Schoonderwoerd.
-
-* fermions_hex_1 = spinless fermions NN hopping on a honeycomb lattice
-
-    Custom magnetic unit cell in Landau gauge. Based on the model in R. Rammal, J. Phys. **46**, 1345 (1985). https://hal.archives-ouvertes.fr/jpa-00210078/document
-
-* fermions_twist = spinless fermions (NN + 5NN) hopping on a honeycomb lattice
-
-    Custom magnetic unit cell in Landau gauge. Based on Eq. 17 in N. Yuan and L. Fu, PRB **98**, 045103 (2018). https://arxiv.org/abs/1803.09699
-
-* fermions_complete_twist = spinless fermions (NN + 5NN + 5NN') on a honeycomb lattice
-
-    Custom magnetic unit cell in Landau gauge. Based on Eq. 9 in M. Koshino et al. Phys. Rev. X **8**, 031087 (2018). https://arxiv.org/abs/1805.06819
-
-
-Lattices description
---------------------
-
-* five_band_model = five band model
-
-    Figure 8 of "Faithful Tight-binding Models and Fragile Topology of Magic-angle Bilayer Graphene" by Hoi Chun Po, Liujun Zou, T. Senthil, and Ashvin Vishwanath, arXiv pre-print (2018). https://arxiv.org/abs/1808.02482
-
-* BipartiteSquare = bipartite square lattice
-
-    Lattice for chiral-pi-flux model in example 2 of "Fractional quantum Hall states at zero magnetic field" by Titus Neupert, Luiz Santos, Claudio Chamon, and Christopher Mudry, PRL **106**, 236804 (2011). https://arxiv.org/abs/1012.4723
-
-* TripartiteTriangular = tripartite triangular lattice
-
-    Lattice for the generalized C=3 Haldane model in figure 1 of "Topological flat band models with arbitrary Chern numbers" by Shuo Yang, Zheng-Cheng Gu, Kai Sun, and S. Das Sarma, PRB **86**, 241112 (2012). https://arxiv.org/abs/1205.5792
-
-* MagneticSquare = magnetic unit cell for the square lattice
-
-    Lattice for the fermions_hofstadter model.
-
-* MagneticSquareExtended = extended magnetic unit cell for the square lattice
-
-    Lattice for the fermions_hofstadter_extended model.
-
-* MagneticHoneycomb = magnetic unit cell for the honeycomb lattice
-
-    Lattice for the fermions_hex_1 model.
-
-* MagneticTwist = magnetic unit cell and hopping definitions for the fermions_twist model
-
-    Lattice for the fermions_twist model.
-
-* MagneticCompleteTwist = magnetic unit cell and hopping definitions for the fermions_complete_twist model
-
-    Lattice for the fermions_complete_twist model.
+* hex_1_hex_5_orbital = Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice and two orbitals per site
 
 Directory structure
 -------------------
 
-**data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories there are the plotting scripts, as well as a **keep** subsubdirectory. It is intended that successful good-quality output is manually moved into ``keep``. NB: No dat files are tracked by git due to their potentially large size.
+Below is a description of the directory structure of infinite_cylinder, listed alphabetically.
 
-**code** contains the source code, split into the three independent parts: phi_flow, Ly_flow, and V_flow. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene. **code/lattices** is used to store custom lattices python class files. Basic lattices are already implemented in TeNPy (e.g. honeycomb). However, in this directory we store our own lattice classes e.g. for the five-band model. **code/standalone** is used to store standalone scripts that do not require the rest of the TeNPy library to run e.g. band structure calculations, Chern number calculations, and plotting scripts.
+**.idea** is used to store PyCharm configuration files, in case we would like to make changes to the code using a PyCharm project on a remote computer.
 
-**scripts** contains all of the SLURM batch scripts used for Hydra and Piz Daint.
+**code** contains the source code, split into the several independent parts. **code/functions** is used to store the auxiliary file processing and DMRG functions for the main programs. **code/models** is used to store custom MPO Hamiltonian python class files. Basic Hamiltonians are already implemented in TeNPy (e.g. Ising model). However, in this directory we store our own Hamiltonian classes e.g. for twisted bilayer graphene. **code/lattices** is used to store custom lattices python class files. Basic lattices are already implemented in TeNPy (e.g. honeycomb). However, in this directory we store our own lattice classes e.g. for the five-band model. **code/standalone** is used to store completely independent scripts that do not require the rest of the TeNPy library to run e.g. band structure calculations, Chern number calculations, and plotting scripts. **code/utilities** is used to store python scripts that are used for debugging or checking models, lattices, or other parts of the main code.
 
-**pickles** stores all of the initial pickles for a flow, in the corresponding flow subdirectory e.g. the expensive initial wavefunction used for a phi_flow run with chi=500.
+**data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories, you will find the models subdirectories (e.g. **BosonicHofstadter**). All necessary directories are created at run-time.
 
-**logs** is used to store all of the stdout and stderr files from the Hydra and Piz Daint batch scripts. NB: No log files are tracked by git.
+**docs** is used to store the files for Sphinx documentation (under construction).
 
-**.idea** is used to store PyCharm configuration files, in case I would like to make changes to the code using a PyCharm project on a remote computer.
+**logs** is used to store all of the stdout and stderr output from each run. The subdirectories are the output directories for the flows which I have defined (e.g. **phi_flow**). Inside each of the tools subdirectories, you will find the models subdirectories (e.g. **BosonicHofstadter**). All necessary directories are created at run-time.
 
-**notebooks** stores Mathematica notebooks for the analysis of the models e.g. band structure of the Haldane model.
+**notes** stores Mathematica notebooks for the analysis of the models e.g. band structure of the Haldane model, and other miscellaneous text files with memos and ideas for future reference.
+
+**pickles** is used to store all of the saved states and DMRG engines. The subdirectories are the output directories for the flows which I have defined (e.g. **phi_flow**). Inside each of the tools subdirectories, you will find the models subdirectories (e.g. **BosonicHofstadter**). All necessary directories are created at run-time.
+
+**scripts** contains bash and pythons scripts that are used for processing or plotting output, for example.
+
+**tests** contains minimum working examples for all of the main programs in the code directory. This is designed to be compatible with pytest (under construction).
 
 File naming convention
 ----------------------
@@ -209,107 +133,43 @@ All output .dat files are named in the following order:
 
 *stem*
 
-- tool (e.g. ``corr_len``)
-- model (e.g. ``Hubbard``)
-- lattice (e.g. ``Honeycomb``)
-- initial state (e.g. ``neel``)
-- tile units (``[0, 1]`` or ``['up', 'down']``)
+- tool (e.g. ``charge_pump``)
+- model (e.g. ``BosonicHofstadter``)
 - chi (i.e. ``chi_max``)
+- chi_max_K (only for the ent_spec_mom calculation)
 
 *leaf*
 
-{- t
+- t1
+- t2
+- t2dash
+- kappa (only for the kappa_flow)
 - U
 - mu
-- V}
-/
-{- J
-- Js
-- Jv}
-
-- Lx
+- V
+- n (numerator then denominator, only range over denominator currently implemented)
+- nphi (numerator then denominator, only range over denominator currently implemented)
+- Lx_MUC
 - Ly
 - phi (i.e. phi_ext)
+- tag (optional)
 
-NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4``). Or for discrete parameters, simply by the order: min value _ max value (e.g. ``Ly_2_8``).
+NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4``).
 
 *name = stem + leaf*
 
-Example:  ``data/ent_spec_real/ent_spec_real_Hubbard_Square_neel_tile_down_up_chi_100_t_-1_U_1_mu_0.5_V_0_Lx_2_Ly_2.dat``
-
-Benchmarks
-----------
-
-These benchmarks will be updated as the code is optimized. The specifications of the machines is as follows:
-
-**laptop** is a Dell XPS13 9370 with a quad-core Intel Core i7-8550U CPU @ 1.80GHz and 16GB of RAM. One node with 4 OpenMP threads.
-
-**Hydra** specification is listed here: https://www.id.uzh.ch/en/scienceit/infrastructure/hydra.html Flows spread across 3 nodes with 16 OpenMP threads each.
-
-**Piz Daint** specification is listed here: https://www.cscs.ch/computers/piz-daint/ Flows spread across 3 nodes with 36 OpenMP threads each.
-
-NB: TeNPy uses Intel MKL and so is OpenMP capable. However, neither MPI nor hyperthreading are configured at the moment.
-
-----
-
-1) half-filled Haldane Chern insulator (chi = 100, Ly = 3)
-
-=========   ==========   ==========   ==========
-machine      phi_flow     Ly_flow      V_flow
-=========   ==========   ==========   ==========
-laptop       00:14:44     00:02:08     00:10:47
----------   ----------   ----------   ----------
-Hydra        00:44:36     00:05:08     00:29:27
----------   ----------   ----------   ----------
-Piz Daint    00:43:05     00:04:56     00:31:06
-=========   ==========   ==========   ==========
-
-2) half-filled Haldane Chern insulator (chi = 400, Ly = 3)
-
-=========   ==========   ==========   ==========
-machine      phi_flow     Ly_flow      V_flow
-=========   ==========   ==========   ==========
-laptop       02:12:40     00:20:54     01:31:51
----------   ----------   ----------   ----------
-Hydra        02:16:36     00:52:48     03:18:40
----------   ----------   ----------   ----------
-Piz Daint    03:09:36     00:19:58     02:10:13
-=========   ==========   ==========   ==========
-
-3) third-filled Haldane fractional Chern insulator (chi = 500, Ly = 6)
-
-=========   ==========   ==========   ==========
-machine      phi_flow     Ly_flow      V_flow
-=========   ==========   ==========   ==========
-laptop       time out     09:34:43     queuing
----------   ----------   ----------   ----------
-Hydra        time out     12:53:20     time out
----------   ----------   ----------   ----------
-Piz Daint    time out     10:24:04     time out
-=========   ==========   ==========   ==========
-
-----
-
-Parameters given for the flows are based on those in "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
-
-**phi_flow** : phi_min=0, phi_max=1, phi_samp=41
-
-**Ly_flow** : Ly_min=3, Ly_max=6, Ly_samp=2
-
-**V_flow** : V_min=0, V_max=4, V_samp=27
-
-Multiple batches
-----------------
-
-A **batch** is defined as a set of 4 **flows** such that {phi_flow, Ly_flow, V_flow, U_flow}. Sometimes, it may be more efficient to schedule multiple batches simultaneously, each with a different set of parameters. Currently, the code is configured to schedule up to 3 batches at once. In order to schedule multiple batches, you need to follow these steps:
-
-1) Start the run e.g. ``./run_hydra 3 1 2`` to start a hydra run with 3 simultaneously scheduled batches. The possible command-line arguments are [1, 2, 3]. (There is no specific order of flows within a batch.)
-
-2) This will call the SLURM scripts stored in the ``scripts`` folder. If you want to modify the expected runtime for each of the flows individually, you can do this here. Each of the flows is set to the maximum allowed runtime (24 hours) by default.
-
-3) The scripts then start the flows with the corresponding parameter files stored in the ``code/parameters`` folder. The command-line argument for the flow (e.g. ``./V_flow.py hydra3``) directly determines which parameter file is imported (e.g. ``param_hydra3.py``). You can edit the parameters for each batch here.
+Example:  ``data/charge_pump/BosonicHofstadter/charge_pump_BosonicHofstadter_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_n_1_8_8_1_nphi_1_4_4_1_Lx_MUC_1_Ly_4_4_1_phi_0_2_21.dat``
 
 Pickling capability
 -------------------
 
-A pickling capability has been added if you would like to save the initial ``[E, psi, M]`` or ``engine`` of a flow. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. In practise, the change has been to replace ``run_iDMRG`` --> ``run_iDMRG_pickle`` and ``define_iDMRG_engine`` --> ``define_iDMRG_engine_pickle``. You can set the boolean parameters ``use_pickle`` (to use a pickled state) or ``make_pickle`` (to pickle a state for later) in the parameter files. By default, all pickling is ignored and the code works as before.
+The pickling capability is used to save the state, or initial state ``[E, psi, M]`` or ``engine`` for a flow. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state) or ``make_pickle`` (to pickle a state for later) in the parameter files. By default, all pickling is set to False in the flows.
+
+References
+----------
+
+[Grushin15] "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
+
+[Zhu19] "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
+
+[Schoond19] "Interaction-driven plateau transition between integer and fractional Chern Insulators" by Leon Schoonderwoerd, Frank Pollmann, Gunnar Möller, arXiv pre-print (2019). https://arxiv.org/abs/1908.00988

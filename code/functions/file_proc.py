@@ -54,7 +54,7 @@ class Logger(object):
     def __init__(self, flow, model, leaf):
         self.terminal = sys.stdout or sys.stderr
         os.makedirs(f"logs/{flow}/{model}/", exist_ok=True)
-        self.log = open(f"logs/{flow}/{model}/output_{flow}_{model}_{leaf}", 'w', buffering=1)
+        self.log = open(f"logs/{flow}/{model}/log_{flow}_{model}_{leaf}", 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)
