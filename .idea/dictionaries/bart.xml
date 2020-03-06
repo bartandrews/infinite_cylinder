@@ -7,7 +7,9 @@
       <w>lanczos</w>
       <w>minima</w>
       <w>ndvalue</w>
+      <w>neumann</w>
       <w>nnvalue</w>
+      <w>nonscalar</w>
       <w>nphi</w>
       <w>ntot</w>
       <w>polarizedx</w>
@@ -16,6 +18,7 @@
       <w>qflat</w>
       <w>qnumber</w>
       <w>qvalue</w>
+      <w>renyi</w>
       <w>reortho</w>
       <w>scal</w>
       <w>sinf</w>

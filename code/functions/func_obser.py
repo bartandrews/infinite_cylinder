@@ -1,0 +1,105 @@
+# --- python imports
+import numpy as np
+
+
+#####################################################################
+# scalar_observables (function for printing all scalar observables) #
+#####################################################################
+
+
+def scalar_observables(E, psi):
+    print("Energy, E = ", E)
+    print("Correlation length, xi = ", psi.correlation_length())
+    print("von Neumann entanglement entropy, SvN =", psi.entanglement_entropy()[0])
+    print("infinite Renyi entanglement entropy, Sinf = ", psi.entanglement_entropy(n=np.inf)[0])
+    return
+
+
+############################################################################################
+# nonscalar_observables (function for recording the nonscalar observables listed in tools) #
+############################################################################################
+
+
+def nonscalar_observables(tools, data, model, psi, M, chi_max_K, Lx_MUC, Ly, print_data=False):
+    if 'ent_spec_real' in tools:
+        ent_spec_real(data, psi, Lx_MUC, Ly, print_data)
+    if 'ent_spec_mom' in tools:
+        ent_spec_mom(data, psi, M, chi_max_K, print_data)
+    if 'corr_func' in tools:
+        corr_func(model, psi)
+    return
+
+
+###############################################################################
+# ent_spec_real (function for recording the real-space entanglement spectrum) #
+###############################################################################
+
+
+def ent_spec_real(data, psi, Lx_MUC, Ly, print_data):
+
+    spectrum = psi.entanglement_spectrum(by_charge=True)
+
+    print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
+
+    # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
+    for bond in range(0, Lx_MUC*Ly):
+        for sector in range(0, len(spectrum[bond])):
+            for i in range(0, len(spectrum[bond][sector][1])):
+                data_line = "{charge:d}\t{bond:d}\t{spectrum:.15f}"\
+                    .format(charge=spectrum[bond][sector][0][0],
+                            bond=bond,
+                            spectrum=spectrum[bond][sector][1][i])
+                if print_data:
+                    print(data_line)
+                data['ent_spec_real'].write(data_line+"\n")
+
+    return
+
+
+##################################################################################
+# ent_spec_mom (function for recording the momentum-space entanglement spectrum) #
+##################################################################################
+
+
+def ent_spec_mom(data, psi, M, chi_max_K, print_data):
+
+    (Un, W, q, ov, trunc_err) = \
+        psi.compute_K(perm=M.lat, trunc_par={'chi_max': chi_max_K}, canonicalize=1.e-6, verbose=0)
+
+    if np.abs(np.abs(ov)-1) > 0.1:
+        print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
+        print('Warning: State is not invariant under the permutation.')
+    else:
+        print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
+
+    print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=q.charges.shape[1]))
+
+    # q.to_qflat()[i][0] --> q.to_qflat()[i][n] for different charge entries
+    for i in range(len(W)):
+        data_line = "{q:d}\t{K:.15f}\t{epsilon:.15f}"\
+            .format(q=q.to_qflat()[i][0], K=np.angle(W[i])/np.pi, epsilon=-np.log(np.abs(W[i])))
+        if print_data:
+            print(data_line)
+        data['ent_spec_mom'].write(data_line+"\n")
+
+    return
+
+
+############################################################################
+# corr_func (function for recording the two-particle correlation function) #
+############################################################################
+
+def corr_func(model, psi):
+
+    if "Orbital" in model:
+        op = "Ntot"
+    else:
+        op = "N"
+
+    # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
+    NN = psi.correlation_function(op, op, sites1=range(0, psi.L), sites2=[0])[:, 0]
+    print(NN)
+    # NN_reshaped = M.lat.mps2lat_values(NN)
+    # print(NN_reshaped.shape, M.lat.shape)
+    # import pdb; pdb.set_trace()
+    return

@@ -5,8 +5,9 @@ import numpy as np
 # --- TeNPy imports
 import tenpy.tools.process as prc
 # --- infinite_cylinder imports
-import functions.file_proc as fp
-import functions.dmrg as fd
+import functions.func_proc as fp
+import functions.func_dmrg as fd
+import functions.func_obser as fo
 
 
 def my_Ly_flow(threads, model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V,
@@ -22,7 +23,7 @@ def my_Ly_flow(threads, model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V,
            f"nphi_{pvalue}_{q_min}_{q_max}_{nu_samp}_Lx_MUC_{Lx_MUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}.dat{tag}"
     sys.stdout = sys.stderr = fp.Logger("Ly_flow", model, leaf)
 
-    tools = ["ent_scal", "ent_spec_real", "ent_spec_mom"]
+    tools = ["ent_scal", "ent_spec_real", "ent_spec_mom", "corr_func"]
     data = fp.prepare_output_files(tools, model, chi_max, leaf, chi_max_K)
 
     ####################################################################################################################
@@ -50,70 +51,18 @@ def my_Ly_flow(threads, model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V,
             print(data_line)
             data['ent_scal'].write(data_line+"\n")
 
-            #################
-            # ent_spec_real #
-            #################
+            ###############
+            # observables #
+            ###############
 
-            spectrum = psi.entanglement_spectrum(by_charge=True)
-
-            print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
-
-            # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-            for bond in range(0, Lx_MUC*Ly):
-                for sector in range(0, len(spectrum[bond])):
-                    for i in range(0, len(spectrum[bond][sector][1])):
-                        data_line = "{charge:d}\t{bond:d}\t{spectrum:.15f}"\
-                            .format(charge=spectrum[bond][sector][0][0],
-                                    bond=bond,
-                                    spectrum=spectrum[bond][sector][1][i])
-                        print(data_line)
-                        data['ent_spec_real'].write(data_line+"\n")
-
-            ################
-            # ent_spec_mom #
-            ################
-
-            (Un, W, q, ov, trunc_err) = \
-                psi.compute_K(perm=M.lat, trunc_par={'chi_max': chi_max_K}, canonicalize=1.e-6, verbose=0)
-
-            if np.abs(np.abs(ov)-1) > 0.1:
-                print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
-                print('Warning: State is not invariant under the permutation.')
-            else:
-                print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))
-
-            print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=q.charges.shape[1]))
-
-            # q.to_qflat()[i][0] --> q.to_qflat()[i][n] for different charge entries
-            for i in range(len(W)):
-                data_line = "{q:d}\t{K:.15f}\t{epsilon:.15f}"\
-                    .format(q=q.to_qflat()[i][0], K=np.angle(W[i])/np.pi, epsilon=-np.log(np.abs(W[i])))
-                print(data_line)
-                data['ent_spec_mom'].write(data_line+"\n")
-
-            ##################################
-            # corr_func (under construction) #
-            ##################################
-
-            if "Orbital" in model:
-                op = "Ntot"
-            else:
-                op = "N"
-
-            # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
-            NN = psi.correlation_function(op, op, sites1=range(0, psi.L), sites2=[0])[:, 0]
-            print(NN)
-            # NN_reshaped = M.lat.mps2lat_values(NN)
-            # print(NN_reshaped.shape, M.lat.shape)
-            # import pdb; pdb.set_trace()
-            # return
+            fo.nonscalar_observables(tools, data, model, psi, M, chi_max_K, Lx_MUC, Ly, print_data=True)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
 
 if __name__ == '__main__':
 
-    my_Ly_flow(threads=1, model="BosonicHofstadter", chi_max=50, chi_max_K=500,
+    my_Ly_flow(threads=1, model="BosHofSqu1", chi_max=50, chi_max_K=500,
                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
                nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
                Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, tag="",

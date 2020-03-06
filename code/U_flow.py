@@ -5,8 +5,8 @@ import numpy as np
 # --- TeNPy imports
 import tenpy.tools.process as prc
 # --- infinite_cylinder imports
-import functions.file_proc as fp
-import functions.dmrg as fd
+import functions.func_proc as fp
+import functions.func_dmrg as fd
 
 
 def my_U_flow(threads, model, chi_max, t1, t2, t2dash, U_min, U_max, U_samp, mu, V,
@@ -73,7 +73,7 @@ def my_U_flow(threads, model, chi_max, t1, t2, t2dash, U_min, U_max, U_samp, mu,
 
 if __name__ == '__main__':
 
-    my_U_flow(threads=1, model="FermionicHex1Hex5Orbital", chi_max=50,
+    my_U_flow(threads=1, model="FerHofHex1Hex5Orbital", chi_max=50,
               t1=1, t2=-0.025, t2dash=0.1, U_min=0, U_max=10, U_samp=100, mu=0, V=0,
               nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
               Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",

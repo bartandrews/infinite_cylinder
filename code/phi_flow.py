@@ -5,8 +5,8 @@ import numpy as np
 # --- TeNPy imports
 import tenpy.tools.process as prc
 # --- infinite_cylinder imports
-import functions.file_proc as fp
-import functions.dmrg as fd
+import functions.func_proc as fp
+import functions.func_dmrg as fd
 
 
 def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
@@ -96,7 +96,7 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
 
 if __name__ == '__main__':
 
-    my_phi_flow(threads=1, model="BosonicHofstadter", chi_max=50,
+    my_phi_flow(threads=1, model="BosHofSqu1", chi_max=50,
                 t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
                 nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
                 Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",

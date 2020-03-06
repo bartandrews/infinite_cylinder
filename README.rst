@@ -5,12 +5,10 @@ This code is an experimental set of tools for TeNPy, and in due course these are
 
 Prerequisites: TeNPy 0.5+, gnuplot, python 3.6+
 
-Workflow
---------
+Workflow 1 - Using the `flow` programs
+--------------------------------------
 
-The code is split into independent parts to optimize performance.
-
-Occasionally, when a system is simple or predictable enough, it is possible to run iDMRG and plot at the same time. We call these programs 'flows', since they vary the selected independent variable and compute a variety of dependent variables of interest.
+Occasionally, when a system is simple or predictable enough, it is possible to run iDMRG and record data at the same time. We call these programs 'flows', since they vary the selected independent variable whilst on-the-fly computing a variety of dependent variables of interest. It is also sometimes advantageous to start with the previous state when performing an adiabatic evolution.
 
 **phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number. Since the evolution is adiabatic, this flow reuses the state on each iteration.
 
@@ -45,9 +43,12 @@ kappa_flow   * corr_len_kappa_flow
              * ent_spec_kappa_flow
 ==========   =====================
 
-In cases where the system is not simple to analyze or unpredictable, we need to instead save the state that we produce for each iDMRG run. Afterwards, we can load this state and compute our observables of interest individually.
+Workflow 2 - Using the `ground_state` and `observables` programs
+----------------------------------------------------------------
 
-The (non-trivial) observables that are currently implemented for computation are:
+In cases where the system is not simple to analyze or unpredictable, we need to instead save the ground state that we produce for each iDMRG run using the `ground_state` program. Afterwards, we can load this state and compute our observables of interest individually, using the `observables` program.
+
+The nonscalar observables that are currently implemented for computation are:
 
 * ent_spec_real
 * ent_spec_mom
@@ -95,13 +96,13 @@ Tools description
 Models description
 ------------------
 
-* hofstader = Hofstadter model with 1st-NN hoppings on a square lattice
+* hofstadter/squ_1 = Hofstadter model with 1st-NN hoppings on a square lattice
 
-* hex_1 = Hofstadter model with 1st-NN hoppings on a honeycomb lattice
+* hofstadter/hex_1 = Hofstadter model with 1st-NN hoppings on a honeycomb lattice
 
-* hex_1_hex_5 = Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice
+* hofstadter/hex_1_hex_5 = Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice
 
-* hex_1_hex_5_orbital = Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice and two orbitals per site
+* hofstadter/hex_1_hex_5_orbital = Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice and two orbitals per site
 
 Directory structure
 -------------------
@@ -114,8 +115,6 @@ Below is a description of the directory structure of infinite_cylinder, listed a
 
 **data** is used to store all of the output dat files, organised into their corresponding subdirectories. The subdirectories are the output directories for the tools which I have defined (e.g. **ent_spec_real**). Inside each of the tools subdirectories, you will find the models subdirectories (e.g. **BosonicHofstadter**). All necessary directories are created at run-time.
 
-**docs** is used to store the files for Sphinx documentation (under construction).
-
 **logs** is used to store all of the stdout and stderr output from each run. The subdirectories are the output directories for the flows which I have defined (e.g. **phi_flow**). Inside each of the tools subdirectories, you will find the models subdirectories (e.g. **BosonicHofstadter**). All necessary directories are created at run-time.
 
 **notes** stores Mathematica notebooks for the analysis of the models e.g. band structure of the Haldane model, and other miscellaneous text files with memos and ideas for future reference.
@@ -123,8 +122,6 @@ Below is a description of the directory structure of infinite_cylinder, listed a
 **pickles** is used to store all of the saved states and DMRG engines. The subdirectories are the output directories for the flows which I have defined (e.g. **phi_flow**). Inside each of the tools subdirectories, you will find the models subdirectories (e.g. **BosonicHofstadter**). All necessary directories are created at run-time.
 
 **scripts** contains bash and pythons scripts that are used for processing or plotting output, for example.
-
-**tests** contains minimum working examples for all of the main programs in the code directory. This is designed to be compatible with pytest (under construction).
 
 File naming convention
 ----------------------
