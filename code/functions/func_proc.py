@@ -17,7 +17,7 @@ def file_name_stem(tool, model, chi_max):
                      'BosHofHex1', 'FerHofHex1',
                      'BosHofHex1Hex5', 'FerHofHex1Hex5',
                      'BosHofHex1Hex5Orbital', 'FerHofHex1Hex5Orbital']:
-        sys.exit('Error: Unknown model for the file_name_stem function.')
+        raise ValueError('Unknown model for the file_name_stem function.')
 
     stem = f"{tool}_{model}_chi_{chi_max}_"
 
@@ -78,7 +78,7 @@ def print_LylB_headings(model, Ly, ndvalue, nd_min, pvalue, qvalue, q_min, Ly_mi
     elif "Hex" in model:
         LylB = Ly * np.sqrt((4 * np.pi * (pvalue / qvalue)) / np.sqrt(3))
     else:
-        sys.exit("Error: Unknown model for the print_LylB_headings function.")
+        raise ValueError("Unknown model for the print_LylB_headings function.")
 
     if ndvalue == nd_min and qvalue == q_min and Ly == Ly_min:
         data_line = f"LylB={LylB:.15f}\n"

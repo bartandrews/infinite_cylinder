@@ -23,5 +23,13 @@
         </list>
       </option>
     </inspection_tool>
+    <inspection_tool class="PyUnboundLocalVariableInspection" enabled="false" level="WARNING" enabled_by_default="false" />
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="tenpy.networks.site.GroupedSite.*" />
+        </list>
+      </option>
+    </inspection_tool>
   </profile>
 </component>

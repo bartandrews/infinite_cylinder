@@ -5,10 +5,10 @@ import numpy as np
 from tenpy.models.model import CouplingMPOModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import BosonSite, FermionSite
-from tenpy.models.lattice import Honeycomb
+from tenpy.models.lattice import Square
 
 
-class HofHex1Model(CouplingMPOModel):
+class HofSqu1Model(CouplingMPOModel):
 
     def __init__(self, params):
         CouplingMPOModel.__init__(self, params)
@@ -51,7 +51,7 @@ class HofHex1Model(CouplingMPOModel):
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
-        lat = Honeycomb(Lx, Ly, site, order=order, bc_MPS=bc_MPS, bc=[bc_x, bc_y])
+        lat = Square(Lx, Ly, site, order=order, bc_MPS=bc_MPS, bc=[bc_x, bc_y])
         return lat
 
     def init_terms(self, params):
@@ -64,7 +64,7 @@ class HofHex1Model(CouplingMPOModel):
             V = get_parameter(params, 'V', 10, self.name, True)
             creation = 'Cd'
             annihilation = 'C'
-        t1 = get_parameter(params, 't1', 1, self.name, True)
+        t1 = get_parameter(params, 't1', 1., self.name, True)
         mu = get_parameter(params, 'mu', 0., self.name)
         phi_ext_2pi = 2 * np.pi * get_parameter(params, 'phi_ext', 0., self.name)
         nphi = get_parameter(params, 'nphi', nphi_default, self.name)
@@ -74,28 +74,17 @@ class HofHex1Model(CouplingMPOModel):
         for u in range(len(self.lat.unit_cell)):
             self.add_onsite(mu, 0, 'N')
 
-        u1, u2, dx = (0, 1, np.array([0, -1]))  # down
-        m = np.arange(0, 2 * nphi[1] * Lx_MUC, 2)
-        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext_2pi]) \
-                * np.exp(-1j * (nphi_2pi / 3) * m)[:, np.newaxis]
+        u1, u2, dx = (0, 0, np.array([1, 0]))  # right
+        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext_2pi])
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
         if self.stats(params) == 'fermions':
             self.add_coupling(V, u1, 'N', u2, 'N', dx)
 
-        u1, u2, dx = (0, 1, np.array([-1, 0]))  # upper left
-        m = np.roll(np.arange(0, 2 * nphi[1] * Lx_MUC, 2), -1)  # match convention for strength argument of add_coupling
+        u1, u2, dx = (0, 0, np.array([0, 1]))  # up
+        m = np.arange(0, nphi[1] * Lx_MUC)
         t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext_2pi]) \
-                * np.exp(1j * (nphi_2pi / 6) * (m - 1 / 2))[:, np.newaxis]
-        self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
-        self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
-        if self.stats(params) == 'fermions':
-            self.add_coupling(V, u1, 'N', u2, 'N', dx)
-
-        u1, u2, dx = (0, 1, np.array([0, 0]))  # upper right
-        m = np.arange(0, 2 * nphi[1] * Lx_MUC, 2)
-        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext_2pi]) \
-                * np.exp(1j * (nphi_2pi / 6) * (m + 1 / 2))[:, np.newaxis]
+                * np.exp(-1j * nphi_2pi * m)[:, np.newaxis]
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
         if self.stats(params) == 'fermions':
@@ -108,15 +97,8 @@ if __name__ == "__main__":
                         Lx_MUC=1, Ly=6, V=10,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi_ext=0)
-    M = HofHex1Model(model_params)
+    M = HofSqu1Model(model_params)
 
     t0 = time.time()
     print("max MPO bond dimension = ", max(M.H_MPO.chi))
     print("Total time taken (seconds) = ", time.time() - t0)
-
-    # import matplotlib.pyplot as plt
-    # ax = plt.gca()
-    # M.lat.plot_sites(ax)
-    # M.lat.plot_order(ax)
-    # M.lat.plot_coupling(ax, M.lat.pairs["nearest_neighbors"])
-    # plt.show()

@@ -1,11 +1,7 @@
 #!/bin/bash
 
-cd ../data
-find * -type f -size 0 -delete
-
-cd ../logs
-find * -type f -size 0 -delete
-
-cd ../pickles
-find * -type f -size 0 -delete
+for directory in data logs pickles
+do
+    find ../${directory}/* -type f -size 0 -delete
+done
 

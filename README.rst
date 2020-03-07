@@ -131,7 +131,7 @@ All output .dat files are named in the following order:
 *stem*
 
 - tool (e.g. ``charge_pump``)
-- model (e.g. ``BosonicHofstadter``)
+- model (e.g. ``BosHofSqu1``)
 - chi (i.e. ``chi_max``)
 - chi_max_K (only for the ent_spec_mom calculation)
 
@@ -155,7 +155,22 @@ NB: For a range of parameter values in an output file, we denote this by the ord
 
 *name = stem + leaf*
 
-Example:  ``data/charge_pump/BosonicHofstadter/charge_pump_BosonicHofstadter_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_n_1_8_8_1_nphi_1_4_4_1_Lx_MUC_1_Ly_4_4_1_phi_0_2_21.dat``
+Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_n_1_8_8_1_nphi_1_4_4_1_Lx_MUC_1_Ly_4_4_1_phi_0_2_21.dat``
+
+Model naming convention
+-----------------------
+
+All model classes are named as follows:
+
+- particle statistics (e.g. ``Bos``/``Fer`` for bosons/fermions -- 3 letter abbreviation)
+- model name (e.g. ``Hof`` for the Hofstadter model -- 3 letter abbreviation)
+- hopping terms (e.g. ``Squ1Squ2`` for 1st- and 2nd-NN hoppings on a square lattice -- 3 letter abbreviations for the lattices, listed from short to long range)
+- other degrees of freedom (e.g. ``OrbitalSpin`` -- full names, in alphabetical order)
+- all model class names are suffixed with ``Model``
+
+Example: ``FerHofHex1Hex5OrbitalModel``
+
+Furthermore, all models with the same model name are grouped into their own subdirectories in ``code/models``.
 
 Pickling capability
 -------------------

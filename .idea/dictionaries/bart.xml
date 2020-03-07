@@ -1,20 +1,27 @@
 <component name="ProjectDictionaryState">
   <dictionary name="bart">
     <words>
+      <w>arange</w>
       <w>bosonic</w>
       <w>dmrg</w>
       <w>fermionic</w>
       <w>lanczos</w>
+      <w>matplotlib</w>
       <w>minima</w>
       <w>ndvalue</w>
       <w>neumann</w>
+      <w>newaxis</w>
+      <w>nmax</w>
       <w>nnvalue</w>
       <w>nonscalar</w>
       <w>nphi</w>
       <w>ntot</w>
+      <w>onsite</w>
+      <w>opnames</w>
       <w>polarizedx</w>
       <w>polarizedy</w>
       <w>pvalue</w>
+      <w>pyplot</w>
       <w>qflat</w>
       <w>qnumber</w>
       <w>qvalue</w>
@@ -22,6 +29,8 @@
       <w>reortho</w>
       <w>scal</w>
       <w>sinf</w>
+      <w>sublattice</w>
+      <w>sublattices</w>
       <w>summand</w>
       <w>tenpy</w>
       <w>unpolarized</w>

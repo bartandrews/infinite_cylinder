@@ -1,5 +1,4 @@
 # --- python imports
-import sys
 import os
 import pickle
 # --- TeNPy imports
@@ -8,10 +7,10 @@ from tenpy.algorithms import dmrg
 # from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
 # --- infinite_cylinder imports
 import functions.func_proc as fp
-from models.hofstadter.squ_1 import BosHofSqu1Model, FerHofSqu1Model
-from models.hofstadter.hex_1 import BosHofHex1Model, FerHofHex1Model
-from models.hofstadter.hex_1_hex_5 import BosHofHex1Hex5Model, FerHofHex1Hex5Model
-from models.hofstadter.hex_1_hex_5_orbital import BosHofHex1Hex5OrbitalModel, FerHofHex1Hex5OrbitalModel
+from models.hofstadter.squ_1 import HofSqu1Model
+from models.hofstadter.hex_1 import HofHex1Model
+from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
+from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 
 
 ##################################################
@@ -28,7 +27,7 @@ def get_product_state(model, nnvalue, ndvalue, qvalue, Lx_MUC, Ly, filling_scale
             ndvalue)
 
     if not numb_particles.is_integer():
-        sys.exit("Error: Cannot fit an integer number of particles into lattice geometry.")
+        raise ValueError("Cannot fit an integer number of particles into lattice geometry.")
     else:
         numb_particles = int(numb_particles)
 
@@ -37,57 +36,37 @@ def get_product_state(model, nnvalue, ndvalue, qvalue, Lx_MUC, Ly, filling_scale
     elif "Hex" in model:
         system_size = int(2 * qvalue * Lx_MUC * Ly)
     else:
-        sys.exit("Error: Unknown model for the get_product_state function.")
+        raise ValueError("Unknown model for the get_product_state function.")
     numb_sites_per_particle = int(system_size / numb_particles)
 
     if "Orbital" in model:
-        if "Bos" in model:
-            empty_site = ['0_x 0_y']
-        elif "Fer" in model:
-            empty_site = ['empty_x empty_y']
-        else:
-            sys.exit("Error: Neither Bos nor Fer in model name.")
+        if "Bos" or "Fer" not in model:
+            raise ValueError("Neither Bos nor Fer in model name.")
+        empty_site = ['0_x 0_y'] if "Bos" in model else ['empty_x empty_y']
         if orbital_preference in ['polarizedx', None]:
-            if "Bos" in model:
-                lattice_site = ['1_x 0_y']
-            elif "Fer" in model:
-                lattice_site = ['full_x empty_y']
-            else:
-                sys.exit("Error: Neither Bos nor Fer in model name.")
+            lattice_site = ['1_x 0_y'] if "Bos" in model else ['full_x empty_y']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
         elif orbital_preference == 'polarizedy':
-            if "Bos" in model:
-                lattice_site = ['0_x 1_y']
-            elif "Fer" in model:
-                lattice_site = ['empty_x full_y']
-            else:
-                sys.exit("Error: Neither Bos nor Fer in model name.")
+            lattice_site = ['0_x 1_y'] if "Bos" in model else ['empty_x full_y']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
         elif orbital_preference == 'unpolarized':
             if "Bos" in model:
                 lattice_site_1 = ['1_x 0_y']
                 lattice_site_2 = ['0_x 1_y']
-            elif "Fer" in model:
+            else:
                 lattice_site_1 = ['full_x empty_y']
                 lattice_site_2 = ['empty_x full_y']
-            else:
-                sys.exit("Error: Neither Bos nor Fer in model name.")
             state = (lattice_site_1 + empty_site * (numb_sites_per_particle - 1)
                      + lattice_site_2 + empty_site * (numb_sites_per_particle - 1)) \
                      * int((system_size / (2 * numb_sites_per_particle)))
         elif orbital_preference == 'filled':
-            if "Bos" in model:
-                lattice_site = ['1_x 1_y']
-            elif "Fer" in model:
-                lattice_site = ['full_x full_y']
-            else:
-                sys.exit("Error: Neither Bos nor Fer in model name.")
+            lattice_site = ['1_x 1_y'] if "Bos" in model else ['full_x full_y']
             state = (lattice_site + empty_site * (2 * numb_sites_per_particle - 1)) \
                      * int((system_size / (2 * numb_sites_per_particle)))
         else:
-            sys.exit("Error: Unknown orbital_preference parameter.")
+            raise ValueError("Unknown orbital_preference parameter.")
     else:
         state = ([1] + [0] * (numb_sites_per_particle - 1)) * int((system_size / numb_sites_per_particle))
 
@@ -106,44 +85,30 @@ def get_product_state(model, nnvalue, ndvalue, qvalue, Lx_MUC, Ly, filling_scale
 
 
 def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi_ext=0):
-    model_params = dict(conserve='N', t1=t1, mu=mu, filling=(int(nnvalue), int(ndvalue)), phi=(int(pvalue), int(qvalue)),
+    model_params = dict(conserve='N', t1=t1, mu=mu, n=(int(nnvalue), int(ndvalue)), nphi=(int(pvalue), int(qvalue)),
                         Lx_MUC=Lx_MUC, Ly=Ly,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi_ext=phi_ext)
 
     if "Bos" in model:
-        model_params.update(Nmax=1)
+        model_params.update(statistics='bosons', Nmax=1)
     elif "Fer" in model:
-        model_params.update(V=V)
+        model_params.update(statistics='fermions', V=V)
     else:
-        sys.exit("Error: Unknown orbital_preference parameter.")
+        raise ValueError("Neither Bos nor Fer in model name.")
 
-    if model == 'BosHofSqu1':
-        M = BosHofSqu1Model(model_params)
-    elif model == 'FerHofSqu1':
-        M = FerHofSqu1Model(model_params)
-    elif model == 'BosHofHex1':
-        M = BosHofHex1Model(model_params)
-    elif model == 'FerHofHex1':
-        M = FerHofHex1Model(model_params)
-    elif model == 'BosHofHex1Hex5':
+    if 'HofSqu1' in model:
+        M = HofSqu1Model(model_params)
+    elif 'HofHex1' in model:
+        M = HofHex1Model(model_params)
+    elif 'HofHex1Hex5' in model:
         model_params.update(t2=t2)
-        M = BosHofHex1Hex5Model(model_params)
-    elif model == 'FerHofHex1Hex5':
-        model_params.update(t2=t2)
-        M = FerHofHex1Hex5Model(model_params)
-    elif model == 'BosHofHex1Hex5Orbital':
-        model_params.update(t2=t2)
-        model_params.update(t2dash=t2dash)
-        model_params.update(U=U)
-        M = BosHofHex1Hex5OrbitalModel(model_params)
-    elif model == 'FerHofHex1Hex5Orbital':
-        model_params.update(t2=t2)
-        model_params.update(t2dash=t2dash)
-        model_params.update(U=U)
-        M = FerHofHex1Hex5OrbitalModel(model_params)
+        M = HofHex1Hex5Model(model_params)
+    elif 'HofHex1Hex5Orbital' in model:
+        model_params.update(t2=t2, t2dash=t2dash, U=U)
+        M = HofHex1Hex5OrbitalModel(model_params)
     else:
-        sys.exit("Error: Unknown model for the define_iDMRG_model function.")
+        raise ValueError("Unknown model for the define_iDMRG_model function.")
 
     return M
 
