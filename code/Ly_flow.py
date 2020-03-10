@@ -23,7 +23,7 @@ def my_Ly_flow(threads, model, chi_max, chi_max_K, t1, t2, t2dash, U, mu, V,
            f"nphi_{pvalue}_{q_min}_{q_max}_{nu_samp}_Lx_MUC_{Lx_MUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}.dat{tag}"
     sys.stdout = sys.stderr = fp.Logger("Ly_flow", model, leaf)
 
-    tools = ["ent_scal", "ent_spec_real", "ent_spec_mom", "corr_func"]
+    tools = ["ent_scal", "ent_spec_real", "ent_spec_mom"]
     data = fp.prepare_output_files(tools, model, chi_max, leaf, chi_max_K)
 
     ####################################################################################################################

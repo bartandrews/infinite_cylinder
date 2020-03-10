@@ -41,15 +41,15 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
             engine = fd.my_iDMRG_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue,
                                         qvalue, Lx_MUC, Ly, use_pickle, make_pickle, phi_min, run=False)
 
-            for phi_ext in np.linspace(phi_min, phi_max, phi_samp):
+            for phi in np.linspace(phi_min, phi_max, phi_samp):
 
-                if phi_ext == phi_min:
+                if phi == phi_min:
                     engine.run()
                 else:
                     engine.engine_params['mixer'] = False
                     del engine.engine_params['chi_list']  # comment out this line for single site DMRG tests
                     M = fd.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue,
-                                              Lx_MUC, Ly, phi_ext)
+                                              Lx_MUC, Ly, phi)
                     psi_old = engine.psi
                     engine.init_env(model=M)
                     engine.run()
@@ -59,7 +59,7 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
                     ###########
 
                     abs_ov = abs(psi_old.overlap(engine.psi))
-                    data_line = f"{phi_ext:.15f}\t{abs_ov:.15f}"
+                    data_line = f"{phi:.15f}\t{abs_ov:.15f}"
                     print(data_line)
                     data['overlap'].write(data_line+"\n")
 
@@ -69,7 +69,7 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
 
                 QL = engine.psi.average_charge(bond=0)[0]
 
-                data_line = f"{phi_ext:.15f}\t{QL:.15f}"
+                data_line = f"{phi:.15f}\t{QL:.15f}"
                 print(data_line)
                 data['charge_pump'].write(data_line+"\n")
 
@@ -84,9 +84,9 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
 
                 for sector in range(0, len(spectrum[bond])):
                     for i in range(0, len(spectrum[bond][sector][1])):
-                        data_line = "{charge:d}\t{phi_ext:.15f}\t{spectrum:.15f}"\
+                        data_line = "{charge:d}\t{phi:.15f}\t{spectrum:.15f}"\
                             .format(charge=spectrum[bond][sector][0][0],
-                                    phi_ext=phi_ext,
+                                    phi=phi,
                                     spectrum=spectrum[bond][sector][1][i])
                         print(data_line)
                         data['ent_spec_flow'].write(data_line+"\n")
@@ -96,8 +96,8 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V,
 
 if __name__ == '__main__':
 
-    my_phi_flow(threads=1, model="BosHofSqu1", chi_max=50,
-                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0,
-                nnvalue=1, nd_min=8, nd_max=8, pvalue=1, q_min=4, q_max=4, nu_samp=1,
-                Lx_MUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",
+    my_phi_flow(threads=1, model="FerHofHex1", chi_max=50,
+                t1=1, t2=0, t2dash=0, U=0, mu=0, V=10,
+                nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
+                Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
                 use_pickle=False, make_pickle=False)

@@ -41,7 +41,7 @@ stats '$2.temp3' u 2:3 nooutput
 blocks = STATS_blocks
 
 set title noenhanced '$2'
-set xlabel 'Φ / 2π'
+set xlabel 'independent variable'
 set ylabel 'entanglement energy'
 
 set yrange [:8]

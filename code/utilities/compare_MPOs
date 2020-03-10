@@ -1,28 +1,21 @@
-from models.hofstadter_old import BosonicHofstadterModel as BosonicHofstadterModel_old
-from models.hofstadter import BosonicHofstadterModel
-from models.hofstadter_old import FermionicHofstadterModel as FermionicHofstadterModel_old
-from models.hofstadter import FermionicHofstadterModel
-from models.hex_1_old import BosonicHex1Model as BosonicHex1Model_old
-from models.hex_1 import BosonicHex1Model
-from models.hex_1_old import FermionicHex1Model as FermionicHex1Model_old
-from models.hex_1 import FermionicHex1Model
-from models.hex_1_hex_5_old import BosonicHex1Hex5Model as BosonicHex1Hex5Model_old
-from models.hex_1_hex_5 import BosonicHex1Hex5Model
-from models.hex_1_hex_5_old import FermionicHex1Hex5Model as FermionicHex1Hex5Model_old
-from models.hex_1_hex_5 import FermionicHex1Hex5Model
-from models.hex_1_hex_5_orbital_old import BosonicHex1Hex5OrbitalModel as BosonicHex1Hex5OrbitalModel_old
-from models.hex_1_hex_5_orbital import BosonicHex1Hex5OrbitalModel
-from models.hex_1_hex_5_orbital_old import FermionicHex1Hex5OrbitalModel as FermionicHex1Hex5OrbitalModel_old
-from models.hex_1_hex_5_orbital import FermionicHex1Hex5OrbitalModel
+from models.hofstadter.backup.squ_1_backup import HofSqu1Model as HofSqu1Model_old
+from models.hofstadter.squ_1 import HofSqu1Model
+from models.hofstadter.backup.hex_1_backup import HofHex1Model as HofHex1Model_old
+from models.hofstadter.hex_1 import HofHex1Model
+from models.hofstadter.backup.hex_1_hex_5_backup import HofHex1Hex5Model as HofHex1Hex5Model_old
+from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
+from models.hofstadter.backup.hex_1_hex_5_orbital_backup import HofHex1Hex5OrbitalModel as HofHex1Hex5OrbitalModel_old
+from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
+
 
 if __name__ == "__main__":
 
-    model_params = dict(conserve='N', t=1, filling=(int(1), int(3)), phi=(int(1), int(3)), Lx_MUC=1, Ly=6, V=10,  # system params
-                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',  # MPS params
-                        verbose=1, phi_ext=1.1)  # utility
+    model_params = dict(statistics='fermions', conserve='N', t1=1, n=(int(1), int(3)), nphi=(int(1), int(9)), Lx_MUC=1, Ly=6, V=10,
+                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
+                        verbose=1, phi=1.1)
 
-    M1 = FermionicHex1Hex5OrbitalModel_old(model_params)
-    M2 = FermionicHex1Hex5OrbitalModel(model_params)
+    M1 = HofHex1Hex5OrbitalModel_old(model_params)
+    M2 = HofHex1Hex5OrbitalModel(model_params)
 
     # print(M1.coupling_terms['Cd_i C_j'].to_TermList())
     # print('='*80)

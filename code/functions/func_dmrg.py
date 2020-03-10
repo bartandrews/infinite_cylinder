@@ -84,11 +84,11 @@ def get_product_state(model, nnvalue, ndvalue, qvalue, Lx_MUC, Ly, filling_scale
 ###################################################################
 
 
-def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi_ext=0):
+def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi=0):
     model_params = dict(conserve='N', t1=t1, mu=mu, n=(int(nnvalue), int(ndvalue)), nphi=(int(pvalue), int(qvalue)),
                         Lx_MUC=Lx_MUC, Ly=Ly,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
-                        verbose=1, phi_ext=phi_ext)
+                        verbose=1, phi=phi)
 
     if "Bos" in model:
         model_params.update(statistics='bosons', Nmax=1)
@@ -119,7 +119,7 @@ def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue
 
 
 def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly,
-                    use_pickle=False, make_pickle=False, phi_ext=0, run=True):
+                    use_pickle=False, make_pickle=False, phi=0, run=True):
 
     # The run parameter specifies whether you are running iDMRG or defining an iDMRG engine. Defining an iDMRG engine
     # returns the engine, whereas running iDMRG returns [E, psi, M].
@@ -131,7 +131,7 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndv
         else:
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
         pickle_leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_" \
-                      f"n_{nnvalue}_{ndvalue}_nphi_{pvalue}_{qvalue}_Lx_MUC_{Lx_MUC}_Ly_{Ly}_phi_{phi_ext}.pkl"
+                      f"n_{nnvalue}_{ndvalue}_nphi_{pvalue}_{qvalue}_Lx_MUC_{Lx_MUC}_Ly_{Ly}_phi_{phi}.pkl"
         os.makedirs(f"pickles/{flow}/{model}/", exist_ok=True)
         pickle_file = f"pickles/{flow}/{model}/" + pickle_stem + pickle_leaf
 
@@ -146,10 +146,10 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndv
         (E, psi, M) = (None, None, None)
         if not run:
             engine = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue,
-                              Lx_MUC, Ly, phi_ext, run=False)
+                              Lx_MUC, Ly, phi, run=False)
         else:
             (E, psi, M) = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue,
-                                   Lx_MUC, Ly, phi_ext, run=True)
+                                   Lx_MUC, Ly, phi, run=True)
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
                 if not run:
@@ -165,8 +165,8 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, nnvalue, ndv
 
 def my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V,
              nnvalue, ndvalue, pvalue, qvalue,
-             Lx_MUC, Ly, phi_ext=0, run=True):
-    M = define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi_ext)
+             Lx_MUC, Ly, phi=0, run=True):
+    M = define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, nnvalue, ndvalue, pvalue, qvalue, Lx_MUC, Ly, phi)
     product_state = get_product_state(model, nnvalue, ndvalue, qvalue, Lx_MUC, Ly)
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)

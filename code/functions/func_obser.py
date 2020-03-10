@@ -20,13 +20,13 @@ def scalar_observables(E, psi):
 ############################################################################################
 
 
-def nonscalar_observables(tools, data, model, psi, M, chi_max_K, Lx_MUC, Ly, print_data=False):
+def nonscalar_observables(tools, data, psi, M, chi_max_K, Lx_MUC, Ly, extra_dof=False, print_data=False):
     if 'ent_spec_real' in tools:
         ent_spec_real(data, psi, Lx_MUC, Ly, print_data)
     if 'ent_spec_mom' in tools:
         ent_spec_mom(data, psi, M, chi_max_K, print_data)
     if 'corr_func' in tools:
-        corr_func(model, psi)
+        corr_func(data, psi, M, extra_dof, print_data)
     return
 
 
@@ -89,17 +89,16 @@ def ent_spec_mom(data, psi, M, chi_max_K, print_data):
 # corr_func (function for recording the two-particle correlation function) #
 ############################################################################
 
-def corr_func(model, psi):
+def corr_func(data, psi, M, extra_dof, print_data):
 
-    if "Orbital" in model:
-        op = "Ntot"
-    else:
-        op = "N"
+    tot_numb_op = 'N' if not extra_dof else 'Ntot'
 
     # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
-    NN = psi.correlation_function(op, op, sites1=range(0, psi.L), sites2=[0])[:, 0]
-    print(NN)
-    # NN_reshaped = M.lat.mps2lat_values(NN)
-    # print(NN_reshaped.shape, M.lat.shape)
-    # import pdb; pdb.set_trace()
+    corr_func_site_list = psi.correlation_function(tot_numb_op, tot_numb_op, sites1=range(0, psi.L), sites2=[0])[:, 0]
+    corr_func_lattice_array = M.lat.mps2lat_values(corr_func_site_list)
+    assert corr_func_lattice_array.shape == M.lat.shape[:2]
+    if print_data:
+        print(corr_func_lattice_array)
+    np.savetxt(data['corr_func'], corr_func_lattice_array, delimiter='\t')
+
     return

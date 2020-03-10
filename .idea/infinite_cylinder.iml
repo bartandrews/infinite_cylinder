@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/code" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/code/functions/old" />
       <excludeFolder url="file://$MODULE_DIR$/code/lattices/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/models/hofstadter/backup" />
       <excludeFolder url="file://$MODULE_DIR$/code/models/old" />
       <excludeFolder url="file://$MODULE_DIR$/code/old" />
       <excludeFolder url="file://$MODULE_DIR$/code/standalone/old" />

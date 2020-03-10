@@ -5,8 +5,8 @@ gnuplot -persist <<-EOFMarker
 unset key
 set title noenhanced '$1'
 
-set xlabel 'V_1 / t_1'
-set ylabel 'ξ / a'
+set xlabel 'independent variable'
+set ylabel 'double occupancy'
 plot '$1'
 
 EOFMarker

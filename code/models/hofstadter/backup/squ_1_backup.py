@@ -66,7 +66,7 @@ class HofSqu1Model(CouplingMPOModel):
             annihilation = 'C'
         t1 = get_parameter(params, 't1', 1., self.name, True)
         mu = get_parameter(params, 'mu', 0., self.name)
-        phi_ext_2pi = 2 * np.pi * get_parameter(params, 'phi_ext', 0., self.name)
+        phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0., self.name)
         nphi = get_parameter(params, 'nphi', nphi_default, self.name)
         Lx_MUC = get_parameter(params, 'Lx_MUC', 1, self.name)
         nphi_2pi = 2 * np.pi * nphi[0] / nphi[1]
@@ -75,7 +75,7 @@ class HofSqu1Model(CouplingMPOModel):
             self.add_onsite(mu, 0, 'N')
 
         u1, u2, dx = (0, 0, np.array([1, 0]))  # right
-        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext_2pi])
+        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_2pi])
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
         if self.stats(params) == 'fermions':
@@ -83,7 +83,7 @@ class HofSqu1Model(CouplingMPOModel):
 
         u1, u2, dx = (0, 0, np.array([0, 1]))  # up
         m = np.arange(0, nphi[1] * Lx_MUC)
-        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_ext_2pi]) \
+        t_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_2pi]) \
                 * np.exp(-1j * nphi_2pi * m)[:, np.newaxis]
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     model_params = dict(conserve='N', t1=1, n=(int(1), int(9)), nphi=(int(1), int(3)),
                         Lx_MUC=1, Ly=6, V=10,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
-                        verbose=1, phi_ext=0)
+                        verbose=1, phi=0)
     M = HofSqu1Model(model_params)
 
     t0 = time.time()

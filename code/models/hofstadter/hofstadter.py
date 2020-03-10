@@ -14,7 +14,7 @@ class HofstadterModel(CouplingMPOModel):
     def stats(self, params):
         return get_parameter(params, 'statistics', 'bosons', self.name)
 
-    def init_single_sites(self, params):
+    def init_sites(self, params):
         if self.stats(params) == 'bosons':
             Nmax = get_parameter(params, 'Nmax', 1, self.name)
             conserve = get_parameter(params, 'conserve', 'N', self.name)
@@ -39,7 +39,6 @@ class HofstadterModel(CouplingMPOModel):
         Lx_MUC = get_parameter(params, 'Lx_MUC', 1, self.name)
         Lx = Lx_MUC * nphi[1]
         Ly = get_parameter(params, 'Ly', Ly_default, self.name)
-        site = self.init_sites(params)
         order = get_parameter(params, 'order', 'Cstyle', self.name)
         bc_MPS = get_parameter(params, 'bc_MPS', 'infinite', self.name)
         bc_x = 'periodic' if bc_MPS == 'infinite' else 'open'  # Next line needs default
@@ -50,22 +49,124 @@ class HofstadterModel(CouplingMPOModel):
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
         bc = [bc_x, bc_y]
-        return Lx, Ly, site, order, bc_MPS, bc
+        return Lx, Ly, order, bc_MPS, bc
 
-    def init_basic_terms(self, params):
+    def init_terms(self, params):
         if self.stats(params) == 'bosons':
-            nphi_default = (1, 4)
             creation = 'Bd'
             annihilation = 'B'
+            nphi_default = (1, 4)
         else:
-            nphi_default = (1, 3)
             creation = 'Cd'
             annihilation = 'C'
+            nphi_default = (1, 3)
         t1 = get_parameter(params, 't1', 1, self.name, True)
         mu = get_parameter(params, 'mu', 0., self.name)
-        phi_ext_2pi = 2 * np.pi * get_parameter(params, 'phi_ext', 0., self.name)
+        if self.stats(params) == 'fermions':
+            V = get_parameter(params, 'V', 10, self.name, True)
+        else:
+            V = 0
         nphi = get_parameter(params, 'nphi', nphi_default, self.name)
-        Lx_MUC = get_parameter(params, 'Lx_MUC', 1, self.name)
         nphi_2pi = 2 * np.pi * nphi[0] / nphi[1]
+        Lx_MUC = get_parameter(params, 'Lx_MUC', 1, self.name)
+        phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0., self.name)
 
-        return nphi_default, creation, annihilation, t1, mu, phi_ext_2pi, nphi, nphi_2pi, Lx_MUC
+        return creation, annihilation, nphi_default, t1, mu, V, nphi, nphi_2pi, Lx_MUC, phi_2pi
+
+    def chemical_potential(self, mu, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
+        for u in range(len(self.lat.unit_cell)):
+            self.add_onsite(mu, 0, tot_numb_op)
+
+    def onsite_interaction(self, U, op1, op2):
+        op = op1+' '+op2
+        for u in range(len(self.lat.unit_cell)):
+            print("u in range(len(self.lat.unit_cell)) = ", u)
+            self.add_onsite(U, u, op)
+
+    def squ_1_hoppings(self, creation, annihilation, t, V, nphi, nphi_2pi, Lx_MUC, phi_2pi,
+                       interaction=False, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
+
+        u1, u2, dx = (0, 0, np.array([1, 0]))  # right
+        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi])
+        self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+        self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+        if interaction:
+            self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+        u1, u2, dx = (0, 0, np.array([0, 1]))  # up
+        m = np.arange(0, nphi[1] * Lx_MUC)
+        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                * np.exp(-1j * nphi_2pi * m)[:, np.newaxis]
+        self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+        self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+        if interaction:
+            self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+    def hex_1_hoppings(self, creation, annihilation, t, V, nphi, nphi_2pi, Lx_MUC, phi_2pi,
+                       interaction=False, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
+
+        u1, u2, dx = (0, 1, np.array([0, -1]))  # down
+        m = np.arange(0, 2 * nphi[1] * Lx_MUC, 2)
+        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                * np.exp(-1j * (nphi_2pi / 3) * m)[:, np.newaxis]
+        self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+        self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+        if interaction:
+            self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+        u1, u2, dx = (0, 1, np.array([-1, 0]))  # upper left
+        m = np.roll(np.arange(0, 2 * nphi[1] * Lx_MUC, 2), -1)  # match convention for strength argument of add_coupling
+        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                * np.exp(1j * (nphi_2pi / 6) * (m - 1 / 2))[:, np.newaxis]
+        self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+        self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+        if interaction:
+            self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+        u1, u2, dx = (0, 1, np.array([0, 0]))  # upper right
+        m = np.arange(0, 2 * nphi[1] * Lx_MUC, 2)
+        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                * np.exp(1j * (nphi_2pi / 6) * (m + 1 / 2))[:, np.newaxis]
+        self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+        self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+        if interaction:
+            self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+    def hex_5_hoppings(self, creation, annihilation, t, V, nphi, nphi_2pi, Lx_MUC, phi_2pi,
+                       interaction=False, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
+
+        for sublattice in [0, 1]:  # A and B sublattices
+
+            u1, u2, dx = (sublattice, sublattice, np.array([-1, 2]))  # up
+            m = np.roll(np.arange(sublattice, 2 * nphi[1] * Lx_MUC, 2),
+                        -1)  # match convention for strength argument of add_coupling
+            t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                    * np.exp(1j * nphi_2pi * m)[:, np.newaxis]
+            self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+            self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+            if interaction:
+                self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+            u1, u2, dx = (sublattice, sublattice, np.array([-2, 1]))  # bottom right
+            m = np.roll(np.arange(sublattice, 2 * nphi[1] * Lx_MUC, 2),
+                        -2)  # match convention for strength argument of add_coupling
+            t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                    * np.exp(-1j * (nphi_2pi / 2) * (m + 3 / 2))[:, np.newaxis]
+            self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+            self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+            if interaction:
+                self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)
+
+            u1, u2, dx = (sublattice, sublattice, np.array([-1, -1]))  # bottom left
+            m = np.roll(np.arange(sublattice, 2 * nphi[1] * Lx_MUC, 2),
+                        -1)  # match convention for strength argument of add_coupling
+            t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+                    * np.exp(-1j * (nphi_2pi / 2) * (m - 3 / 2))[:, np.newaxis]
+            self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
+            self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+            if interaction:
+                self.add_coupling(V, u1, tot_numb_op, u2, tot_numb_op, dx)

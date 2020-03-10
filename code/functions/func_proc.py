@@ -2,8 +2,11 @@
 import sys
 import os
 import numpy as np
-# --- TeNPy imports
-from tenpy.models.model import CouplingMPOModel
+import inspect  # for main
+import pkgutil  # for main
+# --- infinite_cylinder imports
+from models.hofstadter.hofstadter import HofstadterModel  # for main
+import models.hofstadter as hofstadter  # for main
 
 
 ###############################################
@@ -90,7 +93,13 @@ def print_LylB_headings(model, Ly, ndvalue, nd_min, pvalue, qvalue, q_min, Ly_mi
 
 if __name__ == '__main__':
 
+    # lists the submodules but not the subclasses
+    for importer, modname, ispkg in pkgutil.iter_modules(hofstadter.__path__):
+        print("Found submodule %s (is a package: %s)" % (modname, ispkg))
+        print(inspect.getmembers(sys.modules[__name__], inspect.isclass))
+
     models = []
-    for m in CouplingMPOModel.__subclasses__():
+    for m in HofstadterModel.__subclasses__():  # only shows the subclasses of imported modules
+        print(m)
         models.append(m.__name__)
     print(models)
