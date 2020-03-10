@@ -53,25 +53,24 @@ class HofstadterModel(CouplingMPOModel):
 
     def init_terms(self, params):
         if self.stats(params) == 'bosons':
-            creation = 'Bd'
-            annihilation = 'B'
+            creation, annihilation = 'Bd', 'B'
+            V_default, Vrange_default = 0, 0
             nphi_default = (1, 4)
         else:
-            creation = 'Cd'
-            annihilation = 'C'
+            creation, annihilation = 'Cd', 'C'
+            V_default, Vrange_default = 10, 1
             nphi_default = (1, 3)
         t1 = get_parameter(params, 't1', 1, self.name, True)
         mu = get_parameter(params, 'mu', 0., self.name)
-        if self.stats(params) == 'fermions':
-            V = get_parameter(params, 'V', 10, self.name, True)
-        else:
-            V = 0
+        V = get_parameter(params, 'V', V_default, self.name, True)
+        Vtype = get_parameter(params, 'Vtype', 'Coulomb', self.name)
+        Vrange = get_parameter(params, 'Vrange', Vrange_default, self.name)
         nphi = get_parameter(params, 'nphi', nphi_default, self.name)
         nphi_2pi = 2 * np.pi * nphi[0] / nphi[1]
         Lx_MUC = get_parameter(params, 'Lx_MUC', 1, self.name)
         phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0., self.name)
 
-        return creation, annihilation, nphi_default, t1, mu, V, nphi, nphi_2pi, Lx_MUC, phi_2pi
+        return creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, Lx_MUC, phi_2pi
 
     def chemical_potential(self, mu, extra_dof=False):
         tot_numb_op = 'N' if not extra_dof else 'Ntot'
@@ -83,6 +82,57 @@ class HofstadterModel(CouplingMPOModel):
         for u in range(len(self.lat.unit_cell)):
             print("u in range(len(self.lat.unit_cell)) = ", u)
             self.add_onsite(U, u, op)
+
+    def squ_offsite_interaction(self, V, Vtype, Vrange, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
+
+        r = [1, np.sqrt(2), 2, np.sqrt(5), np.sqrt(8),
+             3, np.sqrt(10), np.sqrt(13), 4, np.sqrt(18)]  # distance to nearest neighbors
+
+        def interaction_strength(Vvalue, Vtype_value, rlist, rindex):
+            if Vtype_value == 'Coulomb':
+                potential = Vvalue / rlist[rindex]
+            elif Vtype_value == 'Yukawa':
+                potential = np.exp(-rlist[rindex]) * Vvalue / rlist[rindex]
+            else:
+                raise ValueError("Unknown Vtype for the interaction_strength function.")
+            return potential
+
+        if Vrange >= 1:
+            for u1, u2, dx in self.lat.pairs['nearest_neighbors']:
+                self.add_coupling(interaction_strength(V, Vtype, r, 0), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 2:
+            for u1, u2, dx in self.lat.pairs['next_nearest_neighbors']:
+                self.add_coupling(interaction_strength(V, Vtype, r, 1), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 3:
+            for u1, u2, dx in self.lat.pairs['next_next_nearest_neighbors']:
+                self.add_coupling(interaction_strength(V, Vtype, r, 2), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 4:
+            for u1, u2, dx in [(0, 0, np.array([2, 1])), (0, 0, np.array([2, -1])),
+                               (0, 0, np.array([1, 2])), (0, 0, np.array([1, -2]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 3), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 5:
+            for u1, u2, dx in [(0, 0, np.array([2, 2])), (0, 0, np.array([2, -2]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 4), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 6:
+            for u1, u2, dx in [(0, 0, np.array([3, 0])), (0, 0, np.array([0, 3]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 5), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 7:
+            for u1, u2, dx in [(0, 0, np.array([3, 1])), (0, 0, np.array([3, -1])),
+                               (0, 0, np.array([1, 3])), (0, 0, np.array([1, -3]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 6), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 8:
+            for u1, u2, dx in [(0, 0, np.array([3, 2])), (0, 0, np.array([3, -2])),
+                               (0, 0, np.array([2, 3])), (0, 0, np.array([2, -3]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 7), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 9:
+            for u1, u2, dx in [(0, 0, np.array([4, 0])), (0, 0, np.array([0, 4]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 8), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 10:
+            for u1, u2, dx in [(0, 0, np.array([3, 3])), (0, 0, np.array([3, -3]))]:
+                self.add_coupling(interaction_strength(V, Vtype, r, 9), u1, tot_numb_op, u2, tot_numb_op, dx)
+        if Vrange >= 11:
+            raise ValueError("Offsite interaction with Vrange > 10 not implemented.")
 
     def squ_1_hoppings(self, creation, annihilation, t, V, nphi, nphi_2pi, Lx_MUC, phi_2pi,
                        interaction=False, extra_dof=False):

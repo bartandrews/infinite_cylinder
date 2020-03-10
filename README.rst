@@ -63,7 +63,7 @@ Functions description
 
 * func_obser = observables functions
 
-    Functions to compute the observables for a ground state, and well as for their scalar and nonscalar grouping.
+    Functions to compute the observables for a ground state, as well as for their scalar and nonscalar grouping.
 
 * func_proc = file processing functions
 
@@ -170,6 +170,8 @@ All output .dat files are named in the following order:
 - U
 - mu
 - V
+- Vtype (e.g. ``Coulomb``)
+- Vrange (e.g. 2 for interactions up to and including 2nd-NN)
 - n (numerator underscore denominator, only range over denominator currently implemented)
 - nphi (numerator underscore denominator, only range over denominator currently implemented)
 - Lx_MUC
@@ -177,11 +179,11 @@ All output .dat files are named in the following order:
 - phi
 - tag (optional)
 
-NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4``).
+NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4_Coulomb_1``).
 
 *name = stem + leaf*
 
-Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_n_1_8_8_1_nphi_1_4_4_1_Lx_MUC_1_Ly_4_4_1_phi_0_2_21.dat``
+Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_Coulomb_0_n_1_8_8_1_nphi_1_4_4_1_Lx_MUC_1_Ly_4_4_1_phi_0_2_21.dat``
 
 Model naming convention
 -----------------------

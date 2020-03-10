@@ -18,6 +18,7 @@
       <w>nonscalar</w>
       <w>nphi</w>
       <w>ntot</w>
+      <w>offsite</w>
       <w>onsite</w>
       <w>opnames</w>
       <w>polarizedx</w>
@@ -27,8 +28,11 @@
       <w>qflat</w>
       <w>qnumber</w>
       <w>qvalue</w>
+      <w>rarray</w>
       <w>renyi</w>
       <w>reortho</w>
+      <w>rindex</w>
+      <w>rlist</w>
       <w>scal</w>
       <w>sinf</w>
       <w>sublattice</w>
@@ -36,6 +40,10 @@
       <w>summand</w>
       <w>tenpy</w>
       <w>unpolarized</w>
+      <w>vrange</w>
+      <w>vtype</w>
+      <w>vvalue</w>
+      <w>yukawa</w>
     </words>
   </dictionary>
 </component>
