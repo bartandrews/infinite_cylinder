@@ -210,11 +210,38 @@ Pickling capability
 
 The pickling capability is used to save the state, or initial state ``[E, psi, M]`` or ``engine`` for a flow. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state) or ``make_pickle`` (to pickle a state for later) in the parameter files. By default, all pickling is set to False in the flows.
 
+Masters Project: Madhav Mohan
+-----------------------------
+
+1. **Reproduce an equivalent of Fig. 3 from [Schoond19] for the FerHofSqu1 model at 1/3 filling.** For this, you should use workflow 2 and for each system with filling nu=n/nphi=1/3: compute the von Neumann entanglement entropy, S, for various MPS bond dimensions, chi. That is for fermions with nearest-neighbor interactions: V=10, Vtype='Coulomb', Vrange=1. What do you notice when you plot S vs. 1/chi ? You should see a convergence of the entanglement entropy as you increase the MPS bond dimension (e.g. chi=50, 100, ..., 500). In each case, extrapolate this convergence to get an estimate (with errors) for S in the chi->infty limit. This will form one data point (with error bars) on your graph of S against Ly/lB. Repeating this for a variety of systems with different Ly or nphi, you should get a straight line confirming the area law of entanglement. The (absolute value of the) y-intercept of this straight line is the topological entanglement entropy. What value do you get for the topological entanglement entropy? For the 1/3 state, this value should be 0.549. Keep improving the data points on this plot until you get an agreement to 2 decimal places.
+
+2. **Plot the area law graph for the BosHofSqu1 model at 1/2 filling.** Reproduce the area law plot, as above, now for the BosHofSqu1 model at 1/2 filling. That is hardcore bosons with V=0, Vtype='Coulomb', Vrange=0. You should notice that the computations are faster than for fermions. The topological entanglement entropy for this system is 0.347. Keep improving the data points on this plot until you get an agreement to 2 decimal places.
+
+3. **Decide on a routine.** You have now computed the area law plots for both bosons and fermions. What difficulties arose during your calculations? How large did you have to make the MPS bond dimension to get a convincing convergence extrapolation of S? In what increments is it most efficient to increase chi? Which values of nphi yield fractional quantum Hall states? Are some flux densities more robust than others? Using everything that you have learned, you need to decide on a routine that you can repeat for other Hamiltonians. This project is all about comparing topological entanglement entropy values. So in order to make it a fair test, we need to systematically produce area law plots to the same precision.
+
+4. **Tune the interaction range for the FerHofSqu1 model at 1/3 filling.** You already have a plot for fermions with NN interactions from step 1. Now you can plot the area law for fermions with up to 2nd-NN interactions i.e. V=10, Vtype='Coulomb', Vrange=2. You can then make the interaction longer range by increasing Vrange=3, 4, ..., 10. How far can you get before iDMRG becomes prohibitively slow? What do you notice about the values of the topological entanglement entropy as you increase the interaction range? Originally, for NN-interacting fermions in step 1, you found that the value was 0.549. This value is expected to stay the same since this is the well-known Laughlin state, which is undoubtedly Abelian. Does it indeed stay the same?
+
+5. **[ORIGINAL RESULT] Tune the interaction range for the FerHofSqu1 model at 2/5 filling.** Unlike the 1/3 Laughlin state, the statistics of the FQH state at 2/5 filling is disputed. Jain's composite fermion theory predicts that this ground state has Abelian statistics, whereas the conformal field theory approach (i.e. the Gaffnian) yields non-Abelian statistics. In the recent paper by [Yang19], they claim that this discrepancy is due to the fact that Jain's theory makes an implicit assumption of short-range interactions. The topological entanglement entropy can tell us whether the statistics are Abelian or non-Abelian. Compute the area law now for the FerHofSqu1 model at 2/5 filling for a variety of interaction ranges. What do you notice about the topological entanglement entropy? If their theory is correct, you should observe that the initial value of 0.549 increases as we increase the range of the interactions. Does it increase? You can compare your short-range results with the paper by [Estienne15].
+
+6. **[ORIGINAL RESULT] Tune the interaction range for the FerHofSqu1 model at 3/7 filling.** Following the future work section in the paper by [Yang19], it is now interesting to investigate another disputed filling factor: 3/7. Repeat the calculation from step 5, with this filling. In this case, it is even an original result at short-range. The topological entanglement entropy in the Abelian case is 0.973. Do you get an agreement with this? What happens to this value as you increase the interaction range? Does the topological entanglement entropy increase, as predicted by [Yang19]?
+
+7. **[ORIGINAL RESULT] Diversify the results.** Now that we have two original investigations (2/5 and 3/7), it is time to collect more data to reinforce our claims. The results can be improved in several ways:
+
+* Perform the calculations with the Yukawa interaction.
+* Perform the calculations for the hexagonal Hofstadter model.
+* Find contested bosonic FQH states, and then perform the calculations for bosons.
+
+All of the code needed for this project is already implemented. The challenge lies in building enough experience in performing iDMRG calculations to understand when the results can be trusted as we push the algorithm to its limits.
+
 References
 ----------
 
 [Grushin15] "Characterization and stability of a fermionic ν=1/3 fractional Chern insulator" by Adolfo G. Grushin, Johannes Motruk, Michael P. Zaletel, Frank Pollmann, PRB **91**, 035136 (2015). https://arxiv.org/abs/1407.6985
 
-[Zhu19] "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, arXiv pre-print (2019). https://arxiv.org/abs/1812.05661
+[Zhu19] "Spin/orbital density wave and Mott insulator in two-orbital Hubbard model on honeycomb lattice" by Zheng Zhu, D. N. Sheng, and Liang Fu, Phys. Rev. Lett. **123**, 087602 (2019). https://arxiv.org/abs/1812.05661
 
 [Schoond19] "Interaction-driven plateau transition between integer and fractional Chern Insulators" by Leon Schoonderwoerd, Frank Pollmann, Gunnar Möller, arXiv pre-print (2019). https://arxiv.org/abs/1908.00988
+
+[Yang19] "Effective Abelian theory from a non-Abelian topological order in ν=2/5 fractional quantum Hall effect" by Bo Yang, Ying-Hai Wu, Zlatko Papic, Phys. Rev. B **100**, 245303 (2019). https://arxiv.org/abs/1907.12572
+
+[Estienne15] "Correlation Lengths and Topological Entanglement Entropies of Unitary and Non-Unitary Fractional Quantum Hall Wavefunctions" by B. Estienne, N. Regnault, B. A. Bernevig, Phys. Rev. Lett. **114**, 186801 (2015). https://arxiv.org/abs/1406.6262
