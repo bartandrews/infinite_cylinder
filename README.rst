@@ -61,9 +61,13 @@ Functions description
 
     Set of functions to calculate the initial state, define the DMRG model, and execute the DMRG.
 
+* func_int = interaction functions
+
+    Set of functions to aid in computing the offsite interaction term.
+
 * func_obser = observables functions
 
-    Functions to compute the observables for a ground state, as well as for their scalar and nonscalar grouping.
+    Functions to compute the observables for a ground state, as well as for defining the scalar and nonscalar grouping.
 
 * func_proc = file processing functions
 
@@ -174,7 +178,7 @@ All output .dat files are named in the following order:
 - Vrange (e.g. 2 for interactions up to and including 2nd-NN)
 - n (numerator underscore denominator, only range over denominator currently implemented)
 - nphi (numerator underscore denominator, only range over denominator currently implemented)
-- Lx_MUC
+- LxMUC
 - Ly
 - phi
 - tag (optional)
@@ -183,7 +187,7 @@ NB: For a range of parameter values in an output file, we denote this by the ord
 
 *name = stem + leaf*
 
-Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_Coulomb_0_n_1_8_8_1_nphi_1_4_4_1_Lx_MUC_1_Ly_4_4_1_phi_0_2_21.dat``
+Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_Coulomb_0_n_1_8_8_1_nphi_1_4_4_1_LxMUC_1_Ly_4_4_1_phi_0_2_21.dat``
 
 Model naming convention
 -----------------------

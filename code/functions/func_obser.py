@@ -20,9 +20,9 @@ def scalar_observables(E, psi):
 ############################################################################################
 
 
-def nonscalar_observables(tools, data, psi, M, chi_max_K, Lx_MUC, Ly, extra_dof=False, print_data=False):
+def nonscalar_observables(tools, data, psi, M, chi_max_K, LxMUC, Ly, extra_dof=False, print_data=False):
     if 'ent_spec_real' in tools:
-        ent_spec_real(data, psi, Lx_MUC, Ly, print_data)
+        ent_spec_real(data, psi, LxMUC, Ly, print_data)
     if 'ent_spec_mom' in tools:
         ent_spec_mom(data, psi, M, chi_max_K, print_data)
     if 'corr_func' in tools:
@@ -35,14 +35,14 @@ def nonscalar_observables(tools, data, psi, M, chi_max_K, Lx_MUC, Ly, extra_dof=
 ###############################################################################
 
 
-def ent_spec_real(data, psi, Lx_MUC, Ly, print_data):
+def ent_spec_real(data, psi, LxMUC, Ly, print_data):
 
     spectrum = psi.entanglement_spectrum(by_charge=True)
 
     print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
 
     # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-    for bond in range(0, Lx_MUC*Ly):
+    for bond in range(0, LxMUC*Ly):
         for sector in range(0, len(spectrum[bond])):
             for i in range(0, len(spectrum[bond][sector][1])):
                 data_line = "{charge:d}\t{bond:d}\t{spectrum:.15f}"\

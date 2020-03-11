@@ -9,18 +9,19 @@ import functions.func_proc as fp
 import functions.func_dmrg as fd
 
 
-def my_kappa_flow(threads, model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V,
+def my_kappa_flow(threads, model, chi_max, t1, t2, t2dash, kappa_min, kappa_max, kappa_samp, U, mu, V, Vtype, Vrange,
                   nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp,
-                  Lx_MUC, Ly_min, Ly_max, Ly_samp, tag,
+                  LxMUC, Ly_min, Ly_max, Ly_samp, tag,
                   use_pickle, make_pickle):
 
     prc.mkl_set_nthreads(threads)
 
     t0 = time.time()
 
-    leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_kappa_{kappa_min}_{kappa_max}_{kappa_samp}_U_{U}_mu_{mu}_V_{V}_" \
+    leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_kappa_{kappa_min}_{kappa_max}_{kappa_samp}_U_{U}_mu_{mu}_" \
+           f"V_{V}_{Vtype}_{Vrange}_" \
            f"n_{nnvalue}_{nd_min}_{nd_max}_{nu_samp}_nphi_{pvalue}_{q_min}_{q_max}_{nu_samp}_" \
-           f"Lx_MUC_{Lx_MUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}.dat{tag}"
+           f"LxMUC_{LxMUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}.dat{tag}"
     sys.stdout = sys.stderr = fp.Logger("kappa_flow", model, leaf)
 
     tools = ["corr_len_kappa_flow", "ent_spec_kappa_flow"]
@@ -29,9 +30,9 @@ def my_kappa_flow(threads, model, chi_max, t1, t2, t2dash, kappa_min, kappa_max,
     ####################################################################################################################
 
     # In case you ever want to update the engine on each step rather than recalculating
-    # engine = fd.my_iDMRG_pickle("kappa_flow", model, chi_max, t1, kappa_min*t2, kappa_min*t2dash, U, mu, V,
-    #                             nnvalue, nd_min, pvalue, q_min,
-    #                             Lx_MUC, Ly_min, use_pickle, make_pickle, run=False)
+    # engine = fd.my_iDMRG_pickle("kappa_flow", model, chi_max, t1, kappa_min*t2, kappa_min*t2dash, U, mu,
+    #                              V, Vtype, Vrange, nnvalue, nd_min, pvalue, q_min,
+    #                              LxMUC, Ly_min, use_pickle, make_pickle, run=False)
 
     for ndvalue, qvalue in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int),
                                np.linspace(q_min, q_max, nu_samp, dtype=int)):
@@ -44,9 +45,9 @@ def my_kappa_flow(threads, model, chi_max, t1, t2, t2dash, kappa_min, kappa_max,
 
             for kappa in np.linspace(kappa_min, kappa_max, kappa_samp):
 
-                (E, psi, M) = fd.my_iDMRG_pickle("kappa_flow", model, chi_max, t1, kappa*t2, kappa*t2dash, U, mu, V,
-                                                 nnvalue, ndvalue, pvalue, qvalue,
-                                                 Lx_MUC, Ly, use_pickle, make_pickle, run=True)
+                (E, psi, M) = fd.my_iDMRG_pickle("kappa_flow", model, chi_max, t1, kappa*t2, kappa*t2dash, U, mu,
+                                                 V, Vtype, Vrange, nnvalue, ndvalue, pvalue, qvalue,
+                                                 LxMUC, Ly, use_pickle, make_pickle, run=True)
 
                 #######################
                 # corr_len_kappa_flow #
@@ -81,7 +82,8 @@ def my_kappa_flow(threads, model, chi_max, t1, t2, t2dash, kappa_min, kappa_max,
 if __name__ == '__main__':
 
     my_kappa_flow(threads=1, model="FerHofHex1Hex5Orbital", chi_max=150,
-                  t1=1, t2=-0.025, t2dash=0.1, kappa_min=0, kappa_max=1, kappa_samp=11, U=100, mu=0, V=10,
+                  t1=1, t2=-0.025, t2dash=0.1, kappa_min=0, kappa_max=1, kappa_samp=11, U=100, mu=0,
+                  V=10, Vtype='Coulomb', Vrange=1,
                   nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-                  Lx_MUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
+                  LxMUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
                   use_pickle=False, make_pickle=False)

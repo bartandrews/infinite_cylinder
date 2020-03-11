@@ -10,7 +10,7 @@ from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 
 if __name__ == "__main__":
 
-    model_params = dict(statistics='fermions', conserve='N', t1=1, n=(int(1), int(3)), nphi=(int(1), int(9)), Lx_MUC=1, Ly=6, V=10,
+    model_params = dict(statistics='fermions', conserve='N', t1=1, n=(int(1), int(3)), nphi=(int(1), int(9)), LxMUC=1, Ly=6, V=10,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=1.1)
 

@@ -28,7 +28,7 @@ class HofHex1Hex5OrbitalModel(HofstadterModel):
         return lat
 
     def init_terms(self, params):
-        (creation, annihilation, nphi_default, t1, mu, V, nphi, nphi_2pi, Lx_MUC, phi_2pi) = \
+        (creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
             HofstadterModel.init_terms(self, params)
         t2 = get_parameter(params, 't2', 0, self.name)
         t2dash = get_parameter(params, 't2dash', 0, self.name)
@@ -36,20 +36,17 @@ class HofHex1Hex5OrbitalModel(HofstadterModel):
 
         self.chemical_potential(mu, extra_dof=True)
         self.onsite_interaction(U, 'Nx', 'Ny')
-
-        hex1_int_flag = True if self.stats(params) == 'fermions' else False
+        self.offsite_interaction("Hex", V, Vtype, Vrange, extra_dof=True)
         for orbital in ['x', 'y']:
-            self.hex_1_hoppings(creation+orbital, annihilation+orbital, t1, V/2, nphi, nphi_2pi, Lx_MUC, phi_2pi,
-                                interaction=hex1_int_flag, extra_dof=True)
-            self.hex_5_hoppings(creation+orbital, annihilation+orbital, t2, V/2, nphi, nphi_2pi, Lx_MUC, phi_2pi,
-                                interaction=False, extra_dof=True)
+            self.hex_1_hoppings(creation+orbital, annihilation+orbital, t1, nphi, nphi_2pi, LxMUC, phi_2pi)
+            self.hex_5_hoppings(creation+orbital, annihilation+orbital, t2, nphi, nphi_2pi, LxMUC, phi_2pi)
 
         # orbital mixing ###############################################################################################
 
         for sublattice in [0, 1]:  # A and B sublattices
 
             u1, u2, dx = (sublattice, sublattice, np.array([-1, 2]))  # up
-            m = np.roll(np.arange(sublattice, 2 * nphi[1] * Lx_MUC, 2),
+            m = np.roll(np.arange(sublattice, 2 * nphi[1] * LxMUC, 2),
                         -1)  # match convention for strength argument of add_coupling
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_2pi]) \
                          * np.exp(1j * nphi_2pi * m)[:, np.newaxis]
@@ -59,7 +56,7 @@ class HofHex1Hex5OrbitalModel(HofstadterModel):
             self.add_coupling(np.conj(-t2dash_phi), u2, creation + 'x', u1, annihilation + 'y', -dx)  # H.c.
 
             u1, u2, dx = (sublattice, sublattice, np.array([-2, 1]))  # bottom right
-            m = np.roll(np.arange(sublattice, 2 * nphi[1] * Lx_MUC, 2),
+            m = np.roll(np.arange(sublattice, 2 * nphi[1] * LxMUC, 2),
                         -2)  # match convention for strength argument of add_coupling
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_2pi]) \
                          * np.exp(-1j * (nphi_2pi / 2) * (m + 3 / 2))[:, np.newaxis]
@@ -69,7 +66,7 @@ class HofHex1Hex5OrbitalModel(HofstadterModel):
             self.add_coupling(np.conj(-t2dash_phi), u2, creation + 'x', u1, annihilation + 'y', -dx)  # H.c.
 
             u1, u2, dx = (sublattice, sublattice, np.array([-1, -1]))  # bottom left
-            m = np.roll(np.arange(sublattice, 2 * nphi[1] * Lx_MUC, 2),
+            m = np.roll(np.arange(sublattice, 2 * nphi[1] * LxMUC, 2),
                         -1)  # match convention for strength argument of add_coupling
             t2dash_phi = self.coupling_strength_add_ext_flux(t2dash, dx, [0, phi_2pi]) \
                          * np.exp(-1j * (nphi_2pi / 2) * (m - 3 / 2))[:, np.newaxis]
@@ -83,7 +80,7 @@ if __name__ == "__main__":
 
     model_params = dict(statistics='fermions', conserve='N', t1=1, t2=-0.025, t2dash=0.1,
                         n=(int(1), int(9)), nphi=(int(1), int(3)),
-                        Lx_MUC=1, Ly=6, V=10,
+                        LxMUC=1, Ly=6, V=10, Vtype='Coulomb', Vrange=1,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=1.)
     M = HofHex1Hex5OrbitalModel(model_params)
