@@ -29,7 +29,7 @@ def my_ground_state(threads, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vr
 
 if __name__ == '__main__':
 
-    my_ground_state(threads=1, model="BosHofSqu1", chi_max=500,
+    my_ground_state(threads=1, model="BosHofSqu1", chi_max=250,
                     t1=1, t2=0, t2dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0,
                     nnvalue=1, ndvalue=8, pvalue=1, qvalue=4,
                     LxMUC=1, Ly=4, tag="")

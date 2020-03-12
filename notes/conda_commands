@@ -1,0 +1,23 @@
+# activate and deactivate
+
+conda activate your_env_name
+conda deactivate
+
+# list all conda environments
+
+conda env list
+
+# install packages
+
+conda install -n myenv scipy=0.15.0
+
+# export/create your conda environment using file
+
+conda env export > my_environment.yml
+conda env create -f environment.yml
+
+# export/create a conda environment for another machine (only for use on the same platform: linux-64)
+
+conda list --explicit > spec-file.txt
+conda create --name myenv --file spec-file.txt
+

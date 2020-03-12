@@ -176,8 +176,8 @@ All output .dat files are named in the following order:
 - V
 - Vtype (e.g. ``Coulomb``)
 - Vrange (e.g. 2 for interactions up to and including 2nd-NN)
-- n (numerator underscore denominator, only range over denominator currently implemented)
-- nphi (numerator underscore denominator, only range over denominator currently implemented)
+- n (numerator=``nnvalue`` underscore denominator=``ndvalue``, only range over denominator currently implemented)
+- nphi (numerator=``pvalue`` underscore denominator=``qvalue``, only range over denominator currently implemented)
 - LxMUC
 - Ly
 - phi
@@ -209,6 +209,45 @@ Pickling capability
 -------------------
 
 The pickling capability is used to save the state, or initial state ``[E, psi, M]`` or ``engine`` for a flow. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state) or ``make_pickle`` (to pickle a state for later) in the parameter files. By default, all pickling is set to False in the flows.
+
+Algorithm scaling
+-----------------
+
+Upper-limit scaling relations (actually slightly better due to matrix multiplication optimizations in LAPACK):
+
+Run time: ~O(chi^3 D d^3 + chi^2 D^2 d^2)
+
+Memory usage: ~O(chi^2 d N + 2 chi^2 D N)
+
+* chi = MPS bond dimension
+* D = maximum MPO bond dimension
+* d = single-site Hilbert space dimension
+* N = total number of sites (including extra_dof sites) in the MPS unit cell
+
+Getting started
+---------------
+
+1. **Fork the github repository.** You should fork this repository into the directory ``~/PycharmProjects/``. Guide to forking is here: https://guides.github.com/activities/forking/ Please do not submit pull requests or try to push changes to the repository for now. Further useful commands for git versioning can be found in ``~/PycharmProjects/infinite_cylinder/notes/git_commands``.
+
+2. **Set up conda environment (optional).** If you would like to use the exact same conda environment as me, you can now go to ``~/PycharmProjects/infinite_cylinder/notes/`` and type:
+
+``(base) user@computer:~/PycharmProjects/infinite_cylinder/notes/$ conda create --name Bart --file Bart-spec-file.txt``
+
+After you press enter, you will see:
+
+``(Bart) user@computer:~/PycharmProjects/infinite_cylinder/notes/$``
+
+As you can notice, the environment has now changed from base to Bart. Further useful commands for conda environments can be found in ``~/PycharmProjects/infinite_cylinder/notes/conda_commands``.
+
+3. **Configure the PyCharm project.** Go to ``~/PycharmProjects/infinite_cylinder/`` and type:
+
+``user@computer:~/PycharmProjects/infinite_cylinder/$ pycharm-professional &``
+
+This should start an infinite_cylinder Pycharm project. Go to ``File>Settings>Project Interpreter`` and make sure that you have an anaconda project interpreter selected (either the base or Bart). Go to ``File>Settings>Project Structure`` and mark the ``code`` folder as a source folder (it should be blue), and ``Add Content Root`` then add the path to TeNPy directory (for me it is ``/home/bart/TeNPy/``).
+
+4. **Compute your first ground state wavefunction.** Open ``code/ground_state.py`` and run it with the default parameters. You should understand what they all mean. This should take a few minutes to run. When this is done, use a terminal to navigate to ``~/PycharmProjects/infinite_cylinder/pickles`` and notice that a directory has now been created called ground_state. Inside this directory is the ground state wavefunction that you have produced. It is not human readable.
+
+5. **Compute the entanglement entropy of the ground state wavefunction.** In PyCharm, open ``code/observables.py`` and run it with the default parameters. These parameters must match exactly the parameters that you used when you ran ``ground_state.py`` because the code is now looking for a wavefunction file with those parameters in the name. This should take a few seconds. You should see the von Neumann entanglement entropy output to the console. Congratulations, this is effectively a data point on your graph. You know what S is, and you can calculate Ly/lB based on the parameters you gave. Does this value converge as you increase chi_max?
 
 Masters Project: Madhav Mohan
 -----------------------------
