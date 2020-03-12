@@ -176,8 +176,8 @@ All output .dat files are named in the following order:
 - V
 - Vtype (e.g. ``Coulomb``)
 - Vrange (e.g. 2 for interactions up to and including 2nd-NN)
-- n (numerator=``nnvalue`` underscore denominator=``ndvalue``, only range over denominator currently implemented)
-- nphi (numerator=``pvalue`` underscore denominator=``qvalue``, only range over denominator currently implemented)
+- n (numerator= ``nnvalue`` underscore denominator= ``ndvalue``, only range over denominator currently implemented)
+- nphi (numerator= ``pvalue`` underscore denominator= ``qvalue``, only range over denominator currently implemented)
 - LxMUC
 - Ly
 - phi
@@ -224,8 +224,8 @@ Memory usage: ~O(chi^2 d N + 2 chi^2 D N)
 * d = single-site Hilbert space dimension
 * N = total number of sites (including extra_dof sites) in the MPS unit cell
 
-Getting started
----------------
+Getting started: Madhav Mohan
+-----------------------------
 
 1. **Fork the github repository.** You should fork this repository into the directory ``~/PycharmProjects/``. Guide to forking is here: https://guides.github.com/activities/forking/ Please do not submit pull requests or try to push changes to the repository for now. Further useful commands for git versioning can be found in ``~/PycharmProjects/infinite_cylinder/notes/git_commands``.
 
@@ -247,9 +247,9 @@ This should start an infinite_cylinder Pycharm project. Go to ``File>Settings>Pr
 
 4. **Compute your first ground state wavefunction.** Open ``code/ground_state.py`` and run it with the default parameters. You should understand what they all mean. This should take a few minutes to run. When this is done, use a terminal to navigate to ``~/PycharmProjects/infinite_cylinder/pickles`` and notice that a directory has now been created called ground_state. Inside this directory is the ground state wavefunction that you have produced. It is not human readable.
 
-5. **Compute the entanglement entropy of the ground state wavefunction.** In PyCharm, open ``code/observables.py`` and run it with the default parameters. These parameters must match exactly the parameters that you used when you ran ``ground_state.py`` because the code is now looking for a wavefunction file with those parameters in the name. This should take a few seconds. You should see the von Neumann entanglement entropy output to the console. Congratulations, this is effectively a data point on your graph. You know what S is, and you can calculate Ly/lB based on the parameters you gave. Does this value converge as you increase chi_max?
+5. **Compute the entanglement entropy of the ground state wavefunction.** In PyCharm, open ``code/observables.py`` and run it with the default parameters. These parameters must match exactly the parameters that you used when you ran ``ground_state.py`` because the code is now looking for a wavefunction file with those parameters in the name. This should take a few seconds. You should see the von Neumann entanglement entropy output to the console. Congratulations, this is effectively a data point on your graph. You know what S is, and you can calculate Ly/lB based on the parameters you gave. Does this value converge as you increase ``chi_max``?
 
-Masters Project: Madhav Mohan
+Masters project: Madhav Mohan
 -----------------------------
 
 1. **Reproduce an equivalent of Fig. 3 from [Schoond19] for the FerHofSqu1 model at 1/3 filling.** For this, you should use workflow 2 and for each system with filling nu=n/nphi=1/3: compute the von Neumann entanglement entropy, S, for various MPS bond dimensions, chi. That is for fermions with nearest-neighbor interactions: V=10, Vtype='Coulomb', Vrange=1. What do you notice when you plot S vs. 1/chi ? You should see a convergence of the entanglement entropy as you increase the MPS bond dimension (e.g. chi=50, 100, ..., 500). In each case, extrapolate this convergence to get an estimate (with errors) for S in the chi->infty limit. This will form one data point (with error bars) on your graph of S against Ly/lB. Repeating this for a variety of systems with different Ly or nphi, you should get a straight line confirming the area law of entanglement. The (absolute value of the) y-intercept of this straight line is the topological entanglement entropy. What value do you get for the topological entanglement entropy? For the 1/3 state, this value should be 0.549. Keep improving the data points on this plot until you get an agreement to 2 decimal places.
