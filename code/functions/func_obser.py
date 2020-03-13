@@ -20,11 +20,11 @@ def scalar_observables(E, psi):
 ############################################################################################
 
 
-def nonscalar_observables(tools, data, psi, M, chi_max_K, LxMUC, Ly, extra_dof=False, print_data=False):
+def nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof=False, print_data=False):
     if 'ent_spec_real' in tools:
         ent_spec_real(data, psi, LxMUC, Ly, print_data)
     if 'ent_spec_mom' in tools:
-        ent_spec_mom(data, psi, M, chi_max_K, print_data)
+        ent_spec_mom(data, psi, M, chiK_max, print_data)
     if 'corr_func' in tools:
         corr_func(data, psi, M, extra_dof, print_data)
     return
@@ -61,10 +61,10 @@ def ent_spec_real(data, psi, LxMUC, Ly, print_data):
 ##################################################################################
 
 
-def ent_spec_mom(data, psi, M, chi_max_K, print_data):
+def ent_spec_mom(data, psi, M, chiK_max, print_data):
 
     (Un, W, q, ov, trunc_err) = \
-        psi.compute_K(perm=M.lat, trunc_par={'chi_max': chi_max_K}, canonicalize=1.e-6, verbose=0)
+        psi.compute_K(perm=M.lat, trunc_par={'chi_max': chiK_max}, canonicalize=1.e-6, verbose=0)
 
     if np.abs(np.abs(ov)-1) > 0.1:
         print("|ov|={ov_abs:.15f}".format(ov_abs=np.abs(ov)))

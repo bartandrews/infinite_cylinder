@@ -32,14 +32,14 @@ def file_name_stem(tool, model, chi_max):
 ##################################################################
 
 
-def prepare_output_files(tools, model, chi_max, leaf, chi_max_K=0):
+def prepare_output_files(tools, model, chi_max, leaf, chiK_max=0):
 
     stem, file, data = [dict()]*3
     for tool in tools:
         stem.update({tool: file_name_stem(tool, model, chi_max)})
         os.makedirs(f"data/{tool}/{model}/", exist_ok=True)
         if tool == 'ent_spec_mom':
-            file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + f"chi_K_{chi_max_K}_" + leaf})
+            file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + f"chiK_{chiK_max}_" + leaf})
         else:
             file.update({tool: f"data/{tool}/{model}/" + stem[tool].replace(" ", "_") + leaf})
         open(file[tool], "w")
@@ -75,15 +75,15 @@ class Logger(object):
 ######################################################################################
 
 
-def print_LylB_headings(model, Ly, ndvalue, nd_min, pvalue, qvalue, q_min, Ly_min):
+def print_LylB_headings(model, Ly, nd, nd_min, p, q, q_min, Ly_min):
     if "Squ" in model:
-        LylB = Ly * np.sqrt(2 * np.pi * (pvalue / qvalue))
+        LylB = Ly * np.sqrt(2 * np.pi * (p / q))
     elif "Hex" in model:
-        LylB = Ly * np.sqrt((4 * np.pi * (pvalue / qvalue)) / np.sqrt(3))
+        LylB = Ly * np.sqrt((4 * np.pi * (p / q)) / np.sqrt(3))
     else:
         raise ValueError("Unknown model for the print_LylB_headings function.")
 
-    if ndvalue == nd_min and qvalue == q_min and Ly == Ly_min:
+    if nd == nd_min and q == q_min and Ly == Ly_min:
         data_line = f"LylB={LylB:.15f}\n"
     else:
         data_line = f"\n\nLylB={LylB:.15f}\n"

@@ -10,7 +10,7 @@ import functions.func_dmrg as fd
 
 
 def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                nnvalue, nd_min, nd_max, pvalue, q_min, q_max, nu_samp,
+                nn, nd_min, nd_max, p, q_min, q_max, nu_samp,
                 LxMUC, Ly_min, Ly_max, Ly_samp,
                 phi_min, phi_max, phi_samp, tag,
                 use_pickle, make_pickle):
@@ -20,7 +20,7 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange
     t0 = time.time()
 
     leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_{Vtype}_{Vrange}_" \
-           f"n_{nnvalue}_{nd_min}_{nd_max}_{nu_samp}_nphi_{pvalue}_{q_min}_{q_max}_{nu_samp}_" \
+           f"n_{nn}_{nd_min}_{nd_max}_{nu_samp}_nphi_{p}_{q_min}_{q_max}_{nu_samp}_" \
            f"LxMUC_{LxMUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}_phi_{phi_min}_{phi_max}_{phi_samp}.dat{tag}"
     sys.stdout = sys.stderr = fp.Logger("phi_flow", model, leaf)
 
@@ -29,17 +29,17 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange
 
     ####################################################################################################################
 
-    for ndvalue, qvalue in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int),
+    for nd, q in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int),
                                np.linspace(q_min, q_max, nu_samp, dtype=int)):
         for Ly in np.linspace(Ly_min, Ly_max, Ly_samp, dtype=int):
 
             if nu_samp != 1 or Ly_samp != 1:
-                (data_line, _) = fp.print_LylB_headings(model, Ly, ndvalue, nd_min, pvalue, qvalue, q_min, Ly_min)
+                (data_line, _) = fp.print_LylB_headings(model, Ly, nd, nd_min, p, q, q_min, Ly_min)
                 for tool in tools:
                     data[tool].write(data_line)
 
             engine = fd.my_iDMRG_pickle("phi_flow", model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                                        nnvalue, ndvalue, pvalue, qvalue, LxMUC, Ly,
+                                        nn, nd, p, q, LxMUC, Ly,
                                         use_pickle, make_pickle, phi_min, run=False)
 
             for phi in np.linspace(phi_min, phi_max, phi_samp):
@@ -50,7 +50,7 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange
                     engine.engine_params['mixer'] = False
                     del engine.engine_params['chi_list']  # comment out this line for single site DMRG tests
                     M = fd.define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                                              nnvalue, ndvalue, pvalue, qvalue, LxMUC, Ly, phi)
+                                              nn, nd, p, q, LxMUC, Ly, phi)
                     psi_old = engine.psi
                     engine.init_env(model=M)
                     engine.run()
@@ -97,8 +97,8 @@ def my_phi_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange
 
 if __name__ == '__main__':
 
-    my_phi_flow(threads=1, model="FerHofHex1", chi_max=50,
-                t1=1, t2=0, t2dash=0, U=0, mu=0, V=10, Vtype='Coulomb', Vrange=1,
-                nnvalue=1, nd_min=9, nd_max=9, pvalue=1, q_min=3, q_max=3, nu_samp=1,
-                LxMUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, phi_min=0, phi_max=3, phi_samp=31, tag="",
+    my_phi_flow(threads=1, model="BosHofSqu1", chi_max=50,
+                t1=1, t2=0, t2dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0,
+                nn=1, nd_min=8, nd_max=8, p=1, q_min=4, q_max=4, nu_samp=1,
+                LxMUC=1, Ly_min=4, Ly_max=4, Ly_samp=1, phi_min=0, phi_max=2, phi_samp=21, tag="",
                 use_pickle=False, make_pickle=False)

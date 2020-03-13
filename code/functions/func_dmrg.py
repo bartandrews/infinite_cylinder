@@ -18,13 +18,13 @@ from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 ##################################################
 
 
-def get_product_state(model, nnvalue, ndvalue, qvalue, LxMUC, Ly, filling_scale_factor=1, orbital_preference=None):
+def get_product_state(model, nn, nd, q, LxMUC, Ly, filling_scale_factor=1, orbital_preference=None):
     if "Orbital" in model:
-        numb_particles = 2 * int(qvalue) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nnvalue) / int(
-            ndvalue)
+        numb_particles = 2 * int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(
+            nd)
     else:
-        numb_particles = int(qvalue) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nnvalue) / int(
-            ndvalue)
+        numb_particles = int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(
+            nd)
 
     if not numb_particles.is_integer():
         raise ValueError("Cannot fit an integer number of particles into lattice geometry.")
@@ -32,9 +32,9 @@ def get_product_state(model, nnvalue, ndvalue, qvalue, LxMUC, Ly, filling_scale_
         numb_particles = int(numb_particles)
 
     if "Squ" in model:
-        system_size = int(qvalue * LxMUC * Ly)
+        system_size = int(q * LxMUC * Ly)
     elif "Hex" in model:
-        system_size = int(2 * qvalue * LxMUC * Ly)
+        system_size = int(2 * q * LxMUC * Ly)
     else:
         raise ValueError("Unknown model for the get_product_state function.")
     numb_sites_per_particle = int(system_size / numb_particles)
@@ -85,9 +85,9 @@ def get_product_state(model, nnvalue, ndvalue, qvalue, LxMUC, Ly, filling_scale_
 
 
 def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                       nnvalue, ndvalue, pvalue, qvalue, LxMUC, Ly, phi=0):
+                       nn, nd, p, q, LxMUC, Ly, phi=0):
     model_params = dict(conserve='N', t1=t1, mu=mu, V=V, Vtype=Vtype, Vrange=Vrange,
-                        n=(int(nnvalue), int(ndvalue)), nphi=(int(pvalue), int(qvalue)),
+                        n=(int(nn), int(nd)), nphi=(int(p), int(q)),
                         LxMUC=LxMUC, Ly=Ly,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=phi)
@@ -124,7 +124,7 @@ def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
 
 
 def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                    nnvalue, ndvalue, pvalue, qvalue, LxMUC, Ly,
+                    nn, nd, p, q, LxMUC, Ly,
                     use_pickle=False, make_pickle=False, phi=0, run=True):
 
     # The run parameter specifies whether you are running iDMRG or defining an iDMRG engine. Defining an iDMRG engine
@@ -137,7 +137,7 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrang
         else:
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
         pickle_leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_{Vtype}_{Vrange}_" \
-                      f"n_{nnvalue}_{ndvalue}_nphi_{pvalue}_{qvalue}_LxMUC_{LxMUC}_Ly_{Ly}_phi_{phi}.pkl"
+                      f"n_{nn}_{nd}_nphi_{p}_{q}_LxMUC_{LxMUC}_Ly_{Ly}_phi_{phi}.pkl"
         os.makedirs(f"pickles/{flow}/{model}/", exist_ok=True)
         pickle_file = f"pickles/{flow}/{model}/" + pickle_stem + pickle_leaf
 
@@ -151,11 +151,11 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrang
         engine = None
         (E, psi, M) = (None, None, None)
         if not run:
-            engine = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange, nnvalue, ndvalue, pvalue, qvalue,
+            engine = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange, nn, nd, p, q,
                               LxMUC, Ly, phi, run=False)
         else:
-            (E, psi, M) = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange, nnvalue, ndvalue, pvalue,
-                                   qvalue, LxMUC, Ly, phi, run=True)
+            (E, psi, M) = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange, nn, nd, p,
+                                   q, LxMUC, Ly, phi, run=True)
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
                 if not run:
@@ -170,12 +170,12 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrang
 
 
 def my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-             nnvalue, ndvalue, pvalue, qvalue,
+             nn, nd, p, q,
              LxMUC, Ly, phi=0, run=True):
 
     M = define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                           nnvalue, ndvalue, pvalue, qvalue, LxMUC, Ly, phi)
-    product_state = get_product_state(model, nnvalue, ndvalue, qvalue, LxMUC, Ly)
+                           nn, nd, p, q, LxMUC, Ly, phi)
+    product_state = get_product_state(model, nn, nd, q, LxMUC, Ly)
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
@@ -214,5 +214,5 @@ def my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
 
 
 if __name__ == "__main__":
-    get_product_state(model="FerHofHex1Hex5Orbital", nnvalue=1, ndvalue=15, qvalue=3, LxMUC=1, Ly=5,
+    get_product_state(model="FerHofHex1Hex5Orbital", nn=1, nd=15, q=3, LxMUC=1, Ly=5,
                       filling_scale_factor=1, orbital_preference='polarizedy')

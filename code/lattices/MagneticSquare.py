@@ -9,9 +9,9 @@ from tenpy.networks import site
 
 class MagneticSquare(lattice.Lattice):
 
-    def __init__(self, Lx, Ly, siteA, qvalue, **kwargs):
+    def __init__(self, Lx, Ly, siteA, q, **kwargs):
 
-        numb_sites = qvalue
+        numb_sites = q
 
         basis = np.array(([numb_sites, 0.], [0, 1]))
 
@@ -46,15 +46,15 @@ class MagneticSquare(lattice.Lattice):
             setattr(self, "NN_v{}".format(i), [(i, i, np.array([0, 1]))])
 
 
-def plot_lattice(qvalue):
+def plot_lattice(q):
 
-    numb_sites = qvalue
+    numb_sites = q
 
     import matplotlib.pyplot as plt
 
     ax = plt.gca()
     fs = site.FermionSite()
-    lat = MagneticSquare(1, 4, fs, basis=[[numb_sites, 0], [0, 1]], qvalue=qvalue)
+    lat = MagneticSquare(1, 4, fs, basis=[[numb_sites, 0], [0, 1]], q=q)
     lat.plot_sites(ax)
     lat.plot_coupling(ax, lat.NN_horiz, linestyle='-', color='black')
 

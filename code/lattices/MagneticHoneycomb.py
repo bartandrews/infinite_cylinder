@@ -9,9 +9,9 @@ import matplotlib.pyplot as plt
 
 class MagneticHoneycomb(lattice.Lattice):
 
-    def __init__(self, Lx, Ly, siteA, qvalue, **kwargs):
+    def __init__(self, Lx, Ly, siteA, q, **kwargs):
 
-        numb_sites = 2*qvalue
+        numb_sites = 2*q
 
         basis = np.array(([(numb_sites/4) * np.sqrt(3), numb_sites/4], [0., 1]))
         delta = np.array([1 / (2. * np.sqrt(3.)), 0.5])
@@ -132,13 +132,13 @@ class MagneticHoneycomb(lattice.Lattice):
                 setattr(self, "fifthNN{}br".format(i), [(i, i+4, np.array([0, -1]))])
 
 
-def plot_lattice(qvalue):
+def plot_lattice(q):
 
-    numb_sites = 2*qvalue
+    numb_sites = 2*q
 
     ax = plt.gca()
     fs = site.FermionSite()
-    lat = MagneticHoneycomb(1, 4, fs, basis=[[(numb_sites/4) * np.sqrt(3), numb_sites/4], [0, 1]], qvalue=qvalue)
+    lat = MagneticHoneycomb(1, 4, fs, basis=[[(numb_sites/4) * np.sqrt(3), numb_sites/4], [0, 1]], q=q)
     lat.plot_sites(ax)
 
     for i in range(0, numb_sites, 2):
@@ -171,5 +171,5 @@ def plot_lattice(qvalue):
 
 if __name__ == "__main__":
 
-    plot_lattice(qvalue=6)
+    plot_lattice(q=6)
 

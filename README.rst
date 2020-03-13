@@ -156,32 +156,32 @@ Below is a description of the directory structure of infinite_cylinder, listed a
 File naming convention
 ----------------------
 
-All output .dat files are named in the following order:
+All output .dat files are named as follows. In the list below, names used in the file name (if any) are given first, then the name of the variables in the code are given in brackets. The convention is that the names in the file name do not have underscores so that the file name is easier to read. The variable names have underscores but only after the quantity itself (which does not have an underscore). For example, ``Vtype`` does not have an underscore because it is a quantity, whereas ``V_max`` has an underscore because the quantity is ``V`` and we want the max value that ``V`` can take.
 
 *stem*
 
-- tool (e.g. ``charge_pump``)
-- model (e.g. ``BosHofSqu1``)
-- chi (i.e. ``chi_max``)
-- chiK (only for the ent_spec_mom calculation)
+- (``tool`` -- e.g. ``charge_pump``)
+- (``model`` -- e.g. ``BosHofSqu1``)
+- chi (``chi_max``)
+- chiK (``chiK_max`` -- only for the ent_spec_mom calculation)
 
 *leaf*
 
-- t1
-- t2
-- t2dash
-- kappa (only for the kappa_flow)
-- U
-- mu
-- V
-- Vtype (e.g. ``Coulomb``)
-- Vrange (e.g. 2 for interactions up to and including 2nd-NN)
-- n (numerator= ``nnvalue`` underscore denominator= ``ndvalue``, only range over denominator currently implemented)
-- nphi (numerator= ``pvalue`` underscore denominator= ``qvalue``, only range over denominator currently implemented)
-- LxMUC
-- Ly
-- phi
-- tag (optional)
+- t1 (``t1``)
+- t2 (``t2``)
+- t2dash (``t2dash``)
+- kappa (``kappa_min``, ``kappa_max``, ``kappa_samp`` -- only for the kappa_flow)
+- U (``U`` or ``U_min``, ``U_max``, ``U_samp``)
+- mu (``mu``)
+- V (``V``, ``Vtype``, ``Vrange`` or ``V_min``, ``V_max``, ``V_samp``, ``Vtype``, ``Vrange``)
+- Vtype (``Vtype`` -- e.g. ``Coulomb``)
+- Vrange (``Vrange`` -- e.g. 2 for interactions up to and including 2nd-NN)
+- n (``nn``, ``nd`` or ``nn``, ``nd_min``, ``nd_max`` -- only range over denominator currently implemented in flows)
+- nphi (``p``, ``q`` or ``p``, ``q_min``, ``q_max``, ``nu_samp`` -- only range over denominator currently implemented in flows)
+- LxMUC (``LxMUC`` -- not to be confused with the ``Lx`` for the lattice)
+- Ly (``Ly`` or ``Ly_min``, ``Ly_max``, ``Ly_samp``)
+- phi (``phi`` or ``phi_min``, ``phi_max``, ``phi_samp``)
+- (``tag`` -- optional)
 
 NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4_Coulomb_1``).
 
