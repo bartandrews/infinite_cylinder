@@ -1,8 +1,8 @@
 .idea/workspace.xml
 .idea/tasks.xml
 **/*.dat
-**/*.txt
 **/*.dat.*
+code/**/*.txt
 **/__pycache__/*
 data/ent_scal/fit.log
 **/*.temp

@@ -163,7 +163,7 @@ All output .dat files are named in the following order:
 - tool (e.g. ``charge_pump``)
 - model (e.g. ``BosHofSqu1``)
 - chi (i.e. ``chi_max``)
-- chi_max_K (only for the ent_spec_mom calculation)
+- chiK (only for the ent_spec_mom calculation)
 
 *leaf*
 
