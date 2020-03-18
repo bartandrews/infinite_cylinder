@@ -9,37 +9,34 @@ import functions.func_dmrg as fd
 import functions.func_obser as fo
 
 
-def my_observables(threads, model, chi_max, chiK_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                   nn, nd, p, q, LxMUC, Ly, tag):
+def my_observables(threads, model, chi_max, **ham_params):
 
+    fp.check_input_params("observables", threads, model, chi_max, ham_params)
     prc.mkl_set_nthreads(threads)
-
     t0 = time.time()
 
-    leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_{Vtype}_{Vrange}_" \
-           f"n_{nn}_{nd}_nphi_{p}_{q}_LxMUC_{LxMUC}_Ly_{Ly}.dat{tag}"
+    leaf = fp.file_name_leaf("observables", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("observables", model, leaf)
 
     # Here, you need to enter the tools that you are interested in studying.
     tools = ["ent_spec_real", "ent_spec_mom", "corr_func"]
-    data = fp.prepare_output_files(tools, model, chi_max, leaf, chiK_max)
+    data = fp.prepare_output_files(tools, model, chi_max, leaf, ham_params['chiK_max'])
 
     ####################################################################################################################
 
     # Here, you need to enter the flow that you are targeting to analyze.
-    (E, psi, M) = fd.my_iDMRG_pickle("ground_state", model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                                     nn, nd, p, q, LxMUC, Ly,
+    (E, psi, M) = fd.my_iDMRG_pickle("ground_state", model, chi_max, ham_params,
                                      use_pickle=True, make_pickle=False, run=True)
 
     fo.scalar_observables(E, psi)
-    fo.nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof=False, print_data=False)
+    # fo.nonscalar_observables(tools, data, psi, M, ham_params['chiK_max'], ham_params['LxMUC'], ham_params['Ly'],
+    #                          extra_dof=False, print_data=False)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
 
 if __name__ == '__main__':
 
-    my_observables(threads=1, model="BosHofSqu1", chi_max=250, chiK_max=500,
-                   t1=1, t2=0, t2dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0,
-                   nn=1, nd=8, p=1, q=4,
-                   LxMUC=1, Ly=4, tag="")
+    my_observables(threads=1, model="FerHofSqu1", chi_max=1000, chiK_max=500,
+                   t1=1, t2=0, t2dash=0, U=0, mu=0, V=10, Vtype='Coulomb', Vrange=1, n=(1, 9), nphi=(1, 3),
+                   LxMUC=1, Ly=6, tag="")

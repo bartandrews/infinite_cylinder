@@ -1,21 +1,21 @@
-from models.hofstadter.backup.squ_1_backup import HofSqu1Model as HofSqu1Model_old
+from models.hofstadter.old.squ_1_backup import HofSqu1Model as HofSqu1Model_old
 from models.hofstadter.squ_1 import HofSqu1Model
-from models.hofstadter.backup.hex_1_backup import HofHex1Model as HofHex1Model_old
+from models.hofstadter.old.hex_1_backup import HofHex1Model as HofHex1Model_old
 from models.hofstadter.hex_1 import HofHex1Model
-from models.hofstadter.backup.hex_1_hex_5_backup import HofHex1Hex5Model as HofHex1Hex5Model_old
+from models.hofstadter.old.hex_1_hex_5_backup import HofHex1Hex5Model as HofHex1Hex5Model_old
 from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
-from models.hofstadter.backup.hex_1_hex_5_orbital_backup import HofHex1Hex5OrbitalModel as HofHex1Hex5OrbitalModel_old
+from models.hofstadter.old.hex_1_hex_5_orbital_backup import HofHex1Hex5OrbitalModel as HofHex1Hex5OrbitalModel_old
 from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 
 
 if __name__ == "__main__":
 
-    model_params = dict(statistics='fermions', conserve='N', t1=1, n=(int(1), int(3)), nphi=(int(1), int(9)), LxMUC=1, Ly=6, V=10,
+    model_params = dict(statistics='bosons', conserve='N', t1=1, n=(int(1), int(10)), nphi=(int(1), int(5)), LxMUC=1, Ly=4, V=0,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=1.1)
 
-    M1 = HofHex1Hex5OrbitalModel_old(model_params)
-    M2 = HofHex1Hex5OrbitalModel(model_params)
+    M1 = HofSqu1Model_old(model_params)
+    M2 = HofSqu1Model(model_params)
 
     # print(M1.coupling_terms['Cd_i C_j'].to_TermList())
     # print('='*80)

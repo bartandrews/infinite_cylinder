@@ -9,18 +9,13 @@ import functions.func_proc as fp
 import functions.func_dmrg as fd
 
 
-def my_V_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V_min, V_max, V_samp, Vtype, Vrange,
-              nn, nd_min, nd_max, p, q_min, q_max, nu_samp,
-              LxMUC, Ly_min, Ly_max, Ly_samp, tag,
-              use_pickle, make_pickle):
+def my_V_flow(threads, model, chi_max, use_pickle, make_pickle, **ham_params):
 
+    fp.check_input_params("V_flow", threads, model, chi_max, ham_params, use_pickle, make_pickle)
     prc.mkl_set_nthreads(threads)
-
     t0 = time.time()
 
-    leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V_min}_{V_max}_{V_samp}_{Vtype}_{Vrange}_" \
-           f"n_{nn}_{nd_min}_{nd_max}_{nu_samp}_nphi_{p}_{q_min}_{q_max}_{nu_samp}_" \
-           f"LxMUC_{LxMUC}_Ly_{Ly_min}_{Ly_max}_{Ly_samp}.dat{tag}"
+    leaf = fp.file_name_leaf("V_flow", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("V_flow", model, leaf)
 
     tools = ["corr_len_V_flow", "ent_spec_V_flow"]
@@ -28,54 +23,43 @@ def my_V_flow(threads, model, chi_max, t1, t2, t2dash, U, mu, V_min, V_max, V_sa
 
     ##################################################################################################################
 
-    for nd, q in zip(np.linspace(nd_min, nd_max, nu_samp, dtype=int),
-                               np.linspace(q_min, q_max, nu_samp, dtype=int)):
-        for Ly in np.linspace(Ly_min, Ly_max, Ly_samp, dtype=int):
+    for V in np.linspace(ham_params['V_min'], ham_params['V_max'], ham_params['V_samp']):
 
-            if nu_samp != 1 or Ly_samp != 1:
-                (data_line, _) = fp.print_LylB_headings(model, Ly, nd, nd_min, p, q, q_min, Ly_min)
-                for tool in tools:
-                    data[tool].write(data_line)
+        ham_params.update(V=V)
+        (E, psi, M) = fd.my_iDMRG_pickle("V_flow", model, chi_max, ham_params, use_pickle, make_pickle, run=True)
 
-            for V in np.linspace(V_min, V_max, V_samp):
-                (E, psi, M) = fd.my_iDMRG_pickle("V_flow", model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                                                 nn, nd, p, q,
-                                                 LxMUC, Ly, use_pickle, make_pickle, run=True)
+        ###################
+        # corr_len_V_flow #
+        ###################
 
-                ###################
-                # corr_len_V_flow #
-                ###################
+        xi = psi.correlation_length()
 
-                xi = psi.correlation_length()
+        data_line = f"{V:.15f}\t{xi:.15f}"
+        print(data_line)
+        data['corr_len_V_flow'].write(data_line+"\n")
 
-                data_line = f"{V:.15f}\t{xi:.15f}"
+        ###################
+        # ent_spec_V_flow #
+        ###################
+
+        # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
+        spectrum = psi.entanglement_spectrum(by_charge=True)
+
+        bond = 0
+
+        for sector in range(0, len(spectrum[bond])):
+            for i in range(0, len(spectrum[bond][sector][1])):
+                data_line = "{charge:d}\t{V:.15f}\t{spectrum:.15f}"\
+                    .format(charge=spectrum[bond][sector][0][0],
+                            V=V, spectrum=spectrum[bond][sector][1][i])
                 print(data_line)
-                data['corr_len_V_flow'].write(data_line+"\n")
-
-                ###################
-                # ent_spec_V_flow #
-                ###################
-
-                # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-                spectrum = psi.entanglement_spectrum(by_charge=True)
-
-                bond = 0
-
-                for sector in range(0, len(spectrum[bond])):
-                    for i in range(0, len(spectrum[bond][sector][1])):
-                        data_line = "{charge:d}\t{V:.15f}\t{spectrum:.15f}"\
-                            .format(charge=spectrum[bond][sector][0][0],
-                                    V=V, spectrum=spectrum[bond][sector][1][i])
-                        print(data_line)
-                        data['ent_spec_V_flow'].write(data_line+"\n")
+                data['ent_spec_V_flow'].write(data_line+"\n")
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
 
 if __name__ == '__main__':
 
-    my_V_flow(threads=1, model="FerHofHex1Hex5Orbital", chi_max=50,
-              t1=1, t2=-0.025, t2dash=0.1, U=0, mu=0, V_min=0, V_max=10, V_samp=100, Vtype='Coulomb', Vrange=1,
-              nn=1, nd_min=9, nd_max=9, p=1, q_min=3, q_max=3, nu_samp=1,
-              LxMUC=1, Ly_min=6, Ly_max=6, Ly_samp=1, tag="",
-              use_pickle=False, make_pickle=False)
+    my_V_flow(threads=1, model="FerHofHex1Hex5Orbital", chi_max=50, use_pickle=False, make_pickle=False,
+              t1=1, t5=-0.025, t5dash=0.1, U=0, mu=0, V_min=0, V_max=10, V_samp=100, Vtype='Coulomb', Vrange=1,
+              nn=1, nd=9, p=1, q=3, LxMUC=1, Ly=6, tag="")

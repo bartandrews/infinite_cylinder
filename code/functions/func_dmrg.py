@@ -18,7 +18,11 @@ from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 ##################################################
 
 
-def get_product_state(model, nn, nd, q, LxMUC, Ly, filling_scale_factor=1, orbital_preference=None):
+def get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
+
+    nn, nd, q, LxMUC, Ly = \
+        ham_params['n'][0], ham_params['n'][1], ham_params['nphi'][1], ham_params['LxMUC'], ham_params['Ly']
+
     if "Orbital" in model:
         numb_particles = 2 * int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(
             nd)
@@ -33,15 +37,12 @@ def get_product_state(model, nn, nd, q, LxMUC, Ly, filling_scale_factor=1, orbit
 
     if "Squ" in model:
         system_size = int(q * LxMUC * Ly)
-    elif "Hex" in model:
+    else:  # "Hex"
         system_size = int(2 * q * LxMUC * Ly)
-    else:
-        raise ValueError("Unknown model for the get_product_state function.")
+
     numb_sites_per_particle = int(system_size / numb_particles)
 
     if "Orbital" in model:
-        if "Bos" or "Fer" not in model:
-            raise ValueError("Neither Bos nor Fer in model name.")
         empty_site = ['0_x 0_y'] if "Bos" in model else ['empty_x empty_y']
         if orbital_preference in ['polarizedx', None]:
             lattice_site = ['1_x 0_y'] if "Bos" in model else ['full_x empty_y']
@@ -84,36 +85,30 @@ def get_product_state(model, nn, nd, q, LxMUC, Ly, filling_scale_factor=1, orbit
 ###################################################################
 
 
-def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                       nn, nd, p, q, LxMUC, Ly, phi=0):
-    model_params = dict(conserve='N', t1=t1, mu=mu, V=V, Vtype=Vtype, Vrange=Vrange,
-                        n=(int(nn), int(nd)), nphi=(int(p), int(q)),
-                        LxMUC=LxMUC, Ly=Ly,
-                        bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
-                        verbose=1, phi=phi)
+def define_iDMRG_model(model, ham_params):
+    model_params = dict(conserve='N', bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle', verbose=1)
+    basic_params = {k: ham_params[k] for k in ('t1', 'mu', 'V', 'Vtype', 'Vrange', 'n', 'nphi',  'LxMUC', 'Ly')}
+    if 'phi' in ham_params:
+        basic_params.update({'phi': ham_params['phi']})
+    model_params.update(basic_params)
+
+    print(model_params)
 
     if "Bos" in model:
         model_params.update(statistics='bosons', Nmax=1)
-    elif "Fer" in model:
+    else:  # "Fer"
         model_params.update(statistics='fermions')
-    else:
-        raise ValueError("Neither Bos nor Fer in model name.")
 
     if 'HofSqu1' in model:
         M = HofSqu1Model(model_params)
     elif 'HofHex1' in model:
         M = HofHex1Model(model_params)
     elif 'HofHex1Hex5' in model:
-        model_params.update(t2=t2)
+        model_params.update(t2=model_params['t2'])
         M = HofHex1Hex5Model(model_params)
-    elif 'HofHex1Hex5Orbital' in model:
-        model_params.update(t2=t2, t2dash=t2dash, U=U)
+    else:  # "HofHex1Hex5Orbital"
+        model_params.update(t2=model_params['t2'], t2dash=model_params['t2dash'], U=model_params['U'])
         M = HofHex1Hex5OrbitalModel(model_params)
-    else:
-        raise ValueError("Unknown model for the define_iDMRG_model function.")
-
-    if (V == 0 and Vrange != 0) or (V != 0 and Vrange == 0):
-        raise ValueError("Cannot have zero interaction over a finite range, or a finite interaction over zero range.")
 
     return M
 
@@ -123,9 +118,7 @@ def define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
 ####################################################
 
 
-def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                    nn, nd, p, q, LxMUC, Ly,
-                    use_pickle=False, make_pickle=False, phi=0, run=True):
+def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle, run=True):
 
     # The run parameter specifies whether you are running iDMRG or defining an iDMRG engine. Defining an iDMRG engine
     # returns the engine, whereas running iDMRG returns [E, psi, M].
@@ -136,10 +129,9 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrang
             pickle_stem = fp.file_name_stem("engine", model, chi_max)
         else:
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
-        pickle_leaf = f"t1_{t1}_t2_{t2}_t2dash_{t2dash}_U_{U}_mu_{mu}_V_{V}_{Vtype}_{Vrange}_" \
-                      f"n_{nn}_{nd}_nphi_{p}_{q}_LxMUC_{LxMUC}_Ly_{Ly}_phi_{phi}.pkl"
-        os.makedirs(f"pickles/{flow}/{model}/", exist_ok=True)
-        pickle_file = f"pickles/{flow}/{model}/" + pickle_stem + pickle_leaf
+        pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
+        os.makedirs(f"pickles/{program}/{model}/", exist_ok=True)
+        pickle_file = f"pickles/{program}/{model}/" + pickle_stem + pickle_leaf
 
     if use_pickle:
         with open(pickle_file, 'rb') as file1:
@@ -151,11 +143,9 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrang
         engine = None
         (E, psi, M) = (None, None, None)
         if not run:
-            engine = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange, nn, nd, p, q,
-                              LxMUC, Ly, phi, run=False)
+            engine = my_iDMRG(model, chi_max, ham_params, run=False)
         else:
-            (E, psi, M) = my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange, nn, nd, p,
-                                   q, LxMUC, Ly, phi, run=True)
+            (E, psi, M) = my_iDMRG(model, chi_max, ham_params, run=True)
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
                 if not run:
@@ -169,13 +159,10 @@ def my_iDMRG_pickle(flow, model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrang
         return E, psi, M
 
 
-def my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-             nn, nd, p, q,
-             LxMUC, Ly, phi=0, run=True):
+def my_iDMRG(model, chi_max, ham_params, run=True):
 
-    M = define_iDMRG_model(model, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
-                           nn, nd, p, q, LxMUC, Ly, phi)
-    product_state = get_product_state(model, nn, nd, q, LxMUC, Ly)
+    M = define_iDMRG_model(model, ham_params)
+    product_state = get_product_state(model, ham_params)
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
@@ -200,7 +187,8 @@ def my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
         'max_sweeps': 1000,
         'verbose': 5,
         'N_sweeps_check': 10,
-        'diag_method': 'lanczos'
+        'diag_method': 'lanczos',
+        'max_hours': 14*24  # 2 weeks
     }
 
     if not run:
@@ -214,5 +202,6 @@ def my_iDMRG(model, chi_max, t1, t2, t2dash, U, mu, V, Vtype, Vrange,
 
 
 if __name__ == "__main__":
-    get_product_state(model="FerHofHex1Hex5Orbital", nn=1, nd=15, q=3, LxMUC=1, Ly=5,
+
+    get_product_state(model="FerHofHex1Hex5Orbital", ham_params=dict(n=(1, 15), nphi=(1, 3), LxMUC=1, Ly=5),
                       filling_scale_factor=1, orbital_preference='polarizedy')

@@ -5,14 +5,23 @@ This code is an experimental set of tools for TeNPy, and in due course these are
 
 Prerequisites: TeNPy 0.5+, gnuplot, python 3.6+
 
-Workflow 1 - Using the `flow` programs
+Workflow 1 - Using the `ground_state` and `observables` programs
+----------------------------------------------------------------
+
+In cases where the system is not simple to analyze or unpredictable, we need to save the ground state that we produce for each iDMRG run using the `ground_state` program. Afterwards, we can load this state and compute our observables of interest individually, using the `observables` program.
+
+The nonscalar observables that are currently implemented for computation are:
+
+* ent_spec_real
+* ent_spec_mom
+* corr_func
+
+Workflow 2 - Using the `flow` programs
 --------------------------------------
 
 Occasionally, when a system is simple or predictable enough, it is possible to run iDMRG and record data at the same time. We call these programs 'flows', since they vary the selected independent variable whilst on-the-fly computing a variety of dependent variables of interest. It is also sometimes advantageous to start with the previous state when performing an adiabatic evolution.
 
 **phi_flow** is a program that smoothly varies the external flux through the cylinder. This is used to identify a topological phase and calculate the Chern number. Since the evolution is adiabatic, this flow reuses the state on each iteration.
-
-**Ly_flow** is a program that varies the circumference length of the cylinder. This is used to calculate topological entropy and CFT edge counting. Since the evolution is not adiabatic, this flow recalculates the state on each iteration.
 
 **U_flow** is a program that varies the on-site interaction strength, as defined in the model Hamiltonian. This is used to characterize phase transitions e.g. metal to insulator. Since the evolution is generally not adiabatic, this flow recalculates the state on each iteration.
 
@@ -29,10 +38,6 @@ phi_flow     * charge_pump
              * ent_spec_flow
              * overlap
 ----------   ---------------------
-Ly_flow      * ent_scal
-             * ent_spec_real
-             * ent_spec_mom
-----------   ---------------------
 U_flow       * corr_len_U_flow
              * double_occ_U_flow
 ----------   ---------------------
@@ -43,33 +48,103 @@ kappa_flow   * corr_len_kappa_flow
              * ent_spec_kappa_flow
 ==========   =====================
 
-Workflow 2 - Using the `ground_state` and `observables` programs
-----------------------------------------------------------------
+Guide to user input parameters
+------------------------------
 
-In cases where the system is not simple to analyze or unpredictable, we need to instead save the ground state that we produce for each iDMRG run using the `ground_state` program. Afterwards, we can load this state and compute our observables of interest individually, using the `observables` program.
+* `threads`
 
-The nonscalar observables that are currently implemented for computation are:
+    Number of CPU threads to use during calculation. These are the number of vcores used during the MKL OpenMP parallelization. Must be a positive integer. e.g. `threads=1`
 
-* ent_spec_real
-* ent_spec_mom
-* corr_func
+* `model`
+
+    The name of the model, following the model-naming convention. Must match one of the implemented models. e.g. `model=BosHofSqu1`
+
+* `chi_max`
+
+    The maximum value of the MPS bond dimension during DMRG. Must be a positive integer. e.g. `chi_max=50`
+
+### flows only (for ground_state and observables programs, these flags are fixed) ###
+
+* `use_pickle`
+
+    Boolean flag to state whether the ground state should be read from a pickle file. Must be boolean. e.g. `use_pickle=False`
+
+* `make_pickle`
+
+    Boolean flag to state whether the ground state should be saved to a pickle file. Must be boolean. e.g. `make_pickle=True`
+
+### ham_params (all remaining parameters are collected into this keyword dictionary) ###
+
+* `t{i}` and `t{i}dash`
+
+    Hopping elements. `t{i}` corresponds to the ith-NN, and `t{i}dash` is a corresponding subsidiary hopping. Hoppings are supported up to 10th-NN. Must be numbers. e.g. `t1=1, t5=0, t5dash=0`
+
+* (`kappa_min`, `kappa_max`, `kappa_samp` for kappa_flow)
+
+    Hopping parameter coefficient. Must be a number. e.g. `kappa_min=0, kappa_max=1, kappa_samp=11`
+
+* `U` (replaced by `U_min`, `U_max`, `U_samp` for U_flow)
+
+    Onsite interaction strength. Must be a number. e.g. `U=0`
+
+* `mu`
+
+    Chemical potential. Must be a number. e.g. `mu=0`
+
+* `V` (replaced by `V_min`, `V_max`, `V_samp` for V_flow)
+
+    Offsite interaction strength. Must be a number. e.g. `V=0`
+
+* `Vtype`
+
+    Type of offsite interaction. Must be one of the implemented interaction types. e.g. `Vtype=Coulomb`
+
+* `Vrange`
+
+    Range of offsite interaction, in terms of all interactions up to ith-NN. Must be an integer in [0, 10]. e.g. `Vrange=1` Additionally, you cannot have a finite interaction over zero range, or visa versa.
+
+* `n`
+
+    Filling of the MPS unit cell, defined as a tuple. The values in the tuple must be positive integers. e.g. `n=(1, 8)`
+
+* `nphi`
+
+    Flux density, defined as a tuple. The values in the tuple must be positive integers. e.g. `nphi=(1, 4)`
+
+* `LxMUC`
+
+    Number of magnetic unit cells in the x-direction. Not to be confused with `Lx`, which is the number of lattice unit cells in the x-direction. Needs to be a positive integer. e.g. `LxMUC=1`
+
+* `Ly`
+
+    Number of unit cells in the y-direction. Needs to be a posotive integer. e.g. `Ly=4`
+
+* `phi` (replaced by `phi_min`, `phi_max`, `phi_samp` for phi_flow)
+
+    Value of external flux threading the cylinder, in units of 2*pi. Needs to be a number. e.g. `phi=1`
+
+* `tag`
+
+    Optional tag that is directly appended to all output file names. e.g. `tag=".test"` This can prevent output files from being overwritten.
+
+NB: Default values for these parameters may or may not be set, depending on the model.
 
 Functions description
 ---------------------
 
-* func_dmrg = DMRG functions
+* `func_dmrg.py` = DMRG functions
 
     Set of functions to calculate the initial state, define the DMRG model, and execute the DMRG.
 
-* func_int = interaction functions
+* `func_int.py` = interaction functions
 
     Set of functions to aid in computing the offsite interaction term.
 
-* func_obser = observables functions
+* `func_obser.py` = observables functions
 
     Functions to compute the observables for a ground state, as well as for defining the scalar and nonscalar grouping.
 
-* func_proc = file processing functions
+* `func_proc.py` = file processing functions
 
     Set of functions to aid with producing output files.
 
@@ -116,21 +191,21 @@ Tools description
 Models description
 ------------------
 
-hofstadter/hofstadter contains the parent class for all hofstadter models i.e. lattice models in a perpendicular magnetic field
+`hofstadter/hofstadter.py` contains the parent class for all hofstadter models i.e. lattice models in a perpendicular magnetic field
 
-* hofstadter/squ_1
+* `hofstadter/squ_1.py`
 
     Hofstadter model with 1st-NN hoppings on a square lattice
 
-* hofstadter/hex_1
+* `hofstadter/hex_1.py`
 
     Hofstadter model with 1st-NN hoppings on a honeycomb lattice
 
-* hofstadter/hex_1_hex_5
+* `hofstadter/hex_1_hex_5.py`
 
     Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice
 
-* hofstadter/hex_1_hex_5_orbital
+* `hofstadter/hex_1_hex_5_orbital.py`
 
     Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice and two orbitals per site
 
@@ -153,6 +228,8 @@ Below is a description of the directory structure of infinite_cylinder, listed a
 
 **scripts** contains bash and python scripts that are used for processing or plotting output, for example.
 
+NB: The ``old`` directories contain backup files and previous iterations of the code. They should be excluded from the source.
+
 File naming convention
 ----------------------
 
@@ -167,27 +244,26 @@ All output .dat files are named as follows. In the list below, names used in the
 
 *leaf*
 
-- t1 (``t1``)
-- t2 (``t2``)
-- t2dash (``t2dash``)
+- t{i} (``t1``)
+- t{i}dash (``t2dash``)
 - kappa (``kappa_min``, ``kappa_max``, ``kappa_samp`` -- only for the kappa_flow)
 - U (``U`` or ``U_min``, ``U_max``, ``U_samp``)
 - mu (``mu``)
 - V (``V``, ``Vtype``, ``Vrange`` or ``V_min``, ``V_max``, ``V_samp``, ``Vtype``, ``Vrange``)
 - Vtype (``Vtype`` -- e.g. ``Coulomb``)
 - Vrange (``Vrange`` -- e.g. 2 for interactions up to and including 2nd-NN)
-- n (``nn``, ``nd`` or ``nn``, ``nd_min``, ``nd_max`` -- only range over denominator currently implemented in flows)
-- nphi (``p``, ``q`` or ``p``, ``q_min``, ``q_max``, ``nu_samp`` -- only range over denominator currently implemented in flows)
+- n (``nn``, ``nd``)
+- nphi (``p``, ``q``)
 - LxMUC (``LxMUC`` -- not to be confused with the ``Lx`` for the lattice)
-- Ly (``Ly`` or ``Ly_min``, ``Ly_max``, ``Ly_samp``)
+- Ly (``Ly``)
 - phi (``phi`` or ``phi_min``, ``phi_max``, ``phi_samp``)
 - (``tag`` -- optional)
 
-NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4_Coulomb_1``).
+NB: For a range of parameter values in an output file, we denote this by the order: min value _ max value _ number of samples (e.g. ``V_0_1_4_Coulomb_1``). All zero values are cut from the file name for brevity.
 
 *name = stem + leaf*
 
-Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_t2_0_t2dash_0_U_0_mu_0_V_0_Coulomb_0_n_1_8_8_1_nphi_1_4_4_1_LxMUC_1_Ly_4_4_1_phi_0_2_21.dat``
+Example:  ``data/charge_pump/BosHofSqu1/charge_pump_BosHofSqu1_chi_50_t1_1_n_1_8_nphi_1_4_LxMUC_1_Ly_4_phi_0_2_21.dat``
 
 Model naming convention
 -----------------------
@@ -252,7 +328,7 @@ This should start an infinite_cylinder Pycharm project. Go to ``File>Settings>Pr
 Masters project: Madhav Mohan
 -----------------------------
 
-1. **Reproduce an equivalent of Fig. 3 from [Schoond19] for the FerHofSqu1 model at 1/3 filling.** For this, you should use workflow 2 and for each system with filling nu=n/nphi=1/3: compute the von Neumann entanglement entropy, S, for various MPS bond dimensions, chi. That is for fermions with nearest-neighbor interactions: V=10, Vtype='Coulomb', Vrange=1. What do you notice when you plot S vs. 1/chi ? You should see a convergence of the entanglement entropy as you increase the MPS bond dimension (e.g. chi=50, 100, ..., 500). In each case, extrapolate this convergence to get an estimate (with errors) for S in the chi->infty limit. This will form one data point (with error bars) on your graph of S against Ly/lB. Repeating this for a variety of systems with different Ly or nphi, you should get a straight line confirming the area law of entanglement. The (absolute value of the) y-intercept of this straight line is the topological entanglement entropy. What value do you get for the topological entanglement entropy? For the 1/3 state, this value should be 0.549. Keep improving the data points on this plot until you get an agreement to 2 decimal places.
+1. **Reproduce an equivalent of Fig. 3 from [Schoond19] for the FerHofSqu1 model at 1/3 filling.** For this, you should use workflow 1 and for each system with filling nu=n/nphi=1/3: compute the von Neumann entanglement entropy, S, for various MPS bond dimensions, chi. That is for fermions with nearest-neighbor interactions: V=10, Vtype='Coulomb', Vrange=1. What do you notice when you plot S vs. 1/chi ? You should see a convergence of the entanglement entropy as you increase the MPS bond dimension (e.g. chi=50, 100, ..., 500). In each case, extrapolate this convergence to get an estimate (with errors) for S in the chi->infty limit. This will form one data point (with error bars) on your graph of S against Ly/lB. Repeating this for a variety of systems with different Ly or nphi, you should get a straight line confirming the area law of entanglement. The (absolute value of the) y-intercept of this straight line is the topological entanglement entropy. What value do you get for the topological entanglement entropy? For the 1/3 state, this value should be 0.549. Keep improving the data points on this plot until you get an agreement to 2 decimal places.
 
 2. **Plot the area law graph for the BosHofSqu1 model at 1/2 filling.** Reproduce the area law plot, as above, now for the BosHofSqu1 model at 1/2 filling. That is hardcore bosons with V=0, Vtype='Coulomb', Vrange=0. You should notice that the computations are faster than for fermions. The topological entanglement entropy for this system is 0.347. Keep improving the data points on this plot until you get an agreement to 2 decimal places.
 

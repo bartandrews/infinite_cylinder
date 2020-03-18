@@ -3,6 +3,7 @@
     <words>
       <w>arange</w>
       <w>bosonic</w>
+      <w>coprime</w>
       <w>dmrg</w>
       <w>fermionic</w>
       <w>hoppings</w>
@@ -23,6 +24,7 @@
       <w>opnames</w>
       <w>polarizedx</w>
       <w>polarizedy</w>
+      <w>prog</w>
       <w>pvalue</w>
       <w>pyplot</w>
       <w>qflat</w>
@@ -38,6 +40,7 @@
       <w>sublattice</w>
       <w>sublattices</w>
       <w>summand</w>
+      <w>tdash</w>
       <w>tenpy</w>
       <w>unpolarized</w>
       <w>versioning</w>

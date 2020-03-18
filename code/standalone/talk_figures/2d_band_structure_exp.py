@@ -29,8 +29,9 @@ MM = np.array([0.5, 0.5])
 
 def min_hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 0.331, -0.010, 0.097
+    # t1, t2, t2dash = 0.331, -0.010, 0.097
     # t1, t2, t2dash = 2, 0.05, 0.2
+    t1, t2, t2dash = 1, -0.01, 0.04
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -98,8 +99,9 @@ def min_hamiltonian(k, num_bands_1):
 
 def hamiltonian(k, num_bands_1):
 
-    t1, t2, t2dash = 0.331, -0.01, 0.097
+    # t1, t2, t2dash = 0.331, -0.01, 0.097
     # t1, t2, t2dash = 2, 0.05, 0.2
+    t1, t2, t2dash = 1, -0.01, 0.04
 
     delta = np.zeros((3, 2))
     delta[0, :] = (1 / 3) * avec[0, :] + (1 / 3) * avec[1, :]
@@ -177,8 +179,9 @@ def hamiltonian(k, num_bands_1):
 
 def hamiltonian2(k, M, p, q):
 
-    t1, t2, t2dash = 0.331, -0.01, 0.097
+    # t1, t2, t2dash = 0.331, -0.01, 0.097
     # t1, t2, t2dash = 2, 0.05, 0.2
+    t1, t2, t2dash = 1, -0.01, 0.04
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -366,7 +369,7 @@ if __name__ == '__main__':
     # 2) Minimal model with magnetic field #
     ########################################
 
-    p, q = 8, 9
+    p, q = 1, 3
 
     if p % 2 == 0:
         M = q
