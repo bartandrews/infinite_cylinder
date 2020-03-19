@@ -284,7 +284,12 @@ NB:  model class names do not have the particle statistics prefix and are additi
 Pickling capability
 -------------------
 
-The pickling capability is used to save the state, or initial state ``[E, psi, M]`` or ``engine`` for a flow. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state) or ``make_pickle`` (to pickle a state for later) in the parameter files. By default, all pickling is set to False in the flows.
+The pickling capability is used to save the state ``[E, psi, M]``, or initial engine ``engine``. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state/engine) or ``make_pickle`` (to pickle a state/engine for later) in the parameter files. By default, all pickling is set to `False` in the flows.
+
+Shelving capability
+-------------------
+
+The `max_hours` is set in the dmrg parameters. If this time is exceeded then the dmrg run is shelved, which means that the process is exited early. For workflow 1, if `make_pickle` is requested then this shelved run is pickled and if `use_pickle` is requested, then this shelved run is loaded. For the ground_state program, the code will continue converging the shelved run from where it left off. Hence, for workflow 1 you can repeatedly shelve a run, pickle it, load it again, shelve it, ... until you converge to the desired precision. You can also look at the observables along the way. This is useful since here you might be dealing with a demanding state, which requires an unknown amount of time to converge. For workflow 2, shelving simply acts as a time-limit for each run of the flow -- the flow continues. In this workflow, shelved pickles are not implemented.
 
 Algorithm scaling
 -----------------

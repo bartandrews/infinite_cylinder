@@ -92,8 +92,6 @@ def define_iDMRG_model(model, ham_params):
         basic_params.update({'phi': ham_params['phi']})
     model_params.update(basic_params)
 
-    print(model_params)
-
     if "Bos" in model:
         model_params.update(statistics='bosons', Nmax=1)
     else:  # "Fer"
@@ -130,28 +128,34 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
         else:
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
         pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
-        os.makedirs(f"pickles/{program}/{model}/", exist_ok=True)
-        pickle_file = f"pickles/{program}/{model}/" + pickle_stem + pickle_leaf
+        # observables program needs to seek the output from ground_state
+        os.makedirs(f"pickles/{program}/{model}/".replace("observables", "ground_state"), exist_ok=True)
+        pickle_file = f"pickles/{program}/{model}/".replace("observables", "ground_state") + pickle_stem + pickle_leaf
 
     if use_pickle:
         with open(pickle_file, 'rb') as file1:
             if not run:
                 engine = pickle.load(file1)
+                shelve, sweep = False, 0  # shelved pickles not implemented for the flows
             else:
-                [E, psi, M] = pickle.load(file1)
+                [E, psi, M, shelve, sweep] = pickle.load(file1)
     else:
-        engine = None
-        (E, psi, M) = (None, None, None)
+        shelve, sweep = False, 0
+
+    if (program is not "observables" and shelve) or not use_pickle:
+        if not use_pickle:
+            engine = None
+            (E, psi, M) = (None, None, None)
         if not run:
-            engine = my_iDMRG(model, chi_max, ham_params, run=False)
+            engine = my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=False)
         else:
-            (E, psi, M) = my_iDMRG(model, chi_max, ham_params, run=True)
+            (E, psi, M, shelve, sweep) = my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True)
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
                 if not run:
                     pickle.dump(engine, file2)
                 else:
-                    pickle.dump([E, psi, M], file2)
+                    pickle.dump([E, psi, M, shelve, sweep], file2)
 
     if not run:
         return engine
@@ -159,7 +163,7 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
         return E, psi, M
 
 
-def my_iDMRG(model, chi_max, ham_params, run=True):
+def my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
 
     M = define_iDMRG_model(model, ham_params)
     product_state = get_product_state(model, ham_params)
@@ -191,6 +195,9 @@ def my_iDMRG(model, chi_max, ham_params, run=True):
         'max_hours': 14*24  # 2 weeks
     }
 
+    if shelve:
+        dmrg_params.update({'sweep_0': sweep})
+
     if not run:
         # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
         engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
@@ -198,7 +205,9 @@ def my_iDMRG(model, chi_max, ham_params, run=True):
     else:
         info = dmrg.run(psi, M, dmrg_params)
         E = info['E']
-        return E, psi, M
+        shelve = info['shelve']
+        sweep = info['sweep_statistics']['sweep'][0]
+        return E, psi, M, shelve, sweep
 
 
 if __name__ == "__main__":

@@ -9,7 +9,7 @@ import functions.func_proc as fp
 import functions.func_dmrg as fd
 
 
-def my_V_flow(threads, model, chi_max, use_pickle, make_pickle, **ham_params):
+def my_V_flow(threads, model, chi_max, use_pickle=False, make_pickle=False, **ham_params):
 
     fp.check_input_params("V_flow", threads, model, chi_max, ham_params, use_pickle, make_pickle)
     prc.mkl_set_nthreads(threads)

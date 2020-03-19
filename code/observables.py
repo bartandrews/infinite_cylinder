@@ -25,18 +25,18 @@ def my_observables(threads, model, chi_max, **ham_params):
     ####################################################################################################################
 
     # Here, you need to enter the flow that you are targeting to analyze.
-    (E, psi, M) = fd.my_iDMRG_pickle("ground_state", model, chi_max, ham_params,
+    (E, psi, M) = fd.my_iDMRG_pickle("observables", model, chi_max, ham_params,
                                      use_pickle=True, make_pickle=False, run=True)
 
     fo.scalar_observables(E, psi)
-    # fo.nonscalar_observables(tools, data, psi, M, ham_params['chiK_max'], ham_params['LxMUC'], ham_params['Ly'],
-    #                          extra_dof=False, print_data=False)
+    fo.nonscalar_observables(tools, data, psi, M, ham_params['chiK_max'], ham_params['LxMUC'], ham_params['Ly'],
+                             extra_dof=False, print_data=False)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
 
 if __name__ == '__main__':
 
-    my_observables(threads=1, model="FerHofSqu1", chi_max=1000, chiK_max=500,
-                   t1=1, t2=0, t2dash=0, U=0, mu=0, V=10, Vtype='Coulomb', Vrange=1, n=(1, 9), nphi=(1, 3),
-                   LxMUC=1, Ly=6, tag="")
+    my_observables(threads=1, model="BosHofSqu1", chi_max=10, chiK_max=500,
+                   t1=1, t2=0, t2dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0, n=(1, 8), nphi=(1, 4),
+                   LxMUC=1, Ly=4, tag="")

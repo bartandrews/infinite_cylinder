@@ -8,7 +8,7 @@ import functions.func_proc as fp
 import functions.func_dmrg as fd
 
 
-def my_ground_state(threads, model, chi_max, **ham_params):
+def my_ground_state(threads, model, chi_max, use_pickle, **ham_params):
 
     fp.check_input_params("ground_state", threads, model, chi_max, ham_params)
     prc.mkl_set_nthreads(threads)
@@ -19,13 +19,13 @@ def my_ground_state(threads, model, chi_max, **ham_params):
 
     ####################################################################################################################
 
-    fd.my_iDMRG_pickle("ground_state", model, chi_max, ham_params, use_pickle=False, make_pickle=True, run=True)
+    fd.my_iDMRG_pickle("ground_state", model, chi_max, ham_params, use_pickle, make_pickle=True, run=True)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
 
 if __name__ == '__main__':
 
-    my_ground_state(threads=1, model="FerHofSqu1", chi_max=1000,
-                    t1=1, t2=0, t2dash=0, U=0, mu=0, V=10, Vtype='Coulomb', Vrange=1, n=(1, 9), nphi=(1, 3),
-                    LxMUC=1, Ly=6, tag="")
+    my_ground_state(threads=1, model="BosHofSqu1", chi_max=100, use_pickle=False,
+                    t1=1, t2=0, t2dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0, n=(1, 8), nphi=(1, 4),
+                    LxMUC=1, Ly=4, tag="")
