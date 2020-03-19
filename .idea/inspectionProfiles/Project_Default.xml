@@ -28,6 +28,7 @@
       <option name="ignoredIdentifiers">
         <list>
           <option value="tenpy.networks.site.GroupedSite.*" />
+          <option value="tuple.*" />
         </list>
       </option>
     </inspection_tool>

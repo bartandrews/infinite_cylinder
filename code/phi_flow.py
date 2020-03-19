@@ -80,6 +80,6 @@ def my_phi_flow(threads, model, chi_max, use_pickle=False, make_pickle=False, **
 
 if __name__ == '__main__':
 
-    my_phi_flow(threads=1, model="BosHofSqu1", chi_max=50, use_pickle=False, make_pickle=False,
+    my_phi_flow(threads=1, model="BosHofSqu1", chi_max=50, use_pickle=False, make_pickle=True,
                 t1=1, t5=0, t5dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0,
                 n=(1, 8), nphi=(1, 4), LxMUC=1, Ly=4, phi_min=0, phi_max=2, phi_samp=21, tag="")

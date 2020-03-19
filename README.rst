@@ -3,12 +3,12 @@ infinite_cylinder
 
 This code is an experimental set of tools for TeNPy, and in due course these are added to the official TeNPy repository. The code focuses on 2D DMRG models on an infinite cylinder.
 
-Prerequisites: TeNPy 0.5+, gnuplot, python 3.6+
+Prerequisites: TeNPy 0.5+, gnuplot, python 3.6+, matplotlib
 
 Workflow 1 - Using the `ground_state` and `observables` programs
 ----------------------------------------------------------------
 
-In cases where the system is not simple to analyze or unpredictable, we need to save the ground state that we produce for each iDMRG run using the `ground_state` program. Afterwards, we can load this state and compute our observables of interest individually, using the `observables` program.
+In cases where the system is not simple to analyze or unpredictable, we need to save the ground state that we produce for each iDMRG run using the ``ground_state`` program. Afterwards, we can load this state and compute our observables of interest individually, using the ``observables`` program.
 
 The nonscalar observables that are currently implemented for computation are:
 
@@ -51,100 +51,100 @@ kappa_flow   * corr_len_kappa_flow
 Guide to user input parameters
 ------------------------------
 
-* `threads`
+* ``threads``
 
-    Number of CPU threads to use during calculation. These are the number of vcores used during the MKL OpenMP parallelization. Must be a positive integer. e.g. `threads=1`
+    Number of CPU threads to use during calculation. These are the number of vcores used during the MKL OpenMP parallelization. Must be a positive integer. e.g. ``threads=1``
 
-* `model`
+* ``model``
 
-    The name of the model, following the model-naming convention. Must match one of the implemented models. e.g. `model=BosHofSqu1`
+    The name of the model, following the model-naming convention. Must match one of the implemented models. e.g. ``model=BosHofSqu1``
 
-* `chi_max`
+* ``chi_max``
 
-    The maximum value of the MPS bond dimension during DMRG. Must be a positive integer. e.g. `chi_max=50`
+    The maximum value of the MPS bond dimension during DMRG. Must be a positive integer. e.g. ``chi_max=50``
 
 ### flows only (for ground_state and observables programs, these flags are fixed) ###
 
-* `use_pickle`
+* ``use_pickle``
 
-    Boolean flag to state whether the ground state should be read from a pickle file. Must be boolean. e.g. `use_pickle=False`
+    Boolean flag to state whether the ground state should be read from a pickle file. Must be boolean. e.g. ``use_pickle=False``
 
-* `make_pickle`
+* ``make_pickle``
 
-    Boolean flag to state whether the ground state should be saved to a pickle file. Must be boolean. e.g. `make_pickle=True`
+    Boolean flag to state whether the ground state should be saved to a pickle file. Must be boolean. e.g. ``make_pickle=True``
 
 ### ham_params (all remaining parameters are collected into this keyword dictionary) ###
 
-* `t{i}` and `t{i}dash`
+* ``t{i}`` and ``t{i}dash``
 
-    Hopping elements. `t{i}` corresponds to the ith-NN, and `t{i}dash` is a corresponding subsidiary hopping. Hoppings are supported up to 10th-NN. Must be numbers. e.g. `t1=1, t5=0, t5dash=0`
+    Hopping elements. ``t{i}`` corresponds to the ith-NN, and ``t{i}dash`` is a corresponding subsidiary hopping. Hoppings are supported up to 10th-NN. Must be numbers. e.g. ``t1=1, t5=0, t5dash=0``
 
-* (`kappa_min`, `kappa_max`, `kappa_samp` for kappa_flow)
+* (``kappa_min``, ``kappa_max``, ``kappa_samp`` for kappa_flow)
 
-    Hopping parameter coefficient. Must be a number. e.g. `kappa_min=0, kappa_max=1, kappa_samp=11`
+    Hopping parameter coefficient. Must be a number. e.g. ``kappa_min=0, kappa_max=1, kappa_samp=11``
 
-* `U` (replaced by `U_min`, `U_max`, `U_samp` for U_flow)
+* ``U`` (replaced by ``U_min``, ``U_max``, ``U_samp`` for U_flow)
 
-    Onsite interaction strength. Must be a number. e.g. `U=0`
+    Onsite interaction strength. Must be a number. e.g. ``U=0``
 
-* `mu`
+* ``mu``
 
-    Chemical potential. Must be a number. e.g. `mu=0`
+    Chemical potential. Must be a number. e.g. ``mu=0``
 
-* `V` (replaced by `V_min`, `V_max`, `V_samp` for V_flow)
+* ``V`` (replaced by ``V_min``, ``V_max``, ``V_samp`` for V_flow)
 
-    Offsite interaction strength. Must be a number. e.g. `V=0`
+    Offsite interaction strength. Must be a number. e.g. ``V=0``
 
-* `Vtype`
+* ``Vtype``
 
-    Type of offsite interaction. Must be one of the implemented interaction types. e.g. `Vtype=Coulomb`
+    Type of offsite interaction. Must be one of the implemented interaction types. e.g. ``Vtype=Coulomb``
 
-* `Vrange`
+* ``Vrange``
 
-    Range of offsite interaction, in terms of all interactions up to ith-NN. Must be an integer in [0, 10]. e.g. `Vrange=1` Additionally, you cannot have a finite interaction over zero range, or visa versa.
+    Range of offsite interaction, in terms of all interactions up to ith-NN. Must be an integer in [0, 10]. e.g. ``Vrange=1`` Additionally, you cannot have a finite interaction over zero range, or visa versa.
 
-* `n`
+* ``n``
 
-    Filling of the MPS unit cell, defined as a tuple. The values in the tuple must be positive integers. e.g. `n=(1, 8)`
+    Filling of the MPS unit cell, defined as a tuple. The values in the tuple must be positive integers. e.g. ``n=(1, 8)``
 
-* `nphi`
+* ``nphi``
 
-    Flux density, defined as a tuple. The values in the tuple must be positive integers. e.g. `nphi=(1, 4)`
+    Flux density, defined as a tuple. The values in the tuple must be positive integers. e.g. ``nphi=(1, 4)``
 
-* `LxMUC`
+* ``LxMUC``
 
-    Number of magnetic unit cells in the x-direction. Not to be confused with `Lx`, which is the number of lattice unit cells in the x-direction. Needs to be a positive integer. e.g. `LxMUC=1`
+    Number of magnetic unit cells in the x-direction. Not to be confused with ``Lx``, which is the number of lattice unit cells in the x-direction. Needs to be a positive integer. e.g. ``LxMUC=1``
 
-* `Ly`
+* ``Ly``
 
-    Number of unit cells in the y-direction. Needs to be a posotive integer. e.g. `Ly=4`
+    Number of unit cells in the y-direction. Needs to be a posotive integer. e.g. ``Ly=4``
 
-* `phi` (replaced by `phi_min`, `phi_max`, `phi_samp` for phi_flow)
+* ``phi`` (replaced by ``phi_min``, ``phi_max``, ``phi_samp`` for phi_flow)
 
-    Value of external flux threading the cylinder, in units of 2*pi. Needs to be a number. e.g. `phi=1`
+    Value of external flux threading the cylinder, in units of 2*pi. Needs to be a number. e.g. ``phi=1``
 
-* `tag`
+* ``tag``
 
-    Optional tag that is directly appended to all output file names. e.g. `tag=".test"` This can prevent output files from being overwritten.
+    Optional tag that is directly appended to all output file names. e.g. ``tag=".test"`` This can prevent output files from being overwritten.
 
 NB: Default values for these parameters may or may not be set, depending on the model.
 
 Functions description
 ---------------------
 
-* `func_dmrg.py` = DMRG functions
+* ``func_dmrg.py`` = DMRG functions
 
     Set of functions to calculate the initial state, define the DMRG model, and execute the DMRG.
 
-* `func_int.py` = interaction functions
+* ``func_int.py`` = interaction functions
 
     Set of functions to aid in computing the offsite interaction term.
 
-* `func_obser.py` = observables functions
+* ``func_obser.py`` = observables functions
 
     Functions to compute the observables for a ground state, as well as for defining the scalar and nonscalar grouping.
 
-* `func_proc.py` = file processing functions
+* ``func_proc.py`` = file processing functions
 
     Set of functions to aid with producing output files.
 
@@ -191,21 +191,21 @@ Tools description
 Models description
 ------------------
 
-`hofstadter/hofstadter.py` contains the parent class for all hofstadter models i.e. lattice models in a perpendicular magnetic field
+``hofstadter/hofstadter.py`` contains the parent class for all hofstadter models i.e. lattice models in a perpendicular magnetic field using Laudau gauge in the x-direction
 
-* `hofstadter/squ_1.py`
+* ``hofstadter/squ_1.py``
 
     Hofstadter model with 1st-NN hoppings on a square lattice
 
-* `hofstadter/hex_1.py`
+* ``hofstadter/hex_1.py``
 
     Hofstadter model with 1st-NN hoppings on a honeycomb lattice
 
-* `hofstadter/hex_1_hex_5.py`
+* ``hofstadter/hex_1_hex_5.py``
 
     Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice
 
-* `hofstadter/hex_1_hex_5_orbital.py`
+* ``hofstadter/hex_1_hex_5_orbital.py``
 
     Hofstadter model with 1st- and 5th-NN hoppings on a honeycomb lattice and two orbitals per site
 
@@ -284,12 +284,12 @@ NB:  model class names do not have the particle statistics prefix and are additi
 Pickling capability
 -------------------
 
-The pickling capability is used to save the state ``[E, psi, M]``, or initial engine ``engine``. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state/engine) or ``make_pickle`` (to pickle a state/engine for later) in the parameter files. By default, all pickling is set to `False` in the flows.
+The pickling capability is used to save the state ``[E, psi, M]``, or initial engine ``engine``. For example, you can save an (expensive) initial DMRG wavefunction, so that you can perform a variety of calculations with it at a later stage. You can set the boolean parameters ``use_pickle`` (to use a pickled state/engine) or ``make_pickle`` (to pickle a state/engine for later) in the parameter files. By default, all pickling is set to ``False`` in the flows.
 
 Shelving capability
 -------------------
 
-The `max_hours` is set in the dmrg parameters. If this time is exceeded then the dmrg run is shelved, which means that the process is exited early. For workflow 1, if `make_pickle` is requested then this shelved run is pickled and if `use_pickle` is requested, then this shelved run is loaded. For the ground_state program, the code will continue converging the shelved run from where it left off. Hence, for workflow 1 you can repeatedly shelve a run, pickle it, load it again, shelve it, ... until you converge to the desired precision. You can also look at the observables along the way. This is useful since here you might be dealing with a demanding state, which requires an unknown amount of time to converge. For workflow 2, shelving simply acts as a time-limit for each run of the flow -- the flow continues. In this workflow, shelved pickles are not implemented.
+The ``max_hours`` is set in the dmrg parameters. If this time is exceeded then the dmrg run is shelved, which means that the process is exited early. For workflow 1, if ``make_pickle`` is requested then this shelved run is pickled and if ``use_pickle`` is requested, then this shelved run is loaded. For the ground_state program, the code will continue converging the shelved run from where it left off. Hence, for workflow 1 you can repeatedly shelve a run, pickle it, load it again, shelve it, ... until you converge to the desired precision. You can also look at the observables along the way. This is useful since here you might be dealing with a demanding state, which requires an unknown amount of time to converge. For workflow 2, shelving simply acts as a time-limit for each run of the flow -- the flow continues. In this workflow, shelved pickles are not implemented.
 
 Algorithm scaling
 -----------------

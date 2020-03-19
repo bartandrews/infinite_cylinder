@@ -9,7 +9,16 @@
       <excludeFolder url="file://$MODULE_DIR$/code/models/hofstadter/old" />
       <excludeFolder url="file://$MODULE_DIR$/code/models/old" />
       <excludeFolder url="file://$MODULE_DIR$/code/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/bilayer_graphene" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/long_talk_figures" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/main_figures" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/main_figures_rev1" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/misc" />
       <excludeFolder url="file://$MODULE_DIR$/code/standalone/old" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/poster_figures" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/proposal_figures" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/supplementary_figures" />
+      <excludeFolder url="file://$MODULE_DIR$/code/standalone/talk_figures" />
       <excludeFolder url="file://$MODULE_DIR$/code/utilities/old" />
       <excludeFolder url="file://$MODULE_DIR$/data/old" />
       <excludeFolder url="file://$MODULE_DIR$/old" />

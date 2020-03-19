@@ -1,11 +1,11 @@
 from models.hofstadter.old.squ_1_backup import HofSqu1Model as HofSqu1Model_old
 from models.hofstadter.squ_1 import HofSqu1Model
-from models.hofstadter.old.hex_1_backup import HofHex1Model as HofHex1Model_old
-from models.hofstadter.hex_1 import HofHex1Model
-from models.hofstadter.old.hex_1_hex_5_backup import HofHex1Hex5Model as HofHex1Hex5Model_old
-from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
-from models.hofstadter.old.hex_1_hex_5_orbital_backup import HofHex1Hex5OrbitalModel as HofHex1Hex5OrbitalModel_old
-from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
+# from models.hofstadter.old.hex_1_backup import HofHex1Model as HofHex1Model_old
+# from models.hofstadter.hex_1 import HofHex1Model
+# from models.hofstadter.old.hex_1_hex_5_backup import HofHex1Hex5Model as HofHex1Hex5Model_old
+# from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
+# from models.hofstadter.old.hex_1_hex_5_orbital_backup import HofHex1Hex5OrbitalModel as HofHex1Hex5OrbitalModel_old
+# from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 
 
 if __name__ == "__main__":
