@@ -23,7 +23,7 @@
       <excludeFolder url="file://$MODULE_DIR$/data/old" />
       <excludeFolder url="file://$MODULE_DIR$/old" />
     </content>
-    <content url="file://$USER_HOME$/TeNPy_latest" />
+    <content url="file://$USER_HOME$/TeNPy" />
     <orderEntry type="jdk" jdkName="Python 3.7 (infinite_cylinder)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
