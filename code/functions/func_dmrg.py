@@ -128,9 +128,8 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
         else:
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
         pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
-        # observables program needs to seek the output from ground_state
-        os.makedirs(f"pickles/{program}/{model}/".replace("observables", "ground_state"), exist_ok=True)
-        pickle_file = f"pickles/{program}/{model}/".replace("observables", "ground_state") + pickle_stem + pickle_leaf
+        os.makedirs(f"pickles/{program}/{model}/", exist_ok=True)
+        pickle_file = f"pickles/{program}/{model}/" + pickle_stem + pickle_leaf
 
     if use_pickle:
         with open(pickle_file, 'rb') as file1:
@@ -142,7 +141,7 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
     else:
         shelve, sweep = False, 0
 
-    if (program is not "observables" and shelve) or not use_pickle:
+    if (program != "observables" and shelve) or not use_pickle:
         if not use_pickle:
             engine = None
             (E, psi, M) = (None, None, None)

@@ -24,7 +24,7 @@
       <excludeFolder url="file://$MODULE_DIR$/old" />
     </content>
     <content url="file://$USER_HOME$/TeNPy" />
-    <orderEntry type="jdk" jdkName="Python 3.7 (infinite_cylinder)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="dart - Remote Python 3.7.4 (sftp://bart@dart.physik.uzh.ch:22/usr/local/anaconda3/bin/python3)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">

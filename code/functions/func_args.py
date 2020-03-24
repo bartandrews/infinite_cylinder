@@ -2,9 +2,9 @@
 import argparse
 
 
-#############################################################
-# input_arguments (parse the input arguments for a program) #
-#############################################################
+##########################################################################################
+# parse_input_arguments (parse the input arguments for a program other than observables) #
+##########################################################################################
 
 
 def parse_input_arguments(program):
@@ -55,7 +55,7 @@ def parse_input_arguments(program):
         leaf.add_argument("-V", type=float, default=0, help="offsite interaction strength")
     leaf.add_argument("-Vtype", type=str, default="Coulomb", choices=Vtypes,
                         help="offsite interaction type")
-    leaf.add_argument("-Vrange", type=float, default=0, choices=range(11),
+    leaf.add_argument("-Vrange", type=int, default=0, choices=range(11),
                       help="offsite interaction range (in units of nearest neighbors)")
 
     leaf.add_argument("-n", nargs=2, type=int, default=[1, 8], required=True, help="filling of the MPS unit cell")
@@ -89,17 +89,46 @@ def parse_input_arguments(program):
     return prog_args, stem_args, leaf_args
 
 
-##########################################################################
-# check_input_arguments (check the requirements for the input arguments) #
-##########################################################################
+#########################################################################################
+# parse_observables_input_arguments (parse input arguments for the observables program) #
+#########################################################################################
+
+
+def parse_observables_input_arguments():
+
+    parser = argparse.ArgumentParser(prog="observables")
+    prog = parser.add_argument_group("program sub-arguments")
+    obser = parser.add_argument_group("observables sub-arguments")
+
+    parser.add_argument('pickle_file')
+
+    prog.add_argument("-thr", "--threads", type=int, default=1, help="number of threads")
+    obser.add_argument("-chiK", "--chiK_max", type=int, default=250,
+                       help="maximum MPS bond dimension for the compute_K function (should be >= chi_max)")
+
+    args = vars(parser.parse_args())
+    __check_input_arguments("observables", args)
+
+    prog_args, obser_args = dict(), dict()
+    for prog_key in ['threads']:
+        prog_args.update({prog_key: args.pop(prog_key, None)})
+    for obser_key in ['chiK_max']:
+        obser_args.update({obser_key: args.pop(obser_key, None)})
+
+    return args['pickle_file'], prog_args, obser_args
+
+
+############################################################################
+# __check_input_arguments (check the requirements for the input arguments) #
+############################################################################
 
 
 def __check_input_arguments(program, args):
 
-    if args['threads'] < 0:
+    if args['threads'] <= 0:
         raise ValueError("threads needs to be positive.")
 
-    if args['chi_max'] < 0:
+    if "chi_max" in args and args['chi_max'] <= 0:
         raise ValueError("chi_max needs to be positive.")
 
     if "flow" in program:
@@ -107,16 +136,20 @@ def __check_input_arguments(program, args):
             raise ValueError(f"{program.replace('flow', 'max')} has to be greater "
                              f"than {program.replace('flow', 'min')}.")
 
-    if (args['V'] == 0 and args['Vrange'] != 0) or (args['V'] != 0 and args['Vrange'] == 0):
+    if "V" in args and ((args['V'] == 0 and args['Vrange'] != 0) or (args['V'] != 0 and args['Vrange'] == 0)):
         raise ValueError("Cannot have zero interaction over a finite range, or a finite interaction over zero range.")
 
-    if args['n'][0] < 0 or args['n'][1] < 0:
+    if "n" in args and (args['n'][0] <= 0 or args['n'][1] <= 0):
         raise ValueError("n needs to have positive entries.")
 
-    if args['nphi'][0] < 0 or args['nphi'][1] < 0:
+    if "nphi" in args and (args['nphi'][0] <= 0 or args['nphi'][1] <= 0):
         raise ValueError("nphi needs to have positive entries.")
 
-    if args['LxMUC'] < 0 or args['Ly'] < 0:
+    if ("LxMUC" in args and args['LxMUC'] <= 0) or ("Ly" in args and args['Ly'] <= 0):
         raise ValueError("LxMUX and Ly need to be positive.")
+
+    if program == "observables":
+        if args['chiK_max'] <= 0:
+            raise ValueError("chiK_max needs to be positive.")
 
     return
