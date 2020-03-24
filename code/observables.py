@@ -16,7 +16,7 @@ def my_observables(threads, model, chi_max, **ham_params):
     t0 = time.time()
 
     leaf = fp.file_name_leaf("observables", model, ham_params)
-    sys.stdout = sys.stderr = fp.Logger("observables", model, leaf)
+    sys.stdout = sys.stderr = fp.Logger("observables", model, chi_max, leaf)
 
     # Here, you need to enter the tools that you are interested in studying.
     tools = ["ent_spec_real", "ent_spec_mom", "corr_func"]

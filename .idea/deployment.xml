@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="baandr2" showAutoUploadSettingsWarning="false">
+  <component name="PublishConfigData" serverName="dart" showAutoUploadSettingsWarning="false">
     <serverData>
       <paths name="baandr1">
         <serverdata>
@@ -51,6 +51,5 @@
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

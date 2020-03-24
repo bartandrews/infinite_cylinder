@@ -6,16 +6,16 @@ import tenpy.tools.process as prc
 # --- infinite_cylinder imports
 import functions.func_proc as fp
 import functions.func_dmrg as fd
+import functions.func_args as fa
 
 
-def my_ground_state(threads, model, chi_max, use_pickle, **ham_params):
+def my_ground_state(threads, model, chi_max, ham_params, use_pickle):
 
-    fp.check_input_params("ground_state", threads, model, chi_max, ham_params)
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
     leaf = fp.file_name_leaf("ground_state", model, ham_params)
-    sys.stdout = sys.stderr = fp.Logger("ground_state", model, leaf)
+    sys.stdout = sys.stderr = fp.Logger("ground_state", model, chi_max, leaf)
 
     ####################################################################################################################
 
@@ -26,6 +26,6 @@ def my_ground_state(threads, model, chi_max, use_pickle, **ham_params):
 
 if __name__ == '__main__':
 
-    my_ground_state(threads=1, model="BosHofSqu1", chi_max=100, use_pickle=False,
-                    t1=1, t2=0, t2dash=0, U=0, mu=0, V=0, Vtype='Coulomb', Vrange=0, n=(1, 8), nphi=(1, 4),
-                    LxMUC=1, Ly=4, tag="")
+    prog_args, stem_args, leaf_args = fa.parse_input_arguments("phi_flow")
+
+    my_ground_state(prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args, prog_args['use_pickle'])

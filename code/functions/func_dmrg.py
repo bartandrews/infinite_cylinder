@@ -13,12 +13,12 @@ from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
 from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
 
 
-##################################################
-# get_product_state (calculates the initial psi) #
-##################################################
+####################################################
+# __get_product_state (calculates the initial psi) #
+####################################################
 
 
-def get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
+def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
 
     nn, nd, q, LxMUC, Ly = \
         ham_params['n'][0], ham_params['n'][1], ham_params['nphi'][1], ham_params['LxMUC'], ham_params['Ly']
@@ -111,9 +111,9 @@ def define_iDMRG_model(model, ham_params):
     return M
 
 
-####################################################
-# my_iDMRG (defines an iDMRG engine or runs iDMRG) #
-####################################################
+#################################################################################
+# my_iDMRG_pickle (defines an iDMRG engine or run iDMRG and determine pickling) #
+#################################################################################
 
 
 def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle, run=True):
@@ -147,9 +147,9 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
             engine = None
             (E, psi, M) = (None, None, None)
         if not run:
-            engine = my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=False)
+            engine = __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=False)
         else:
-            (E, psi, M, shelve, sweep) = my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True)
+            (E, psi, M, shelve, sweep) = __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True)
         if make_pickle:
             with open(pickle_file, 'wb') as file2:
                 if not run:
@@ -163,10 +163,15 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
         return E, psi, M
 
 
-def my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
+#####################################
+# __my_iDMRG (implements the iDMRG) #
+#####################################
+
+
+def __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
 
     M = define_iDMRG_model(model, ham_params)
-    product_state = get_product_state(model, ham_params)
+    product_state = __get_product_state(model, ham_params)
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
@@ -212,5 +217,5 @@ def my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
 
 if __name__ == "__main__":
 
-    get_product_state(model="FerHofHex1Hex5Orbital", ham_params=dict(n=(1, 15), nphi=(1, 3), LxMUC=1, Ly=5),
-                      filling_scale_factor=1, orbital_preference='polarizedy')
+    __get_product_state(model="FerHofHex1Hex5Orbital", ham_params=dict(n=(1, 15), nphi=(1, 3), LxMUC=1, Ly=5),
+                        filling_scale_factor=1, orbital_preference='polarizedy')

@@ -7,16 +7,16 @@ import tenpy.tools.process as prc
 # --- infinite_cylinder imports
 import functions.func_proc as fp
 import functions.func_dmrg as fd
+import functions.func_args as fa
 
 
-def my_U_flow(threads, model, chi_max, use_pickle=False, make_pickle=False, **ham_params):
+def my_U_flow(threads, model, chi_max, ham_params, use_pickle=False, make_pickle=False):
 
-    fp.check_input_params("U_flow", threads, model, chi_max, ham_params, use_pickle, make_pickle)
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
     leaf = fp.file_name_leaf("U_flow", model, ham_params)
-    sys.stdout = sys.stderr = fp.Logger("U_flow", model, leaf)
+    sys.stdout = sys.stderr = fp.Logger("U_flow", model, chi_max, leaf)
 
     tools = ["corr_len_U_flow", "double_occ_U_flow"]
     data = fp.prepare_output_files(tools, model, chi_max, leaf)
@@ -59,6 +59,7 @@ def my_U_flow(threads, model, chi_max, use_pickle=False, make_pickle=False, **ha
 
 if __name__ == '__main__':
 
-    my_U_flow(threads=1, model="FerHofHex1Hex5Orbital", chi_max=50, use_pickle=False, make_pickle=False,
-              t1=1, t5=-0.025, t5dash=0.1, U_min=0, U_max=10, U_samp=100, mu=0, V=0, Vtype='Coulomb', Vrange=1,
-              nn=1, nd=9, p=1, q=3, LxMUC=1, Ly=6, tag="")
+    prog_args, stem_args, leaf_args = fa.parse_input_arguments("U_flow")
+
+    my_U_flow(prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args,
+              prog_args['use_pickle'], prog_args['make_pickle'])

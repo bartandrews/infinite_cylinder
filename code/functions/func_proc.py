@@ -112,35 +112,35 @@ def file_name_leaf(program, model, ham_params):
     t = ""
     for i in range(1, 11, 1):  # search up to 10th-NN hoppings for both t and tdash
         if f"{i}" in model:
-            t += f"t{i}_{ham_params[f't{i}']}_" if ham_params[f't{i}'] != 0 else ""
+            t += f"t{i}_{ham_params[f't{i}']:g}_" if ham_params[f't{i}'] != 0 else ""
             if f"t{i}dash" in ham_params:
-                t += f"t{i}dash_{ham_params[f't{i}dash']}_" if ham_params[f't{i}dash'] != 0 else ""
+                t += f"t{i}dash_{ham_params[f't{i}dash']:g}_" if ham_params[f't{i}dash'] != 0 else ""
 
     if program is "kappa_flow":
-        kappa = f"kappa_{ham_params['kappa_min']}_{ham_params['kappa_max']}_{ham_params['kappa_samp']}_"
+        kappa = f"kappa_{ham_params['kappa_min']:g}_{ham_params['kappa_max']:g}_{ham_params['kappa_samp']}_"
     else:
         kappa = ""
 
     if program is "U_flow":
-        U = f"U_{ham_params['U_min']}_{ham_params['U_max']}_{ham_params['U_samp']}_"
+        U = f"U_{ham_params['U_min']:g}_{ham_params['U_max']:g}_{ham_params['U_samp']}_"
     else:
-        U = f"U_{ham_params['U']}_" if ham_params['U'] != 0 else ""
+        U = f"U_{ham_params['U']:g}_" if ham_params['U'] != 0 else ""
 
-    mu = f"mu_{ham_params['mu']}_" if ham_params['mu'] != 0 else ""
+    mu = f"mu_{ham_params['mu']:g}_" if ham_params['mu'] != 0 else ""
 
     if program is "V_flow":
-        V = f"V_{ham_params['V_min']}_{ham_params['V_max']}_{ham_params['V_samp']}_{ham_params['Vtype']}_{ham_params['Vrange']}_"
+        V = f"V_{ham_params['V_min']:g}_{ham_params['V_max']:g}_{ham_params['V_samp']}_{ham_params['Vtype']}_{ham_params['Vrange']}_"
     else:
-        V = f"V_{ham_params['V']}_{ham_params['Vtype']}_{ham_params['Vrange']}_" if ham_params['V'] != 0 else ""
+        V = f"V_{ham_params['V']:g}_{ham_params['Vtype']}_{ham_params['Vrange']}_" if ham_params['V'] != 0 else ""
 
     nu = f"n_{ham_params['n'][0]}_{ham_params['n'][1]}_nphi_{ham_params['nphi'][0]}_{ham_params['nphi'][1]}_"
     L = f"LxMUC_{ham_params['LxMUC']}_Ly_{ham_params['Ly']}"
 
     if program is "phi_flow":
-        phi = f"_phi_{ham_params['phi_min']}_{ham_params['phi_max']}_{ham_params['phi_samp']}"
+        phi = f"_phi_{ham_params['phi_min']:g}_{ham_params['phi_max']:g}_{ham_params['phi_samp']}"
     else:
         if "phi" in ham_params:
-            phi = f"phi_{ham_params['phi']}" if ham_params['phi'] != 0 else ""
+            phi = f"phi_{ham_params['phi']:g}" if ham_params['phi'] != 0 else ""
         else:
             phi = ""
 
@@ -187,10 +187,10 @@ def prepare_output_files(tools, model, chi_max, leaf, chiK_max=0):
 
 
 class Logger(object):
-    def __init__(self, program, model, leaf):
+    def __init__(self, program, model, chi_max, leaf):
         self.terminal = sys.stdout or sys.stderr
         os.makedirs(f"logs/{program}/{model}/", exist_ok=True)
-        self.log = open(f"logs/{program}/{model}/log_{program}_{model}_{leaf}", 'w', buffering=1)
+        self.log = open(f"logs/{program}/{model}/log_{program}_{model}_chi_{chi_max}_{leaf}", 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)
