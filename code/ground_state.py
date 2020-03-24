@@ -26,6 +26,6 @@ def my_ground_state(threads, model, chi_max, ham_params, use_pickle):
 
 if __name__ == '__main__':
 
-    prog_args, stem_args, leaf_args = fa.parse_input_arguments("phi_flow")
+    prog_args, stem_args, leaf_args = fa.parse_input_arguments("ground_state")
 
     my_ground_state(prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args, prog_args['use_pickle'])
