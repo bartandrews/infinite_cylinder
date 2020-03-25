@@ -1,7 +1,18 @@
 #!/bin/bash
 
-########################################################################################################################
-# --- REFERENCE ---
+# Definitions needed for PyCharm remote SSH external tools #############################################################
+#
+#TENPY_DIR=~/TeNPy
+#SOURCE_DIR=~/PycharmProjects/infinite_cylinder/code
+#
+#export PYTHONPATH=${TENPY_DIR}:${SOURCE_DIR}
+#
+#PYTHON_EXE=/usr/local/anaconda3/bin/python3  # for [bart, dart]
+##PYTHON_EXE=~/anaconda3/bin/python3  # for [baandr1, baandr2, baandr3]
+#
+## ampersand (&) still does not work...
+#
+# --- REFERENCE --- ####################################################################################################
 #
 # nohup = no hang-up signal, keeps the job running after you close PyCharm/terminal
 # nice = run the code with a niceness level of 10 (you can specifiy more precisely with -n flag)
@@ -10,8 +21,7 @@
 # (we have our own logging functionality, so we don't need this output)
 # If we want the following jobs to start before the current job finishes, we end the line with a &
 #
-########################################################################################################################
-# --- EXAMPLES ---
+# --- EXAMPLES --- #####################################################################################################
 #
 #for chi_val in 51 52 53 54
 #do
@@ -23,6 +33,12 @@
 #
 ########################################################################################################################
 
-nohup PYTHONPATH=~/TeNPy python code/ground_state.py -thr 1 -mod "FerHofSqu1" -chi 500 -t1 1 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 9 -nphi 1 3 -LxMUC 1 -Ly 9 #>/dev/null 2>&1 &
+#nohup python code/ground_state.py -thr 1 -mod "FerHofSqu1" -chi 500 -t1 1 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 9 -nphi 1 3 -LxMUC 1 -Ly 9 #>/dev/null 2>&1 &
+#nohup python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 51 -t1 1 -n 1 8 -nphi 1 4 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 2 -phi_samp 21 #>/dev/null 2>&1 &
+
+for chi_val in 51 52 53 54
+do
+    nohup python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi ${chi_val} -t1 1 -n 1 8 -nphi 1 4 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 2 -phi_samp 21 >/dev/null 2>&1 &
+done
 
 #nohup python code/observables.py -thr 1 -chiK 500 pickles/ground_state/FerHofSqu1/E_psi_M_FerHofSqu1_chi_500_t1_1_V_10_Vtype_Coulomb_Vrange_1_n_1_9_nphi_1_3_LxMUC_1_Ly_9.pkl >/dev/null 2>&1 &

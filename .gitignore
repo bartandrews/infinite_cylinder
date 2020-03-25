@@ -18,3 +18,5 @@ pickles/**/*.txt*
 **/*.temp
 **/*.tmp
 **/*.backup
+
+nohup.out
