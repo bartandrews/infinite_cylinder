@@ -69,7 +69,10 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
         else:
             raise ValueError("Unknown orbital_preference parameter.")
     else:
-        state = ([1] + [0] * (numb_sites_per_particle - 1)) * int((system_size / numb_sites_per_particle))
+        empty_site = [0]
+        state = ([1] + empty_site * (numb_sites_per_particle - 1)) * int((system_size / numb_sites_per_particle))
+
+    state += (system_size-len(state)) * empty_site  # top up remainder with empty sites, if necessary
 
     print("initial state = ", state)
     print("number of particles = ", numb_particles)
@@ -216,5 +219,5 @@ def __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
 
 if __name__ == "__main__":
 
-    __get_product_state(model="FerHofHex1Hex5Orbital", ham_params=dict(n=(1, 15), nphi=(1, 3), LxMUC=1, Ly=5),
-                        filling_scale_factor=1, orbital_preference='polarizedy')
+    __get_product_state(model="FerHofSqu1", ham_params=dict(n=(4, 45), nphi=(4, 15), LxMUC=1, Ly=6),
+                        filling_scale_factor=1, orbital_preference=None)

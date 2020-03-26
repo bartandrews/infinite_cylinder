@@ -12,6 +12,7 @@ logs/**/*.txt*
 pickles/**/*.txt*
 
 **/*.log
+**/*.pkl
 
 **/__pycache__/*
 
@@ -20,3 +21,4 @@ pickles/**/*.txt*
 **/*.backup
 
 nohup.out
+run.sh
