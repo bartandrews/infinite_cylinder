@@ -1,5 +1,4 @@
-.idea/workspace.xml
-.idea/tasks.xml
+.idea
 
 code/**/*.dat*
 data/**/*.dat*
@@ -11,14 +10,14 @@ data/**/*.txt*
 logs/**/*.txt*
 pickles/**/*.txt*
 
-**/*.log
-**/*.pkl
+**/*.log*
+**/*.pkl*
 
 **/__pycache__/*
 
-**/*.temp
-**/*.tmp
-**/*.backup
+**/*.temp*
+**/*.tmp*
+**/*.backup*
 
 nohup.out
 run.sh
