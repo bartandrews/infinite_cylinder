@@ -86,6 +86,9 @@ def parse_input_arguments(program):
         stem_args.update({stem_key: args.pop(stem_key, None)})
     leaf_args = args
 
+    print("t5 = ", leaf_args['t5'])
+    print("t5dash = ", leaf_args['t5dash'])
+
     return prog_args, stem_args, leaf_args
 
 

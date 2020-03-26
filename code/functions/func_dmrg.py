@@ -100,15 +100,15 @@ def define_iDMRG_model(model, ham_params):
     else:  # "Fer"
         model_params.update(statistics='fermions')
 
-    if 'HofSqu1' in model:
+    if model.endswith("HofSqu1"):
         M = HofSqu1Model(model_params)
-    elif 'HofHex1' in model:
+    elif model.endswith("HofHex1"):
         M = HofHex1Model(model_params)
-    elif 'HofHex1Hex5' in model:
-        model_params.update(t2=model_params['t2'])
+    elif model.endswith("HofHex1Hex5"):
+        model_params.update(t5=ham_params['t5'])
         M = HofHex1Hex5Model(model_params)
     else:  # "HofHex1Hex5Orbital"
-        model_params.update(t2=model_params['t2'], t2dash=model_params['t2dash'], U=model_params['U'])
+        model_params.update(t5=ham_params['t5'], t5dash=ham_params['t5dash'], U=ham_params['U'])
         M = HofHex1Hex5OrbitalModel(model_params)
 
     return M
