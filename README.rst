@@ -298,6 +298,9 @@ Upper-limit scaling relations (actually slightly better due to matrix multiplica
 
 Run time: ~O(chi^3 D d^3 + chi^2 D^2 d^2)
 
+NB: This run time scaling is for a single bond update. There is an overall factor with the total number of sites N=Lx*Ly for each sweep in your MPS. The exponential scaling with Ly comes from the fact that you *should*
+increase the chi exponentially with Ly, because you expect to have S~= const*Ly from the area law.
+
 Memory usage: ~O(chi^2 d N + 2 chi^2 D N)
 
 * chi = MPS bond dimension

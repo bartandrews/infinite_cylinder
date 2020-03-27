@@ -198,7 +198,7 @@ def __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
         'max_sweeps': 1000,
         'verbose': 5,
         'N_sweeps_check': 10,
-        'diag_method': 'lanczos',
+        'diag_method': 'default',
         'max_hours': 14*24  # 2 weeks
     }
 
