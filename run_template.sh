@@ -30,12 +30,26 @@ t5_full=-0.025
 t5dash_full=0.1
 
 ########
+# bart #
+########
+
+if [ "$HOSTNAME" == "bart" ]
+then
+    shopt -s nullglob  # account for the case of no .pkl files in the path
+    FILES="pickles/ground_state/FerHofHex1Hex5Orbital/*.pkl"
+    for file in $FILES
+    do
+        python code/observables.py -thr 4 -chiK 500 "${file}"
+    done
+fi
+
+########
 # dart #
 ########
 
 if [ "$HOSTNAME" == "dart" ]
 then
-    # charge pumping for the nu=1/3 and nu=2/5 states
+    # charge pumping for the nu=2/5 state
     charge_pump() {
     for chi_val in {50..150..50}
     do
@@ -43,7 +57,6 @@ then
         do
             t5_val=$(bc -l <<<"$t5_full * ($i / 10)" | awk '{printf "%g\n", $0}')
             t5dash_val=$(bc -l <<<"$t5dash_full * ($i / 10)" | awk '{printf "%g\n", $0}')
-            echo python code/phi_flow.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5="${t5_val}" -t5dash="${t5dash_val}" -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 9 -nphi 1 3 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31
             echo python code/phi_flow.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5="${t5_val}" -t5dash="${t5dash_val}" -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 15 -nphi 1 3 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
         done
     done
@@ -58,7 +71,7 @@ fi
 
 if [ "$HOSTNAME" == "baandr1" ]
 then
-    # charge pumping for the nu=1/3 state with corrected n
+    # charge pumping for the nu=1/3 state
     charge_pump() {
     for chi_val in {50..150..50}
     do
@@ -80,7 +93,7 @@ fi
 
 if [ "$HOSTNAME" == "baandr2" ]
 then
-    # entanglement scaling for the nu=1/3 state (incl corrected n)
+    # entanglement scaling for the nu=1/3 state
     ent_scal() {
     for chi_val in {300..500..100}
     do
@@ -92,9 +105,7 @@ then
                 do
                     t5_val=$(bc -l <<<"$t5_full * ($i / 10)" | awk '{printf "%g\n", $0}')
                     t5dash_val=$(bc -l <<<"$t5dash_full * ($i / 10)" | awk '{printf "%g\n", $0}')
-                    nd_val_third=$(bc -l <<<"3 * $q_val" | awk '{printf "%g\n", $0}')
                     nd_val_sixth=$(bc -l <<<"6 * $q_val" | awk '{printf "%g\n", $0}')
-                    echo python code/ground_state.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5="${t5_val}" -t5dash="${t5dash_val}" -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 "${nd_val_third}" -nphi 1 ${q_val} -LxMUC 1 -Ly ${Ly_val}
                     echo python code/ground_state.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5="${t5_val}" -t5dash="${t5dash_val}" -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 "${nd_val_sixth}" -nphi 1 ${q_val} -LxMUC 1 -Ly ${Ly_val}
                 done
             done
@@ -111,11 +122,10 @@ fi
 
 if [ "$HOSTNAME" == "baandr3" ]
 then
-    # kappa flow for the nu=1/3 and nu=2/5 states (incl corrected n)
+    # kappa flow for the nu=1/3 and nu=2/5 states
     kappa_flow() {
     for chi_val in {50..150..50}
     do
-        echo python code/kappa_flow.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5=$t5_full -t5dash=$t5dash_full -kappa_min 0 -kappa_max 1 -kappa_samp 11 -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 9 -nphi 1 3 -LxMUC 1 -Ly 6
         echo python code/kappa_flow.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5=$t5_full -t5dash=$t5dash_full -kappa_min 0 -kappa_max 1 -kappa_samp 11 -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 18 -nphi 1 3 -LxMUC 1 -Ly 6
         echo python code/kappa_flow.py -thr 1 -mod "FerHofHex1Hex5Orbital" -chi ${chi_val} -t1 $t1_full -t5=$t5_full -t5dash=$t5dash_full -kappa_min 0 -kappa_max 1 -kappa_samp 11 -U 100 -V 10 -Vtype "Coulomb" -Vrange 1 -n 1 15 -nphi 1 3 -LxMUC 1 -Ly 5
     done
