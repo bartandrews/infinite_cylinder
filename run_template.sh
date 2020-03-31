@@ -20,7 +20,10 @@
 # code/... = we need to launch run.sh from the project directory and target a program in the source directory
 # >/dev/null 2>&1 = we send the stdout (>) to null and also the stderr (2>) to the same place (&1).
 # (we have our own logging functionality, so we don't need this output)
+# > nohup.out = this overwrites the nohup.out file on each run, and only stores the output of the preceeding program
+# e.g. parallel (writes which jobs are yet to finish after 1 kill signal, etc.)
 # If we want the following jobs to start before the current job finishes, we end the line with a &
+# = sign after an optional argument accounts for possible negative sign ambiguities
 #
 # --- Example --- ######################################################################################################
 
