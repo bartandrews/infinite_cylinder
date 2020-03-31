@@ -37,7 +37,7 @@ if __name__ == '__main__':
     # c_m = matplotlib.cm.cool
     # easily visible colors = ["red", "blue"]
     # presentation colors = ["white", "C9"]
-    c_m = matplotlib.colors.LinearSegmentedColormap.from_list("", ["white", "C9"])
+    c_m = matplotlib.colors.LinearSegmentedColormap.from_list("", ["red", "blue"])
 
     # create a ScalarMappable and initialize a data structure
     s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm)

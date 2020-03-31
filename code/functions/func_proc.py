@@ -16,6 +16,8 @@ import models.hofstadter as hofstadter  # for main
 
 def process_pickle_file_name(filepath):
 
+    extra_dof_list = ["Orbital", "Spin"]
+
     if ".pkl" not in filepath:
         raise ValueError("pickle file needs to parsed as first argument.")
     if "E_psi_M" not in filepath:
@@ -38,8 +40,10 @@ def process_pickle_file_name(filepath):
     leaf_entries = debased_pickle_entries[3:]
     leaf = '_'.join(leaf_entries) + ".dat"
     print("leaf = ", leaf)
+    extra_dof_flag = True if any(dof in model for dof in extra_dof_list) else False
+    print("extra_dof_flag = ", extra_dof_flag)
 
-    return model, chi_max, leaf, LxMUC, Ly
+    return model, chi_max, leaf, LxMUC, Ly, extra_dof_flag
 
 
 #############################################

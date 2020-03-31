@@ -15,7 +15,7 @@ def my_observables(pickle_file, threads, chiK_max):
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
-    (model, chi_max, leaf, LxMUC, Ly) = fp.process_pickle_file_name(pickle_file)
+    (model, chi_max, leaf, LxMUC, Ly, extra_dof_flag) = fp.process_pickle_file_name(pickle_file)
     sys.stdout = sys.stderr = fp.Logger("observables", model, chi_max, leaf)
 
     # Here, you need to enter the tools that you are interested in studying.
@@ -28,7 +28,7 @@ def my_observables(pickle_file, threads, chiK_max):
         [E, psi, M, _, _] = pickle.load(file1)
 
     fo.scalar_observables(E, psi)
-    fo.nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof=False, print_data=False)
+    fo.nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof_flag, print_data=False)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
