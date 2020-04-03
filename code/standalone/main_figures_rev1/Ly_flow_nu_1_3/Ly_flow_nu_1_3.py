@@ -54,7 +54,8 @@ if __name__ == '__main__':
     xvalues = np.arange(max(Ly) + 20)
     ax1.plot(xvalues, m * xvalues + c, '-', c='C9', zorder=2)
     # print("Sinf error in (m, c) = (",V[0][0], ",", V[1][1],")")
-    ax1.text(0.2, 0.5, "$S_\infty={gradient:.2f}(L_y/l_\mathrm{{B}}){intercept:.2f}$".format(gradient=m, intercept=c))
+    ax1.text(0.2, 0.5, "$S_\infty={gradient:.2f}(L_y/l_\mathrm{{B}})-({intercept:.2f}\pm 0.02)$".format(gradient=m, intercept=abs(c)))
+
 
     ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.6), handletextpad=0, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10, ncol=3, labelspacing=0, columnspacing=0)
@@ -66,7 +67,7 @@ if __name__ == '__main__':
     ax1.set_ylim([-1, 1])
     ax1.set_ylabel("$S_\infty$", fontsize=11)
 
-    ax1.axhline(-0.5, color='k', linewidth=0.5, ls='--')
+    ax1.axhline(-0.549, color='k', linewidth=0.5, ls='--')
     ax1.axvline(9.33072, color='k', linewidth=0.5, ls='-', zorder=1)
     ax1.axvline(13.99608, color='k', linewidth=0.5, ls='-', zorder=1)
 
@@ -200,5 +201,5 @@ if __name__ == '__main__':
     fig.text(0.035, 0.47, "(b)", color="k", fontsize=12)
     # fig.text(0.48, 0.49, "(c)", color="k", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/Ly_flow_mag_detail.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/Ly_flow_nu_1_3.png", bbox_inches='tight', dpi=300)
     plt.show()

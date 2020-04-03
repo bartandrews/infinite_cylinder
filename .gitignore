@@ -21,5 +21,3 @@ pickles/**/*.txt*
 
 nohup.out
 run.sh
-
-**/old

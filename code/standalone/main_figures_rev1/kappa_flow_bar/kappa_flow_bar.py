@@ -331,5 +331,5 @@ if __name__ == '__main__':
     fig.text(0.01, 0.56, "(c)", fontsize=12)
     fig.text(0.01, 0.41, "(d)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/kappa_flow_bar.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/kappa_flow_bar.png", bbox_inches='tight', dpi=300)
     plt.show()

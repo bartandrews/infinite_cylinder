@@ -265,5 +265,5 @@ if __name__ == '__main__':
     # plt.text(-23, 14, "(a)", fontsize=12)
     # plt.text(-3, 14, "(b)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/presentations/2020_02_21/figures/lattice_nu_2_5_nphi_1_3_Ly_5_unpolarized2_lt.png", bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/presentations/2020_02_21/figures/lattice_nu_2_5_nphi_1_3_Ly_5_unpolarized2_lt.png", bbox_inches='tight', dpi=300)
     plt.show()

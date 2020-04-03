@@ -11,6 +11,7 @@ from models.hofstadter.squ_1 import HofSqu1Model
 from models.hofstadter.hex_1 import HofHex1Model
 from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
 from models.hofstadter.hex_1_hex_5_orbital import HofHex1Hex5OrbitalModel
+from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5OrbitalModel  # old code
 
 
 ####################################################
@@ -108,8 +109,13 @@ def define_iDMRG_model(model, ham_params):
         model_params.update(t5=ham_params['t5'])
         M = HofHex1Hex5Model(model_params)
     else:  # "HofHex1Hex5Orbital"
-        model_params.update(t5=ham_params['t5'], t5dash=ham_params['t5dash'], U=ham_params['U'])
-        M = HofHex1Hex5OrbitalModel(model_params)
+        if model == "FerHofHex1Hex5OrbitalOld":  # old code
+            del model_params['statistics'], model_params['Vtype'], model_params['Vrange'], model_params['mu']
+            model_params.update(t5=ham_params['t5'], t5dash=ham_params['t5dash'], U=ham_params['U'], order='default')
+            M = FermionicHex1Hex5OrbitalModel(model_params)
+        else:
+            model_params.update(t5=ham_params['t5'], t5dash=ham_params['t5dash'], U=ham_params['U'])
+            M = HofHex1Hex5OrbitalModel(model_params)
 
     return M
 
@@ -201,6 +207,12 @@ def __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
         'diag_method': 'default',
         'max_hours': 14*24  # 2 weeks
     }
+
+    if model == "FerHofHex1Hex5OrbitalOld":  # old code
+        del dmrg_params['lanczos_params'], dmrg_params['max_sweeps'], dmrg_params['diag_method'], \
+            dmrg_params['max_hours']
+        dmrg_params.update(mixer_params={'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30}, max_E_err=1.e-10,
+                           verbose=1)
 
     if shelve:
         dmrg_params.update({'sweep_0': sweep})

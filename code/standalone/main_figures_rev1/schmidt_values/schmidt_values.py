@@ -69,7 +69,7 @@ if __name__ == '__main__':
     for i, chi in enumerate(chi_range):
         entanglement_entropy[i] = sum(entropy_elements[chi])
 
-    ax1.plot(inv_chi, entanglement_entropy, 's', marker='x', color='k', markersize=1)
+    ax1.plot(inv_chi, entanglement_entropy, 's', marker='x', color='k', markersize=3)
 
     c, m = polyfit(inv_chi[-7:], entanglement_entropy[-7:], 1)
     ax1.plot(inv_chi, m * inv_chi + c, '-', c='C8', zorder=0)
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     for i, chi in enumerate(chi_range):
         entanglement_entropy[i] = sum(entropy_elements[chi])
 
-    ax3.plot(inv_chi, entanglement_entropy, 's', marker='x', color='k', markersize=1)
+    ax3.plot(inv_chi, entanglement_entropy, 's', marker='x', color='k', markersize=3)
 
     c, m = polyfit(inv_chi[-7:], entanglement_entropy[-7:], 1)
     ax3.plot(inv_chi, m * inv_chi + c, '-', c='C8', zorder=0)

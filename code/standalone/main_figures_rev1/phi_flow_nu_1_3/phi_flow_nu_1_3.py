@@ -299,5 +299,5 @@ if __name__ == '__main__':
     fig.text(0.49, 0.875, "(b)", color="k", fontsize=12)
     fig.text(0.49, 0.49, "(c)", color="k", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/phi_flow_bar.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/phi_flow_nu_1_3.png", bbox_inches='tight', dpi=300)
     plt.show()

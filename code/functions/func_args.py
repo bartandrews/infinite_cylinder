@@ -15,7 +15,8 @@ def parse_input_arguments(program):
     leaf = parser.add_argument_group("leaf sub-arguments")
 
     models = ["BosHofSqu1", "FerHofSqu1", "BosHofHex1", "FerHofHex1",
-              "BosHofHex1Hex5", "FerHofHex1Hex5", "BosHofHex1Hex5Orbital", "FerHofHex1Hex5Orbital"]
+              "BosHofHex1Hex5", "FerHofHex1Hex5", "BosHofHex1Hex5Orbital", "FerHofHex1Hex5Orbital",
+              "FerHofHex1Hex5OrbitalOld"]
     Vtypes = ["Coulomb", "Yukawa"]
 
     prog.add_argument("-thr", "--threads", type=int, default=1, help="number of threads")
