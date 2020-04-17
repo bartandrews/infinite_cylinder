@@ -393,5 +393,8 @@ if __name__ == '__main__':
     fig.text(0.05, 0.7, "(a)", fontsize=12)
     fig.text(0.49, 0.7, "(b)", fontsize=12)
 
+    fig.text(0.15, 0.725, "$\\nu=1/3$", fontsize=12)
+    fig.text(0.6, 0.705, "$\\nu=2/5$", fontsize=12)
+
     plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/example_geom.png", bbox_inches='tight', dpi=300)
     plt.show()

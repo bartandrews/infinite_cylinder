@@ -72,9 +72,9 @@ if __name__ == '__main__':
     metal0 = Polygon(((0, -10), (0.3, -10), (0.3, 10), (0, 10)), fc=(0, 0, 0, 0.2))
     metal1 = Polygon(((0.3, -10), (0.4, -10), (0.4, 10), (0.3, 10)), fc=(0, 0, 0, 0.1))
     ax0.add_artist(metal0)
-    ax0.add_artist(metal1)
-    ax0.axhline(4.24, color='b', linewidth=1, ls='--')
-    ax0.axhline(4.98, color='r', linewidth=1, ls='--')
+    #ax0.add_artist(metal1)
+    #ax0.axhline(4.24, color='b', linewidth=1, ls='--')
+    ax0.axhline(4.98, color='k', linewidth=1, ls='--')
 
     ax0.tick_params(axis="y", labelsize=10)
 
@@ -178,21 +178,22 @@ if __name__ == '__main__':
     metal0 = Polygon(((0, -10), (0.3, -10), (0.3, 10), (0, 10)), fc=(0, 0, 0, 0.2))
     metal1 = Polygon(((0.3, -10), (0.4, -10), (0.4, 10), (0.3, 10)), fc=(0, 0, 0, 0.1))
     ax1.add_artist(metal0)
-    ax1.add_artist(metal1)
+    #ax1.add_artist(metal1)
     ax1.tick_params(axis="y", labelsize=10)
 
     ax1.set_xlim([-3, 1])
     ax1.set_xticks(np.arange(0, 1, 11))
     ax1.set_ylim([-3, 1])
-    ax1.set_yticks(np.arange(-3.5, 1.5, 1))
+    ax1.set_yticks(np.arange(-3, 1, 1))
     ax1.set_ylabel("$\\langle \\Delta Q_\\mathrm{L}\\rangle$", fontsize=11)
     ax1.tick_params('x', direction='in', bottom=True)
     #ax0.axhline(0, color='k', linewidth=1, ls='--')
     ax1.axhline(-1, color='b', linewidth=1, ls='--')
     ax1.axhline(-2, color='r', linewidth=1, ls='--')
+    ax1.axhline(0, color='k', linewidth=1, ls='--')
 
     ax1.legend(loc='upper center', handletextpad=0.25, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=1,
-               columnspacing=0.5, fontsize=12, ncol=2, bbox_to_anchor=(0.75, 2.6))
+               columnspacing=0.5, fontsize=12, ncol=2, bbox_to_anchor=(0.65, 2.6))
 
     plt.setp(ax1.get_xticklabels(), visible=False)
 
@@ -292,7 +293,7 @@ if __name__ == '__main__':
     metal0 = Polygon(((0, -10), (0.3, -10), (0.3, 20), (0, 20)), fc=(0, 0, 0, 0.2))
     metal1 = Polygon(((0.3, -10), (0.4, -10), (0.4, 20), (0.3, 20)), fc=(0, 0, 0, 0.1))
     ax2.add_artist(metal0)
-    ax2.add_artist(metal1)
+    #ax2.add_artist(metal1)
     fig.text(0.18, 0.9, 'FQH state', fontsize=11)
 
     ax2.tick_params(axis="y", labelsize=10)
@@ -340,7 +341,7 @@ if __name__ == '__main__':
     metal0 = Polygon(((0, 0), (0.3, 0), (0.3, 20), (0, 20)), fc=(0, 0, 0, 0.2))
     metal1 = Polygon(((0.3, 0), (0.4, 0), (0.4, 20), (0.3, 20)), fc=(0, 0, 0, 0.1))
     ax3.add_artist(metal0)
-    ax3.add_artist(metal1)
+    #ax3.add_artist(metal1)
 
     ax3.set_xlim([0, 1])
     ax3.set_xticks(np.arange(0, 1.1, 0.1))

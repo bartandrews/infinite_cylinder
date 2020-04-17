@@ -25,7 +25,7 @@ if __name__ == '__main__':
 
     # an array of parameters, each of our curves depend on a specific
     # value of parameters
-    chi_range = np.linspace(50, 250, 5)
+    chi_range = np.linspace(50, 150, 3)
 
     # norm is a class which, when called, can normalize data into the
     # [0.0, 1.0] interval.
@@ -43,7 +43,7 @@ if __name__ == '__main__':
     s_m = matplotlib.cm.ScalarMappable(cmap=c_m, norm=norm)
     s_m.set_array([])
 
-    kappa_range = np.linspace(0, 3, 4)
+    kappa_range = np.linspace(0, 2, 3)
     FQH_charge = {}
     for kappa in kappa_range:
         FQH_charge[kappa] = []
@@ -65,14 +65,14 @@ if __name__ == '__main__':
             for i, kappa in enumerate(kappa_range):
                 FQH_charge[kappa].append(float(row[i+1]))
 
-    with open('charge_pump_FQH_kappa_0.4.dat', 'r') as csvfile:
+    with open('charge_pump_FQH_kappa_0.3.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             # phi_FQH.append(float(row[0]))
             for i, chi in enumerate(chi_range):
                 FQH_charge_kappa_limit[chi].append(float(row[i+1]))
 
-    ax1.plot(phi_IQH, IQH_charge, marker='o', linestyle='-', c='C8', label='$\\mathbf{IQH}$ ($\kappa=1$)', markersize=5, mec='k',
+    ax1.plot(phi_IQH, IQH_charge, marker='o', linestyle='-', c='C8', label='$\\mathbf{IQH}$', markersize=5, mec='k',
              zorder=1)
 
     ax1.plot(phi_FQH, FQH_charge[0], marker='d', linestyle='-', color='C5', label='FQH ($\kappa=0)$', markersize=5,
@@ -81,12 +81,10 @@ if __name__ == '__main__':
              zorder=2)
     ax1.plot(phi_FQH, FQH_charge[2], marker='<', linestyle='-', color='C2', label='FQH ($\kappa=0.2)$', markersize=5,
              zorder=3)
-    ax1.plot(phi_FQH, FQH_charge[3], marker='^', linestyle='-', color='C4', label='FQH ($\kappa=0.3)$', markersize=5,
-             zorder=4)
 
     for i, chi in enumerate(chi_range):
         if i == len(chi_range)-1:
-            ax1.plot(phi_FQH, FQH_charge_kappa_limit[chi], marker='s', linestyle='-', color=s_m.to_rgba(chi), label='$\\mathbf{FQH}$ ($\kappa=0.4$)', markersize=5, mec='k', zorder=5)
+            ax1.plot(phi_FQH, FQH_charge_kappa_limit[chi], marker='s', linestyle='-', color=s_m.to_rgba(chi), label='$\\mathbf{FQH}$ ($\kappa=0.3$)', markersize=5, mec='k', zorder=5)
         else:
             ax1.plot(phi_FQH, FQH_charge_kappa_limit[chi], marker='s', linestyle='-', color=s_m.to_rgba(chi), markersize=5, zorder=5)
 
@@ -96,8 +94,8 @@ if __name__ == '__main__':
     # cb.set_label(r'Colorbar !', labelpad=10)
 
     cbax = fig.add_axes([0.125, 0.75+0.12, 0.343, 0.025])
-    cb = plt.colorbar(s_m, orientation='horizontal', cax=cbax, ticklocation='top')
-    cb.set_label("$\chi$", fontsize=11, labelpad=7)
+    cb = plt.colorbar(s_m, orientation='horizontal', cax=cbax, ticklocation='top', ticks=[50, 100, 150])
+    cb.set_label("$\chi$ for FQH ($\kappa=0.3$)", fontsize=11, labelpad=7)
 
     # ax1.legend(bbox_to_anchor = [0.62, 0.53], handletextpad=0.2, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1, fontsize=10)
     ax1.legend(bbox_to_anchor=(0.45, -0.61), loc="lower center", handletextpad=0.2, columnspacing=0.25, borderpad=0.4, framealpha=1, edgecolor='k',
@@ -280,7 +278,7 @@ if __name__ == '__main__':
 
     ax3.tick_params('y', which="major", direction='in', right=True)
 
-    fig.text(0.57, 0.475, 'FQH', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.57, 0.475, 'FQH at $\kappa=0.3$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     gs.update(wspace=0.25, hspace=0)
     plt.setp(ax2.get_xticklabels(), visible=False)

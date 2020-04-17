@@ -28,7 +28,7 @@ def my_observables(pickle_file, threads, chiK_max):
         [E, psi, M, _, _] = pickle.load(file1)
 
     fo.scalar_observables(E, psi)
-    fo.nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof_flag, print_data=False)
+    # fo.nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof_flag, print_data=False)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 

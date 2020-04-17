@@ -6,7 +6,7 @@ import matplotlib.gridspec as gridspec
 
 def hamiltonian(k, M, p, q):
 
-    t1, t2, t2dash = 1, -0.025, 0.1
+    t1, t2, t2dash = 1, -0.0075, 0.03
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -378,5 +378,5 @@ if __name__ == '__main__':
 
     ############
 
-    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/3d_band_structure_phi_{}_{}.png".format(p1, q1), bbox_inches='tight', dpi=300)
+    # plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/3d_band_structure_phi_{}_{}.png".format(p1, q1), bbox_inches='tight', dpi=300)
     plt.show()

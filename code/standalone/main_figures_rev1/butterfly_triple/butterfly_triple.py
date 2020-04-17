@@ -124,7 +124,7 @@ if __name__ == '__main__':
         values0.append((eigenvalues0, alpha_list))
         eigenvalues1 = matrix_eigenvalues(p, M, 0, 1, 0)
         values1.append((eigenvalues1, alpha_list))
-        eigenvalues2 = matrix_eigenvalues(p, M, 1, -0.01, 0.04)
+        eigenvalues2 = matrix_eigenvalues(p, M, 1, -0.0075, 0.03)
         values2.append((eigenvalues2, alpha_list))
 
     ##########
@@ -181,7 +181,7 @@ if __name__ == '__main__':
 
     fig.text(0.14, 0.86, '$(t_1, t_2, t_2\', \kappa)=(1,0,0,0)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     fig.text(0.14, 0.602, '$(t_1, t_2, t_2\', \kappa)=(0,1,0,1)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
-    fig.text(0.14, 0.346, '$(t_1, t_2, t_2\', \kappa)=(1,-0.025,0.1,0.4)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
+    fig.text(0.14, 0.346, '$(t_1, t_2, t_2\', \kappa)=(1,-0.025,0.1,0.3)$', fontsize=11, verticalalignment='top', bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
-    # plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/butterfly_triple.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/butterfly_triple.png", bbox_inches='tight', dpi=300)
     plt.show()

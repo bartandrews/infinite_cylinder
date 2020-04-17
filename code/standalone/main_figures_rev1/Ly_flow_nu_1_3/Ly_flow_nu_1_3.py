@@ -19,14 +19,14 @@ if __name__ == '__main__':
 
     Ly = []
     SvN = []
-    Sinf = []
+    # Sinf = []
 
     with open('ent_scal.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             Ly.append(float(row[0]))
             SvN.append(float(row[1]))
-            Sinf.append(float(row[2]))
+            # Sinf.append(float(row[2]))
 
     # ax1.plot(Ly[0], SvN[0], '.', marker='X', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/3)$', markersize=5, zorder=2, fillstyle='none')
     # ax1.plot(Ly[1], SvN[1], '.', marker='p', c='C8', label='$S_{\mathrm{vN}}\;(n_\phi=1/4)$', markersize=5, zorder=2, fillstyle='none')
@@ -42,30 +42,34 @@ if __name__ == '__main__':
     # print("SvN error in (m, c) = (",V[0][0], ",", V[1][1],")")
     # ax1.text(0.2, 2.2, "$S_\mathrm{{vN}}={gradient:.2f}L_y{intercept:.2f}$".format(gradient=m, intercept=c))
 
-    ax1.plot(Ly[0], Sinf[0], '.', marker='X', c='C9', label='$n_\phi=1/3$', markersize=5, zorder=2, fillstyle='none')
-    ax1.plot(Ly[1], Sinf[1], '.', marker='p', c='C9', label='$n_\phi=1/4$', markersize=5, zorder=2, fillstyle='none')
-    ax1.plot(Ly[2], Sinf[2], '.', marker='*', c='C9', label='$n_\phi=1/5$', markersize=5, zorder=2, fillstyle='none')
+    ax1.plot(Ly[0], SvN[0], '.', marker='X', c='C8', label='$n_\phi=1/3$', markersize=6, zorder=2, fillstyle='none')
+    ax1.plot(Ly[1], SvN[1], '.', marker='X', c='C8', markersize=6, zorder=2, fillstyle='none')
+    ax1.plot(Ly[2], SvN[2], '.', marker='*', c='C8', label='$n_\phi=1/4$', markersize=6, zorder=2, fillstyle='none')
+    ax1.plot(Ly[3], SvN[3], '.', marker='*', c='C8', markersize=6, zorder=2, fillstyle='none')
+    ax1.plot(Ly[4], SvN[4], '.', marker='p', c='C8', label='$n_\phi=1/5$', markersize=6, zorder=2, fillstyle='none')
+    ax1.plot(Ly[5], SvN[5], '.', marker='p', c='C8', markersize=6, zorder=2, fillstyle='none')
 
     # y = mx + c
-    # parameters, V = np.polyfit(Ly, Sinf, 1, cov=True)
-    # m, c = parameters[0], parameters[1]
-    m = 0.083573599016929
-    c = -0.574148718810212
+    parameters, V = np.polyfit(Ly, SvN, 1, cov=True)
+    m, c = parameters[0], parameters[1]
+    # m = 0.083573599016929
+    # c = -0.574148718810212
+    print("SvN error in (m, c) = (", np.sqrt(V[0][0]), ",", np.sqrt(V[1][1]), ")")
     xvalues = np.arange(max(Ly) + 20)
-    ax1.plot(xvalues, m * xvalues + c, '-', c='C9', zorder=2)
+    ax1.plot(xvalues, m * xvalues + c, '-', c='C8', zorder=2)
     # print("Sinf error in (m, c) = (",V[0][0], ",", V[1][1],")")
-    ax1.text(0.2, 0.5, "$S_\infty={gradient:.2f}(L_y/l_\mathrm{{B}})-({intercept:.2f}\pm 0.02)$".format(gradient=m, intercept=abs(c)))
+    ax1.text(0.2, 1.4, "$S_\mathrm{{vN}}={gradient:.2f}(L_y/l_\mathrm{{B}})-({intercept:.2f}\pm {cerror:.2f})$".format(gradient=m, intercept=abs(c), cerror=np.sqrt(V[1][1])))
 
 
     ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.6), handletextpad=0, borderpad=0.4, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10, ncol=3, labelspacing=0, columnspacing=0)
 
-    ax1.set_xticks(np.arange(0, 16.1, 4))
-    ax1.set_xlim([0, 12])
+    ax1.set_xticks(np.arange(0, 15.1, 5))
+    ax1.set_xlim([0, 15])
     ax1.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
-    ax1.set_yticks(np.arange(-1, 1.1, 1))
-    ax1.set_ylim([-1, 1])
-    ax1.set_ylabel("$S_\infty$", fontsize=11)
+    ax1.set_yticks(np.arange(-1, 2.1, 1))
+    ax1.set_ylim([-1, 2])
+    ax1.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
 
     ax1.axhline(-0.549, color='k', linewidth=0.5, ls='--')
     ax1.axvline(9.33072, color='k', linewidth=0.5, ls='-', zorder=1)
@@ -89,7 +93,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_mom_Ly_6.dat', 'r') as csvfile:
+    with open('ent_spec_mom_Ly_6_old.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -144,7 +148,7 @@ if __name__ == '__main__':
     y = []
     z = []
 
-    with open('ent_spec_mom_Ly_9.dat.rotated', 'r') as csvfile:
+    with open('ent_spec_mom_Ly_9_old.dat.rotated', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             x.append(float(row[1]))
@@ -191,15 +195,17 @@ if __name__ == '__main__':
     Ly6_con = ConnectionPatch(xyA=(9.33072, -1), xyB=(1, 15), coordsA="data", coordsB="data",
                               axesA=ax1, axesB=ax2, connectionstyle="angle3,angleA=-90,angleB=10", arrowstyle='->',
                               facecolor='k', edgecolor='k')
-    # Ly9_con = ConnectionPatch(xyA=(13.99608, -1), xyB=(0.45, 15), coordsA="data", coordsB="data",
-    #                           axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=30,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
+    Ly9_con = ConnectionPatch(xyA=(13.99608, -1), xyB=(0.45, 15), coordsA="data", coordsB="data",
+                              axesA=ax1, axesB=ax3, connectionstyle="angle3,angleA=30,angleB=90", arrowstyle='->', facecolor='k', edgecolor='k')
 
     ax1.add_artist(Ly6_con)
-    # ax1.add_artist(Ly9_con)
+    ax1.add_artist(Ly9_con)
 
     fig.text(0.035, 0.8, "(a)", color="k", fontsize=12)
     fig.text(0.035, 0.47, "(b)", color="k", fontsize=12)
     # fig.text(0.48, 0.49, "(c)", color="k", fontsize=12)
+
+    fig.text(0.035, 0.9, "$\\nu=1/3$, $\\kappa=0.3$", color="k", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/Ly_flow_nu_1_3.png", bbox_inches='tight', dpi=300)
     plt.show()

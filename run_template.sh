@@ -27,7 +27,7 @@
 #
 # --- Example --- ######################################################################################################
 
-# orginal hopping parameters
+# original hopping parameters
 t1_full=1
 t5_full=-0.025
 t5dash_full=0.1

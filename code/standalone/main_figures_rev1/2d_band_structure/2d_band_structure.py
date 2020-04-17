@@ -30,7 +30,7 @@ MM = np.array([0.5, 0.5])
 def min_hamiltonian(k, num_bands_1):
 
     # t1, t2, t2dash = 0.331, -0.01, 0.097
-    t1, t2, t2dash = 1, -0.01, 0.04
+    t1, t2, t2dash = 1, -0.0075, 0.03
     # t1, t2, t2dash = 1, -0.025, 1/18.8
 
     delta = np.zeros((3, 2))
@@ -100,7 +100,7 @@ def min_hamiltonian(k, num_bands_1):
 def hamiltonian(k, num_bands_1):
 
     # t1, t2, t2dash = 0.331, -0.01, 0.097
-    t1, t2, t2dash = 1, -0.01, 0.04
+    t1, t2, t2dash = 1, -0.0075, 0.03
     # t1, t2, t2dash = 2, 0.05, 0.2
 
     delta = np.zeros((3, 2))
@@ -180,7 +180,7 @@ def hamiltonian(k, num_bands_1):
 def hamiltonian2(k, M, p, q):
 
     # t1, t2, t2dash = 0.331, -0.01, 0.097
-    t1, t2, t2dash = 1, -0.01, 0.04
+    t1, t2, t2dash = 1, -0.0075, 0.03
     a = 1
     c = np.sqrt(3) * a / 6  # ... / 6
     eta = 1 * k[0] * M * a / 2  # 3 * ...
@@ -584,7 +584,7 @@ if __name__ == '__main__':
     hex = patches.RegularPolygon((50, 50), 6, radius=50, orientation=0, facecolor='none', edgecolor='k', lw=0.25)
     ax4.add_patch(hex)
     im = ax4.imshow(E1[i], cmap=plt.get_cmap('rainbow'), clip_path=hex, clip_on=True)
-    cset = ax4.contour(E1[i], np.arange(2, 4, 0.1), linewidths=0.25, colors='black')
+    cset = ax4.contour(E1[i], np.arange(1, 4, 0.2), linewidths=0.25, colors='black')
     for collection in cset.collections:
         collection.set_clip_path(hex)
 
@@ -669,9 +669,10 @@ if __name__ == '__main__':
     fig.text(0.525, 0.325, "$n_\phi=1/3$", fontsize=11, backgroundcolor='white')
 
     fig.text(0, 0.87, "(a)", fontsize=12)
+    fig.text(0.15, 0.925, "$\kappa=0.3$", fontsize=12)
     fig.text(0, 0.48, "(b)", fontsize=12)
 
     # fig.text(0.02, 0.5, '$E$ / meV', va='center', rotation='vertical')
 
-    # plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TBG_rev1/figures/2d_band_structure_phi_{}_{}.png".format(p, q), bbox_inches='tight', dpi=300)
     plt.show()

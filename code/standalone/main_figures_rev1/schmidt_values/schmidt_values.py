@@ -16,12 +16,12 @@ if __name__ == '__main__':
     ax0 = plt.subplot(gs[0])
 
     alpha = []
-    chi_range = np.linspace(50, 500, 10)
+    chi_range = np.linspace(50, 300, 6)
     entanglement_energies = {}
     for chi in chi_range:
         entanglement_energies[chi] = []
 
-    with open('FermionicHex1.dat', 'r') as csvfile:
+    with open('FerHofHex1Hex5Orbital.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             alpha.append(float(row[0]))
@@ -31,8 +31,8 @@ if __name__ == '__main__':
     for i, chi in enumerate(chi_range):
         ax0.plot(alpha[:int(chi)], entanglement_energies[chi][:int(chi)], 's', marker='o', color='C{}'.format(i), markersize=1, label='$\\chi={}$'.format(chi))
 
-    ax0.set_xlim([0, 500])
-    ax0.set_xticks(np.arange(0, 501, 100))
+    ax0.set_xlim([0, 300])
+    ax0.set_xticks(np.arange(0, 301, 100))
     ax0.set_ylim([0, 30])
     ax0.set_yticks(np.arange(0, 31, 10))
     ax0.tick_params(axis="x", labelsize=8)
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
     ax1 = plt.subplot(gs[1])
 
-    chi_range = np.linspace(50, 500, 10, dtype=int)
+    chi_range = np.linspace(50, 300, 6, dtype=int)
     entropy_elements = {}
     entanglement_entropy = np.zeros(len(chi_range))
     inv_chi = np.zeros(len(chi_range))
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     for chi in chi_range:
         entropy_elements[chi] = []
 
-    with open('FermionicHex1.dat', 'r') as csvfile:
+    with open('FerHofHex1Hex5Orbital.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             for i, chi in enumerate(chi_range):
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     ax1.plot(inv_chi, entanglement_entropy, 's', marker='x', color='k', markersize=3)
 
-    c, m = polyfit(inv_chi[-7:], entanglement_entropy[-7:], 1)
+    c, m = polyfit(inv_chi[-3:], entanglement_entropy[-3:], 1)
     ax1.plot(inv_chi, m * inv_chi + c, '-', c='C8', zorder=0)
     fig.text(0.3425, 0.15, "$S={gradient:.2f}\\chi^{{-1}}+{intercept:.2f}$".format(gradient=m, intercept=c), fontsize=8)
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
     for chi in chi_range:
         entanglement_energies[int(chi)] = []
 
-    with open('FermionicHex1.dat', 'r') as csvfile:
+    with open('FerHofHex1.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             alpha.append(float(row[0]))
@@ -130,7 +130,7 @@ if __name__ == '__main__':
     for chi in chi_range:
         entropy_elements[chi] = []
 
-    with open('FermionicHex1.dat', 'r') as csvfile:
+    with open('FerHofHex1.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             for i, chi in enumerate(chi_range):
@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
     ax3.plot(inv_chi, entanglement_entropy, 's', marker='x', color='k', markersize=3)
 
-    c, m = polyfit(inv_chi[-7:], entanglement_entropy[-7:], 1)
+    c, m = polyfit(inv_chi[-5:], entanglement_entropy[-5:], 1)
     ax3.plot(inv_chi, m * inv_chi + c, '-', c='C8', zorder=0)
     fig.text(0.765, 0.15, "$S={gradient:.2f}\\chi^{{-1}}+{intercept:.2f}$".format(gradient=m, intercept=c), fontsize=8)
 

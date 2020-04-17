@@ -3,7 +3,7 @@ infinite_cylinder
 
 This code is an experimental set of tools for TeNPy, and in due course these are added to the official TeNPy repository. The code focuses on 2D DMRG models on an infinite cylinder.
 
-Prerequisites: TeNPy 0.5+, gnuplot, python 3.6+, matplotlib
+Prerequisites: TeNPy 0.5+, gnuplot, python 3.7+ (for f string formatting), matplotlib 3.0.2 (for 3d plot aspect ratio), numpy >1.16 (for pickle compatibility)
 
 Workflow 1 - Using the `ground_state` and `observables` programs
 ----------------------------------------------------------------
