@@ -25,6 +25,8 @@ def nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof, p
         ent_spec_real(data, psi, LxMUC, Ly, print_data)
     if 'ent_spec_mom' in tools:
         ent_spec_mom(data, psi, M, chiK_max, print_data)
+    if 'density' in tools:
+        density(data, psi, M, extra_dof, print_data)
     if 'corr_func' in tools:
         corr_func(data, psi, M, extra_dof, print_data)
     return
@@ -81,6 +83,30 @@ def ent_spec_mom(data, psi, M, chiK_max, print_data):
         if print_data:
             print(data_line)
         data['ent_spec_mom'].write(data_line+"\n")
+
+    return
+
+
+#########################################################
+# density (function for recording the density function) #
+#########################################################
+
+def density(data, psi, M, extra_dof, print_data):
+
+    tot_numb_op = 'N' if not extra_dof else 'Ntot'
+
+    density_site_list = psi.expectation_value(tot_numb_op)
+    density_lattice_array = M.lat.mps2lat_values(density_site_list)
+    assert density_lattice_array.shape[:2] == M.lat.shape[:2]
+    if print_data:
+        print(density_lattice_array)
+    if len(density_lattice_array.shape) == 2:  # one site per unit cell
+        np.savetxt(data['density'], density_lattice_array, delimiter='\t')
+    elif len(density_lattice_array.shape) == 3:  # more than one site per unit cell
+        for i in range(density_lattice_array.shape[-1]):
+            np.savetxt(data['density'], density_lattice_array[:, :, i], delimiter='\t')
+    else:
+        raise ValueError("Unexpected length of density_lattice_array in density function.")
 
     return
 
