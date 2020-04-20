@@ -125,16 +125,17 @@ def file_name_stem(tool, model, chi_max):
 ###################################################################
 
 
-def prepare_output_files(tools, model, chi_max, leaf, chiK_max=0):
+def prepare_output_files(tools, path, model, chi_max, leaf, chiK_max=0):
 
     stem, file, data = [dict()]*3
     for tool in tools:
         stem.update({tool: file_name_stem(tool, model, chi_max)})
-        os.makedirs(f"data/{tool}/{model}/", exist_ok=True)
+        os.makedirs(os.path.join(path, "data", f"{tool}", f"{model}", ""), exist_ok=True)
         if tool == 'ent_spec_mom':
-            file.update({tool: f"data/{tool}/{model}/" + stem[tool] + f"chiK_{chiK_max}_" + leaf})
+            file.update({tool: os.path.join(path, "data", f"{tool}", f"{model}",
+                                            stem[tool] + f"chiK_{chiK_max}_" + leaf)})
         else:
-            file.update({tool: f"data/{tool}/{model}/" + stem[tool] + leaf})
+            file.update({tool: os.path.join(path, "data", f"{tool}", f"{model}", stem[tool] + leaf)})
         open(file[tool], "w")
         data[tool] = open(file[tool], "a", buffering=1)
 
@@ -147,10 +148,11 @@ def prepare_output_files(tools, model, chi_max, leaf, chiK_max=0):
 
 
 class Logger(object):
-    def __init__(self, program, model, chi_max, leaf):
+    def __init__(self, program, path, model, chi_max, leaf):
         self.terminal = sys.stdout or sys.stderr
-        os.makedirs(f"logs/{program}/{model}/", exist_ok=True)
-        self.log = open(f"logs/{program}/{model}/log_{program}_{model}_chi_{chi_max}_{leaf}", 'w', buffering=1)
+        os.makedirs(os.path.join(path, "logs", f"{program}", f"{model}", ""), exist_ok=True)
+        self.log = open(os.path.join(path, "logs", f"{program}", f"{model}",
+                                     f"log_{program}_{model}_chi_{chi_max}_{leaf}"), 'w', buffering=1)
 
     def write(self, message):
         self.terminal.write(message)

@@ -19,6 +19,7 @@ def parse_input_arguments(program):
               "FerHofHex1Hex5OrbitalOld"]
     Vtypes = ["Coulomb", "Yukawa"]
 
+    prog.add_argument("-path", default=False, action='store_true', help="use a custom path")
     prog.add_argument("-thr", "--threads", type=int, default=1, help="number of threads")
     stem.add_argument("-mod", "--model", type=str, default="BosHofSqu1", choices=models, required=True,
                         help="name of model")
@@ -86,7 +87,7 @@ def parse_input_arguments(program):
     __check_input_arguments(program, args)
 
     prog_args, stem_args, leaf_args = dict(), dict(), dict()
-    for prog_key in ['threads', 'use_pickle', 'make_pickle']:
+    for prog_key in ['path', 'threads', 'use_pickle', 'make_pickle']:
         prog_args.update({prog_key: args.pop(prog_key, None)})
     for stem_key in ['model', 'chi_max']:
         stem_args.update({stem_key: args.pop(stem_key, None)})
@@ -108,8 +109,9 @@ def parse_observables_input_arguments():
 
     parser.add_argument('pickle_file')
 
+    prog.add_argument("-path", default=False, action='store_true', help="use a custom path")
     prog.add_argument("-thr", "--threads", type=int, default=1, help="number of threads")
-    obser.add_argument("-s", "--scalar", default=False, action='store_true',
+    prog.add_argument("-s", "--scalar", default=False, action='store_true',
                        help="only compute scalar observables")
     obser.add_argument("-chiK", "--chiK_max", type=int, default=500,
                        help="maximum MPS bond dimension for the compute_K function (should be >= chi_max)")
@@ -118,9 +120,9 @@ def parse_observables_input_arguments():
     __check_input_arguments("observables", args)
 
     prog_args, obser_args = dict(), dict()
-    for prog_key in ['threads']:
+    for prog_key in ['path', 'threads', 'scalar']:
         prog_args.update({prog_key: args.pop(prog_key, None)})
-    for obser_key in ['scalar', 'chiK_max']:
+    for obser_key in ['chiK_max']:
         obser_args.update({obser_key: args.pop(obser_key, None)})
 
     return args['pickle_file'], prog_args, obser_args

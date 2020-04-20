@@ -136,7 +136,7 @@ def define_iDMRG_model(model, ham_params):
 #################################################################################
 
 
-def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle, run=True):
+def my_iDMRG_pickle(program, path, model, chi_max, ham_params, use_pickle, make_pickle, run=True):
 
     # The run parameter specifies whether you are running iDMRG or defining an iDMRG engine. Defining an iDMRG engine
     # returns the engine, whereas running iDMRG returns [E, psi, M].
@@ -148,8 +148,8 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
         else:
             pickle_stem = fp.file_name_stem("E_psi_M", model, chi_max)
         pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
-        os.makedirs(f"pickles/{program}/{model}/", exist_ok=True)
-        pickle_file = f"pickles/{program}/{model}/" + pickle_stem + pickle_leaf
+        os.makedirs(os.path.join(path, "pickles", f"{program}", f"{model}", ""), exist_ok=True)
+        pickle_file = os.path.join(path, "pickles", f"{program}", f"{model}", pickle_stem + pickle_leaf)
 
     if use_pickle:
         with open(pickle_file, 'rb') as file1:

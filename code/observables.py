@@ -10,18 +10,19 @@ import functions.func_obser as fo
 import functions.func_args as fa
 
 
-def my_observables(pickle_file, threads, scalar, chiK_max):
+def my_observables(pickle_file, path_flag, threads, scalar, chiK_max):
 
+    path = "/home/bart/Desktop" if path_flag else ""  # specify the custom path
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
     (model, chi_max, leaf, LxMUC, Ly, extra_dof_flag) = fp.process_pickle_file_name(pickle_file)
-    sys.stdout = sys.stderr = fp.Logger("observables", model, chi_max, leaf)
+    sys.stdout = sys.stderr = fp.Logger("observables", path, model, chi_max, leaf)
 
     if not scalar:
         # Here, you need to enter the tools that you are interested in studying.
         tools = ["ent_spec_real", "ent_spec_mom", "density", "corr_func"]
-        data = fp.prepare_output_files(tools, model, chi_max, leaf, chiK_max)
+        data = fp.prepare_output_files(tools, path, model, chi_max, leaf, chiK_max)
 
     ####################################################################################################################
 
@@ -39,4 +40,4 @@ if __name__ == '__main__':
 
     (file, prog_args, obser_args) = fa.parse_observables_input_arguments()
 
-    my_observables(file, prog_args['threads'], obser_args['scalar'], obser_args['chiK_max'])
+    my_observables(file, prog_args['path'], prog_args['threads'], prog_args['scalar'], obser_args['chiK_max'])
