@@ -27,6 +27,8 @@ def parse_input_arguments(program):
     prog.add_argument("-u_p", "--use_pickle", default=False, action='store_true', help="use a pickled state")
     prog.add_argument("-m_p", "--make_pickle", default=False, action='store_true', help="make a pickled state")
 
+    leaf.add_argument("-Nmax", type=int, default=1, help="maximum number of bosons per site")
+
     for i in range(1, 11):  # search up to 10th-NN hoppings for both t and tdash
         tdefault = 1 if i == 1 else 0
         leaf.add_argument(f"-t{i}", type=float, default=tdefault, help=f"{i}-NN hopping parameter")
@@ -136,6 +138,9 @@ def __check_input_arguments(program, args):
 
     if "chi_max" in args and args['chi_max'] <= 0:
         raise ValueError("chi_max needs to be positive.")
+
+    if "Nmax" in args and args['Nmax'] <= 0:
+        raise ValueError("Nmax needs to be positive.")
 
     if "flow" in program:
         if args[f"{program.replace('flow', 'min')}"] > args[f"{program.replace('flow', 'max')}"]:

@@ -63,6 +63,11 @@ def __file_name(path):
 
 def file_name_leaf(program, model, ham_params):
 
+    if "Nmax" in ham_params:
+        Nmax = f"Nmax_{ham_params['Nmax']}_" if ham_params['Nmax'] != 1 else ""
+    else:
+        Nmax = ""
+
     t = ""
     for i in range(1, 11, 1):  # search up to 10th-NN hoppings for both t and tdash
         if f"{i}" in model:
@@ -101,7 +106,7 @@ def file_name_leaf(program, model, ham_params):
     custom = "_custom" if ham_params['custom'] else ""
     ext = ".dat" if program != "pickle" else ".pkl"
 
-    leaf = f"{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
+    leaf = f"{Nmax}{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
 
     return leaf
 

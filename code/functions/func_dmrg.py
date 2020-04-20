@@ -108,7 +108,7 @@ def define_iDMRG_model(model, ham_params):
     model_params.update(basic_params)
 
     if "Bos" in model:
-        model_params.update(statistics='bosons', Nmax=1)
+        model_params.update(statistics='bosons', Nmax=ham_params['Nmax'])
     else:  # "Fer"
         model_params.update(statistics='fermions')
 
