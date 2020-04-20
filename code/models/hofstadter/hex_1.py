@@ -2,6 +2,7 @@
 from tenpy.models.lattice import Honeycomb
 # --- infinite_cylinder imports
 from models.hofstadter.hofstadter import HofstadterModel
+import functions.func_graph as fg
 
 
 class HofHex1Model(HofstadterModel):
@@ -37,10 +38,4 @@ if __name__ == "__main__":
     M = HofHex1Model(model_params)
 
     print("max MPO bond dimension = ", max(M.H_MPO.chi))
-
-    # import matplotlib.pyplot as plt
-    # ax = plt.gca()
-    # M.lat.plot_sites(ax)
-    # M.lat.plot_order(ax)
-    # M.lat.plot_coupling(ax, M.lat.pairs["nearest_neighbors"])
-    # plt.show()
+    fg.plot_MPS_unit_cell(M)

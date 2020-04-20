@@ -6,6 +6,7 @@ from tenpy.networks.site import GroupedSite
 from tenpy.models.lattice import Honeycomb
 # --- infinite_cylinder imports
 from models.hofstadter.hofstadter import HofstadterModel
+import functions.func_graph as fg
 
 
 class HofHex1Hex5OrbitalModel(HofstadterModel):
@@ -86,3 +87,4 @@ if __name__ == "__main__":
     M = HofHex1Hex5OrbitalModel(model_params)
 
     print("max MPO bond dimension = ", max(M.H_MPO.chi))
+    fg.plot_MPS_unit_cell(M)

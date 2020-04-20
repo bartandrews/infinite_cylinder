@@ -2,6 +2,7 @@
 from tenpy.models.lattice import Square
 # --- infinite_cylinder imports
 from models.hofstadter.hofstadter import HofstadterModel
+import functions.func_graph as fg
 
 
 class HofSqu1Model(HofstadterModel):
@@ -37,3 +38,4 @@ if __name__ == "__main__":
     M = HofSqu1Model(model_params)
 
     print("max MPO bond dimension = ", max(M.H_MPO.chi))
+    fg.plot_MPS_unit_cell(M)
