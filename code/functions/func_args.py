@@ -76,6 +76,8 @@ def parse_input_arguments(program):
     else:
         leaf.add_argument("-phi", type=float, default=0, help="external flux (in units of 2*pi)")
 
+    leaf.add_argument("-c", "--custom", default=False, action='store_true',
+                      help="use the custom initial state specified in func_dmrg.py")
     leaf.add_argument("-tag", type=str, default="", help="tag to append to filename")
 
     args = vars(parser.parse_args())
@@ -118,8 +120,6 @@ def parse_observables_input_arguments():
         prog_args.update({prog_key: args.pop(prog_key, None)})
     for obser_key in ['scalar', 'chiK_max']:
         obser_args.update({obser_key: args.pop(obser_key, None)})
-
-    print(obser_args)
 
     return args['pickle_file'], prog_args, obser_args
 

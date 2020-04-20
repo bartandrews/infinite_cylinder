@@ -98,9 +98,10 @@ def file_name_leaf(program, model, ham_params):
         else:
             phi = ""
 
+    custom = "_custom" if ham_params['custom'] else ""
     ext = ".dat" if program != "pickle" else ".pkl"
 
-    leaf = f"{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{ext}{ham_params['tag']}"
+    leaf = f"{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
 
     return leaf
 

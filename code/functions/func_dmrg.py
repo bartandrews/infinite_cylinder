@@ -15,6 +15,17 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 
 ####################################################
+# __get_custom_state (define a custom initial psi) #
+####################################################
+
+def __get_custom_state():
+
+    state = [1]*2 + [0]*16
+
+    return state
+
+
+####################################################
 # __get_product_state (calculates the initial psi) #
 ####################################################
 
@@ -179,7 +190,7 @@ def my_iDMRG_pickle(program, model, chi_max, ham_params, use_pickle, make_pickle
 def __my_iDMRG(model, chi_max, ham_params, shelve, sweep, run=True):
 
     M = define_iDMRG_model(model, ham_params)
-    product_state = __get_product_state(model, ham_params)
+    product_state = __get_product_state(model, ham_params) if not ham_params['custom'] else __get_custom_state()
     print(product_state)
     psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
