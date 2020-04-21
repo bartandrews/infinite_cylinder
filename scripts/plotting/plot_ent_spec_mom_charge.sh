@@ -20,6 +20,8 @@ set title noenhanced '$1'
 set xlabel 'momentum / π'
 set ylabel 'entanglement energy'
 
+set yrange [:10]
+
 plot for[i=0:blocks-1] '$1.temp2' index i u 2:3 pt i+1 title sprintf("%i", i+$min_charge)
 
 EOFMarker

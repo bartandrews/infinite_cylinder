@@ -10,20 +10,21 @@ import functions.func_dmrg as fd
 import functions.func_args as fa
 
 
-def my_phi_flow(threads, model, chi_max, ham_params, use_pickle=False, make_pickle=False):
+def my_phi_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=False, make_pickle=False):
 
+    path = "/home/bart/Desktop" if path_flag else ""  # specify the custom path
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
     leaf = fp.file_name_leaf("phi_flow", model, ham_params)
-    sys.stdout = sys.stderr = fp.Logger("phi_flow", model, chi_max, leaf)
+    sys.stdout = sys.stderr = fp.Logger("phi_flow", path, model, chi_max, leaf)
 
     tools = ["overlap", "charge_pump", "ent_spec_flow"]
-    data = fp.prepare_output_files(tools, model, chi_max, leaf)
+    data = fp.prepare_output_files(tools, path, model, chi_max, leaf)
 
     ####################################################################################################################
 
-    engine = fd.my_iDMRG_pickle("phi_flow", model, chi_max, ham_params, use_pickle, make_pickle, run=False)
+    engine = fd.my_iDMRG_pickle("phi_flow", path, model, chi_max, ham_params, use_pickle, make_pickle, run=False)
 
     for phi in np.linspace(ham_params['phi_min'], ham_params['phi_max'], ham_params['phi_samp']):
 
@@ -82,5 +83,5 @@ if __name__ == '__main__':
 
     prog_args, stem_args, leaf_args = fa.parse_input_arguments("phi_flow")
 
-    my_phi_flow(prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args,
+    my_phi_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args,
                 prog_args['use_pickle'], prog_args['make_pickle'])

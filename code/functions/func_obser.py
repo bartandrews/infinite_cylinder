@@ -121,6 +121,7 @@ def corr_func(data, psi, M, extra_dof, print_data):
 
     # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
     corr_func_site_list = psi.correlation_function(tot_numb_op, tot_numb_op, sites1=range(0, psi.L), sites2=[0])[:, 0]
+    print(corr_func_site_list)
     corr_func_lattice_array = M.lat.mps2lat_values(corr_func_site_list)
     assert corr_func_lattice_array.shape[:2] == M.lat.shape[:2]
     if print_data:
