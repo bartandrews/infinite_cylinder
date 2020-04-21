@@ -7,6 +7,7 @@ from tenpy.algorithms import dmrg
 # from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
 # --- infinite_cylinder imports
 import functions.func_proc as fp
+from models.haldane.haldane import HalModel
 from models.hofstadter.squ_1 import HofSqu1Model
 from models.hofstadter.hex_1 import HofHex1Model
 from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
@@ -20,7 +21,7 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = [1]*2 + [0]*16
+    state = [1, 0]*6
 
     return state
 
@@ -112,7 +113,11 @@ def define_iDMRG_model(model, ham_params):
     else:  # "Fer"
         model_params.update(statistics='fermions')
 
-    if model.endswith("HofSqu1"):
+    if model.endswith("Hal"):
+        del model_params['Vrange'], model_params['Vtype'], model_params['n'], model_params['nphi']
+        model_params.update(t2=ham_params['t2'])
+        M = HalModel(model_params)
+    elif model.endswith("HofSqu1"):
         M = HofSqu1Model(model_params)
     elif model.endswith("HofHex1"):
         M = HofHex1Model(model_params)

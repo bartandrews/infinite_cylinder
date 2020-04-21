@@ -16,7 +16,7 @@ def my_observables(pickle_file, path_flag, threads, scalar, chiK_max):
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
-    (model, chi_max, leaf, LxMUC, Ly, extra_dof_flag) = fp.process_pickle_file_name(pickle_file)
+    (model, chi_max, leaf, extra_dof_flag) = fp.process_pickle_file_name(pickle_file)
     sys.stdout = sys.stderr = fp.Logger("observables", path, model, chi_max, leaf)
 
     if not scalar:
@@ -31,7 +31,7 @@ def my_observables(pickle_file, path_flag, threads, scalar, chiK_max):
 
     fo.scalar_observables(E, psi)
     if not scalar:
-        fo.nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof_flag, print_data=False)
+        fo.nonscalar_observables(tools, data, psi, M, chiK_max, extra_dof_flag, print_data=False)
 
     print("Total time taken (seconds) = ", time.time() - t0)
 

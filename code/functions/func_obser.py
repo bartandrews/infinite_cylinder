@@ -20,15 +20,15 @@ def scalar_observables(E, psi):
 ############################################################################################
 
 
-def nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof, print_data=False):
+def nonscalar_observables(tools, data, psi, M, chiK_max, extra_dof, print_data=False):
     if 'ent_spec_real' in tools:
-        ent_spec_real(data, psi, LxMUC, Ly, print_data)
+        ent_spec_real(data, psi, print_data)
     if 'ent_spec_mom' in tools:
         ent_spec_mom(data, psi, M, chiK_max, print_data)
     if 'density' in tools:
-        density(data, psi, M, extra_dof, print_data)
+        expectation_value(data, 'density', psi, M, extra_dof, print_data)
     if 'corr_func' in tools:
-        corr_func(data, psi, M, extra_dof, print_data)
+        expectation_value(data, 'corr_func', psi, M, extra_dof, print_data)
     return
 
 
@@ -37,14 +37,14 @@ def nonscalar_observables(tools, data, psi, M, chiK_max, LxMUC, Ly, extra_dof, p
 ###############################################################################
 
 
-def ent_spec_real(data, psi, LxMUC, Ly, print_data):
+def ent_spec_real(data, psi, print_data):
 
     spectrum = psi.entanglement_spectrum(by_charge=True)
 
     print("We select charge entry 1 out of qnumber={qnumber:d}.".format(qnumber=len(spectrum[0][0][0])))
 
     # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-    for bond in range(0, LxMUC*Ly):
+    for bond in range(0, psi.L):
         for sector in range(0, len(spectrum[bond])):
             for i in range(0, len(spectrum[bond][sector][1])):
                 data_line = "{charge:d}\t{bond:d}\t{spectrum:.15f}"\
@@ -87,51 +87,34 @@ def ent_spec_mom(data, psi, M, chiK_max, print_data):
     return
 
 
-#########################################################
-# density (function for recording the density function) #
-#########################################################
+###################################################################
+# expectation_value (function for recording an expectation value) #
+###################################################################
 
-def density(data, psi, M, extra_dof, print_data):
-
-    tot_numb_op = 'N' if not extra_dof else 'Ntot'
-
-    density_site_list = psi.expectation_value(tot_numb_op)
-    density_lattice_array = M.lat.mps2lat_values(density_site_list)
-    assert density_lattice_array.shape[:2] == M.lat.shape[:2]
-    if print_data:
-        print(density_lattice_array)
-    if len(density_lattice_array.shape) == 2:  # one site per unit cell
-        np.savetxt(data['density'], density_lattice_array, delimiter='\t')
-    elif len(density_lattice_array.shape) == 3:  # more than one site per unit cell
-        for i in range(density_lattice_array.shape[-1]):
-            np.savetxt(data['density'], density_lattice_array[:, :, i], delimiter='\t')
-    else:
-        raise ValueError("Unexpected length of density_lattice_array in density function.")
-
-    return
-
-
-############################################################################
-# corr_func (function for recording the two-particle correlation function) #
-############################################################################
-
-def corr_func(data, psi, M, extra_dof, print_data):
+def expectation_value(data, name, psi, M, extra_dof, print_data):
 
     tot_numb_op = 'N' if not extra_dof else 'Ntot'
 
-    # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
-    corr_func_site_list = psi.correlation_function(tot_numb_op, tot_numb_op, sites1=range(0, psi.L), sites2=[0])[:, 0]
-    print(corr_func_site_list)
-    corr_func_lattice_array = M.lat.mps2lat_values(corr_func_site_list)
-    assert corr_func_lattice_array.shape[:2] == M.lat.shape[:2]
-    if print_data:
-        print(corr_func_lattice_array)
-    if len(corr_func_lattice_array.shape) == 2:  # one site per unit cell
-        np.savetxt(data['corr_func'], corr_func_lattice_array, delimiter='\t')
-    elif len(corr_func_lattice_array.shape) == 3:  # more than one site per unit cell
-        for i in range(corr_func_lattice_array.shape[-1]):
-            np.savetxt(data['corr_func'], corr_func_lattice_array[:, :, i], delimiter='\t')
+    if name == 'density':
+        site_list = psi.expectation_value(tot_numb_op)
+    elif name == 'corr_func':
+        # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
+        raw_site_list = psi.correlation_function(tot_numb_op, tot_numb_op, sites1=range(0, psi.L), sites2=[0])[:, 0]
+        average_density = np.sum(psi.expectation_value(tot_numb_op))/psi.L
+        site_list = [average_density - i for i in raw_site_list]
     else:
-        raise ValueError("Unexpected length of corr_func_lattice_array in corr_func function.")
+        raise ValueError("Unknown name for the expectation_value function.")
+
+    lattice_array = M.lat.mps2lat_values(site_list)
+    assert lattice_array.shape[:2] == M.lat.shape[:2]
+    if print_data:
+        print(lattice_array)
+    if len(lattice_array.shape) == 2:  # one site per unit cell
+        np.savetxt(data[name], lattice_array, delimiter='\t')
+    elif len(lattice_array.shape) == 3:  # more than one site per unit cell
+        for i in range(lattice_array.shape[-1]):
+            np.savetxt(data[name], lattice_array[:, :, i], delimiter='\t')
+    else:
+        raise ValueError("Unexpected length of lattice_array in expectation_value function.")
 
     return

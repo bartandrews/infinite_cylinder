@@ -33,17 +33,13 @@ def process_pickle_file_name(filepath):
     print("model = ", model)
     chi_max = int(debased_pickle_entries[2])
     print("chi_max = ", chi_max)
-    LxMUC = int(debased_pickle_entries[debased_pickle_entries.index("LxMUC")+1])
-    print("LxMUC = ", LxMUC)
-    Ly = int(debased_pickle_entries[debased_pickle_entries.index("Ly") + 1])
-    print("Ly = ", Ly)
     leaf_entries = debased_pickle_entries[3:]
     leaf = '_'.join(leaf_entries) + ".dat"
     print("leaf = ", leaf)
     extra_dof_flag = True if any(dof in model for dof in extra_dof_list) else False
     print("extra_dof_flag = ", extra_dof_flag)
 
-    return model, chi_max, leaf, LxMUC, Ly, extra_dof_flag
+    return model, chi_max, leaf, extra_dof_flag
 
 
 #############################################

@@ -14,7 +14,7 @@ def parse_input_arguments(program):
     stem = parser.add_argument_group("stem sub-arguments")
     leaf = parser.add_argument_group("leaf sub-arguments")
 
-    models = ["BosHofSqu1", "FerHofSqu1", "BosHofHex1", "FerHofHex1",
+    models = ["BosHal", "FerHal", "BosHofSqu1", "FerHofSqu1", "BosHofHex1", "FerHofHex1",
               "BosHofHex1Hex5", "FerHofHex1Hex5", "BosHofHex1Hex5Orbital", "FerHofHex1Hex5Orbital",
               "FerHofHex1Hex5OrbitalOld"]
     Vtypes = ["Coulomb", "Yukawa"]
@@ -63,8 +63,8 @@ def parse_input_arguments(program):
     leaf.add_argument("-Vrange", type=int, default=0, choices=range(11),
                       help="offsite interaction range (in units of nearest neighbors)")
 
-    leaf.add_argument("-n", nargs=2, type=int, default=[1, 8], required=True, help="filling of the MPS unit cell")
-    leaf.add_argument("-nphi", nargs=2, type=int, default=[1, 4], required=True, help="flux density")
+    leaf.add_argument("-n", nargs=2, type=int, default=[1, 8], help="filling of the MPS unit cell")
+    leaf.add_argument("-nphi", nargs=2, type=int, default=[1, 4], help="flux density")
     leaf.add_argument("-LxMUC", type=int, default=1, required=True,
                         help="width of MPS unit cell (in units of magnetic unit cell)")
     leaf.add_argument("-Ly", type=int, default=4, required=True,
