@@ -88,7 +88,10 @@ def file_name_leaf(program, model, ham_params):
     else:
         V = f"V_{ham_params['V']:g}_{ham_params['Vtype']}_{ham_params['Vrange']}_" if ham_params['V'] != 0 else ""
 
-    nu = f"n_{ham_params['n'][0]}_{ham_params['n'][1]}_nphi_{ham_params['nphi'][0]}_{ham_params['nphi'][1]}_"
+    if "Hof" in model:
+        nu = f"n_{ham_params['n'][0]}_{ham_params['n'][1]}_nphi_{ham_params['nphi'][0]}_{ham_params['nphi'][1]}_"
+    else:
+        nu = f"n_{ham_params['n'][0]}_{ham_params['n'][1]}_"
     L = f"LxMUC_{ham_params['LxMUC']}_Ly_{ham_params['Ly']}"
 
     if program == "phi_flow":

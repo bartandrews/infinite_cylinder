@@ -63,7 +63,8 @@ def parse_input_arguments(program):
     leaf.add_argument("-Vrange", type=int, default=0, choices=range(11),
                       help="offsite interaction range (in units of nearest neighbors)")
 
-    leaf.add_argument("-n", nargs=2, type=int, default=[1, 8], help="filling of the MPS unit cell")
+    leaf.add_argument("-n", nargs=2, type=int, default=[1, 8],
+                      help="filling of the MPS unit cell (per lattice unit cell)")
     leaf.add_argument("-nphi", nargs=2, type=int, default=[1, 4], help="flux density")
     leaf.add_argument("-LxMUC", type=int, default=1, required=True,
                         help="width of MPS unit cell (in units of magnetic unit cell)")

@@ -21,7 +21,7 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = [1, 0]*6
+    state = [1, 0]*3
 
     return state
 
@@ -33,8 +33,8 @@ def __get_custom_state():
 
 def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
 
-    nn, nd, q, LxMUC, Ly = \
-        ham_params['n'][0], ham_params['n'][1], ham_params['nphi'][1], ham_params['LxMUC'], ham_params['Ly']
+    nn, nd, LxMUC, Ly = ham_params['n'][0], ham_params['n'][1], ham_params['LxMUC'], ham_params['Ly']
+    q = ham_params['nphi'][1] if "Hof" in model else 1
 
     if "Orbital" in model:
         numb_particles = 2 * int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(
@@ -115,7 +115,6 @@ def define_iDMRG_model(model, ham_params):
 
     if model.endswith("Hal"):
         del model_params['Vrange'], model_params['Vtype'], model_params['n'], model_params['nphi']
-        model_params.update(t2=ham_params['t2'])
         M = HalModel(model_params)
     elif model.endswith("HofSqu1"):
         M = HofSqu1Model(model_params)

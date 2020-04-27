@@ -17,14 +17,13 @@ class HofstadterModel(CouplingMPOModel):
         return get_parameter(params, 'statistics', 'bosons', self.name)
 
     def init_sites(self, params):
+        conserve = get_parameter(params, 'conserve', 'N', self.name)
         if self.stats(params) == 'bosons':
             Nmax = get_parameter(params, 'Nmax', 1, self.name)
-            conserve = get_parameter(params, 'conserve', 'N', self.name)
             n = get_parameter(params, 'n', (1, 8), self.name)
             n = n[0] / n[1]
             site = BosonSite(Nmax=Nmax, conserve=conserve, filling=n)
         else:
-            conserve = get_parameter(params, 'conserve', 'N', self.name)
             n = get_parameter(params, 'n', (1, 9), self.name)
             n = n[0] / n[1]
             site = FermionSite(conserve=conserve, filling=n)
@@ -63,14 +62,14 @@ class HofstadterModel(CouplingMPOModel):
             V_default, Vrange_default = 10, 1
             nphi_default = (1, 3)
         t1 = get_parameter(params, 't1', 1, self.name, True)
-        mu = get_parameter(params, 'mu', 0., self.name)
+        mu = get_parameter(params, 'mu', 0, self.name)
         V = get_parameter(params, 'V', V_default, self.name, True)
         Vtype = get_parameter(params, 'Vtype', 'Coulomb', self.name)
         Vrange = get_parameter(params, 'Vrange', Vrange_default, self.name)
         nphi = get_parameter(params, 'nphi', nphi_default, self.name)
         nphi_2pi = 2 * np.pi * nphi[0] / nphi[1]
         LxMUC = get_parameter(params, 'LxMUC', 1, self.name)
-        phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0., self.name)
+        phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0, self.name)
 
         return creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi
 
