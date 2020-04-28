@@ -11,6 +11,7 @@ from colorama import Style
 from fractions import Fraction as Frac
 from operator import itemgetter
 import ast
+import sys
 
 ###################################
 # key function for the model sort #
@@ -66,7 +67,8 @@ def sort_list(mylist):
         _q = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 2])
         _nphi = _p / _q
         _nu = (_nn / _nd) / _nphi
-        decomposed_list[_i] += ['nu', Frac(str(_nu)).numerator, Frac(str(_nu)).denominator]
+        _frac_nu = Frac(str(_nu)).limit_denominator(100)
+        decomposed_list[_i] += ['nu', _frac_nu.numerator, _frac_nu.denominator]
 
     # auto convert the types of entries in the list
     for _i, _val in enumerate(mylist):
@@ -121,7 +123,7 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    potential_data_points, total_data_points, nu_previous = 0, 0, 0
+    acceptable_data_points, total_data_points, frac_nu_previous = 0, 0, 0
 
     headings = ['model', 'nu', 'Ly', 'nphi', 'Ly/lB', '2nd_chi', 'max_chi', 'SvN_estimate', 'SvN_error / %', 'status']
     print("{: <11} {: <6} {: <6} {: <6} {: <20} {: <8} {: <8} {: <20} {: <20} {: <6}".format(*headings))
@@ -158,6 +160,7 @@ if __name__ == '__main__':
             q = int(debased_dat_entries[debased_dat_entries.index("nphi") + 2])
             nphi = p / q
             nu = (nn / nd) / nphi
+            frac_nu = Frac(str(nu)).limit_denominator(100)
             LylB = np.sqrt(2 * np.pi * nphi) * Ly
 
             for line in list(open(max_chi_system)):  # find the max SnV
@@ -185,26 +188,41 @@ if __name__ == '__main__':
 
             if isinstance(SvN_perc_error, float) and SvN_perc_error < 0.1:  # compute the status
                 status = f"{Fore.GREEN}OK{Style.RESET_ALL}"
-                potential_data_points += 1
             else:
                 status = f"{Fore.RED}ERROR{Style.RESET_ALL}"
 
+            # write to file
+            if frac_nu != frac_nu_previous:  # if the nu is different, open new files
+                total_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out', 'w')
+                accepted_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out', 'w')
+            data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\n"
+            total_file.write(data_line)
+            if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
+                accepted_file.write(data_line)
+
+            if frac_nu != frac_nu_previous and j != len(system_grouped_list[i]) - 1:
+                if frac_nu_previous != 0:
+                    # frac_nu_previous = Frac(str(nu_previous)).limit_denominator(100)
+                    print(f"Total number of acceptable data points "
+                          f"for the nu={frac_nu_previous.numerator:d}/{frac_nu_previous.denominator:d} {model} model"
+                          f" = {acceptable_data_points}/{total_data_points}")
+                    acceptable_data_points = 1 if status == f"{Fore.GREEN}OK{Style.RESET_ALL}" else 0
+                    total_data_points = 1
+                frac_nu_previous = frac_nu
+
+            # write to terminal
             data = [model, nu, Ly, nphi, LylB, second_max_chi, max_chi, SvN_estimate, SvN_perc_error, status]
             print("{: <11} {: <6} {: <6} {: <6} {: <20} {: <8} {: <8} {: <20} {: <20} {: <6}"
-                  .format(model, '{:d}/{:d}'.format(Frac(str(nu)).numerator, Frac(str(nu)).denominator), Ly,
+                  .format(model, '{:d}/{:d}'.format(frac_nu.numerator, frac_nu.denominator), Ly,
                           '{:d}/{:d}'.format(p, q), '{:<10.10g}'.format(LylB), second_max_chi, max_chi,
                           '{:<10.10g}'.format(SvN_estimate), '{:<10.10g}'.format(SvN_perc_error), status))
 
-            if nu != nu_previous:
-                file = open(f'{model}_nu_{Frac(str(nu)).numerator}_{Frac(str(nu)).denominator}.out', 'w')
-            data_line = f"{p}\t{q}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\n"
-            file.write(data_line)
+            if j == len(system_grouped_list[i]) - 1:
+                print(f"Total number of acceptable data points "
+                      f"for the nu={frac_nu.numerator:d}/{frac_nu.denominator:d} {model} model"
+                      f" = {acceptable_data_points}/{total_data_points}")
+
+            if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
+                acceptable_data_points += 1
 
             total_data_points += 1
-
-            if nu != nu_previous or j == len(system_grouped_list[i]) - 1:
-                if nu_previous != 0:
-                    print(f"Total number of acceptable data points "
-                          f"for the nu={Frac(str(nu)).numerator:d}/{Frac(nu).denominator:d} {model} model"
-                          f"= {potential_data_points}/{total_data_points}")
-                nu_previous = nu
