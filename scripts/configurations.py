@@ -1,6 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import sys
 
 
 def cost(q_val, Ly_val, q_min_val, Ly_min_val):
@@ -18,8 +17,8 @@ if __name__ == '__main__':
 
     counter = 0
     for Ly in range(3, 16):  # adjust 3 <= Ly <= 15
-        for p in range(1, 21):  # don't change this
-            for q in range(4, 21):  # don't change this
+        for p in range(1, 21):
+            for q in range(4, 21):
                 nphi = p/q
                 if (10/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (15/Ly)**2/(2*np.pi)):  # adjust 10 < LylB < 15
                     if counter == 0:
@@ -37,14 +36,14 @@ if __name__ == '__main__':
     # print to the screen
     print("Ly\tp\tq\tLylB\tcost")
     for line in sorted_array:
-        print("{}\t{}\t{}\t{:.3f}\t{:.3f}".format(int(line[0]), int(line[1]), int(line[2]), np.sqrt(2*np.pi*(line[1]/line[2]))*line[0], line[4]))
+        print("{}\t{}\t{}\t{:.3f}\t{:.3f}".format(int(line[0]), int(line[1]), int(line[2]), LylB(line[1]/line[2], line[0]), line[4]))
 
     # plot the figure
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    LylB = [np.sqrt(2 * np.pi * (i[1] / i[2])) * i[0] for i in sorted_array]
+    LylB = [LylB(i[1]/i[2], i[0]) for i in sorted_array]
     y = range(1, len(LylB)+1)
     ax.scatter(LylB, y, c=y)
-    ax.set_xlabel("$L_y/l_B$", fontsize=11)
-    ax.set_ylabel("$n_\phi$ index (sorted by increasing numerical cost)", fontsize=11)
+    ax.set_xlabel("$L_y/l_B$")
+    ax.set_ylabel("$n_\phi$ index (sorted by increasing numerical cost)")
     plt.show()
