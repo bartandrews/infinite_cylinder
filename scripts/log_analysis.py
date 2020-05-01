@@ -186,7 +186,7 @@ if __name__ == '__main__':
                 SvN_estimate = max_SvN
                 SvN_perc_error = float('nan')
 
-            if isinstance(SvN_perc_error, float) and SvN_perc_error < 0.1:  # compute the status
+            if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < 0.1:  # compute the status
                 status = f"{Fore.GREEN}OK{Style.RESET_ALL}"
             else:
                 status = f"{Fore.RED}ERROR{Style.RESET_ALL}"
