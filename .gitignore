@@ -10,6 +10,8 @@ data/**/*.txt*
 logs/**/*.txt*
 pickles/**/*.txt*
 
+scripts/**/*.out*
+
 **/*.log*
 **/*.pkl*
 

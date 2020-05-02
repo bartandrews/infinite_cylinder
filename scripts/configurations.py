@@ -1,9 +1,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from fractions import Fraction as Frac
 
 
-def cost(q_val, Ly_val, q_min_val, Ly_min_val):
-    cost_val = q_val * np.exp(Ly_val) / (q_min_val*np.exp(Ly_min_val))  # normalization factor
+def cost(q_val, Lx_val, Ly_val):
+    cost_val = q_val * Lx_val * np.exp(Ly_val)
     return cost_val
 
 
@@ -13,35 +14,52 @@ def LylB(nphi_val, Ly_val):
 
 if __name__ == '__main__':
 
+    model = "FerHofSqu1"  # desired model (for command labelling)
+    nu = 1 / 3  # desired filling factor
+    chi = 600  # desired chi (for command labelling)
+    Ly_min, Ly_max = 3, 15  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
+    LylB_min, LylB_max = 10, 15  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
     LylB_separation = 0.5  # keep all LylB values at least this distance away from each other
 
     counter = 0
-    for Ly in range(3, 16):  # adjust 3 <= Ly <= 15
+    for Ly in range(Ly_min, Ly_max+1):
         for p in range(1, 21):
             for q in range(4, 21):
                 nphi = p/q
-                if (10/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (15/Ly)**2/(2*np.pi)):  # adjust 10 < LylB < 15
-                    if counter == 0:
-                        data = np.array([[Ly, p, q, LylB(nphi, Ly), 1]])
-                        q_min, Ly_min = q, Ly
-                    else:
-                        if all(abs(i - LylB(nphi, Ly)) >= LylB_separation for i in list(data[:, 3])):
-                            data_line = np.array([[Ly, p, q, LylB(nphi, Ly), cost(q, Ly, q_min, Ly_min)]])
-                            data = np.concatenate((data, data_line))
-                    counter += 1
+                if (LylB_min/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (LylB_max/Ly)**2/(2*np.pi)):
+                    for Lx in range(1, 11):
+                        if abs(nu*nphi*q*Lx*Ly - int(nu*nphi*q*Lx*Ly)) < 1e-7:  # if number of particles is an integer then accept, otherwise try a larger Lx
+                            if counter == 0:
+                                data = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
+                            else:
+                                if all(abs(i - LylB(nphi, Ly)) >= LylB_separation for i in list(data[:, 4])):
+                                    data_line = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
+                                    data = np.concatenate((data, data_line))
+                            counter += 1
+                            break
 
     # sort the array by cost
-    sorted_array = data[np.argsort(data[:, 4])]
+    sorted_array = data[np.argsort(data[:, 5])]
 
-    # print to the screen
-    print("Ly\tp\tq\tLylB\tcost")
-    for line in sorted_array:
-        print("{}\t{}\t{}\t{:.3f}\t{:.3f}".format(int(line[0]), int(line[1]), int(line[2]), LylB(line[1]/line[2], line[0]), line[4]))
+    # normalize the cost column
+    sorted_array[:, 5] = sorted_array[:, 5] / sorted_array[0][5]
+
+    # print to the screen and file
+    print("Lx\tLy\tp\tq\tLylB\tcost")
+    with open("configurations.out", 'w') as file:
+        for line in sorted_array:
+            print(f"{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}")
+            n = Frac(str(nu*line[2]/line[3])).limit_denominator(100)
+            if "Bos" in model:
+                file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+            else:  # "Fer"
+                file.write(
+                    f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi} -t1 1 -V 10 -Vtype \"Coulomb\" -Vrange 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
 
     # plot the figure
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
-    LylB = [LylB(i[1]/i[2], i[0]) for i in sorted_array]
+    LylB = [i[4] for i in sorted_array]
     y = range(1, len(LylB)+1)
     ax.scatter(LylB, y, c=y)
     ax.set_xlabel("$L_y/l_B$")
