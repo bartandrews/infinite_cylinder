@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from fractions import Fraction as Frac
+import math
 
 
 def cost(q_val, Lx_val, Ly_val):
@@ -14,9 +15,9 @@ def LylB(nphi_val, Ly_val):
 
 if __name__ == '__main__':
 
-    model = "FerHofSqu1"  # desired model (for command labelling)
-    nu = 1 / 3  # desired filling factor
-    chi = 600  # desired chi (for command labelling)
+    model = "BosHofSqu1"  # desired model (for command labelling)
+    nu = 1 / 2  # desired filling factor
+    chi = 800  # desired chi (for command labelling)
     Ly_min, Ly_max = 3, 15  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
     LylB_min, LylB_max = 10, 15  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
     LylB_separation = 0.5  # keep all LylB values at least this distance away from each other
@@ -25,6 +26,8 @@ if __name__ == '__main__':
     for Ly in range(Ly_min, Ly_max+1):
         for p in range(1, 21):
             for q in range(4, 21):
+                if math.gcd(p, q) != 1:  # ensure that nphi is a coprime fraction
+                    continue
                 nphi = p/q
                 if (LylB_min/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (LylB_max/Ly)**2/(2*np.pi)):
                     for Lx in range(1, 11):
@@ -50,11 +53,15 @@ if __name__ == '__main__':
         for line in sorted_array:
             print(f"{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}")
             n = Frac(str(nu*line[2]/line[3])).limit_denominator(100)
-            if "Bos" in model:
-                file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
-            else:  # "Fer"
-                file.write(
-                    f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi} -t1 1 -V 10 -Vtype \"Coulomb\" -Vrange 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+            for chi_val in [chi - 50, chi]:
+                if "Bos" in model:
+                    file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} "
+                               f"-t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} "
+                               f"-LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+                else:  # "Fer"
+                    file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} "
+                               f"-t1 1 -V 10 -Vtype \"Coulomb\" -Vrange 1 -n {n.numerator} {n.denominator} "
+                               f"-nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
 
     # plot the figure
     fig = plt.figure()
