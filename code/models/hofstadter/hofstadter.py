@@ -2,13 +2,14 @@
 import numpy as np
 # --- TeNPy imports
 from tenpy.models.model import CouplingMPOModel
+from tenpy.models.model import MultiCouplingModel
 from tenpy.tools.params import get_parameter
 from tenpy.networks.site import BosonSite, FermionSite
 # --- infinite_cylinder imports
 import functions.func_int as fi
 
 
-class HofstadterModel(CouplingMPOModel):
+class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
 
     def __init__(self, params):
         CouplingMPOModel.__init__(self, params)
@@ -61,6 +62,7 @@ class HofstadterModel(CouplingMPOModel):
             creation, annihilation = 'Cd', 'C'
             V_default, Vrange_default = 10, 1
             nphi_default = (1, 3)
+        Nmax = get_parameter(params, 'Nmax', 1, self.name, True)
         t1 = get_parameter(params, 't1', 1, self.name, True)
         mu = get_parameter(params, 'mu', 0, self.name)
         V = get_parameter(params, 'V', V_default, self.name, True)
@@ -71,7 +73,7 @@ class HofstadterModel(CouplingMPOModel):
         LxMUC = get_parameter(params, 'LxMUC', 1, self.name)
         phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0, self.name)
 
-        return creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi
+        return creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi
 
     def chemical_potential(self, mu, extra_dof=False):
         tot_numb_op = 'N' if not extra_dof else 'Ntot'
@@ -84,13 +86,37 @@ class HofstadterModel(CouplingMPOModel):
             print("u in range(len(self.lat.unit_cell)) = ", u)
             self.add_onsite(U, u, op)
 
-    def offsite_interaction(self, lattice, V, Vtype, Vrange, extra_dof=False):
+    def offsite_interaction(self, lattice, Nmax, V, Vtype, Vrange, extra_dof=False):
         tot_numb_op = 'N' if not extra_dof else 'Ntot'
         for i in range(1, 11):  # offsite interaction only implemented up to 10th-NN
             if Vrange >= i:
-                for u1, u2, dx in fi.NN(lattice, i):
-                    self.add_coupling(fi.interaction_strength(lattice, V, Vtype, i-1),
-                                      u1, tot_numb_op, u2, tot_numb_op, dx)
+                if Nmax == 1:
+                    for u1, u2, dx in fi.NN(lattice, i):
+                        self.add_coupling(fi.interaction_strength(lattice, V, Vtype, i-1),
+                                          u1, tot_numb_op, u2, tot_numb_op, dx)
+                elif Nmax == 2:
+                    if lattice != "Squ" or Vrange > 1:
+                        raise ValueError("3-body interaction is only implemented for Squ1.")
+                    # upper-right corner
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i-1), 0, tot_numb_op,
+                                            [(0, tot_numb_op, [0, 1]), (0, tot_numb_op, [1, 0])])
+                    # upper-left corner
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,
+                                            [(0, tot_numb_op, [0, 1]), (0, tot_numb_op, [-1, 0])])
+                    # lower-right corner
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,
+                                            [(0, tot_numb_op, [0, -1]), (0, tot_numb_op, [1, 0])])
+                    # lower-left corner
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,
+                                            [(0, tot_numb_op, [0, -1]), (0, tot_numb_op, [-1, 0])])
+                    # horizontal line
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,
+                                            [(0, tot_numb_op, [-1, 0]), (0, tot_numb_op, [1, 0])])
+                    # vertical line
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,
+                                            [(0, tot_numb_op, [0, -1]), (0, tot_numb_op, [0, 1])])
+                else:
+                    raise ValueError("N-body interaction is not implemented for N>3.")
 
     def squ_1_hoppings(self, creation, annihilation, t, nphi, nphi_2pi, LxMUC, phi_2pi):
         u1, u2, dx = (0, 0, np.array([1, 0]))  # right

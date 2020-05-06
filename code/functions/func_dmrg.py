@@ -103,13 +103,13 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
 
 def define_iDMRG_model(model, ham_params):
     model_params = dict(conserve='N', bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle', verbose=1)
-    basic_params = {k: ham_params[k] for k in ('t1', 'mu', 'V', 'Vtype', 'Vrange', 'n', 'nphi',  'LxMUC', 'Ly')}
+    basic_params = {k: ham_params[k] for k in ('Nmax', 't1', 'mu', 'V', 'Vtype', 'Vrange', 'n', 'nphi',  'LxMUC', 'Ly')}
     if 'phi' in ham_params:
         basic_params.update({'phi': ham_params['phi']})
     model_params.update(basic_params)
 
     if "Bos" in model:
-        model_params.update(statistics='bosons', Nmax=ham_params['Nmax'])
+        model_params.update(statistics='bosons')
     else:  # "Fer"
         model_params.update(statistics='fermions')
 

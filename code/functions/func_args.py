@@ -28,7 +28,8 @@ def parse_input_arguments(program):
     prog.add_argument("-u_p", "--use_pickle", default=False, action='store_true', help="use a pickled state")
     prog.add_argument("-m_p", "--make_pickle", default=False, action='store_true', help="make a pickled state")
 
-    leaf.add_argument("-Nmax", type=int, default=1, help="maximum number of bosons per site")
+    leaf.add_argument("-Nmax", type=int, default=1, help="maximum number of particles per cluster "
+                                                         "before an interaction occurs")
 
     for i in range(1, 11):  # search up to 10th-NN hoppings for both t and tdash
         tdefault = 1 if i == 1 else 0

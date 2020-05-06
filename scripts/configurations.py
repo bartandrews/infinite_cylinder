@@ -21,6 +21,7 @@ if __name__ == '__main__':
     Ly_min, Ly_max = 3, 15  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
     LylB_min, LylB_max = 10, 15  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
     LylB_separation = 0.5  # keep all LylB values at least this distance away from each other
+    Nmin = 2  # minimum number of particles required in the system
 
     counter = 0
     for Ly in range(Ly_min, Ly_max+1):
@@ -32,14 +33,15 @@ if __name__ == '__main__':
                 if (LylB_min/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (LylB_max/Ly)**2/(2*np.pi)):
                     for Lx in range(1, 11):
                         if abs(nu*nphi*q*Lx*Ly - int(nu*nphi*q*Lx*Ly)) < 1e-7:  # if number of particles is an integer then accept, otherwise try a larger Lx
-                            if counter == 0:
-                                data = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
-                            else:
-                                if all(abs(i - LylB(nphi, Ly)) >= LylB_separation for i in list(data[:, 4])):
-                                    data_line = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
-                                    data = np.concatenate((data, data_line))
-                            counter += 1
-                            break
+                            if int(nu*nphi*q*Lx*Ly) >= Nmin:  # check that there are at least Nmin particles
+                                if counter == 0:
+                                    data = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
+                                else:
+                                    if all(abs(i - LylB(nphi, Ly)) >= LylB_separation for i in list(data[:, 4])):
+                                        data_line = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
+                                        data = np.concatenate((data, data_line))
+                                counter += 1
+                                break
 
     # sort the array by cost
     sorted_array = data[np.argsort(data[:, 5])]

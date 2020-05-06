@@ -21,17 +21,17 @@ class HofSqu1Model(HofstadterModel):
         return lat
 
     def init_terms(self, params):
-        (creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
+        (creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
             HofstadterModel.init_terms(self, params)
 
         self.chemical_potential(mu)
         self.squ_1_hoppings(creation, annihilation, t1, nphi, nphi_2pi, LxMUC, phi_2pi)
-        self.offsite_interaction("Squ", V, Vtype, Vrange)
+        self.offsite_interaction("Squ", Nmax, V, Vtype, Vrange)
 
 
 if __name__ == "__main__":
 
-    model_params = dict(statistics='fermions', conserve='N', t1=1, n=(int(1), int(9)), nphi=(int(1), int(3)),
+    model_params = dict(statistics='fermions', Nmax=1, conserve='N', t1=1, n=(int(1), int(9)), nphi=(int(1), int(3)),
                         LxMUC=1, Ly=6, V=10, Vtype='Coulomb', Vrange=1,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=0)
