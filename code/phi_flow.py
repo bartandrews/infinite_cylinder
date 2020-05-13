@@ -10,7 +10,7 @@ import functions.func_dmrg as fd
 import functions.func_args as fa
 
 
-def my_phi_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=False, make_pickle=False):
+def my_phi_flow(path_flag, threads, model, chi_max, ham_params):
 
     path = "/home/bart/Desktop" if path_flag else ""  # specify the custom path
     prc.mkl_set_nthreads(threads)
@@ -24,15 +24,15 @@ def my_phi_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=False
 
     ####################################################################################################################
 
-    engine = fd.my_iDMRG_pickle("phi_flow", path, model, chi_max, ham_params, use_pickle, make_pickle, run=False)
+    engine = fd.my_iDMRG_pickle("phi_flow", path, model, chi_max, ham_params, run=False)
 
     for phi in np.linspace(ham_params['phi_min'], ham_params['phi_max'], ham_params['phi_samp']):
 
         if phi == ham_params['phi_min']:
             engine.run()
         else:
-            engine.engine_params['mixer'] = False
-            del engine.engine_params['chi_list']  # comment out this line for single site DMRG tests
+            engine.options['mixer'] = False
+            del engine.options['chi_list']  # comment out this line for single site DMRG tests
             ham_params.update(phi=phi)
             M = fd.define_iDMRG_model(model, ham_params)
             psi_old = engine.psi
@@ -83,5 +83,4 @@ if __name__ == '__main__':
 
     prog_args, stem_args, leaf_args = fa.parse_input_arguments("phi_flow")
 
-    my_phi_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args,
-                prog_args['use_pickle'], prog_args['make_pickle'])
+    my_phi_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args)

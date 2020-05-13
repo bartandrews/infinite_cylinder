@@ -10,7 +10,7 @@ import functions.func_dmrg as fd
 import functions.func_args as fa
 
 
-def my_kappa_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=False, make_pickle=False):
+def my_kappa_flow(path_flag, threads, model, chi_max, ham_params):
 
     path = "/home/bart/Desktop" if path_flag else ""  # specify the custom path
     prc.mkl_set_nthreads(threads)
@@ -31,8 +31,7 @@ def my_kappa_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=Fal
         ham_params.update(t5=kappa*t5)
         ham_params.update(t5dash=kappa*t5dash)
 
-        (E, psi, M, _, _) = fd.my_iDMRG_pickle("kappa_flow", path, model, chi_max, ham_params, use_pickle, make_pickle,
-                                         run=True)
+        (E, psi, M, _, _) = fd.my_iDMRG_pickle("kappa_flow", path, model, chi_max, ham_params, run=True)
 
         #######################
         # corr_len_kappa_flow #
@@ -68,5 +67,4 @@ if __name__ == '__main__':
 
     prog_args, stem_args, leaf_args = fa.parse_input_arguments("kappa_flow")
 
-    my_kappa_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args,
-                  prog_args['use_pickle'], prog_args['make_pickle'])
+    my_kappa_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args)

@@ -25,8 +25,8 @@ def parse_input_arguments(program):
                         help="name of model")
     stem.add_argument("-chi", "--chi_max", type=int, default=50, required=True, help="maximum MPS bond dimension")
 
-    prog.add_argument("-u_p", "--use_pickle", default=False, action='store_true', help="use a pickled state")
-    prog.add_argument("-m_p", "--make_pickle", default=False, action='store_true', help="make a pickled state")
+    if program == "ground_state":
+        prog.add_argument("-u_p", "--use_pickle", default=False, action='store_true', help="use a pickled state")
 
     leaf.add_argument("-Nmax", type=int, default=1, help="maximum number of particles per cluster "
                                                          "before an interaction occurs")

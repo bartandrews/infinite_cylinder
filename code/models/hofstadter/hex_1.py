@@ -21,12 +21,12 @@ class HofHex1Model(HofstadterModel):
         return lat
 
     def init_terms(self, params):
-        (creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
+        (creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
             HofstadterModel.init_terms(self, params)
 
         self.chemical_potential(mu)
         self.hex_1_hoppings(creation, annihilation, t1, nphi, nphi_2pi, LxMUC, phi_2pi)
-        self.offsite_interaction("Hex", V, Vtype, Vrange)
+        self.offsite_interaction("Hex", Nmax, V, Vtype, Vrange)
 
 
 if __name__ == "__main__":

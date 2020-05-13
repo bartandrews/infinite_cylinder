@@ -29,7 +29,7 @@ class HofHex1Hex5OrbitalModel(HofstadterModel):
         return lat
 
     def init_terms(self, params):
-        (creation, annihilation, nphi_default, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
+        (creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
             HofstadterModel.init_terms(self, params)
         t5 = get_parameter(params, 't5', 0, self.name)
         t5dash = get_parameter(params, 't5dash', 0, self.name)
@@ -37,7 +37,7 @@ class HofHex1Hex5OrbitalModel(HofstadterModel):
 
         self.chemical_potential(mu, extra_dof=True)
         self.onsite_interaction(U, 'Nx', 'Ny')
-        self.offsite_interaction("Hex", V, Vtype, Vrange, extra_dof=True)
+        self.offsite_interaction("Hex", Nmax, V, Vtype, Vrange, extra_dof=True)
         for orbital in ['x', 'y']:
             self.hex_1_hoppings(creation+orbital, annihilation+orbital, t1, nphi, nphi_2pi, LxMUC, phi_2pi)
             self.hex_5_hoppings(creation+orbital, annihilation+orbital, t5, nphi, nphi_2pi, LxMUC, phi_2pi)

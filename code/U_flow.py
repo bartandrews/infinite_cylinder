@@ -10,7 +10,7 @@ import functions.func_dmrg as fd
 import functions.func_args as fa
 
 
-def my_U_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=False, make_pickle=False):
+def my_U_flow(path_flag, threads, model, chi_max, ham_params):
 
     path = "/home/bart/Desktop" if path_flag else ""  # specify the custom path
     prc.mkl_set_nthreads(threads)
@@ -27,8 +27,7 @@ def my_U_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=False, 
     for U in np.linspace(ham_params['U_min'], ham_params['U_max'], ham_params['U_samp']):
 
         ham_params.update(U=U)
-        (E, psi, M, _, _) = fd.my_iDMRG_pickle("U_flow", path, model, chi_max, ham_params, use_pickle, make_pickle,
-                                               run=True)
+        (E, psi, M, _, _) = fd.my_iDMRG_pickle("U_flow", path, model, chi_max, ham_params, run=True)
 
         ###################
         # corr_len_U_flow #
@@ -63,5 +62,4 @@ if __name__ == '__main__':
 
     prog_args, stem_args, leaf_args = fa.parse_input_arguments("U_flow")
 
-    my_U_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args,
-              prog_args['use_pickle'], prog_args['make_pickle'])
+    my_U_flow(prog_args['path'], prog_args['threads'], stem_args['model'], stem_args['chi_max'], leaf_args)

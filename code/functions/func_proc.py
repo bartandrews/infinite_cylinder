@@ -5,9 +5,20 @@ import ntpath
 import inspect  # for main
 import pkgutil  # for main
 import fnmatch
+import binascii
 # --- infinite_cylinder imports
 from models.hofstadter.hofstadter import HofstadterModel  # for main
 import models.hofstadter as hofstadter  # for main
+
+
+###########################################
+# is_gz_file (check if a file is gzipped) #
+###########################################
+
+
+def is_gz_file(filepath):
+    with open(filepath, 'rb') as test_f:
+        return binascii.hexlify(test_f.read(2)) == b'1f8b'
 
 
 #######################################################################
@@ -21,13 +32,13 @@ def process_pickle_file_name(filepath):
 
     if ".pkl" not in filepath:
         raise ValueError("pickle file needs to parsed as first argument.")
-    if "E_psi_M" not in filepath:
+    if "state" not in filepath:
         raise ValueError("pickle file of the ground state needs to be targeted.")
 
     print("filepath = ", filepath)
     pickle = __file_name(filepath)
     print("pickle = ", pickle)
-    debased_pickle = str(pickle.replace("E_psi_M_", "").split(".pkl", 1)[0])
+    debased_pickle = str(pickle.replace("state_", "").split(".pkl", 1)[0])
     print("debased_pickle = ", debased_pickle)
     debased_pickle_entries = debased_pickle.split('_')
     model = debased_pickle_entries[0]
