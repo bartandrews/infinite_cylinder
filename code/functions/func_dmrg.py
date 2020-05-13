@@ -151,8 +151,7 @@ def my_iDMRG_pickle(program, path, model, chi_max, ham_params, use_pickle=False,
     if (use_pickle or make_pickle) and not run:
         raise ValueError("Using/making pickles is only implemented for computing the ground state.")
 
-    pickle_path = None
-    if use_pickle or make_pickle:  # determine the given pickle path
+    if run:
         pickle_stem = fp.file_name_stem("state", model, chi_max)
         pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
         os.makedirs(os.path.join(path, "pickles", f"{program}", f"{model}", ""), exist_ok=True)
@@ -160,39 +159,24 @@ def my_iDMRG_pickle(program, path, model, chi_max, ham_params, use_pickle=False,
         pickle_file = pickle_stem + pickle_leaf
         pickle_path = os.path.join(pickle_dir, pickle_file)
 
-    improve_flag = False
-    if use_pickle:  # get the information from the pickle
-        target_pickle_path = fp.largest_chi_pickle(pickle_dir, pickle_file, pickle_path, chi_max)
-        with (gzip.open if fp.is_gz_file(target_pickle_path) else open)(target_pickle_path, 'rb') as file1:
-            print("Reading pickle: ", target_pickle_path)
-            print("Writing pickle: ", pickle_path)
-            state_data = pickle.load(file1)
-            if target_pickle_path != pickle_path:  # improving on a complete pickle
-                if state_data['info']['shelve']:
-                    raise ValueError("Cannot improve on a shelved pickle. "
-                                     "Complete the pickle first by running at the same chi.")
-                else:
-                    improve_flag = True  # mark that we are improving on a complete pickle
-    else:
-        engine = None
-        state_data = None
+        if use_pickle:
+            target_pickle_path = fp.largest_chi_pickle(pickle_dir, pickle_file, pickle_path, chi_max)
+            with (gzip.open if fp.is_gz_file(target_pickle_path) else open)(target_pickle_path, 'rb') as file1:
+                print("Reading pickle: ", target_pickle_path)
+                print("Writing pickle: ", pickle_path)
+                state_data = pickle.load(file1)
+                if target_pickle_path != pickle_path:  # improving on a complete pickle
+                    if state_data['info']['shelve']:
+                        raise ValueError("Cannot improve on a shelved pickle. "
+                                         "Complete the pickle first by running at the same chi.")
 
-    if (state_data is not None and state_data['info']['shelve']) or not use_pickle or improve_flag:  # get the information by running iDMRG (either the information that we have is not complete, or we do not have the information, or we want to improve on the information)
-        if run:
-            if improve_flag:  # improving on a complete pickle
-                state_data = __my_iDMRG(model, chi_max, ham_params, state_data, run=True)
-            else:
-                state_data = __my_iDMRG(model, chi_max, ham_params, state_data, run=True)
-        else:
-            engine = __my_iDMRG(model, chi_max, ham_params, state_data, run=False)
-        if make_pickle:
-            with gzip.open(pickle_path, 'wb') as file2:
-                pickle.dump(state_data, file2)
+    my_iDMRG_output = __my_iDMRG(model, chi_max, ham_params, state_data, run=(True if run else False))
 
-    if run:
-        return state_data
-    else:
-        return engine
+    if make_pickle:
+        with gzip.open(pickle_path, 'wb') as file2:
+            pickle.dump(my_iDMRG_output, file2)
+
+    return my_iDMRG_output  # state_data or engine
 
 
 #####################################
@@ -243,6 +227,7 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
                            verbose=1)
 
     if state_data is not None:
+        # may need to add stuff here...
         dmrg_params.update({'init_env_data': state_data['init_env_data']})
 
     engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
