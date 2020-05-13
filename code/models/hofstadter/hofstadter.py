@@ -98,7 +98,7 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
                     if lattice != "Squ" or Vrange > 1:
                         raise ValueError("3-body interaction is only implemented for Squ1.")
                     # upper-right corner
-                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i-1), 0, tot_numb_op,
+                    self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,
                                             [(0, tot_numb_op, [0, 1]), (0, tot_numb_op, [1, 0])])
                     # upper-left corner
                     self.add_multi_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1), 0, tot_numb_op,

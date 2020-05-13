@@ -31,7 +31,7 @@ def my_kappa_flow(path_flag, threads, model, chi_max, ham_params, use_pickle=Fal
         ham_params.update(t5=kappa*t5)
         ham_params.update(t5dash=kappa*t5dash)
 
-        (E, psi, M) = fd.my_iDMRG_pickle("kappa_flow", path, model, chi_max, ham_params, use_pickle, make_pickle,
+        (E, psi, M, _, _) = fd.my_iDMRG_pickle("kappa_flow", path, model, chi_max, ham_params, use_pickle, make_pickle,
                                          run=True)
 
         #######################

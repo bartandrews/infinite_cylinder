@@ -4,6 +4,7 @@ import os
 import ntpath
 import inspect  # for main
 import pkgutil  # for main
+import fnmatch
 # --- infinite_cylinder imports
 from models.hofstadter.hofstadter import HofstadterModel  # for main
 import models.hofstadter as hofstadter  # for main
@@ -162,6 +163,48 @@ class Logger(object):
         # this handles the flush command by doing nothing.
         # you might want to specify some extra behavior here.
         pass
+
+
+###############################################################################################
+# largest_chi_pickle (for a given configuration, return the pickle path with the largest chi) #
+###############################################################################################
+
+
+def largest_chi_pickle(pickle_dir, pickle_file, pickle_path, chi_max):
+
+    # get the pkl file list for a given configuration at various chi
+    complete_list = os.listdir(path=pickle_dir)
+
+    file_split = pickle_file.split('_')
+    file_split[file_split.index("chi") + 1] = "*"
+    file_join = '_'.join(file_split)
+    file_general = file_join + "*"
+
+    pkl_file_list = []
+    for i, val in enumerate(complete_list):  # iterate through all files in the pickle directory
+        if fnmatch.fnmatch(val, file_general):
+            pkl_file_list.append(val)
+
+    # identify the file with largest chi for the pkl file list for a given configuration
+    largest_index = 0
+    largest_chi = 0
+    for i, val in enumerate(pkl_file_list):  # iterate through all files in the pickle directory
+        pkl1 = val.split('_')
+        if int(pkl1[pkl1.index('chi') + 1]) > largest_chi:
+            largest_index = i
+            largest_chi = int(pkl1[pkl1.index('chi') + 1])
+    largest_pkl_file = pkl_file_list[largest_index]
+
+    if chi_max == largest_chi:
+        print("Desired chi is equal to largest available chi.")
+        target_pickle_path = pickle_path
+    elif chi_max > largest_chi:
+        print("Desired chi is larger than largest available chi.")
+        target_pickle_path = os.path.join(pickle_dir, largest_pkl_file)
+    else:  # chi_max < largest_chi
+        raise ValueError("Desired chi is smaller than largest available chi. Pickle cannot be used.")
+
+    return target_pickle_path
 
 
 if __name__ == '__main__':
