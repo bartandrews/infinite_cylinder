@@ -38,7 +38,7 @@ def process_pickle_file_name(filepath):
     print("filepath = ", filepath)
     pickle = __file_name(filepath)
     print("pickle = ", pickle)
-    debased_pickle = str(pickle.replace("state_", "").split(".pkl", 1)[0])
+    debased_pickle = str(pickle.replace("E_psi_M_", "").replace("state_", "").split(".pkl", 1)[0])
     print("debased_pickle = ", debased_pickle)
     debased_pickle_entries = debased_pickle.split('_')
     model = debased_pickle_entries[0]

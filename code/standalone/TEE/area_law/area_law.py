@@ -52,7 +52,7 @@ def line_of_best_fit_values(LylB_list, SvN_list):
 if __name__ == '__main__':
 
     # specify the input file
-    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/BosHofSqu1/BosHofSqu1_nu_1_2_total.out'
+    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/BosHofSqu1/BosHofSqu1_nu_2_3_total.out'
 
     # plot with error bars?
     error_bars = True
@@ -157,65 +157,65 @@ if __name__ == '__main__':
     ax.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
     ax.set_xlim(0)
-    ax.set_ylim([-1, 3])
+    ax.set_ylim(-1)
 
     ####################################################################################################################
-
-    #fig = plt.figure()
-    #ax2 = plt.subplot(111)
-
-    # plot the data by flux density
-    LylB_total = []
-    for flux_density_index in range(len(flux_grouped_data)):
-        LylB, SvN, SvN_error = [], [], []
-        LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
-        for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
-            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                LylB_outliers.append(data_line[3])
-                SvN_outliers.append(data_line[4])
-                SvN_outliers_error.append(data_line[5])
-            else:
-                LylB_total.append(data_line[3])
-                LylB.append(data_line[3])
-                SvN.append(data_line[4])
-                SvN_error.append(data_line[5])
-
-    clist = []
-
-    xvalues = sorted(LylB_total, key=float)[:len(LylB_total)-2]
-
-    print(xvalues)
-
-    for LylB_min in xvalues:
-        # plot the line of best fit
-        LylB = []
-        SvN = []
-        for i, val in enumerate(grouped_data):
-            if any(math.isclose(j, val[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or val[2] < Ly_min:
-                continue
-            else:
-                if val[3] >= LylB_min:
-                    LylB.append(val[3])
-                    SvN.append(val[4])
-        m, m_err, c, c_err, r2_value = line_of_best_fit_values(LylB, SvN)
-        clist.append(ufloat(c, c_err))
-
-    latter_clist = clist[-int(len(clist)/2):]
-    measured_gamma = sum(latter_clist)/len(latter_clist)
-    print("measured_gamma = ", measured_gamma)
-    gamma_means = [clist[i].n for i in range(len(xvalues))]
-    gamma_errors = [clist[i].s for i in range(len(xvalues))]
-    ax.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3)
-
-    ax.axvline(xvalues[int(len(clist) / 2)], color='k', linewidth=0.5, ls='--')
-    ax.axhline(-np.log(np.sqrt(2)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
-    ax.axhline(measured_gamma.n, color='k', linewidth=1, ls='-', label="measured", zorder=1)
-
-    ax.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
-              edgecolor='k', markerscale=1,
-              fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
-
-    fig.text(0.6, 0.4, "$\\bar{{\gamma}}_{{>}}={g:.3f}\pm{g_err:.3f}$".format(g=abs(measured_gamma.n), g_err=measured_gamma.s))
+    #
+    # #fig = plt.figure()
+    # #ax2 = plt.subplot(111)
+    #
+    # # plot the data by flux density
+    # LylB_total = []
+    # for flux_density_index in range(len(flux_grouped_data)):
+    #     LylB, SvN, SvN_error = [], [], []
+    #     LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
+    #     for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
+    #         if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
+    #             LylB_outliers.append(data_line[3])
+    #             SvN_outliers.append(data_line[4])
+    #             SvN_outliers_error.append(data_line[5])
+    #         else:
+    #             LylB_total.append(data_line[3])
+    #             LylB.append(data_line[3])
+    #             SvN.append(data_line[4])
+    #             SvN_error.append(data_line[5])
+    #
+    # clist = []
+    #
+    # xvalues = sorted(LylB_total, key=float)[:len(LylB_total)-2]
+    #
+    # print(xvalues)
+    #
+    # for LylB_min in xvalues:
+    #     # plot the line of best fit
+    #     LylB = []
+    #     SvN = []
+    #     for i, val in enumerate(grouped_data):
+    #         if any(math.isclose(j, val[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or val[2] < Ly_min:
+    #             continue
+    #         else:
+    #             if val[3] >= LylB_min:
+    #                 LylB.append(val[3])
+    #                 SvN.append(val[4])
+    #     m, m_err, c, c_err, r2_value = line_of_best_fit_values(LylB, SvN)
+    #     clist.append(ufloat(c, c_err))
+    #
+    # latter_clist = clist[-int(len(clist)/2):]
+    # measured_gamma = sum(latter_clist)/len(latter_clist)
+    # print("measured_gamma = ", measured_gamma)
+    # gamma_means = [clist[i].n for i in range(len(xvalues))]
+    # gamma_errors = [clist[i].s for i in range(len(xvalues))]
+    # ax.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3)
+    #
+    # ax.axvline(xvalues[int(len(clist) / 2)], color='k', linewidth=0.5, ls='--')
+    # # ax.axhline(-np.log(np.sqrt(2)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
+    # ax.axhline(measured_gamma.n, color='k', linewidth=1, ls='-', label="measured", zorder=1)
+    #
+    # ax.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
+    #           edgecolor='k', markerscale=1,
+    #           fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
+    #
+    # fig.text(0.6, 0.4, "$\\bar{{\gamma}}_{{>}}={g:.3f}\pm{g_err:.3f}$".format(g=abs(measured_gamma.n), g_err=measured_gamma.s))
 
     plt.show()
 

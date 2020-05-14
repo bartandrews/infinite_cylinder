@@ -3,6 +3,7 @@ import time
 import sys
 import pickle
 import gzip
+import os
 # --- TeNPy imports
 import tenpy.tools.process as prc
 # --- infinite_cylinder imports
@@ -28,9 +29,13 @@ def my_observables(pickle_file, path_flag, threads, scalar, chiK_max):
     ####################################################################################################################
 
     with (gzip.open if fp.is_gz_file(pickle_file) else open)(pickle_file, 'rb') as file1:
-        state_data = pickle.load(file1)
+        if "E_psi_M" in os.path.split(pickle_file)[1]:  # backward compatibility
+            [E, psi, M, _, _] = pickle.load(file1)
+        else:
+            state_data = pickle.load(file1)
 
-    E, psi, M = state_data['E'], state_data['psi'], state_data['M']
+    if "E_psi_M" not in os.path.split(pickle_file)[1]:
+        E, psi, M = state_data['E'], state_data['psi'], state_data['M']
 
     fo.scalar_observables(E, psi)
     if not scalar:
