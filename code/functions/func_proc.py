@@ -181,7 +181,9 @@ class Logger(object):
 ###############################################################################################
 
 
-def largest_chi_pickle(pickle_dir, pickle_file, pickle_path, chi_max):
+def largest_chi_pickle(pickle_path, chi_max):
+
+    (pickle_dir, pickle_file) = os.path.split(pickle_path)
 
     # get the pkl file list for a given configuration at various chi
     complete_list = os.listdir(path=pickle_dir)
@@ -189,7 +191,7 @@ def largest_chi_pickle(pickle_dir, pickle_file, pickle_path, chi_max):
     file_split = pickle_file.split('_')
     file_split[file_split.index("chi") + 1] = "*"
     file_join = '_'.join(file_split)
-    file_general = file_join + "*"
+    file_general = file_join  # tagged files are not processed
 
     pkl_file_list = []
     for i, val in enumerate(complete_list):  # iterate through all files in the pickle directory

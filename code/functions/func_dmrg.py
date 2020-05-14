@@ -145,22 +145,19 @@ def define_iDMRG_model(model, ham_params):
 
 def my_iDMRG_pickle(program, path, model, chi_max, ham_params, use_pickle=False, make_pickle=False, run=True):
 
-    # The run parameter specifies whether you are running iDMRG or defining an iDMRG engine. Defining an iDMRG engine
-    # returns the engine, whereas running iDMRG returns [E, psi, M].
-
     if (use_pickle or make_pickle) and not run:
         raise ValueError("Using/making pickles is only implemented for computing the ground state.")
+
+    state_data = None  # initialize the state_data
 
     if run:
         pickle_stem = fp.file_name_stem("state", model, chi_max)
         pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
         os.makedirs(os.path.join(path, "pickles", f"{program}", f"{model}", ""), exist_ok=True)
-        pickle_dir = os.path.join(path, "pickles", f"{program}", f"{model}")
-        pickle_file = pickle_stem + pickle_leaf
-        pickle_path = os.path.join(pickle_dir, pickle_file)
+        pickle_path = os.path.join(path, "pickles", f"{program}", f"{model}", pickle_stem + pickle_leaf)
 
         if use_pickle:
-            target_pickle_path = fp.largest_chi_pickle(pickle_dir, pickle_file, pickle_path, chi_max)
+            target_pickle_path = fp.largest_chi_pickle(pickle_path, chi_max)
             with (gzip.open if fp.is_gz_file(target_pickle_path) else open)(target_pickle_path, 'rb') as file1:
                 print("Reading pickle: ", target_pickle_path)
                 print("Writing pickle: ", pickle_path)
@@ -169,6 +166,9 @@ def my_iDMRG_pickle(program, path, model, chi_max, ham_params, use_pickle=False,
                     if state_data['info']['shelve']:
                         raise ValueError("Cannot improve on a shelved pickle. "
                                          "Complete the pickle first by running at the same chi.")
+                else:  # improving on a shelved pickle
+                    if not state_data['info']['shelve']:
+                        raise ValueError("Complete pickle file already exists at this value of chi.")
 
     my_iDMRG_output = __my_iDMRG(model, chi_max, ham_params, state_data, run=(True if run else False))
 
@@ -227,20 +227,23 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
                            verbose=1)
 
     if state_data is not None:
-        # may need to add stuff here...
-        dmrg_params.update({'init_env_data': state_data['init_env_data']})
+        if state_data['info']['shelve']:
+            dmrg_params['sweep_0'] = state_data['info']['sweeps']
+        else:
+            del dmrg_params['mixer'], dmrg_params['mixer_params'], dmrg_params['chi_list']
+            dmrg_params['trunc_params']['chi_max'] = chi_max
+        dmrg_params['init_env_data'] = state_data['init_env_data']
 
+    # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
     engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
     if run:
         E, psi = engine.run()
         init_env_data = engine.env.get_initialization_data()
-        info = [{'dmrg_params': dmrg_params, 'shelve': engine.shelve,
-                 'update_stats': engine.update_stats, 'sweep_stats': engine.sweep_stats}]
+        info = {'dmrg_params': dmrg_params, 'shelve': engine.shelve, 'sweeps': engine.sweeps,
+                'update_stats': engine.update_stats, 'sweep_stats': engine.sweep_stats}
         state_data = {'E': E, 'psi': psi, 'M': M, 'init_env_data': init_env_data, 'info': info}
         return state_data
     else:
-        # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
-        # engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
         return engine
 
 
