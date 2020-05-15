@@ -67,7 +67,7 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
         t1 = params.get('t1', 1)
         mu = params.get('mu', 0)
         V = params.get('V', V_default)
-        Vtype = ('Vtype', 'Coulomb')
+        Vtype = params.get('Vtype', 'Coulomb')
         Vrange = params.get('Vrange', Vrange_default)
         nphi = params.get('nphi', nphi_default)
         nphi_2pi = 2 * np.pi * nphi[0] / nphi[1]

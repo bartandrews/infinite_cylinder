@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from fractions import Fraction as Frac
 import math
+import os
 
 
 def cost(q_val, Lx_val, Ly_val):
@@ -13,14 +14,29 @@ def LylB(nphi_val, Ly_val):
     return np.sqrt(2*np.pi*nphi_val)*Ly_val
 
 
+def construct_pkl_path(_model, _chi, _nn, _nd, _p, _q, _LxMUC, _Ly):
+
+    base_path = f"/home/bart/PycharmProjects/infinite_cylinder/pickles/ground_state/{_model}"
+    if model == "BosHofSqu1":
+        file_name = f"state_{_model}_chi_{_chi}_t1_1_n_{_nn}_{_nd}_nphi_{_p}_{_q}_LxMUC_{_LxMUC}_Ly_{_Ly}.pkl"
+    elif model == "FerHofSqu1":
+        file_name = f"state_{_model}_chi_{_chi}_t1_1_V_10_Coulomb_1_n_{_nn}_{_nd}_nphi_{_p}_{_q}_LxMUC_{_LxMUC}_Ly_{_Ly}.pkl"
+    else:
+        raise ValueError("Unsupported model for construct_pkl_path function.")
+
+    file_name_old = file_name.replace("state", "E_psi_M")
+
+    return base_path, file_name, file_name_old
+
+
 if __name__ == '__main__':
 
-    model = "BosHofSqu1"  # desired model (for command labelling)
-    nu = 1 / 2  # desired filling factor
-    chi = 800  # desired chi (for command labelling)
-    Ly_min, Ly_max = 3, 15  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
-    LylB_min, LylB_max = 10, 15  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
-    LylB_separation = 0.5  # keep all LylB values at least this distance away from each other
+    model = "FerHofSqu1"  # desired model (for command labelling)
+    nu = 1 / 3  # desired filling factor
+    chi = 950  # desired chi (for command labelling)
+    Ly_min, Ly_max = 4, 15  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
+    LylB_min, LylB_max = 10, 20  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
+    LylB_separation = 0.1  # keep all LylB values at least this distance away from each other
     Nmin = 2  # minimum number of particles required in the system
 
     counter = 0
@@ -55,15 +71,13 @@ if __name__ == '__main__':
         for line in sorted_array:
             print(f"{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}")
             n = Frac(str(nu*line[2]/line[3])).limit_denominator(100)
-            for chi_val in [chi - 50, chi]:
+
+            pickle_path, pickle_file, pickle_file_old = construct_pkl_path(model, chi, n.numerator, n.denominator, int(line[2]), int(line[3]), int(line[0]), int(line[1]))
+            if (pickle_file or pickle_file_old) not in os.listdir(pickle_path):
                 if "Bos" in model:
-                    file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} "
-                               f"-t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} "
-                               f"-LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+                    file.write(f"echo \"python code/ground_state.py -thr 1 -mod {model} -chi {chi} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}; python code/ground_state.py -thr 1 -mod {model} -chi {chi+50} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])} -u_p\"\n")
                 else:  # "Fer"
-                    file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} "
-                               f"-t1 1 -V 10 -Vtype \"Coulomb\" -Vrange 1 -n {n.numerator} {n.denominator} "
-                               f"-nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+                    file.write(f"echo \"python code/ground_state.py -thr 1 -mod {model} -chi {chi} -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}; python code/ground_state.py -thr 1 -mod {model} -chi {chi+50} -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])} -u_p\"\n")
 
     # plot the figure
     fig = plt.figure()
