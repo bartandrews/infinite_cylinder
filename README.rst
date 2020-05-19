@@ -356,6 +356,33 @@ Masters project: Madhav Mohan
 
 All of the code needed for this project is already implemented. The challenge lies in building enough experience in performing iDMRG calculations to understand when the results can be trusted as we push the algorithm to its limits.
 
+HPC Workflow
+------------
+
+laptop = assumed to be the computer you are working on
+
+dart = the main hub for all computational data
+
+remotes = remote computers used for running jobs (e.g. dart, dirac, weyl)
+
+1) **run.sh** -- run programs on remotes (execute on remotes)
+2) **sync_pickles.sh** -- sync pickles from remotes to dart. Will ask before syncing. (execute on laptop)
+3) **run_obs.sh** -- run observables on dart/remotes (execute on dart/remotes)
+4) **sync_logs.sh** -- sync log_observables from dart to laptop. Will ask before syncing. (execute on laptop)
+5) **log_analysis.py** -- analyse the log_observables files (execute in directory)
+
+Helper scripts:
+
+* **keep_top_two.py** -- delete all files other than those with the largest two values of chi for each configuration. Will ask before deleting. (execute in directory)
+* **list_configs.py** -- generate a sorted list of all configurations in a directory (execute in directory)
+* **configurations.py** -- generate a sorted list of all commands to run in a given Ly/lB interval (execute anywhere)
+
+Consequences of the workflow:
+
+* Any pickles on remotes (other than dart) haven not yet been copied to dart, since pickles are deleted after they are copied.
+* All ``logs/observables`` directories on remotes (other than dart) should be empty, since ``run_obs.sh`` should only be run from dart.
+* All ``logs/ground_state`` directories are left as they are, since they may contain error messages from crashed runs.
+
 References
 ----------
 

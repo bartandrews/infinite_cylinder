@@ -1,5 +1,8 @@
-# This script ignores tagged files
-# This script assumes the same number of entries in each file name
+# log_analysis.py --- analyse the log_observables files (execute in directory)
+#
+# Conditions:
+# - tagged files are ignored
+# - this script assumes the same number of entries in each file name
 
 # --- python imports
 import os
@@ -11,7 +14,7 @@ from colorama import Style
 from fractions import Fraction as Frac
 from operator import itemgetter
 import ast
-import sys
+
 
 ###################################
 # key function for the model sort #
@@ -184,6 +187,7 @@ if __name__ == '__main__':
                 SvN_perc_error = (SvN_error / SvN_estimate) * 100  # percentage error
             else:
                 SvN_estimate = max_SvN
+                SvN_error = float('nan')
                 SvN_perc_error = float('nan')
 
             if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < 0.1:  # compute the status
