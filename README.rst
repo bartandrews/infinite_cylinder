@@ -379,7 +379,7 @@ Helper scripts:
 
 Consequences of the workflow:
 
-* Any pickles on remotes (other than dart) haven not yet been copied to dart, since pickles are deleted after they are copied.
+* Any pickles on remotes (other than dart) have not yet been copied to dart, since pickles are deleted after they are copied.
 * All ``logs/observables`` directories on remotes (other than dart) should be empty, since ``run_obs.sh`` should only be run from dart.
 * All ``logs/ground_state`` directories are left as they are, since they may contain error messages from crashed runs.
 
