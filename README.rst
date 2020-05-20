@@ -375,7 +375,7 @@ Helper scripts:
 
 * **keep_top_two.py** -- delete all files other than those with the largest two values of chi for each configuration. Will ask before deleting. (execute in directory)
 * **list_configs.py** -- generate a sorted list of all configurations in a directory (execute in directory)
-* **configurations.py** -- generate a sorted list of all commands to run in a given Ly/lB interval (execute anywhere)
+* **configurations.py** -- generate a sorted list of all commands to run in a given Ly/lB interval (execute on dart)
 
 Consequences of the workflow:
 

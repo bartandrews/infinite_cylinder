@@ -1,3 +1,5 @@
+# myst_crash.py --- list system sizes for all (un)successful log_ground_state files (execute in logs/ground_state directory)
+
 import os
 
 if __name__ == '__main__':
@@ -17,7 +19,7 @@ if __name__ == '__main__':
         with open(val, 'r') as f:
             lines = f.read().splitlines()
             last_line = lines[-1]
-            if "Total" not in last_line:
+            if "Total" in last_line:
                 print(val)
                 # print(last_line)
                 debased_val = str(val.replace("log_ground_state_", "").split(".dat", 1)[0])

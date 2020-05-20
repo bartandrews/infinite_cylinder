@@ -6,6 +6,7 @@ from itertools import groupby
 import math
 from scipy import stats
 from uncertainties import unumpy, ufloat
+import matplotlib.gridspec as gridspec
 
 
 ##################
@@ -38,6 +39,27 @@ def line_of_best_fit(LylB_list, SvN_list):
 
     return m, m_err, c, c_err, r2_value
 
+############################################
+# line of best fit function for R^2 > 0.99 #
+############################################
+
+
+def straight_line_of_best_fit(LylB_list, SvN_list):
+
+    parameters, cov = np.polyfit(LylB_list, SvN_list, 1, cov=True)
+    _, _, r_value, _, _ = stats.linregress(LylB_list, SvN_list)
+    m, m_err, c, c_err = parameters[0], np.sqrt(cov[0][0]), parameters[1], np.sqrt(cov[1][1])
+    r2_value = r_value*r_value
+
+    print("SvN = m*(Ly/lB) + c")
+    print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
+    xvalues = np.arange(max(LylB_list) + 1)
+    ax.plot(xvalues, m * xvalues + c, '-', c='k', zorder=0)
+    ax.text(12, 0, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.10f}$".format(
+        gradient=m, intercept=c, cerror=c_err, rsquared=r2_value))
+
+    return m, m_err, c, c_err, r2_value
+
 
 def line_of_best_fit_values(LylB_list, SvN_list):
 
@@ -52,7 +74,7 @@ def line_of_best_fit_values(LylB_list, SvN_list):
 if __name__ == '__main__':
 
     # specify the input file
-    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/FerHofSqu1/FerHofSqu1_nu_1_3_accepted.out'
+    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/BosHofSqu1/BosHofSqu1_nu_1_2_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -81,10 +103,12 @@ if __name__ == '__main__':
                                LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
                                LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
                                LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
-        ####################################################################################################################
+    ####################################################################################################################
 
     fig = plt.figure()
-    ax = plt.subplot(111)
+    gs = gridspec.GridSpec(3, 1, height_ratios=[1, 1, 1])
+
+    ax = plt.subplot(gs[0])
 
     # append data from file to a list
     data = []
@@ -144,11 +168,22 @@ if __name__ == '__main__':
         if any(math.isclose(j, val[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or val[2] < Ly_min:
             continue
         else:
-            if val[3] > 10:
-                LylB.append(val[3])
-                SvN.append(val[4])
+            LylB.append(val[3])
+            SvN.append(val[4])
 
-    line_of_best_fit(LylB, SvN)
+    plot_data = np.column_stack((LylB, SvN))
+    sorted_plot_data = plot_data[plot_data[:, 0].argsort()]
+    length = len(sorted_plot_data)
+
+    for i in range(length):
+        _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+        if r2value > 0.99:
+            straight_line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+            critical_LylB = sorted_plot_data[0][0]
+            break
+        sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    ax.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
 
     ax.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
               edgecolor='k', markerscale=1,
@@ -156,10 +191,12 @@ if __name__ == '__main__':
     ax.set_title(file)
     ax.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
-    ax.set_xlim(0)
+    ax.set_xlim(0, 15)
     ax.set_ylim(-1, 3)
 
     ####################################################################################################################
+
+    ax1 = plt.subplot(gs[1])
 
     # plot the data by flux density
     LylB_total = []
@@ -178,10 +215,11 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
 
     clist = []
+    r2list = []
 
     xvalues = sorted(LylB_total, key=float)[:len(LylB_total)-2]
 
-    print(xvalues)
+    # print(xvalues)
 
     for LylB_min in xvalues:
         # plot the line of best fit
@@ -196,26 +234,43 @@ if __name__ == '__main__':
                     SvN.append(val[4])
         m, m_err, c, c_err, r2_value = line_of_best_fit_values(LylB, SvN)
         clist.append(ufloat(c, c_err))
+        r2list.append(r2_value)
 
     latter_clist = clist[-int(len(clist)/2):]
     measured_gamma = sum(latter_clist)/len(latter_clist)
-    print("measured_gamma = ", measured_gamma)
+    # print("measured_gamma = ", measured_gamma)
     gamma_means = [clist[i].n for i in range(len(xvalues))]
     gamma_errors = [clist[i].s for i in range(len(xvalues))]
-    ax.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3)
+    ax1.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
-    ax.axvline(xvalues[int(len(clist) / 2)], color='k', linewidth=0.5, ls='--')
     if "BosHofSqu1" in file:
-        ax.axhline(-np.log(np.sqrt(2)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
+        ax1.axhline(-np.log(np.sqrt(2)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
     elif "FerHofSqu1" in file:
-        ax.axhline(-np.log(np.sqrt(3)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
-    ax.axhline(measured_gamma.n, color='k', linewidth=1, ls='-', label="measured", zorder=1)
+        ax1.axhline(-np.log(np.sqrt(3)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
 
-    ax.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
-              edgecolor='k', markerscale=1,
-              fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
+    ax1.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
+               edgecolor='k', markerscale=1,
+               fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
+    ax1.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
+    ax1.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
+    ax1.set_ylabel("$\gamma$", fontsize=11)
+    ax1.set_xlim(0, 15)
 
-    fig.text(0.6, 0.4, "$\\bar{{\gamma}}_{{>}}={g:.3f}\pm{g_err:.3f}$".format(g=abs(measured_gamma.n), g_err=measured_gamma.s))
+    ####################################################################################################################
+
+    ax2 = plt.subplot(gs[2])
+
+    ax2.scatter(xvalues, r2list, color='k', marker='x', s=10)
+    ax2.axhline(0.99, color='r', linewidth=1, label="threshold", zorder=2)
+
+    ax2.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
+               edgecolor='k', markerscale=1,
+               fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
+    ax2.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
+    ax2.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
+    ax2.set_ylabel("$R^2$", fontsize=11)
+    ax2.set_xlim(0, 15)
+    ax2.set_ylim(0.9, 1)
 
     plt.show()
 
