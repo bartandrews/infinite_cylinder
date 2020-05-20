@@ -74,7 +74,7 @@ def line_of_best_fit_values(LylB_list, SvN_list):
 if __name__ == '__main__':
 
     # specify the input file
-    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/BosHofSqu1/BosHofSqu1_nu_1_2_accepted.out'
+    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/FerHofSqu1/FerHofSqu1_nu_1_3_accepted.out'
 
     # plot with error bars?
     error_bars = True
