@@ -11,39 +11,37 @@ from fractions import Fraction as Frac
 import math
 import os
 import fnmatch
+from colorama import Fore
+from colorama import Style
 
 
-def cost(q_val, Lx_val, Ly_val):
-    cost_val = q_val * Lx_val * np.exp(Ly_val)
-    return cost_val
+def cost(p_val, q_val, Lx_val, Ly_val):
+    nphi_val = p_val/q_val
+    processing_cost = np.exp(nphi_val*20) * q_val * Lx_val * np.exp(Ly_val)
+    return processing_cost
 
 
 def LylB(nphi_val, Ly_val):
     return np.sqrt(2*np.pi*nphi_val)*Ly_val
 
 
-def construct_pkl_path(_model, _chi, _nn, _nd, _p, _q, _LxMUC, _Ly):
-
-    base_path = f"/home/bart/PycharmProjects/infinite_cylinder/pickles/ground_state/{_model}"
-    if model == "BosHofSqu1":
-        file_name = f"state_{_model}_chi_*_t1_1_n_{_nn}_{_nd}_nphi_{_p}_{_q}_LxMUC_{_LxMUC}_Ly_{_Ly}.pkl"
-    elif model == "FerHofSqu1":
-        file_name = f"state_{_model}_chi_*_t1_1_V_10_Coulomb_1_n_{_nn}_{_nd}_nphi_{_p}_{_q}_LxMUC_{_LxMUC}_Ly_{_Ly}.pkl"
-    else:
-        raise ValueError("Unsupported model for construct_pkl_path function.")
-
-    file_name_old = file_name.replace("state", "E_psi_M")
-
-    return base_path, file_name, file_name_old
+def min_diff(list_val):  # returns minimum difference between any pair
+    n = len(list_val)  # length of the list
+    list_val = sorted(list_val)  # sort array in non-decreasing order
+    diff = 10 ** 20  # initialize difference as infinite
+    for i in range(n - 1):  # find the min diff by comparing adjacent pairs in sorted array
+        if list_val[i + 1] - list_val[i] < diff:
+            diff = list_val[i + 1] - list_val[i]
+    return diff
 
 
 if __name__ == '__main__':
 
-    model = "FerHofSqu1"  # desired model (for command labelling)
+    model = "FerHofSqu1"  # desired model
     nu = 1 / 3  # desired filling factor
-    chi = 1000  # desired chi (for command labelling)
-    Ly_min, Ly_max = 4, 15  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
-    LylB_min, LylB_max = 10, 20  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
+    chi = 1000  # desired max chi (for command labelling)
+    Ly_min, Ly_max = 4, 100  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
+    LylB_min, LylB_max = 8, 100  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
     LylB_separation = 0.1  # keep all LylB values at least this distance away from each other
     Nmin = 2  # minimum number of particles required in the system
 
@@ -56,18 +54,29 @@ if __name__ == '__main__':
                 nphi = p/q
                 if (LylB_min/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (LylB_max/Ly)**2/(2*np.pi)):
                     for Lx in range(1, 11):
-                        if Lx >= 2 and q*Lx*Ly > 150:  # reject higher Lx values if there is a large associated memory cost
-                            break
-                        if abs(nu*nphi*q*Lx*Ly - int(nu*nphi*q*Lx*Ly)) < 1e-7:  # if number of particles is an integer then accept, otherwise try a larger Lx
-                            if int(nu*nphi*q*Lx*Ly) >= Nmin:  # check that there are at least Nmin particles
-                                if counter == 0:
-                                    data = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
-                                else:
-                                    if all(abs(i - LylB(nphi, Ly)) >= LylB_separation for i in list(data[:, 4])):
-                                        data_line = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(q, Lx, Ly)]])
-                                        data = np.concatenate((data, data_line))
-                                counter += 1
-                                break
+                        if q * Lx * Ly <= 100:  # limit the system size (for memory consumption)
+                            if abs(nu*nphi*q*Lx*Ly - int(nu*nphi*q*Lx*Ly)) < 1e-7:  # if number of particles is an integer then accept, otherwise try a larger Lx
+                                if int(nu*nphi*q*Lx*Ly) >= Nmin:  # check that there are at least Nmin particles
+                                    if counter == 0:
+                                        data = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(p, q, Lx, Ly)]])
+                                    else:
+                                        if all(abs(i - LylB(nphi, Ly)) >= LylB_separation for i in list(data[:, 4])):
+                                            data_line = np.array([[Lx, Ly, p, q, LylB(nphi, Ly), cost(p, q, Lx, Ly)]])
+                                            data = np.concatenate((data, data_line))
+                                        else:
+                                            for i in list(data[:, 4]):  # for all the existing LylB values
+                                                if abs(i - LylB(nphi, Ly)) < LylB_separation:
+                                                    current_config = [Lx, Ly, p, q, LylB(nphi, Ly), cost(p, q, Lx, Ly)]
+                                                    existing_config = data[np.where(data[:, 4] == i)].tolist()[0]
+                                                    if current_config[5] < existing_config[5]:  # if the cost of the current config is lower than the existing config
+                                                        provisional_data = np.copy(data)
+                                                        provisional_data[np.where(provisional_data[:, 4] == i)] = np.array([current_config])  # tentatively replace rows
+                                                        if abs(min_diff(provisional_data[:, 4])) >= LylB_separation:  # if all points still have the required separation
+                                                            data = np.copy(provisional_data)  # actually replace rows
+                                                            print("Replaced", existing_config, "with", current_config)
+                                                            break
+                                    counter += 1
+                                    break
 
     # sort the array by cost
     sorted_array = data[np.argsort(data[:, 5])]
@@ -75,22 +84,28 @@ if __name__ == '__main__':
     # normalize the cost column
     sorted_array[:, 5] = sorted_array[:, 5] / sorted_array[0][5]
 
-    # print to the screen and file only the configurations that do not already exist
-    print("Lx\tLy\tp\tq\tLylB\tcost")
-    with open("configurations.out", 'w') as file:
-        for line in sorted_array:
-            n = Frac(str(nu*line[2]/line[3])).limit_denominator(100)
-            pickle_path, pickle_file, pickle_file_old = construct_pkl_path(model, chi, n.numerator, n.denominator, int(line[2]), int(line[3]), int(line[0]), int(line[1]))
-            pickle_files = [pickle_file, pickle_file_old]
-            if any(fnmatch.fnmatch(x, pickle_file) for x in os.listdir(pickle_path)) or any(fnmatch.fnmatch(y, pickle_file_old) for y in os.listdir(pickle_path)):
-                continue
-            else:
-                print(f"{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}")
-                for chi_val in [chi-50, chi]:
-                    if "Bos" in model:
-                        file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
-                    else:  # "Fer"
-                        file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+    # print to the screen the first 50 configurations in ascending cost
+    # print to the file the commands for those configurations that do not already exist in pickle_path
+    pickle_path = f"/home/bart/PycharmProjects/infinite_cylinder/pickles/ground_state/{model}"
+    counter = 0
+    nu_frac = Frac(str(nu)).limit_denominator(10)
+    with open(f"{model}_nu_{nu_frac.numerator}_{nu_frac.denominator}_allowed.out", "w") as file2:
+        print("Lx\tLy\tp\tq\tLylB\tcost")
+        with open("configurations.out", 'w') as file:
+            for line in sorted_array:
+                n = Frac(str(nu*line[2]/line[3])).limit_denominator(100)
+                if counter < 20:
+                    if any(fnmatch.fnmatch(x, f"*_n_{n.numerator}_{n.denominator}_nphi_{int(line[2])}_{int(line[3])}_LxMUC_{int(line[0])}_Ly_{int(line[1])}*") for x in os.listdir(pickle_path)):
+                        print(f"{Fore.GREEN}{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}{Style.RESET_ALL}")
+                    else:
+                        print(f"{Fore.RED}{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}{Style.RESET_ALL}")
+                        for chi_val in [chi-50, chi]:
+                            if "Bos" in model:
+                                file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+                            else:  # "Fer"
+                                file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")
+                    file2.write(f"{int(line[2])}\t{int(line[3])}\t{int(line[1])}\t-\t-\t-\n")
+                    counter += 1
 
     # plot the figure
     fig = plt.figure()

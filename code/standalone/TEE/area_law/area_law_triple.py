@@ -243,10 +243,12 @@ if __name__ == '__main__':
     gamma_errors = [clist[i].s for i in range(len(xvalues))]
     ax1.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
-    if "BosHofSqu1" in file:
+    if "nu_1_2" in file:
         ax1.axhline(-np.log(np.sqrt(2)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
-    elif "FerHofSqu1" in file:
+    elif "nu_1_3" in file or "nu_2_3" in file:
         ax1.axhline(-np.log(np.sqrt(3)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
+    elif "nu_2_5" in file:
+        ax1.axhline(-np.log(np.sqrt(5)), color='r', linewidth=2, ls=(0, (5, 10)), label="theory", zorder=2)
 
     ax1.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,

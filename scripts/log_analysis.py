@@ -189,7 +189,7 @@ if __name__ == '__main__':
                 SvN_perc_error = (SvN_error / SvN_estimate) * 100  # percentage error
             else:
                 SvN_estimate = max_SvN
-                SvN_error = float('nan')
+                # SvN_error = float('nan')
                 SvN_perc_error = float('nan')
 
             if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < 0.1:  # compute the status
