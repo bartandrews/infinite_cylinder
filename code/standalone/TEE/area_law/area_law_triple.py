@@ -7,6 +7,7 @@ import math
 from scipy import stats
 from uncertainties import unumpy, ufloat
 import matplotlib.gridspec as gridspec
+import os
 
 
 ##################
@@ -73,14 +74,20 @@ def line_of_best_fit_values(LylB_list, SvN_list):
 
 if __name__ == '__main__':
 
+    model="BosHofSqu1"
+    filling="nu_1_2"
+
     # specify the input file
-    file = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/FerHofSqu1/FerHofSqu1_nu_1_3_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
 
     # identify the outliers?
     identify_outliers = False
+
+    # plot only the systematically collected points for Ly/lB > 8?
+    systematic_points = False
 
     # set Ly_min
     Ly_min = 0
@@ -118,7 +125,7 @@ if __name__ == '__main__':
         for row in plots:
             data.append(int(row[0]))
             data.append(int(row[1]))
-            data.append(float(row[2]))
+            data.append(int(row[2]))
             data.append(float(row[3]))
             data.append(float(row[4]))
             data.append(float(row[5]))
@@ -130,6 +137,35 @@ if __name__ == '__main__':
     while i < len(data):
         grouped_data.append(data[i:i + 6])
         i += 6
+
+    # delete lines of data such that only systematic points are left for Ly/lB > 8
+    if systematic_points:
+        file2 = f'/home/bart/PycharmProjects/infinite_cylinder/scripts/{model}_{filling}_allowed.out'
+        sys_data = []
+        with open(file2, 'r') as csvfile:
+            sys_plots = csv.reader(csvfile, delimiter='\t')
+            line_count = 0
+            for row in sys_plots:
+                sys_data.append(int(row[0]))
+                sys_data.append(int(row[1]))
+                sys_data.append(int(row[2]))
+                line_count += 1
+        # group the list into lines of the file
+        i = 0
+        sys_grouped_data = []
+        while i < len(sys_data):
+            sys_grouped_data.append(sys_data[i:i + 3])
+            i += 3
+        del_indices = []
+        for i, val in enumerate(grouped_data):
+            if val[3] > 8:
+                if any(val[:3] == allowed for allowed in sys_grouped_data):
+                    continue
+                else:
+                    del_indices.append(i)
+
+        new_grouped_data = [i for j, i in enumerate(grouped_data) if j not in del_indices]
+        grouped_data = new_grouped_data
 
     # group data by flux density
     flux_grouped_data = [list(i) for j, i in groupby(grouped_data, key=lambda a: a[0]/a[1])]
@@ -272,7 +308,7 @@ if __name__ == '__main__':
     ax2.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
     ax2.set_ylabel("$R^2$", fontsize=11)
     ax2.set_xlim(0, 15)
-    ax2.set_ylim(0.9, 1)
+    ax2.set_ylim([None, 1])
 
     plt.show()
 
