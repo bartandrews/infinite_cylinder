@@ -38,7 +38,7 @@ def min_diff(list_val):  # returns minimum difference between any pair
 if __name__ == '__main__':
 
     model = "FerHofSqu1"  # desired model
-    nu = 1 / 3  # desired filling factor
+    nu = 2 / 5  # desired filling factor
     chi = 1000  # desired max chi (for command labelling)
     Ly_min, Ly_max = 4, 100  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
     LylB_min, LylB_max = 8, 100  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max

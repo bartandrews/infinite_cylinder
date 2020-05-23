@@ -14,6 +14,10 @@ import matplotlib.ticker as ticker
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import ConnectionPatch
 
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.verbose.level = 'debug-annoying'
+
 if __name__ == '__main__':
 
     fig = plt.figure()
@@ -36,6 +40,8 @@ if __name__ == '__main__':
             phi.append(float(row[0]))
             charge.append(float(row[1]))
 
+    charge = [i - charge[0] for i in charge]
+
     ax1.plot(phi, charge, 's', marker='x', color='k', markersize=3)
 
     ax1.axhline(charge[0], color='k', linewidth=0.5, ls='--')
@@ -43,49 +49,33 @@ if __name__ == '__main__':
     ax1.axvline(1, color='k', linewidth=0.5, ls='--')
     ax1.axvline(2, color='k', linewidth=0.5, ls='--')
 
-    ax1.set_xlim(0)
     ax1.tick_params(axis="x", labelsize=10)
+    ax1.set_xlim([0, 2])
     ax1.tick_params(axis="y", labelsize=10)
+    ax1.set_ylim([0, 1])
     ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax1.set_ylabel("$\langle Q_\mathrm{L} \\rangle$", fontsize=11)
 
     ############################################
 
-    left, bottom, width, height = [0.11, 0.215 + 0.12, 0.25, 0.25]  # left = 0.12
+    # left, bottom, width, height = [0.1, 0.535, 0.35, 0.35]
+    left, bottom, width, height = [0.215, 0.535, 0.25, 0.25]  # left = 0.12
     ax5 = fig.add_axes([left, bottom, width, height], projection='3d')
 
     r = 5
 
-    end = 6
-    point_size = 2
+    end = 15
+    point_size = 1.5
 
     for y in range(0, end, 2):
-        theta = np.linspace(0, 2 * np.pi, 11)
+        theta = np.linspace(0, 2 * np.pi, 16)
         z = r * np.cos(theta)
         x = r * np.sin(theta)
         ax5.scatter(x, y, z, label='parametric curve', c='b', s=point_size)
-
-        theta = np.linspace((1 / 20) * 2 * np.pi, (1 + 1 / 20) * 2 * np.pi, 11)
-        y = y + 1 / 3
-        z = r * np.cos(theta)
-        x = r * np.sin(theta)
-        ax5.scatter(x, y, z, label='parametric curve', c='r', s=point_size)
-
-        theta = np.linspace((1 / 20) * 2 * np.pi, (1 + 1 / 20) * 2 * np.pi, 11)
-        y = y + 2 / 3
-        z = r * np.cos(theta)
-        x = r * np.sin(theta)
-        ax5.scatter(x, y, z, label='parametric curve', c='b', s=point_size)
-
-        theta = np.linspace(0, 2 * np.pi, 11)
-        y = y + 1 / 3
-        z = r * np.cos(theta)
-        x = r * np.sin(theta)
-        ax5.scatter(x, y, z, label='parametric curve', c='r', s=point_size)
 
     # cut
     xx, zz = np.meshgrid(np.linspace(-7, 7, 10), np.linspace(-7, 7, 10))
-    yy = end / 2
+    yy = (end-1) / 2
     ax5.plot_surface(xx, yy, zz, alpha=0.25)
 
     # arrow
@@ -94,7 +84,7 @@ if __name__ == '__main__':
 
     # cylinder
     angle = np.linspace(0, 2 * np.pi, 21)
-    length = np.linspace(0, end - 2 / 3, 13)
+    length = np.linspace(0, end-1, 13)
     theta, y = np.meshgrid(angle, length)
     z = r * np.cos(theta)
     x = r * np.sin(theta)
@@ -176,26 +166,39 @@ if __name__ == '__main__':
     density_file = 'density_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_1_9_nphi_1_3_LxMUC_1_Ly_9.dat'
     density_path = os.path.join(density_dir, density_file)
 
+    # for the colorbar scale
+    av_rho = 1/9
+
+    # for tick labelling (in units of lattice constant)
+    Lx, Ly = 3, 9
+
     # extract data from file
     with open(density_path, 'r') as file:
-        mat = [[float(num) for num in line.split('\t')] for line in file]
+        mat = [[float(num)-av_rho for num in line.split('\t')] for line in file]
 
     matrix = np.array(mat).transpose()
 
     divider = make_axes_locatable(ax3)
     cax = divider.append_axes('right', size='10%', pad=0.10)
     ax3.set_xlabel("$L_x$", fontsize=11)
+    ax3.set_xticks(np.arange(Lx, step=1))
+    ax3.set_xticklabels([i + 1 for i in range(Lx)])
     ax3.set_ylabel("$L_y$", fontsize=11)
+    ax3.set_yticks(np.arange(Ly, step=1))
+    ax3.set_yticklabels([i + 1 for i in range(Ly)])
     im = ax3.imshow(matrix, origin='lower')
 
-    # def fmt(x, pos):
-    #     a, b = '{:.2e}'.format(x).split('e')
-    #     b = int(b)
-    #     return r'${} \times 10^{{{}}}$'.format(a, b)
-    #
-    # fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle$', format=ticker.FuncFormatter(fmt))
+    def fmt(x, pos):
+        a, b = '{:.0e}'.format(x).split('e')
+        b = int(b)
+        if int(a) == 0:
+            return r'$0$'
+        else:
+            return r'${} \times 10^{{{}}}$'.format(a, b)
 
-    fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle$')
+    fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle  - \\bar{\\rho}$', format=ticker.FuncFormatter(fmt))
+
+    # fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle - \\bar{\\rho}$')
 
     ax3.set_position([0.1, 0.1, 0.35, 0.35])
 
@@ -207,6 +210,9 @@ if __name__ == '__main__':
     corr_func_file = 'corr_func_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_1_9_nphi_1_3_LxMUC_1_Ly_9.dat'
     corr_func_path = os.path.join(corr_func_dir, corr_func_file)
 
+    # for tick labelling (in units of lattice constant)
+    Lx, Ly = 3, 9
+
     # extract data from file
     with open(corr_func_path, 'r') as file:
         mat = [[float(num) for num in line.split('\t')] for line in file]
@@ -216,18 +222,22 @@ if __name__ == '__main__':
     divider = make_axes_locatable(ax4)
     cax = divider.append_axes('right', size='10%', pad=0.10)
     ax4.set_xlabel("$L_x$", fontsize=11)
+    ax4.set_xticks(np.arange(Lx, step=1))
+    ax4.set_xticklabels([i+1 for i in range(Lx)])
     ax4.set_ylabel("$L_y$", fontsize=11)
-    im = ax4.imshow(matrix, origin='lower')
-    fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle :\\rho_0 \\rho_i : \\rangle$')
+    ax4.set_yticks(np.arange(Ly, step=1))
+    ax4.set_yticklabels([i + 1 for i in range(Ly)])
+    im = ax4.imshow(matrix, origin='lower', vmin=0)
+    fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle :\mathrel{\\rho_0 \\rho_i}: \\rangle$')
 
     ax4.set_position([0.54, 0.1, 0.35, 0.35])
 
     ####################################################################################################################
 
-    fig.text(0.05, 0.9, "(a)", fontsize=12)
-    fig.text(0.49, 0.9, "(b)", fontsize=12)
-    fig.text(0.05, 0.45, "(c)", fontsize=12)
-    fig.text(0.49, 0.45, "(d)", fontsize=12)
+    fig.text(0.04, 0.9, "(a)", fontsize=12)
+    fig.text(0.5, 0.9, "(b)", fontsize=12)
+    fig.text(0.04, 0.45, "(c)", fontsize=12)
+    fig.text(0.5, 0.45, "(d)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/figures/case_study_2_5.png", bbox_inches='tight', dpi=300)
     plt.show()

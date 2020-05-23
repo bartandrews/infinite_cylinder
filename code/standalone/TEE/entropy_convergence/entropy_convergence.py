@@ -9,6 +9,10 @@ from matplotlib.patches import Polygon
 import matplotlib.patches as patches
 from numpy.polynomial.polynomial import polyfit
 
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.verbose.level = 'debug-annoying'
+
 if __name__ == '__main__':
 
     # extract data from file

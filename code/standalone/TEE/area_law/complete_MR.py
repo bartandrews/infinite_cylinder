@@ -9,6 +9,9 @@ from uncertainties import unumpy, ufloat
 import matplotlib.gridspec as gridspec
 import os
 
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.verbose.level = 'debug-annoying'
 
 ##################
 # Ly/lB function #

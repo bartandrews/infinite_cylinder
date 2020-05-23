@@ -9,6 +9,9 @@ from uncertainties import unumpy, ufloat
 import matplotlib.gridspec as gridspec
 import os
 
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.verbose.level = 'debug-annoying'
 
 ##################
 # Ly/lB function #
@@ -54,7 +57,7 @@ def straight_line_of_best_fit(axis, LylB_list, SvN_list):
 
     print("SvN = m*(Ly/lB) + c")
     print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
-    xvalues = np.arange(max(LylB_list) + 1)
+    xvalues = np.linspace(0, max(LylB_list))
     axis.plot(xvalues, m * xvalues + c, '-', c='k', zorder=0)
     axis.text(0.25, 1.8, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.5f}$".format(
         gradient=m, intercept=c, cerror=c_err, rsquared=r2_value, fontsize=10))
