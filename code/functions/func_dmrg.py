@@ -2,10 +2,13 @@
 import os
 import pickle
 import gzip
+import time
+import h5py
 # --- TeNPy imports
 from tenpy.networks.mps import MPS
 from tenpy.algorithms import dmrg
 # from tenpy.algorithms.mps_sweeps import OneSiteH, TwoSiteH
+from tenpy.tools import hdf5_io
 # --- infinite_cylinder imports
 import functions.func_proc as fp
 from models.haldane.haldane import HalModel
@@ -152,29 +155,53 @@ def my_iDMRG_pickle(program, path, model, chi_max, ham_params, use_pickle=False,
 
     if run:
         pickle_stem = fp.file_name_stem("state", model, chi_max)
-        pickle_leaf = fp.file_name_leaf("pickle", model, ham_params)
+        pickle_leaf = fp.file_name_leaf("h5", model, ham_params)
         os.makedirs(os.path.join(path, "pickles", f"{program}", f"{model}", ""), exist_ok=True)
         pickle_path = os.path.join(path, "pickles", f"{program}", f"{model}", pickle_stem + pickle_leaf)
 
         if use_pickle:
             target_pickle_path = fp.largest_chi_pickle(pickle_path, chi_max)
-            with (gzip.open if fp.is_gz_file(target_pickle_path) else open)(target_pickle_path, 'rb') as file1:
-                print("Reading pickle: ", target_pickle_path)
-                print("Writing pickle: ", pickle_path)
+            target_pickle_file = os.path.split(target_pickle_path)[1]
+            t1 = time.time()
+
+            if ".h5" in target_pickle_file:
+                ext = "h5"
+            elif ".pkl" in target_pickle_file:
+                ext = "pkl"
+            else:
+                raise ValueError("Unknown file extension in target_pickle_path.")
+
+            if ext == "h5":
+                file1 = h5py.File(target_pickle_path, 'r')
+            else:  # "pkl"
+                file1 = (gzip.open if fp.is_gz_file(target_pickle_path) else open)(target_pickle_path, 'rb')
+
+            print(f"Reading {ext} file: ", target_pickle_path)
+            print("Writing h5 file: ", pickle_path)
+            print(f"Time to open {ext} file (seconds) =", time.time() - t1)
+            t2 = time.time()
+
+            if ext == "h5":
+                state_data = hdf5_io.load_from_hdf5(file1)
+            else:  # "pkl"
                 state_data = pickle.load(file1)
-                if target_pickle_path != pickle_path:  # improving on a complete pickle
-                    if state_data['info']['shelve']:
-                        raise ValueError("Cannot improve on a shelved pickle. "
-                                         "Complete the pickle first by running at the same chi.")
-                else:  # improving on a shelved pickle
-                    if not state_data['info']['shelve']:
-                        raise ValueError("Complete pickle file already exists at this value of chi.")
+
+            print(f"Time to load {ext} file (seconds) =", time.time() - t2)
+            if target_pickle_path != pickle_path.replace(".h5", f".{ext}"):  # improving on a complete pickle
+                if state_data['info']['shelve']:
+                    raise ValueError(f"Cannot improve on a shelved {ext} file. "
+                                     f"Complete the {ext} file first by running at the same chi.")
+            else:  # improving on a shelved pickle
+                if not state_data['info']['shelve']:
+                    raise ValueError(f"Complete {ext} file already exists at this value of chi.")
+
+            file1.close()
 
     my_iDMRG_output = __my_iDMRG(model, chi_max, ham_params, state_data, run=(True if run else False))
 
     if make_pickle:
-        with gzip.open(pickle_path, 'wb') as file2:
-            pickle.dump(my_iDMRG_output, file2)
+        with h5py.File(pickle_path, 'w') as file2:
+            hdf5_io.save_to_hdf5(file2, my_iDMRG_output)
 
     return my_iDMRG_output  # state_data or engine
 
@@ -235,12 +262,16 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
         dmrg_params['init_env_data'] = state_data['init_env_data']
 
     # engine = dmrg.OneSiteDMRGEngine(psi, M, OneSiteH, dmrg_params)
+    t3 = time.time()
     engine = dmrg.TwoSiteDMRGEngine(psi, M, dmrg_params)
+    print("Time to define engine (seconds) = ", time.time() - t3)
     if run:
         E, psi = engine.run()
         init_env_data = engine.env.get_initialization_data()
+        # info = {'dmrg_params': dmrg_params, 'shelve': engine.shelve, 'sweeps': engine.sweeps,
+        #         'update_stats': engine.update_stats, 'sweep_stats': engine.sweep_stats}
         info = {'dmrg_params': dmrg_params, 'shelve': engine.shelve, 'sweeps': engine.sweeps,
-                'update_stats': engine.update_stats, 'sweep_stats': engine.sweep_stats}
+                'sweep_stats': engine.sweep_stats}
         state_data = {'E': E, 'psi': psi, 'M': M, 'init_env_data': init_env_data, 'info': info}
         return state_data
     else:

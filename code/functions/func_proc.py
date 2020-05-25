@@ -1,7 +1,6 @@
 # --- python imports
 import sys
 import os
-import ntpath
 import inspect  # for main
 import pkgutil  # for main
 import fnmatch
@@ -11,57 +10,13 @@ from models.hofstadter.hofstadter import HofstadterModel  # for main
 import models.hofstadter as hofstadter  # for main
 
 
-###########################################
-# is_gz_file (check if a file is gzipped) #
-###########################################
+###############################################
+# file_name_stem (creates the file name stem) #
+###############################################
 
 
-def is_gz_file(filepath):
-    with open(filepath, 'rb') as test_f:
-        return binascii.hexlify(test_f.read(2)) == b'1f8b'
-
-
-#######################################################################
-# process_pickle_file_name (extract parameters from pickle file name) #
-#######################################################################
-
-
-def process_pickle_file_name(filepath):
-
-    extra_dof_list = ["Orbital", "Spin"]
-
-    if ".pkl" not in filepath:
-        raise ValueError("pickle file needs to parsed as first argument.")
-    if "state" not in filepath:
-        raise ValueError("pickle file of the ground state needs to be targeted.")
-
-    print("filepath = ", filepath)
-    pickle = __file_name(filepath)
-    print("pickle = ", pickle)
-    debased_pickle = str(pickle.replace("E_psi_M_", "").replace("state_", "").split(".pkl", 1)[0])
-    print("debased_pickle = ", debased_pickle)
-    debased_pickle_entries = debased_pickle.split('_')
-    model = debased_pickle_entries[0]
-    print("model = ", model)
-    chi_max = int(debased_pickle_entries[2])
-    print("chi_max = ", chi_max)
-    leaf_entries = debased_pickle_entries[3:]
-    leaf = '_'.join(leaf_entries) + ".dat"
-    print("leaf = ", leaf)
-    extra_dof_flag = True if any(dof in model for dof in extra_dof_list) else False
-    print("extra_dof_flag = ", extra_dof_flag)
-
-    return model, chi_max, leaf, extra_dof_flag
-
-
-#############################################
-# __file_name (extract file name from path) #
-#############################################
-
-
-def __file_name(path):
-    head, tail = ntpath.split(path)
-    return tail or ntpath.basename(head)
+def file_name_stem(tool, model, chi_max):
+    return f"{tool}_{model}_chi_{chi_max}_".replace(" ", "_")
 
 
 ###############################################
@@ -115,42 +70,17 @@ def file_name_leaf(program, model, ham_params):
             phi = ""
 
     custom = "_custom" if ham_params['custom'] else ""
-    ext = ".dat" if program != "pickle" else ".pkl"
+
+    if program == "h5":
+        ext = ".h5"
+    elif program == "pkl":
+        ext = ".pkl"
+    else:
+        ext = ".dat"
 
     leaf = f"{Nmax}{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
 
     return leaf
-
-
-###############################################
-# file_name_stem (creates the file name stem) #
-###############################################
-
-
-def file_name_stem(tool, model, chi_max):
-    return f"{tool}_{model}_chi_{chi_max}_".replace(" ", "_")
-
-
-###################################################################
-# prepare_output_files (creates the output directories and files) #
-###################################################################
-
-
-def prepare_output_files(tools, path, model, chi_max, leaf, chiK_max=0):
-
-    stem, file, data = [dict()]*3
-    for tool in tools:
-        stem.update({tool: file_name_stem(tool, model, chi_max)})
-        os.makedirs(os.path.join(path, "data", f"{tool}", f"{model}", ""), exist_ok=True)
-        if tool == 'ent_spec_mom':
-            file.update({tool: os.path.join(path, "data", f"{tool}", f"{model}",
-                                            stem[tool] + f"chiK_{chiK_max}_" + leaf)})
-        else:
-            file.update({tool: os.path.join(path, "data", f"{tool}", f"{model}", stem[tool] + leaf)})
-        open(file[tool], "w")
-        data[tool] = open(file[tool], "a", buffering=1)
-
-    return data
 
 
 ######################################################################
@@ -176,14 +106,85 @@ class Logger(object):
         pass
 
 
+###################################################################
+# prepare_output_files (creates the output directories and files) #
+###################################################################
+
+
+def prepare_output_files(tools, path, model, chi_max, leaf, chiK_max=0):
+
+    stem, file, data = [dict()]*3
+    for tool in tools:
+        stem.update({tool: file_name_stem(tool, model, chi_max)})
+        os.makedirs(os.path.join(path, "data", f"{tool}", f"{model}", ""), exist_ok=True)
+        if tool == 'ent_spec_mom':
+            file.update({tool: os.path.join(path, "data", f"{tool}", f"{model}",
+                                            stem[tool] + f"chiK_{chiK_max}_" + leaf)})
+        else:
+            file.update({tool: os.path.join(path, "data", f"{tool}", f"{model}", stem[tool] + leaf)})
+        open(file[tool], "w")
+        data[tool] = open(file[tool], "a", buffering=1)
+
+    return data
+
+###########################################
+# is_gz_file (check if a file is gzipped) #
+###########################################
+
+
+def is_gz_file(my_file_path):
+    with open(my_file_path, 'rb') as test_f:
+        return binascii.hexlify(test_f.read(2)) == b'1f8b'
+
+
+#############################################################
+# process_pickle (extract parameters from pickle file name) #
+#############################################################
+
+
+def process_pickle(my_file):
+
+    extra_dof_list = ["Orbital", "Spin"]
+
+    if "state" in my_file:
+        prefix = "state_"
+    elif "E_psi_M" in my_file:  # backward compatibility
+        prefix = "E_psi_M_"
+    else:
+        raise ValueError("pickle file of the ground state needs to be targeted.")
+
+    if ".h5" in my_file:
+        ext = ".h5"
+    elif ".pkl" in my_file:  # backward compatibility
+        ext = ".pkl"
+    else:
+        raise ValueError("pickle file needs to parsed as first argument.")
+
+    print("pickle = ", my_file)
+    debased_pickle = str(my_file.replace(prefix, "").split(ext, 1)[0])
+    print("debased_pickle = ", debased_pickle)
+    debased_pickle_entries = debased_pickle.split('_')
+    model = debased_pickle_entries[0]
+    print("model = ", model)
+    chi_max = int(debased_pickle_entries[2])
+    print("chi_max = ", chi_max)
+    leaf_entries = debased_pickle_entries[3:]
+    leaf = '_'.join(leaf_entries) + ".dat"
+    print("leaf = ", leaf)
+    extra_dof_flag = True if any(dof in model for dof in extra_dof_list) else False
+    print("extra_dof_flag = ", extra_dof_flag)
+
+    return model, chi_max, leaf, extra_dof_flag
+
+
 ###############################################################################################
 # largest_chi_pickle (for a given configuration, return the pickle path with the largest chi) #
 ###############################################################################################
 
 
-def largest_chi_pickle(pickle_path, chi_max):
+def largest_chi_pickle(my_file_path, chi_max):
 
-    (pickle_dir, pickle_file) = os.path.split(pickle_path)
+    (pickle_dir, pickle_file) = os.path.split(my_file_path)
 
     # get the pkl file list for a given configuration at various chi
     complete_list = os.listdir(path=pickle_dir)
@@ -191,7 +192,8 @@ def largest_chi_pickle(pickle_path, chi_max):
     file_split = pickle_file.split('_')
     file_split[file_split.index("chi") + 1] = "*"
     file_join = '_'.join(file_split)
-    file_general = file_join  # tagged files are not processed
+    file_join_2 = file_join.replace('.pkl', '.*').replace('.h5', '.*')
+    file_general = file_join_2  # tagged files are not processed
 
     pkl_file_list = []
     for i, val in enumerate(complete_list):  # iterate through all files in the pickle directory
@@ -210,7 +212,7 @@ def largest_chi_pickle(pickle_path, chi_max):
 
     if chi_max == largest_chi:
         print("Desired chi is equal to largest available chi.")
-        target_pickle_path = pickle_path
+        target_pickle_path = my_file_path
     elif chi_max > largest_chi:
         print("Desired chi is larger than largest available chi.")
         target_pickle_path = os.path.join(pickle_dir, largest_pkl_file)
