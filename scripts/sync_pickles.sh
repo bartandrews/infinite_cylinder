@@ -19,7 +19,8 @@
 
 MODELS="BosHofSqu1 FerHofSqu1"  # the model directories that we would like to sync
 PCS="baandr1 baandr2 baandr3"  # remote hostnames that we intend to run on (username == ubuntu is assumed throughout)
-SRC_BASE=/home/ubuntu  # the home directory on the remote computer
+UBUNTU_BASE=/home/ubuntu  # the home directory on the remote computers with username == ubuntu
+BANDREWS_BASE=/home/fkp/bandrews  # the home directory on the remote computers with username == bandrews
 DST_BASE=/home/bart  # the home directory on dart
 DIR_PATH=PycharmProjects/infinite_cylinder/pickles/ground_state  # path to the ground_state directory relative to home
 
@@ -32,11 +33,19 @@ do
 		if ssh ubuntu@"${PC}" "[ -d /home/ubuntu/PycharmProjects/infinite_cylinder/pickles/ground_state/${DIR}/ ]"
 		then
 			echo
-			echo ">>> Dry run from ubuntu@${PC}:${SRC_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
+			echo ">>> Dry run from ubuntu@${PC}:${UBUNTU_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
 			echo
-			ssh -A dart rsync --remove-source-files -nvtzhre ssh ubuntu@"${PC}":${SRC_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
+			ssh -A dart rsync --remove-source-files -nvtzhre ssh ubuntu@"${PC}":${UBUNTU_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
 		fi
 	done
+	# shellcheck disable=SC2029
+	if ssh bandrews@dirac "[ -d /home/fkp/bandrews/PycharmProjects/infinite_cylinder/pickles/ground_state/${DIR}/ ]"
+	then
+		echo
+		echo ">>> Dry run from bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
+		echo
+		ssh -A dart rsync --remove-source-files -nvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
+	fi
 done
 
 echo
@@ -53,11 +62,19 @@ then
 			if ssh ubuntu@"${PC}" "[ -d /home/ubuntu/PycharmProjects/infinite_cylinder/pickles/ground_state/${DIR}/ ]"
 			then
 				echo
-				echo ">>> Actual run from ubuntu@${PC}:${SRC_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
+				echo ">>> Actual run from ubuntu@${PC}:${UBUNTU_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
 				echo
-				ssh -A dart rsync --remove-source-files -vtzhre ssh ubuntu@"${PC}":${SRC_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
+				ssh -A dart rsync --remove-source-files -vtzhre ssh ubuntu@"${PC}":${UBUNTU_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
 			fi
 		done
+		# shellcheck disable=SC2029
+		if ssh bandrews@dirac "[ -d /home/fkp/bandrews/PycharmProjects/infinite_cylinder/pickles/ground_state/${DIR}/ ]"
+		then
+			echo
+			echo ">>> Actual run from bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
+			echo
+			ssh -A dart rsync --remove-source-files -vtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
+		fi
 	done
 else
     exit

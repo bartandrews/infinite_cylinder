@@ -36,14 +36,14 @@ def my_observables(pickle_file_path, path_flag, threads, scalar, chiK_max):
             state_data = hdf5_io.load_from_hdf5(file1)
     elif ".pkl" in pickle_file:  # backward compatibility
         with (gzip.open if fp.is_gz_file(pickle_file_path) else open)(pickle_file_path, 'rb') as file1:
-            if "E_psi_M" in os.path.split(pickle_file_path)[1]:
+            if "E_psi_M" in pickle_file:
                 [E, psi, M, _, _] = pickle.load(file1)
             else:
                 state_data = pickle.load(file1)
     else:
         raise ValueError("Unknown file extension.")
 
-    if "E_psi_M" not in os.path.split(pickle_file_path)[1] or ".h5" in os.path.split(pickle_file_path)[1]:
+    if "E_psi_M" not in pickle_file or ".h5" in pickle_file:
         E, psi, M = state_data['E'], state_data['psi'], state_data['M']
 
     fo.scalar_observables(E, psi)

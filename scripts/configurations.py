@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"  # desired model
     nu = 2 / 5  # desired filling factor
-    chi = 1000  # desired max chi (for command labelling)
+    chi = 2000  # desired max chi (for command labelling)
     Ly_min, Ly_max = 4, 100  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
     LylB_min, LylB_max = 8, 100  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
     LylB_separation = 0.1  # keep all LylB values at least this distance away from each other

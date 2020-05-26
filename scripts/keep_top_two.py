@@ -13,9 +13,9 @@ from operator import itemgetter
 import ast
 
 
-###################################
-# key function for the model sort #
-###################################
+################################################
+# model_keyf (key function for the model sort) #
+################################################
 
 
 def model_keyf(a):
@@ -25,19 +25,27 @@ def model_keyf(a):
     return start_string_2
 
 
-####################################
-# key function for the system sort #
-####################################
+##################################################
+# system_keyf (key function for the system sort) #
+##################################################
 
 
-# system_keyf = lambda a: re.split('_chi_(\d+)_', a)[2]
 def system_keyf(a):
-    return re.split('_chi_(\d+)_', a)[2]
+    start_string = re.split('_chi_(\d+)_', a)[2]
+    if ".h5" in start_string:
+        start_string_1 = start_string.split(".h5")[0]
+    elif ".pkl" in start_string:
+        start_string_1 = start_string.split(".pkl")[0]
+    elif ".dat" in start_string:
+        start_string_1 = start_string.split(".dat")[0]
+    else:
+        raise ValueError("Unknown file extension.")
+    return start_string_1
 
 
-##############################
-# auto convert types in list #
-##############################
+########################################
+# tryeval (auto convert types in list) #
+########################################
 
 
 def tryeval(value):
@@ -48,9 +56,9 @@ def tryeval(value):
     return value
 
 
-###############################
-# decompose the dat filenames #
-###############################
+#################################
+# sort_list (sort the filenames #
+#################################
 
 
 def sort_list(mylist):
@@ -66,7 +74,12 @@ def sort_list(mylist):
             suffix = ".dat"
         elif _val.startswith('state_'):
             prefix = "state_"
-            suffix = ".pkl"
+            if ".h5" in _val:
+                suffix = ".h5"
+            elif ".pkl" in _val:
+                suffix = ".pkl"
+            else:
+                raise ValueError("Unknown file extension.")
         elif _val.startswith('E_psi_M_'):
             prefix = "E_psi_M_"
             suffix = ".pkl"
@@ -113,9 +126,11 @@ def sort_list(mylist):
             recomposed_list.append("log_observables_" + '_'.join(sorted_list[_i]) + ".dat")
         elif os.path.exists("log_ground_state_" + '_'.join(sorted_list[_i]) + ".dat"):
             recomposed_list.append("log_ground_state_" + '_'.join(sorted_list[_i]) + ".dat")
-        elif os.path.exists("state_" + '_'.join(sorted_list[_i]) + ".pkl"):
+        elif os.path.exists("state_" + '_'.join(sorted_list[_i]) + ".h5"):
+            recomposed_list.append("state_" + '_'.join(sorted_list[_i]) + ".h5")
+        elif os.path.exists("state_" + '_'.join(sorted_list[_i]) + ".pkl"):  # backward compatibility
             recomposed_list.append("state_" + '_'.join(sorted_list[_i]) + ".pkl")
-        elif os.path.exists("E_psi_M_" + '_'.join(sorted_list[_i]) + ".pkl"):
+        elif os.path.exists("E_psi_M_" + '_'.join(sorted_list[_i]) + ".pkl"):  # backward compatibility
             recomposed_list.append("E_psi_M_" + '_'.join(sorted_list[_i]) + ".pkl")
         else:
             raise ValueError("Missing file corresponding to the configuration: ", '_'.join(sorted_list[_i]))
@@ -128,12 +143,12 @@ if __name__ == '__main__':
     # get the complete directory list
     complete_dir_list = os.listdir()
 
-    # get the (dat or pkl) file list
+    # get the (dat, h5, pkl) file list
     file_list = []
-    suffixes = [".dat", ".pkl"]
+    suffixes = [".dat", ".h5", ".pkl"]
     for i, val in enumerate(complete_dir_list):
         if any(x in val for x in suffixes):
-            if "Nmax" in val:
+            if "Nmax" in val:  # do not consider MR states
                 continue
             else:
                 file_list.append(val)
@@ -144,7 +159,7 @@ if __name__ == '__main__':
     # group by string before the "_chi_*_" omitting "state_"/"E_psi_M_" prefix (by model)
     model_grouped_list = [list(i) for j, i in groupby(sorted_file_list, key=model_keyf)]
 
-    # subgroup by string after the "_chi_*_" (by system)
+    # subgroup by string after the "_chi_*_" omitting file extension and beyond (by system)
     system_grouped_list = []
     for i in range(len(model_grouped_list)):
         system_grouped_list.append(
