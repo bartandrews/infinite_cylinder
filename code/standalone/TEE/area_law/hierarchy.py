@@ -240,15 +240,15 @@ if __name__ == '__main__':
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if LylB != [] or LylB_outliers != []:
                     if not error_bars:
-                        ax.plot(LylB, SvN, '.', marker=markers[flux_density_index], label=f'$n_\phi={data_line[0]}/{data_line[1]}$', markersize=6)
+                        ax.plot(LylB, SvN, '.', marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                         ax.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
-                        ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index], label=f'$n_\phi={data_line[0]}/{data_line[1]}$', markersize=6)
+                        ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                         ax.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k', marker=markers[flux_density_index], markersize=6)
 
-    ax.legend(loc='upper center', bbox_to_anchor=(0.5, 1.45), handletextpad=0, borderpad=0.4, framealpha=1,
+    ax.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.5, 1.45), handletextpad=0, borderpad=0.4, framealpha=1,
               edgecolor='k', markerscale=1,
-              fontsize=10, ncol=5, labelspacing=0, columnspacing=0)
+              fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
     ax.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
     ax.set_xlim([0, None])
@@ -257,7 +257,7 @@ if __name__ == '__main__':
     ####################################################################################################################
 
     model = "FerHofSqu1"
-    filling = "nu_1_3"
+    filling = "nu_2_5"
 
     # specify the input file
     file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_{filling}_accepted.out'
@@ -388,7 +388,7 @@ if __name__ == '__main__':
 
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.99:
+        if r2value > 0.8:
             straight_line_of_best_fit(ax1, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
             critical_LylB = sorted_plot_data[0][0]
             break
@@ -414,18 +414,18 @@ if __name__ == '__main__':
                 if LylB != [] or LylB_outliers != []:
                     if not error_bars:
                         ax1.plot(LylB, SvN, '.', marker=markers[flux_density_index],
-                                label=f'$n_\phi={data_line[0]}/{data_line[1]}$', markersize=6)
+                                label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                         ax1.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
                                 markersize=6)
                     else:  # error_bars
                         ax1.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
-                                    label=f'$n_\phi={data_line[0]}/{data_line[1]}$', markersize=6)
+                                    label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                         ax1.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3,
                                     color='k', marker=markers[flux_density_index], markersize=6)
 
-    ax1.legend(loc='upper center', bbox_to_anchor=(0.5, 1.45), handletextpad=0, borderpad=0.4, framealpha=1,
+    ax1.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.5, 1.45), handletextpad=0, borderpad=0.4, framealpha=1,
               edgecolor='k', markerscale=1,
-              fontsize=10, ncol=5, labelspacing=0, columnspacing=0)
+              fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
     ax1.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax1.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
     ax1.set_xlim([0, None])
@@ -437,8 +437,8 @@ if __name__ == '__main__':
 
     # ax.tick_params(axis='both', which='major', labelsize=10)
 
-    fig.text(0.04, 0.95, "(a)", fontsize=12)
-    fig.text(0.04, 0.45, "(b)", fontsize=12)
+    fig.text(0.04, 0.95, "(a) $\\nu=1/3$", fontsize=12)
+    fig.text(0.04, 0.45, "(b) $\\nu=2/5$", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/figures/hierarchy.png", bbox_inches='tight', dpi=300)
     plt.show()

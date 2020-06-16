@@ -38,10 +38,10 @@ def min_diff(list_val):  # returns minimum difference between any pair
 if __name__ == '__main__':
 
     model = "FerHofSqu1"  # desired model
-    nu = 2 / 5  # desired filling factor
+    nu = 3 / 7  # desired filling factor
     chi = 2000  # desired max chi (for command labelling)
     Ly_min, Ly_max = 4, 100  # desired domain of Ly such that Ly_min <= Ly <= Ly_max
-    LylB_min, LylB_max = 8, 100  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
+    LylB_min, LylB_max = 9.5, 100  # desired range of Ly/lB such that LylB_min < Ly/lB < LylB_max
     LylB_separation = 0.1  # keep all LylB values at least this distance away from each other
     Nmin = 2  # minimum number of particles required in the system
 
@@ -54,7 +54,7 @@ if __name__ == '__main__':
                 nphi = p/q
                 if (LylB_min/Ly)**2/(2*np.pi) < nphi < np.minimum(0.4, (LylB_max/Ly)**2/(2*np.pi)):
                     for Lx in range(1, 11):
-                        if q * Lx * Ly <= 100:  # limit the system size (for memory consumption)
+                        if q * Lx * Ly <= 200:  # limit the system size (for memory consumption)
                             if abs(nu*nphi*q*Lx*Ly - int(nu*nphi*q*Lx*Ly)) < 1e-7:  # if number of particles is an integer then accept, otherwise try a larger Lx
                                 if int(nu*nphi*q*Lx*Ly) >= Nmin:  # check that there are at least Nmin particles
                                     if counter == 0:
