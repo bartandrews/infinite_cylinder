@@ -96,9 +96,9 @@ if __name__ == '__main__':
                 n = Frac(str(nu*line[2]/line[3])).limit_denominator(100)
                 if counter < 20:
                     if any(fnmatch.fnmatch(x, f"*_n_{n.numerator}_{n.denominator}_nphi_{int(line[2])}_{int(line[3])}_LxMUC_{int(line[0])}_Ly_{int(line[1])}*") for x in os.listdir(pickle_path)):
-                        print(f"{Fore.GREEN}{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}{Style.RESET_ALL}")
+                        print(f"{Fore.GREEN}{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}\t{46*(int(line[3])*int(line[1]))/84}{Style.RESET_ALL}")
                     else:
-                        print(f"{Fore.RED}{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}{Style.RESET_ALL}")
+                        print(f"{Fore.RED}{int(line[0])}\t{int(line[1])}\t{int(line[2])}\t{int(line[3])}\t{line[4]:.3f}\t{line[5]:.3f}\t{46*2.25*(int(line[3])*int(line[1]))/84}{Style.RESET_ALL}")
                         for chi_val in [chi-50, chi]:
                             if "Bos" in model:
                                 file.write(f"echo python code/ground_state.py -thr 1 -mod {model} -chi {chi_val} -t1 1 -n {n.numerator} {n.denominator} -nphi {int(line[2])} {int(line[3])} -LxMUC {int(line[0])} -Ly {int(line[1])}\n")

@@ -1,17 +1,12 @@
 #!/bin/bash
-#SBATCH --output=/data/baandr/logs/benchmark_n_2_33_nphi_2_11_Ly_6.out
-#SBATCH --error=/data/baandr/logs/benchmark_n_2_33_nphi_2_11_Ly_6.err
-#SBATCH --job-name=benchmark_n_2_33_nphi_2_11_Ly_6
-#SBATCH --mail-type=ALL
-#SBATCH --mail-user=bandrews@physik.uzh.ch
-#SBATCH --qos=normal
-#SBATCH --time=24:00:00
-#SBATCH --mem=64G
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-###SBATCH --account=neupert.physik.uzh
 
-# export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
-export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
+SLOGS="/home/cluster/baandr/infinite_cylinder/slogs"
+SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/2000/*"
 
-srun python code/ground_state.py -thr 1 -mod FerHofSqu1 -chi 250 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 33 -nphi 2 11 -LxMUC 1 -Ly 6
+for FILE_PATH in $(ls $SJOBS_FILES | sort -t '_' -k11,11n -k9,9n)
+do
+	FILE="$(basename "$FILE_PATH")"  # strip the file from the path
+	sbatch --output=$SLOGS/"$FILE".out --error=$SLOGS/"$FILE".err --job-name="$FILE" --mail-type=ALL \
+	--mail-user=bandrews@physik.uzh.ch --qos=long --time=168:00:00 --mem=198G --ntasks=1 \
+	--cpus-per-task=12 --threads-per-core=1 "$FILE_PATH"
+done

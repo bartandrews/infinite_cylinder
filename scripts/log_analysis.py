@@ -79,6 +79,7 @@ def sort_list(mylist):
 
     # sort list
     model_index = 0
+    Vrange_index = decomposed_list[0].index("V") + 3
     r_index = decomposed_list[0].index("nu") + 1
     s_index = decomposed_list[0].index("nu") + 2
     p_index = decomposed_list[0].index("nphi") + 1
@@ -86,7 +87,7 @@ def sort_list(mylist):
     LxMUC_index = decomposed_list[0].index("LxMUC") + 1
     Ly_index = decomposed_list[0].index("Ly") + 1
     chi_index = decomposed_list[0].index("chi") + 1
-    sorted_list = sorted(decomposed_list, key=itemgetter(model_index, r_index, s_index,
+    sorted_list = sorted(decomposed_list, key=itemgetter(model_index, r_index, s_index, Vrange_index,
                                                          p_index, q_index, Ly_index, LxMUC_index, chi_index))
 
     # convert the types of entries in the list back into strings
@@ -127,10 +128,10 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    acceptable_data_points, total_data_points, frac_nu_previous = 0, 0, 0
+    acceptable_data_points, total_data_points, frac_nu_previous, Vrange_previous = 0, 0, 0, 0
 
-    headings = ['model', 'nu', 'LxMUC', 'Ly', 'nphi', 'Ly/lB', '2nd_chi', 'max_chi', 'SvN_estimate', 'SvN_error / %', 'status']
-    print("{: <11} {: <6} {: <6} {: <6} {: <6} {: <20} {: <8} {: <8} {: <20} {: <20} {: <6}".format(*headings))
+    headings = ['model', 'Vrange', 'nu', 'LxMUC', 'Ly', 'nphi', 'Ly/lB', '2nd_chi', 'max_chi', 'SvN_estimate', 'SvN_error / %', 'status']
+    print("{: <11} {: <6} {: <6} {: <6} {: <6} {: <6} {: <20} {: <8} {: <8} {: <20} {: <20} {: <6}".format(*headings))
 
     for i in range(len(system_grouped_list)):  # loop over models
         for j in range(len(system_grouped_list[i])):  # loop over systems
@@ -157,6 +158,7 @@ if __name__ == '__main__':
             debased_dat = str(system_grouped_list[i][j][k].replace("log_observables_", "").split(".dat", 1)[0])
             debased_dat_entries = debased_dat.split('_')
             model = debased_dat_entries[0]
+            Vrange = int(debased_dat_entries[debased_dat_entries.index("V") + 3])
             LxMUC = int(debased_dat_entries[debased_dat_entries.index("LxMUC") + 1])
             Ly = int(debased_dat_entries[debased_dat_entries.index("Ly") + 1])
             nn = int(debased_dat_entries[debased_dat_entries.index("n") + 1])
@@ -197,21 +199,19 @@ if __name__ == '__main__':
             else:
                 accept_threshold = 0.1
 
-            if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < accept_threshold:  # compute the status
+            if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < 0.1:  # compute the status
                 status = f"{Fore.GREEN}OK{Style.RESET_ALL}"
             else:
                 status = f"{Fore.RED}ERROR{Style.RESET_ALL}"
 
             # write to file
-            if frac_nu != frac_nu_previous:  # if the nu is different, open new files
-                total_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out', 'w')
-                accepted_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out', 'w')
-                # test_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_test.out', 'w')
+            if Vrange != Vrange_previous or frac_nu != frac_nu_previous:  # if the nu is different, open new files
+                total_file = open(f'{model}_Vrange_{Vrange}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out', 'w')
+                accepted_file = open(f'{model}_Vrange_{Vrange}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out', 'w')
+            if Vrange != Vrange_previous:
+                Vrange_previous = Vrange
             data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\n"
             total_file.write(data_line)
-            # if isinstance(SvN_perc_error, float) and second_max_chi == 1150 and max_chi == 1200:
-            #     data_line_test = f"{p}\t{q}\t{LxMUC}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_perc_error):.15f}\n"
-            #     test_file.write(data_line_test)
             if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
                 accepted_file.write(data_line)
 
@@ -226,9 +226,9 @@ if __name__ == '__main__':
                 frac_nu_previous = frac_nu
 
             # write to terminal
-            data = [model, nu, LxMUC, Ly, nphi, LylB, second_max_chi, max_chi, SvN_estimate, SvN_perc_error, status]
-            print("{: <11} {: <6} {: <6} {: <6} {: <6} {: <20} {: <8} {: <8} {: <20} {: <20} {: <6}"
-                  .format(model, '{:d}/{:d}'.format(frac_nu.numerator, frac_nu.denominator), LxMUC, Ly,
+            data = [model, Vrange, nu, LxMUC, Ly, nphi, LylB, second_max_chi, max_chi, SvN_estimate, SvN_perc_error, status]
+            print("{: <11} {: <6} {: <6} {: <6} {: <6} {: <6} {: <20} {: <8} {: <8} {: <20} {: <20} {: <6}"
+                  .format(model, Vrange, '{:d}/{:d}'.format(frac_nu.numerator, frac_nu.denominator), LxMUC, Ly,
                           '{:d}/{:d}'.format(p, q), '{:<10.10g}'.format(LylB), second_max_chi, max_chi,
                           '{:<10.10g}'.format(SvN_estimate), '{:<10.10g}'.format(SvN_perc_error), status))
 

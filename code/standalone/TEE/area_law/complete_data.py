@@ -333,7 +333,7 @@ if __name__ == '__main__':
     filling = "nu_1_3"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -579,7 +579,7 @@ if __name__ == '__main__':
     filling = "nu_2_5"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
@@ -829,7 +829,7 @@ if __name__ == '__main__':
     filling = "nu_2_5"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -1328,7 +1328,7 @@ if __name__ == '__main__':
     filling = "nu_2_5"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
@@ -1616,6 +1616,6 @@ if __name__ == '__main__':
     fig.text(0.075, 0.33, "(e) $\\nu=2/3$\n    all data", fontsize=12)
     fig.text(0.5, 0.33, "(f) $\\nu=2/5$\n    all data", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TEE/figures/complete_hierarchy.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TEE/figures/complete_data.png", bbox_inches='tight', dpi=300)
     plt.show()
 

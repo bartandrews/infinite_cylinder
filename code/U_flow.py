@@ -12,7 +12,7 @@ import functions.func_args as fa
 
 def my_U_flow(path_flag, threads, model, chi_max, ham_params):
 
-    path = "/home/bart/Desktop" if path_flag else ""  # specify the custom path
+    path = "/data/baandr" if path_flag else ""  # specify the custom path
     prc.mkl_set_nthreads(threads)
     t0 = time.time()
 
