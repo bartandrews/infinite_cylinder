@@ -427,7 +427,7 @@ if __name__ == '__main__':
     filling = "nu_1_3"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -602,7 +602,9 @@ if __name__ == '__main__':
 
     print(c_1_3, c_err_1_3)
 
-    ax3.errorbar([1, 2, 3], [abs(i) for i in c_1_3], yerr=c_err_1_3, ls='none', capsize=3, color='k', marker='.', markersize=6)
+    ax3.errorbar(1, abs(c_1_3[0]), yerr=c_err_1_3[0], ls='none', capsize=3, color='k', marker='.', markersize=6)
+    ax3.errorbar(2, abs(c_1_3[1]), yerr=c_err_1_3[1], ls='none', capsize=3, color='g', marker='.', markersize=6)
+    ax3.errorbar(3, abs(c_1_3[2]), yerr=c_err_1_3[2], ls='none', capsize=3, color='r', marker='.', markersize=6)
     ax3.axhline(np.log(np.sqrt(3)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
     ax3.set_xlabel("$\kappa$", fontsize=11, labelpad=0)
     ax3.set_ylabel("$\gamma$", fontsize=11)
@@ -957,7 +959,7 @@ if __name__ == '__main__':
     filling = "nu_1_3"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -1132,8 +1134,9 @@ if __name__ == '__main__':
 
     print(c_1_3, c_err_1_3)
 
-    ax4.errorbar([1, 2, 3], [abs(i) for i in c_1_3], yerr=c_err_1_3, ls='none', capsize=3, color='k', marker='.',
-                 markersize=6)
+    ax4.errorbar(1, abs(c_1_3[0]), yerr=c_err_1_3[0], ls='none', capsize=3, color='k', marker='.', markersize=6)
+    ax4.errorbar(2, abs(c_1_3[1]), yerr=c_err_1_3[1], ls='none', capsize=3, color='g', marker='.', markersize=6)
+    ax4.errorbar(3, abs(c_1_3[2]), yerr=c_err_1_3[2], ls='none', capsize=3, color='r', marker='.', markersize=6)
     ax4.axhline(np.log(np.sqrt(3)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
     ax4.set_xlabel("$\kappa$", fontsize=11, labelpad=0)
     ax4.set_ylabel("$\gamma$", fontsize=11)
@@ -1488,7 +1491,7 @@ if __name__ == '__main__':
     filling = "nu_1_3"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -1663,8 +1666,9 @@ if __name__ == '__main__':
 
     print(c_1_3, c_err_1_3)
 
-    ax5.errorbar([1, 2, 3], [abs(i) for i in c_1_3], yerr=c_err_1_3, ls='none', capsize=3, color='k', marker='.',
-                 markersize=6)
+    ax5.errorbar(1, abs(c_1_3[0]), yerr=c_err_1_3[0], ls='none', capsize=3, color='k', marker='.', markersize=6)
+    ax5.errorbar(2, abs(c_1_3[1]), yerr=c_err_1_3[1], ls='none', capsize=3, color='g', marker='.', markersize=6)
+    ax5.errorbar(3, abs(c_1_3[2]), yerr=c_err_1_3[2], ls='none', capsize=3, color='r', marker='.', markersize=6)
     ax5.axhline(np.log(np.sqrt(3)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
     ax5.set_xlabel("$\kappa$", fontsize=11, labelpad=0)
     ax5.set_ylabel("$\gamma$", fontsize=11)

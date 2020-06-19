@@ -244,7 +244,7 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
         'verbose': 5,  # 5
         'N_sweeps_check': 10,
         'diag_method': 'default',
-        'max_hours': 24*14  # 2 weeks
+        'max_hours': 24*140  # 20 weeks
     }
 
     if model == "FerHofHex1Hex5OrbitalOld":  # old code
