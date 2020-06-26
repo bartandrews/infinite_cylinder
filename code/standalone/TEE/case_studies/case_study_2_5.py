@@ -27,8 +27,8 @@ if __name__ == '__main__':
 
     ax1 = plt.subplot(gs[0], anchor=(0, 0.85))
 
-    charge_pump_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/charge_pump/BosHofSqu1'
-    charge_pump_file = 'charge_pump_BosHofSqu1_chi_50_t1_1_n_1_8_nphi_1_4_LxMUC_1_Ly_4_phi_0_2_21.dat'
+    charge_pump_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/charge_pump/FerHofSqu1'
+    charge_pump_file = 'charge_pump_FerHofSqu1_chi_400_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10_phi_0_5_51.dat'
     charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
 
     # extract data from file
@@ -48,18 +48,22 @@ if __name__ == '__main__':
     ax1.axhline(charge[-1], color='k', linewidth=0.5, ls='--')
     ax1.axvline(1, color='k', linewidth=0.5, ls='--')
     ax1.axvline(2, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(3, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(4, color='k', linewidth=0.5, ls='--')
+    ax1.axhline(1, color='k', linewidth=0.5, ls='--')
 
     ax1.tick_params(axis="x", labelsize=10)
-    ax1.set_xlim([0, 2])
+    ax1.set_xlim([0, 5])
+    ax1.set_xticks(np.arange(0, 5.1, 1))
     ax1.tick_params(axis="y", labelsize=10)
-    ax1.set_ylim([0, 1])
+    ax1.set_ylim([0, 2])
     ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax1.set_ylabel("$\langle Q_\mathrm{L} \\rangle$", fontsize=11)
 
     ############################################
 
-    # left, bottom, width, height = [0.1, 0.535, 0.35, 0.35]
-    left, bottom, width, height = [0.215, 0.535, 0.25, 0.25]  # left = 0.12
+    # left, bottom, width, height = [0.215, 0.535, 0.25, 0.25]
+    left, bottom, width, height = [0.225, 0.525, 0.25, 0.25]  # left = 0.12
     ax5 = fig.add_axes([left, bottom, width, height], projection='3d')
 
     r = 5
@@ -113,7 +117,7 @@ if __name__ == '__main__':
     ax2 = plt.subplot(gs[1])
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_500_chiK_1000_t1_1_V_10_Coulomb_1_n_1_9_nphi_1_3_LxMUC_1_Ly_9.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -163,14 +167,14 @@ if __name__ == '__main__':
     ax3 = plt.subplot(gs[2])
 
     density_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/density/FerHofSqu1'
-    density_file = 'density_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_1_9_nphi_1_3_LxMUC_1_Ly_9.dat'
+    density_file = 'density_FerHofSqu1_chi_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
     density_path = os.path.join(density_dir, density_file)
 
     # for the colorbar scale
-    av_rho = 1/9
+    av_rho = 2/35
 
     # for tick labelling (in units of lattice constant)
-    Lx, Ly = 3, 9
+    Lx, Ly = 7, 10
 
     # extract data from file
     with open(density_path, 'r') as file:
@@ -207,11 +211,11 @@ if __name__ == '__main__':
     ax4 = plt.subplot(gs[3])
 
     corr_func_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_func/FerHofSqu1'
-    corr_func_file = 'corr_func_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_1_9_nphi_1_3_LxMUC_1_Ly_9.dat'
+    corr_func_file = 'corr_func_FerHofSqu1_chi_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
     corr_func_path = os.path.join(corr_func_dir, corr_func_file)
 
     # for tick labelling (in units of lattice constant)
-    Lx, Ly = 3, 9
+    Lx, Ly = 7, 10
 
     # extract data from file
     with open(corr_func_path, 'r') as file:

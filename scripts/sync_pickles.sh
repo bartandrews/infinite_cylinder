@@ -21,6 +21,7 @@ MODELS="BosHofSqu1 FerHofSqu1"  # the model directories that we would like to sy
 PCS="baandr1 baandr2 baandr3"  # remote hostnames that we intend to run on (username == ubuntu is assumed throughout)
 UBUNTU_BASE=/home/ubuntu  # the home directory on the remote computers with username == ubuntu
 BANDREWS_BASE=/home/fkp/bandrews  # the home directory on the remote computers with username == bandrews
+BAANDR_BASE=/home/cluster/baandr  # the home directory on the remote computers with username == baandr
 DST_BASE=/home/bart  # the home directory on dart
 DIR_PATH=PycharmProjects/infinite_cylinder/pickles/ground_state  # path to the ground_state directory relative to home
 
@@ -45,6 +46,14 @@ do
 		echo ">>> Dry run from bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
 		echo
 		ssh -A dart rsync --remove-source-files -nvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
+	fi
+	# shellcheck disable=SC2029
+	if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
+	then
+		echo
+		echo ">>> Dry run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
+		echo
+		ssh -A dart rsync --remove-source-files -nvtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
 	fi
 done
 
@@ -74,6 +83,14 @@ then
 			echo ">>> Actual run from bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
 			echo
 			ssh -A dart rsync --remove-source-files -vtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH}/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
+		fi
+		# shellcheck disable=SC2029
+		if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
+		then
+			echo
+			echo ">>> Actual run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dart:${DST_BASE}/${DIR_PATH}/${DIR}/"
+			echo
+			ssh -A dart rsync --remove-source-files -vtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH}/"${DIR}"/
 		fi
 	done
 else

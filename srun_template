@@ -1,7 +1,7 @@
 #!/bin/bash
 
 SLOGS="/home/cluster/baandr/infinite_cylinder/slogs"
-SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/2000/*"
+SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/final/*"
 
 for FILE_PATH in $(ls $SJOBS_FILES | sort -t '_' -k11,11n -k9,9n)
 do
