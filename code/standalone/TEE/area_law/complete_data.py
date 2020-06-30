@@ -204,11 +204,15 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if not error_bars:
-                    ax.plot(LylB, SvN, '.', marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
-                    ax.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
+                    if LylB:
+                        ax.plot(LylB, SvN, '.', marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
+                    if LylB_outliers:
+                        ax.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                 else:  # error_bars
-                    ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
-                    ax.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='r', marker=markers[flux_density_index], markersize=6)
+                    if LylB:
+                        ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
+                    if LylB_outliers:
+                        ax.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='r', marker=markers[flux_density_index], markersize=6)
 
     # plot the line of best fit
     LylB = []
@@ -445,14 +449,18 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if not error_bars:
-                    ax3.plot(LylB, SvN, '.', marker=markers[flux_density_index],
+                    if LylB:
+                        ax3.plot(LylB, SvN, '.', marker=markers[flux_density_index],
                             label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
-                    ax3.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
+                    if LylB_outliers:
+                        ax3.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
                             markersize=6)
                 else:  # error_bars
-                    ax3.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
+                    if LylB:
+                        ax3.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
                                 label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
-                    ax3.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='r',
+                    if LylB_outliers:
+                        ax3.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='r',
                                 marker=markers[flux_density_index], markersize=6)
 
     # plot the line of best fit
@@ -585,7 +593,7 @@ if __name__ == '__main__':
     error_bars = True
 
     # identify the outliers?
-    identify_outliers = False
+    identify_outliers = True
 
     # plot only the systematically collected points for Ly/lB > 8?
     systematic_points = False
@@ -611,8 +619,9 @@ if __name__ == '__main__':
         #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
         #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
         #                        LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
-        LylB_outlier_values = [LylB_func(5 / 13, 7), LylB_func(2 / 9, 15), LylB_func(2 / 7, 15), LylB_func(5 / 14, 10),
-                               LylB_func(1 / 4, 15), LylB_func(1 / 5, 15), LylB_func(3 / 8, 10), LylB_func(5 / 17, 8)]
+        # LylB_outlier_values = [LylB_func(5 / 13, 7), LylB_func(2 / 9, 15), LylB_func(2 / 7, 15), LylB_func(5 / 14, 10),
+        #                        LylB_func(1 / 4, 15), LylB_func(1 / 5, 15), LylB_func(3 / 8, 10), LylB_func(5 / 17, 8)]
+        LylB_outlier_values = [LylB_func(1 / 3, 12), LylB_func(4 / 15, 15), LylB_func(3 / 11, 15), LylB_func(2 / 7, 15), LylB_func(1 / 3, 15)]
     ####################################################################################################################
 
     ax6 = plt.subplot(middle_inner_grid[0])
@@ -693,15 +702,19 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if not error_bars:
-                    ax6.plot(LylB, SvN, '.', marker=markers[flux_density_index],
+                    if LylB:
+                        ax6.plot(LylB, SvN, '.', marker=markers[flux_density_index],
                             label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
-                    ax6.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
-                            markersize=6)
+                    # if LylB_outliers:
+                    #     ax6.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
+                    #         markersize=6)
                 else:  # error_bars
-                    ax6.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
+                    if LylB:
+                        ax6.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
                                 label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
-                    ax6.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k',
-                                marker=markers[flux_density_index], markersize=6)
+                    # if LylB_outliers:
+                    #     ax6.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k',
+                    #             marker=markers[flux_density_index], markersize=6)
 
     # plot the line of best fit
     LylB = []
@@ -947,12 +960,14 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if not error_bars:
-                    ax9.plot(LylB, SvN, '.', marker=markers[flux_density_index],
+                    if LylB:
+                        ax9.plot(LylB, SvN, '.', marker=markers[flux_density_index],
                              label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                     # ax9.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
                     #          markersize=6)
                 else:  # error_bars
-                    ax9.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
+                    if LylB:
+                        ax9.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
                                  label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                     # ax9.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k',
                     #              marker=markers[flux_density_index], markersize=6)
@@ -971,7 +986,7 @@ if __name__ == '__main__':
     sorted_plot_data = plot_data[plot_data[:, 0].argsort()]
     length = len(sorted_plot_data)
 
-    threshold = 0.95
+    threshold = 0.936
 
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
@@ -983,7 +998,7 @@ if __name__ == '__main__':
 
     ax9.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
 
-    ax9.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.53, 2.35), handletextpad=0, borderpad=0.4, framealpha=1,
+    ax9.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.53, 2.15), handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
                fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
     ax9.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
@@ -1034,6 +1049,8 @@ if __name__ == '__main__':
         m, m_err, c, c_err, r2_value = line_of_best_fit_values(LylB, SvN)
         clist.append(ufloat(c, c_err))
         r2list.append(r2_value)
+
+    print("here = ", r2list)
 
     latter_clist = clist[-int(len(clist) / 2):]
     measured_gamma = sum(latter_clist) / len(latter_clist)
@@ -1197,12 +1214,14 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if not error_bars:
-                    ax12.plot(LylB, SvN, '.', marker=markers[flux_density_index],
+                    if LylB:
+                        ax12.plot(LylB, SvN, '.', marker=markers[flux_density_index],
                              label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                     # ax12.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
                     #          markersize=6)
                 else:  # error_bars
-                    ax12.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
+                    if LylB:
+                        ax12.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
                                  label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                     # ax12.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k',
                     #              marker=markers[flux_density_index], markersize=6)
@@ -1343,14 +1362,15 @@ if __name__ == '__main__':
     systematic_points = False
 
     # set Ly_min
-    Ly_min = 14
+    Ly_min = 0
 
     ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 13, 14)]
+        LylB_outlier_values = [LylB_func(1 / 7, 7)]
+        # LylB_outlier_values = [LylB_func(1 / 13, 14)]
         # LylB_outlier_values = [LylB_func(1 / 13, 14), LylB_func(1 / 11, 14), LylB_func(1 / 8, 14), LylB_func(1 / 7, 14), LylB_func(1 / 6, 14)]
      ####################################################################################################################
 
@@ -1431,12 +1451,14 @@ if __name__ == '__main__':
                 SvN_error.append(data_line[5])
             if i == len(flux_grouped_data[flux_density_index]) - 1:
                 if not error_bars:
-                    ax15.plot(LylB, SvN, '.', marker=markers[flux_density_index],
+                    if LylB:
+                        ax15.plot(LylB, SvN, '.', marker=markers[flux_density_index],
                              label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                     # ax15.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index],
                     #          markersize=6)
                 else:  # error_bars
-                    ax15.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
+                    if LylB:
+                        ax15.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
                                  label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                     # ax15.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k',
                     #              marker=markers[flux_density_index], markersize=6)
@@ -1455,15 +1477,15 @@ if __name__ == '__main__':
     sorted_plot_data = plot_data[plot_data[:, 0].argsort()]
     length = len(sorted_plot_data)
 
-    for i in range(length):
-        _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.7:
-            straight_line_of_best_fit(ax15, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-            critical_LylB = sorted_plot_data[0][0]
-            break
-        sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
-
-    ax15.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
+    # for i in range(length):
+    #     _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+    #     if r2value > 0.7:
+    #         straight_line_of_best_fit(ax15, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+    #         critical_LylB = sorted_plot_data[0][0]
+    #         break
+    #     sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+    #
+    # ax15.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
 
     ax15.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.53, 2.35), handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
@@ -1540,7 +1562,7 @@ if __name__ == '__main__':
     ax16.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                 edgecolor='k', markerscale=1,
                 fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
-    ax16.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
+    # ax16.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
     ax16.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
     ax16.set_ylabel("$-\gamma_{\geq}$", fontsize=11)
     ax16.set_xlim([0, None])
@@ -1550,12 +1572,12 @@ if __name__ == '__main__':
     ax17 = plt.subplot(lower_inner_grid[5], sharex=ax15)
 
     ax17.scatter(xvalues, r2list, color='k', marker='x', s=10)
-    ax17.axhline(0.769, color='r', linewidth=1, linestyle='dashed', label="threshold", zorder=2)
-
-    ax17.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
-                edgecolor='k', markerscale=1,
-                fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
-    ax17.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
+    # ax17.axhline(0.769, color='r', linewidth=1, linestyle='dashed', label="threshold", zorder=2)
+    #
+    # ax17.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
+    #             edgecolor='k', markerscale=1,
+    #             fontsize=10, ncol=4, labelspacing=0, columnspacing=0)
+    # ax17.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
     ax17.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax17.set_ylabel("$R_{\geq}^2$", fontsize=11)
     ax17.set_xlim([0, None])
@@ -1606,8 +1628,8 @@ if __name__ == '__main__':
     fig.text(0.075, 0.62, "(c) bosons\n    $\\nu=2/3$\n    all data", fontsize=12)
     fig.text(0.5, 0.62, "(d) fermions\n    $\\nu=2/5$\n    all data", fontsize=12)
 
-    fig.text(0.075, 0.33, "(e) fermions\n    $\\nu=2/5$\n    error$<0.1\%$", fontsize=12)
-    fig.text(0.5, 0.33, "(f) fermions\n    $\\nu=3/7$\n    all data", fontsize=12)
+    fig.text(0.075, 0.32, "(e) fermions\n    $\\nu=2/5$\n    error$<0.1\%$", fontsize=12)
+    fig.text(0.5, 0.32, "(f) fermions\n    $\\nu=3/7$\n    all data", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/figures/complete_data.png", bbox_inches='tight', dpi=300)
     plt.show()

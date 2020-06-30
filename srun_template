@@ -1,9 +1,9 @@
 #!/bin/bash
 
 SLOGS="/home/cluster/baandr/infinite_cylinder/slogs"
-SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/final/*"
+SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/tuning_polish_1/*"
 
-for FILE_PATH in $(ls $SJOBS_FILES | sort -t '_' -k11,11n -k9,9n)
+for FILE_PATH in $(ls $SJOBS_FILES | sort -t '_' -k15,15n -k13,13n)
 do
 	FILE="$(basename "$FILE_PATH")"  # strip the file from the path
 	sbatch --output=$SLOGS/"$FILE".out --error=$SLOGS/"$FILE".err --job-name="$FILE" --mail-type=ALL \

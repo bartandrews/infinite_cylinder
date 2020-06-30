@@ -28,7 +28,7 @@ if __name__ == '__main__':
     ax1 = plt.subplot(gs[0], anchor=(0, 0.85))
 
     charge_pump_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/charge_pump/FerHofSqu1'
-    charge_pump_file = 'charge_pump_FerHofSqu1_chi_400_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10_phi_0_5_51.dat'
+    charge_pump_file = 'charge_pump_FerHofSqu1_3_7_placeholder.dat'
     charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
 
     # extract data from file
@@ -50,15 +50,17 @@ if __name__ == '__main__':
     ax1.axvline(2, color='k', linewidth=0.5, ls='--')
     ax1.axvline(3, color='k', linewidth=0.5, ls='--')
     ax1.axvline(4, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(5, color='k', linewidth=0.5, ls='--')
+    ax1.axvline(6, color='k', linewidth=0.5, ls='--')
     ax1.axhline(1, color='k', linewidth=0.5, ls='--')
-    ax1.text(0.45, 1.4, "$\displaystyle{\sigma_\\text{H}=\\frac{2}{5}\\frac{e^2}{h}}$",
-             bbox=dict(facecolor='white', alpha=1, lw=0.5, ls='-'))
+    ax1.axhline(2, color='k', linewidth=0.5, ls='--')
+    ax1.text(0.5, 2.16, "$\displaystyle{\sigma_\\text{H}=\\frac{3}{7}\\frac{e^2}{h}}$", bbox=dict(facecolor='white', alpha=1, lw=0.5, ls='-'))
 
     ax1.tick_params(axis="x", labelsize=10)
-    ax1.set_xlim([0, 5])
-    ax1.set_xticks(np.arange(0, 5.1, 1))
+    ax1.set_xlim([0, 7])
+    ax1.set_xticks(np.arange(0, 7.1, 1))
     ax1.tick_params(axis="y", labelsize=10)
-    ax1.set_ylim([0, 2])
+    ax1.set_ylim([0, 3])
     ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax1.set_ylabel("$\langle Q_\mathrm{L} \\rangle$", fontsize=11)
 
@@ -119,7 +121,7 @@ if __name__ == '__main__':
     ax2 = plt.subplot(gs[1])
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_10_Coulomb_1_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -169,14 +171,14 @@ if __name__ == '__main__':
     ax3 = plt.subplot(gs[2])
 
     density_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/density/FerHofSqu1'
-    density_file = 'density_FerHofSqu1_chi_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
+    density_file = 'density_FerHofSqu1_chi_2000_t1_1_V_10_Coulomb_1_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat'
     density_path = os.path.join(density_dir, density_file)
 
     # for the colorbar scale
-    av_rho = 2/35
+    av_rho = 3/70
 
     # for tick labelling (in units of lattice constant)
-    Lx, Ly = 7, 10
+    Lx, Ly = 10, 14
 
     # extract data from file
     with open(density_path, 'r') as file:
@@ -202,7 +204,7 @@ if __name__ == '__main__':
         else:
             return r'${}$'.format(a)
 
-    fig.colorbar(im, cax=cax, orientation='vertical', label='$(\langle \\rho_i \\rangle  - \\bar{\\rho}) / 10^{-2}$', format=ticker.FuncFormatter(fmt))
+    fig.colorbar(im, cax=cax, orientation='vertical', label='$(\langle \\rho_i \\rangle  - \\bar{\\rho})/10^{-3}$', format=ticker.FuncFormatter(fmt))
 
     # fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle - \\bar{\\rho}$')
 
@@ -213,11 +215,11 @@ if __name__ == '__main__':
     ax4 = plt.subplot(gs[3])
 
     corr_func_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_func/FerHofSqu1'
-    corr_func_file = 'corr_func_FerHofSqu1_chi_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
+    corr_func_file = 'corr_func_FerHofSqu1_chi_2000_t1_1_V_10_Coulomb_1_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat'
     corr_func_path = os.path.join(corr_func_dir, corr_func_file)
 
     # for tick labelling (in units of lattice constant)
-    Lx, Ly = 7, 10
+    Lx, Ly = 10, 14
 
     # extract data from file
     with open(corr_func_path, 'r') as file:
@@ -245,5 +247,5 @@ if __name__ == '__main__':
     fig.text(0.04, 0.45, "(c)", fontsize=12)
     fig.text(0.5, 0.45, "(d)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TEE/figures/case_study_2_5.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TEE/figures/case_study_3_7.png", bbox_inches='tight', dpi=300)
     plt.show()

@@ -18,7 +18,7 @@
 # e ssh = transfer files over a secure connection
 
 MODELS="BosHofSqu1 FerHofSqu1"  # the model directories that we would like to sync
-PCS="baandr1 baandr2 baandr3"  # remote hostnames that we intend to run on (username == ubuntu is assumed throughout)
+PCS="baandr1 baandr2 baandr3 baandr4 baandr5 baandr6 baandr7"  # remote hostnames that we intend to run on (username == ubuntu is assumed throughout)
 UBUNTU_BASE=/home/ubuntu  # the home directory on the remote computers with username == ubuntu
 BANDREWS_BASE=/home/fkp/bandrews  # the home directory on the remote computers with username == bandrews
 BAANDR_BASE=/home/cluster/baandr  # the home directory on the remote computers with username == baandr
