@@ -157,7 +157,7 @@ if __name__ == '__main__':
     ax2.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     ax2.set_xlim([-np.pi / 3, np.pi / 3])
-    ax2.set_xlabel("$k_\\alpha / \pi$", fontsize=11)
+    ax2.set_xlabel("$k_a / \pi$", fontsize=11)
     ax2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
     ax2.tick_params(axis="x", labelsize=10)
@@ -204,7 +204,7 @@ if __name__ == '__main__':
         else:
             return r'${}$'.format(a)
 
-    fig.colorbar(im, cax=cax, orientation='vertical', label='$(\langle \\rho_i \\rangle  - \\bar{\\rho})/10^{-3}$', format=ticker.FuncFormatter(fmt))
+    fig.colorbar(im, cax=cax, orientation='vertical', label='$(\langle \\rho_i \\rangle  - n)/10^{-3}$', format=ticker.FuncFormatter(fmt))
 
     # fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle - \\bar{\\rho}$')
 
@@ -242,10 +242,10 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    fig.text(0.04, 0.9, "(a)", fontsize=12)
-    fig.text(0.5, 0.9, "(b)", fontsize=12)
-    fig.text(0.04, 0.45, "(c)", fontsize=12)
-    fig.text(0.5, 0.45, "(d)", fontsize=12)
+    fig.text(0.04, 0.9, "(e)", fontsize=12)
+    fig.text(0.5, 0.9, "(f)", fontsize=12)
+    fig.text(0.04, 0.45, "(g)", fontsize=12)
+    fig.text(0.5, 0.45, "(h)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/figures/case_study_3_7.png", bbox_inches='tight', dpi=300)
     plt.show()

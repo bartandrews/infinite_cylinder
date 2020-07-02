@@ -8,8 +8,8 @@ import sys
 
 if __name__ == "__main__":
 
-    input = "../main_figures_rev1/Ly_flow_mag_detail/ent_spec_mom_Ly_9.dat"
-    output = "../main_figures_rev1/Ly_flow_mag_detail/ent_spec_mom_Ly_9.dat.rotated"
+    input = "/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat"
+    output = "/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat.rotated"
 
     ent_spec_mom_rotated_file = output
     open(ent_spec_mom_rotated_file, "w")
@@ -27,9 +27,9 @@ if __name__ == "__main__":
             energy.append(float(row[2]))
 
     # original Ly of file
-    Ly = 9
+    Ly = 10
     # desired rotation to the left (integer)
-    shift = 7
+    shift = 6
 
     for i in range(len(mom)):
 

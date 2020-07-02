@@ -110,19 +110,8 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+
     ####################################################################################################################
 
     ax = plt.subplot(upper_inner_grid[0])
@@ -250,6 +239,7 @@ if __name__ == '__main__':
                         # ax.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            print("flux_density_index_1 = ", flux_density_index)
                             ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='k', marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
                         # ax.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k', marker=markers[flux_density_index], markersize=6)
     ax.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.5, legend_y), handletextpad=0, borderpad=0.4,
@@ -283,19 +273,8 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+
     ####################################################################################################################
 
     # append data from file to a list
@@ -423,6 +402,10 @@ if __name__ == '__main__':
                         # ax.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            flux_density_index += 1
+                            if flux_density_index == 5 or flux_density_index == 6:
+                                flux_density_index += 2
+                            print("flux_density_index_2 = ", flux_density_index)
                             ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='g',
                                     marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                     markersize=6)
@@ -435,13 +418,13 @@ if __name__ == '__main__':
     filling = "nu_1_3"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
 
     # identify the outliers?
-    identify_outliers = False
+    identify_outliers = True
 
     # plot only the systematically collected points for Ly/lB > 8?
     systematic_points = True
@@ -454,19 +437,8 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 4, 9)]
+
     ####################################################################################################################
 
     # append data from file to a list
@@ -577,7 +549,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 8 <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -594,26 +566,45 @@ if __name__ == '__main__':
                         # ax.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            # five points
+                            # if flux_density_index == 0:  # 4th point
+                            #     flux_density_index = 2
+                            # elif flux_density_index == 1:  # 2nd point
+                            #     flux_density_index = 3
+                            # elif flux_density_index == 2:  # 1st point
+                            #     flux_density_index = 4
+                            # elif flux_density_index == 3:  # 5th point
+                            #     flux_density_index = 7
+                            # elif flux_density_index == 4:  # 3rd point
+                            #     flux_density_index = 8
+                            # eight points
+                            flux_density_index += 1
+                            if flux_density_index == 5 or flux_density_index == 6:
+                                flux_density_index += 2
+                            print("flux_density_index_3 = ", flux_density_index)
                             ax.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='r',
                                     marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                     markersize=6)
-                        # ax.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k', marker=markers[flux_density_index], markersize=6)
+                        if LylB_outliers:
+                            flux_density_index = 1
+                            print("flux_density_index_outlier = ", flux_density_index)
+                            ax.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, markerfacecolor='w', markeredgecolor='r', marker=markers[flux_density_index], markersize=6)
 
     ax.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
     ax.set_xlim([0, None])
-    ax.set_ylim([None, 4])
+    ax.set_ylim([-1, 4])
     ax.axhline(-np.log(np.sqrt(3)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
-    ax.text(10, -np.log(np.sqrt(3))-0.1, "Abelian theory", backgroundcolor='white')
+    ax.text(10, -1.2*np.log(np.sqrt(3)), "Abelian theory", backgroundcolor='white')
     #ax.text(7.3, 3, f"$R_1^2={R1_1_3:.3f}$, $R_2^2={R2_1_3:.3f}$, $R_3^2={R3_1_3:.3f}$")
-    ax.text(7.3, 3.3, f"$R_1^2={R1_1_3:.3f}$", c='k')
-    ax.text(7.3, 2.65, f"$R_2^2={R2_1_3:.3f}$", c='g')
-    ax.text(7.3, 2, f"$R_3^2={R3_1_3:.3f}$", c='r')
+    ax.text(7.5, 3.4, f"$R_1^2={R1_1_3:.3f}$", c='k')
+    ax.text(7.5, 2.75, f"$R_2^2={R2_1_3:.3f}$", c='g')
+    ax.text(7.5, 2.1, f"$R_3^2={R3_1_3:.3f}$", c='r')
 
     ####################################################################################################################
     ####################################################################################################################
 
-    left, bottom, width, height = [0.21, 0.82, 0.3, 0.05]
+    left, bottom, width, height = [0.22, 0.82, 0.3, 0.05]
     ax3 = fig.add_axes([left, bottom, width, height])
 
     print(c_1_3, c_err_1_3)
@@ -654,19 +645,8 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+
     ####################################################################################################################
 
     ax1 = plt.subplot(upper_inner_grid[1])
@@ -780,7 +760,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 9.47 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 9.47 <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -797,6 +777,7 @@ if __name__ == '__main__':
                         # ax1.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            print("flux_density_index_4 = ", flux_density_index)
                             ax1.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='k',
                                     marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                     markersize=6)
@@ -813,7 +794,7 @@ if __name__ == '__main__':
     filling = "nu_2_5"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_2_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_2_{filling}_accepted.out'
 
     # plot with error bars?
     error_bars = True
@@ -832,19 +813,8 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+
     ####################################################################################################################
 
     # append data from file to a list
@@ -955,7 +925,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 8 <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -972,6 +942,15 @@ if __name__ == '__main__':
                         # ax1.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            if flux_density_index == 0:
+                                flux_density_index = 2
+                            elif flux_density_index == 1:
+                                flux_density_index = 3
+                            elif flux_density_index == 2:
+                                flux_density_index = 13
+                            elif flux_density_index == 3:
+                                flux_density_index = 14
+                            print("flux_density_index_5 = ", flux_density_index)
                             ax1.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='g',
                                     marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                     markersize=6)
@@ -984,7 +963,7 @@ if __name__ == '__main__':
     filling = "nu_2_5"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_2_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_3_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
@@ -1003,19 +982,8 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+
     ####################################################################################################################
 
     # append data from file to a list
@@ -1126,7 +1094,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 8 <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -1143,6 +1111,15 @@ if __name__ == '__main__':
                         # ax1.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            if flux_density_index == 0:
+                                flux_density_index = 2
+                            elif flux_density_index == 1:
+                                flux_density_index = 3
+                            elif flux_density_index == 2:
+                                flux_density_index = 13
+                            elif flux_density_index == 3:
+                                flux_density_index = 14
+                            print("flux_density_index_6 = ", flux_density_index)
                             ax1.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='r',
                                     marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                     markersize=6)
@@ -1153,15 +1130,15 @@ if __name__ == '__main__':
     ax1.set_xlim([0, None])
     ax1.set_ylim([None, 4])
     ax1.axhline(-np.log(np.sqrt(5)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
-    ax1.text(8, -np.log(np.sqrt(5)) - 0.1, "Abelian theory", backgroundcolor='white')
-    ax1.text(5.8, 3.3, f"$R_1^2={R1_2_5:.3f}$", c='k')
-    ax1.text(5.8, 2.6, f"$R_2^2={R2_2_5:.3f}$", c='g')
-    ax1.text(5.8, 1.9, f"$R_3^2={R3_2_5:.3f}$", c='r')
+    ax1.text(8, -1.2*np.log(np.sqrt(5)), "Abelian theory", backgroundcolor='white')
+    ax1.text(5.5, 3.1, f"$R_1^2={R1_2_5:.3f}$", c='k')
+    ax1.text(5.5, 2.3, f"$R_2^2={R2_2_5:.3f}$", c='g')
+    ax1.text(5.5, 1.5, f"$R_3^2={R3_2_5:.3f}$", c='r')
 
     ####################################################################################################################
     ####################################################################################################################
 
-    left, bottom, width, height = [0.21, 0.5225, 0.3, 0.05]
+    left, bottom, width, height = [0.19, 0.5225, 0.3, 0.05]
     ax4 = fig.add_axes([left, bottom, width, height])
 
     print(c_2_5, c_err_2_5)
@@ -1183,38 +1160,27 @@ if __name__ == '__main__':
     c_err_3_7 = []
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14_min.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
 
     # identify the outliers?
-    identify_outliers = False
+    identify_outliers = True
 
     # plot only the systematically collected points for Ly/lB > 8?
     systematic_points = False
 
     # set Ly_min
-    Ly_min = 0
+    Ly_min = 14
 
     ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
+
     ####################################################################################################################
 
     ax2 = plt.subplot(upper_inner_grid[2])
@@ -1283,14 +1249,15 @@ if __name__ == '__main__':
         LylB, SvN, SvN_error = [], [], []
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
-            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[
-                2] < Ly_min:
-                if data_line[3] > 8:
-                    LylB_outliers.append(data_line[3])
-                    SvN_outliers.append(data_line[4])
-                    SvN_outliers_error.append(data_line[5])
+            # print(data_line)
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
+                # print(data_line)
+                LylB_outliers.append(data_line[3])
+                SvN_outliers.append(data_line[4])
+                SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > 10:
+                    print(data_line)
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -1327,11 +1294,11 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 8 <= data_line[3] < critical_LylB or data_line[2] < Ly_min:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
-            elif data_line[3] >= critical_LylB:
+            elif data_line[3] >= critical_LylB and data_line[3] > 10:
                 LylB.append(data_line[3])
                 SvN.append(data_line[4])
                 SvN_error.append(data_line[5])
@@ -1344,6 +1311,15 @@ if __name__ == '__main__':
                         # ax2.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            if flux_density_index == 1:  # 1st point
+                                flux_density_index = 0
+                            elif flux_density_index == 5:  # 2nd point
+                                flux_density_index = 4
+                            elif flux_density_index == 12:  # 3rd point
+                                flux_density_index = 6
+                            elif flux_density_index == 13:  # 4th point
+                                flux_density_index = 7
+                            print("flux_density_index_7 = ", flux_density_index)
                             ax2.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='k',
                                      marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                      markersize=6)
@@ -1360,7 +1336,7 @@ if __name__ == '__main__':
     filling = "nu_3_7"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14_min.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_2_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
@@ -1372,26 +1348,15 @@ if __name__ == '__main__':
     systematic_points = False
 
     # set Ly_min
-    Ly_min = 0
+    Ly_min = 14
 
     ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
+
     ####################################################################################################################
 
     # append data from file to a list
@@ -1488,7 +1453,7 @@ if __name__ == '__main__':
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         c_3_7.append(c)
         c_err_3_7.append(c_err)
-        if r2value > 0.99:
+        if r2value > 0.8:
             straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
             critical_LylB = sorted_plot_data[0][0]
             break
@@ -1502,7 +1467,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 8 <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -1519,6 +1484,15 @@ if __name__ == '__main__':
                         # ax2.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            if flux_density_index == 0:  # 1st point
+                                flux_density_index = 0
+                            elif flux_density_index == 1:  # 2nd point
+                                flux_density_index = 4
+                            elif flux_density_index == 2:  # 3rd point
+                                flux_density_index = 6
+                            elif flux_density_index == 3:  # 4th point
+                                flux_density_index = 7
+                            print("flux_density_index_8 = ", flux_density_index)
                             ax2.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='g',
                                      marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                      markersize=6)
@@ -1531,7 +1505,7 @@ if __name__ == '__main__':
     filling = "nu_3_7"
 
     # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14_min.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_2_{filling}_total.out'
 
     # plot with error bars?
     error_bars = True
@@ -1543,26 +1517,15 @@ if __name__ == '__main__':
     systematic_points = False
 
     # set Ly_min
-    Ly_min = 0
+    Ly_min = 14
 
     ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
-        LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-                               LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-                               LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-                               LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
-                               LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
+
     ####################################################################################################################
 
     # append data from file to a list
@@ -1657,7 +1620,7 @@ if __name__ == '__main__':
 
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.99:
+        if r2value > 0.8:
             straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'r')
             c_3_7.append(c)
             c_err_3_7.append(c_err)
@@ -1673,7 +1636,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or 8 <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -1690,6 +1653,15 @@ if __name__ == '__main__':
                         # ax2.plot(LylB_outliers, SvN_outliers, '.', color='k', marker=markers[flux_density_index], markersize=6)
                     else:  # error_bars
                         if LylB:
+                            if flux_density_index == 0:  # 1st point
+                                flux_density_index = 0
+                            elif flux_density_index == 1:  # 2nd point
+                                flux_density_index = 4
+                            elif flux_density_index == 2:  # 3rd point
+                                flux_density_index = 6
+                            elif flux_density_index == 3:  # 4th point
+                                flux_density_index = 7
+                            print("flux_density_index_9 = ", flux_density_index)
                             ax2.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, color='r',
                                      marker=markers[flux_density_index], label=f'${data_line[0]}/{data_line[1]}$',
                                      markersize=6)
@@ -1700,15 +1672,15 @@ if __name__ == '__main__':
     ax2.set_xlim([0, None])
     ax2.set_ylim([None, 5])
     ax2.axhline(-np.log(np.sqrt(7)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
-    ax2.text(12, -np.log(np.sqrt(7)) - 0.1, "Abelian theory", backgroundcolor='white')
-    ax2.text(8.5, 4.25, f"$R_1^2={R1_3_7:.3f}$", c='k')
-    ax2.text(8.5, 3.5, f"$R_2^2={R2_3_7:.3f}$", c='g')
-    ax2.text(8.5, 2.75, f"$R_3^2={R3_3_7:.3f}$", c='r')
+    ax2.text(12, -1.2*np.log(np.sqrt(7)), "Abelian theory", backgroundcolor='white')
+    ax2.text(8.1, 4.1, f"$R_1^2={R1_3_7:.3f}$", c='k')
+    ax2.text(8.1, 3.25, f"$R_2^2={R2_3_7:.3f}$", c='g')
+    ax2.text(8.1, 2.4, f"$R_3^2={R3_3_7:.3f}$", c='r')
 
     ####################################################################################################################
     ####################################################################################################################
 
-    left, bottom, width, height = [0.21, 0.226, 0.3, 0.05]
+    left, bottom, width, height = [0.19, 0.226, 0.3, 0.05]
     ax5 = fig.add_axes([left, bottom, width, height])
 
     print(c_3_7, c_err_3_7)

@@ -119,7 +119,7 @@ if __name__ == '__main__':
     ax2 = plt.subplot(gs[1])
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -155,7 +155,7 @@ if __name__ == '__main__':
     ax2.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor='k', markerscale=1,
                fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     ax2.set_xlim([-np.pi / 3, np.pi / 3])
-    ax2.set_xlabel("$k_\\alpha / \pi$", fontsize=11)
+    ax2.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
     ax2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
     ax2.tick_params(axis="x", labelsize=10)
@@ -202,7 +202,7 @@ if __name__ == '__main__':
         else:
             return r'${}$'.format(a)
 
-    fig.colorbar(im, cax=cax, orientation='vertical', label='$(\langle \\rho_i \\rangle  - \\bar{\\rho}) / 10^{-2}$', format=ticker.FuncFormatter(fmt))
+    fig.colorbar(im, cax=cax, orientation='vertical', label='$(\langle \\rho_i \\rangle  - n) / 10^{-2}$', format=ticker.FuncFormatter(fmt))
 
     # fig.colorbar(im, cax=cax, orientation='vertical', label='$\langle \\rho_i \\rangle - \\bar{\\rho}$')
 
