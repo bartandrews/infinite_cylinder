@@ -8,9 +8,10 @@ from scipy import stats
 from uncertainties import unumpy, ufloat
 import matplotlib.gridspec as gridspec
 import os
+from matplotlib.patches import Polygon
 
 plt.rc('text', usetex=True)
-plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}\usepackage{amssymb}')
 # matplotlib.verbose.level = 'debug-annoying'
 
 ##################
@@ -259,6 +260,9 @@ if __name__ == '__main__':
     ax.set_xlim([0, None])
     ax.set_ylim(-1, 3)
     ax.text(10.5, 0, "$R^2>0.99$")
+    ax.text(5, -0.6, "$(L_y/l_B)_\mathrm{min}\equiv 8$")
+    metal0 = Polygon(((0, -10), (8, -10), (8, 10), (0, 10)), fc=(0, 0, 0, 0.1))
+    ax.add_artist(metal0)
 
     ####################################################################################################################
 
@@ -279,6 +283,9 @@ if __name__ == '__main__':
 
     # set Ly_min
     Ly_min = 0
+
+    # set LylB_min
+    LylB_min = 9
 
     ####################################################################################################################
 
@@ -343,7 +350,7 @@ if __name__ == '__main__':
             i += 3
         del_indices = []
         for i, val in enumerate(grouped_data):
-            if val[3] > 8:
+            if val[3] > LylB_min:
                 if any(val[:3] == allowed for allowed in sys_grouped_data):
                     continue
                 else:
@@ -367,12 +374,12 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                if data_line[3] > 8:
+                if data_line[3] > LylB_min:
                     LylB_outliers.append(data_line[3])
                     SvN_outliers.append(data_line[4])
                     SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > LylB_min:
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -407,7 +414,7 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             # print(data_line[3], critical_LylB)
-            if 8 <= data_line[3] < critical_LylB:
+            if LylB_min <= data_line[3] < critical_LylB:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
@@ -438,9 +445,13 @@ if __name__ == '__main__':
     ax1.set_xlabel("$L_y/l_\mathrm{B}$", fontsize=11)
     ax1.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
     ax1.set_xlim([0, None])
+    ax1.set_xticks(np.arange(0, 12, 1))
     ax1.set_ylim(-1, 3)
     ax1.text(9.65, 0, "$R^2>0.99$")
+    ax1.text(6.5, -0.5, "$(L_y/l_B)_\mathrm{min}\equiv 9$")
     ax1.scatter(LylB_func(1 / 7, 10), 1.4414, s=100, facecolors='none', edgecolors='r', zorder=5)
+    metal0 = Polygon(((0, -10), (9, -10), (9, 10), (0, 10)), fc=(0, 0, 0, 0.1))
+    ax1.add_artist(metal0)
 
     ####################################################################################################################
 
@@ -620,8 +631,11 @@ if __name__ == '__main__':
     ax2.set_ylabel("$S_\mathrm{{vN}}$", fontsize=11)
     ax2.set_xlim([0, None])
     #ax2.set_ylim(-1, 4)
-    ax2.text(11, 0, "$L_y/l_B>10$, $L_y\geq 14$")
+    ax2.text(12.5, 0, "$L_y= 14$")
+    ax2.text(6, -0.75, "$(L_y/l_B)_\mathrm{min}\equiv 10$")
     ax2.scatter(LylB_func(1 / 10, 14), 1.9632, s=100, facecolors='none', edgecolors='r', zorder=5)
+    metal1 = Polygon(((0, -10), (10, -10), (10, 10), (0, 10)), fc=(0, 0, 0, 0.1))
+    ax2.add_artist(metal1)
 
     ####################################################################################################################
 
@@ -631,7 +645,7 @@ if __name__ == '__main__':
 
     fig.text(0, 0.93, "(a) $\\nu=1/3$\n error $<0.1\%$", fontsize=12)
     fig.text(0, 0.61, "(b) $\\nu=2/5$\n error $<0.1\%$", fontsize=12)
-    fig.text(0, 0.29, "(c) $\\nu=3/7$\n error $<3.5\%$", fontsize=12)
+    fig.text(0, 0.29, "(c) $\\nu=3/7$\n error $\lesssim 3\%$", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/figures/short_range_int.png", bbox_inches='tight', dpi=300)
     plt.show()

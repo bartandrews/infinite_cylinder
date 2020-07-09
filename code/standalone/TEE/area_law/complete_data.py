@@ -59,8 +59,8 @@ def straight_line_of_best_fit(axis, LylB_list, SvN_list, xpos=0.25, ypos=1.5):
     print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
     xvalues = np.linspace(0, max(LylB_list))
     axis.plot(xvalues, m * xvalues + c, '-', c='k', zorder=0)
-    axis.text(xpos, ypos, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.5f}$".format(
-        gradient=m, intercept=c, cerror=c_err, rsquared=r2_value, fontsize=10))
+    axis.text(xpos, ypos, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})-({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.5f}$".format(
+        gradient=m, intercept=abs(c), cerror=c_err, rsquared=r2_value, fontsize=10))
 
     return m, m_err, c, c_err, r2_value
 
@@ -1364,6 +1364,9 @@ if __name__ == '__main__':
     # set Ly_min
     Ly_min = 0
 
+    # set Ly_min_small (i.e. a separate subset to the outliers)
+    Ly_min_small = 0
+
     ####################################################################################################################
 
     if not identify_outliers:
@@ -1440,11 +1443,16 @@ if __name__ == '__main__':
     for flux_density_index in range(len(flux_grouped_data)):
         LylB, SvN, SvN_error = [], [], []
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
+        LylB_small, SvN_small, SvN_error_small = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
+            elif data_line[2] < Ly_min_small:
+                LylB_small.append(data_line[3])
+                SvN_small.append(data_line[4])
+                SvN_error_small.append(data_line[5])
             else:
                 LylB.append(data_line[3])
                 SvN.append(data_line[4])
@@ -1460,6 +1468,10 @@ if __name__ == '__main__':
                     if LylB:
                         ax15.errorbar(LylB, SvN, yerr=SvN_error, ls='none', capsize=3, marker=markers[flux_density_index],
                                  label=f'${data_line[0]}/{data_line[1]}$', markersize=6)
+                    elif LylB_small:
+                        ax15.errorbar(LylB_small, SvN_small, yerr=SvN_error_small, ls='none', capsize=3,
+                                      marker=markers[flux_density_index],
+                                      label=f'${data_line[0]}/{data_line[1]}$', markersize=6, c='k')
                     # ax15.errorbar(LylB_outliers, SvN_outliers, yerr=SvN_outliers_error, ls='none', capsize=3, color='k',
                     #              marker=markers[flux_density_index], markersize=6)
 
@@ -1467,7 +1479,7 @@ if __name__ == '__main__':
     LylB = []
     SvN = []
     for i, val in enumerate(grouped_data):
-        if any(math.isclose(j, val[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or val[2] < Ly_min:
+        if any(math.isclose(j, val[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or val[2] < Ly_min or val[2] < Ly_min_small:
             continue
         else:
             LylB.append(val[3])
@@ -1477,14 +1489,16 @@ if __name__ == '__main__':
     sorted_plot_data = plot_data[plot_data[:, 0].argsort()]
     length = len(sorted_plot_data)
 
+    # threshold = 0.767
+    #
     # for i in range(length):
     #     _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-    #     if r2value > 0.7:
-    #         straight_line_of_best_fit(ax15, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+    #     if r2value > threshold:
+    #         # straight_line_of_best_fit(ax15, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
     #         critical_LylB = sorted_plot_data[0][0]
     #         break
     #     sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
-    #
+
     # ax15.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
 
     ax15.legend(title='$n_\phi=p/q$', loc='upper center', bbox_to_anchor=(0.53, 2.35), handletextpad=0, borderpad=0.4, framealpha=1,
@@ -1505,12 +1519,16 @@ if __name__ == '__main__':
     for flux_density_index in range(len(flux_grouped_data)):
         LylB, SvN, SvN_error = [], [], []
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
+        LylB_small, SvN_small, SvN_error_small = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
-            if any(math.isclose(j, data_line[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or data_line[
-                2] < Ly_min:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
                 LylB_outliers.append(data_line[3])
                 SvN_outliers.append(data_line[4])
                 SvN_outliers_error.append(data_line[5])
+            elif data_line[2] < Ly_min_small:
+                LylB_small.append(data_line[3])
+                SvN_small.append(data_line[4])
+                SvN_error_small.append(data_line[5])
             else:
                 LylB_total.append(data_line[3])
                 LylB.append(data_line[3])
@@ -1529,7 +1547,7 @@ if __name__ == '__main__':
         LylB = []
         SvN = []
         for i, val in enumerate(grouped_data):
-            if any(math.isclose(j, val[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or val[2] < Ly_min:
+            if any(math.isclose(j, val[3], rel_tol=1e-3) is True for j in LylB_outlier_values) or val[2] < Ly_min or val[2] < Ly_min_small:
                 continue
             else:
                 if val[3] >= LylB_min:
@@ -1572,7 +1590,7 @@ if __name__ == '__main__':
     ax17 = plt.subplot(lower_inner_grid[5], sharex=ax15)
 
     ax17.scatter(xvalues, r2list, color='k', marker='x', s=10)
-    # ax17.axhline(0.769, color='r', linewidth=1, linestyle='dashed', label="threshold", zorder=2)
+    # ax17.axhline(threshold, color='r', linewidth=1, linestyle='dashed', label="threshold", zorder=2)
     #
     # ax17.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
     #             edgecolor='k', markerscale=1,

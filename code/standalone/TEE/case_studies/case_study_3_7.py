@@ -28,7 +28,7 @@ if __name__ == '__main__':
     ax1 = plt.subplot(gs[0], anchor=(0, 0.85))
 
     charge_pump_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/charge_pump/FerHofSqu1'
-    charge_pump_file = 'charge_pump_FerHofSqu1_3_7_placeholder.dat'
+    charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_3_70_nphi_1_10_LxMUC_1_Ly_14_phi_0_7_71.dat'
     charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
 
     # extract data from file
@@ -44,8 +44,8 @@ if __name__ == '__main__':
 
     ax1.plot(phi, charge, 's', marker='x', color='k', markersize=3)
 
-    ax1.axhline(charge[0], color='k', linewidth=0.5, ls='--')
-    ax1.axhline(charge[-1], color='k', linewidth=0.5, ls='--')
+    #ax1.axhline(charge[0], color='k', linewidth=0.5, ls='--')
+    #ax1.axhline(charge[-1], color='k', linewidth=0.5, ls='--')
     ax1.axvline(1, color='k', linewidth=0.5, ls='--')
     ax1.axvline(2, color='k', linewidth=0.5, ls='--')
     ax1.axvline(3, color='k', linewidth=0.5, ls='--')
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     ax1.axvline(6, color='k', linewidth=0.5, ls='--')
     ax1.axhline(1, color='k', linewidth=0.5, ls='--')
     ax1.axhline(2, color='k', linewidth=0.5, ls='--')
-    ax1.text(0.5, 2.16, "$\displaystyle{\sigma_\\text{H}=\\frac{3}{7}\\frac{e^2}{h}}$", bbox=dict(facecolor='white', alpha=1, lw=0.5, ls='-'))
+    ax1.text(4.6, 0.33, "$\displaystyle{\sigma_\\text{H}=\\frac{3}{7}\\frac{e^2}{h}}$", bbox=dict(facecolor='white', alpha=1, lw=0.5, ls='-'))
 
     ax1.tick_params(axis="x", labelsize=10)
     ax1.set_xlim([0, 7])
@@ -67,7 +67,7 @@ if __name__ == '__main__':
     ############################################
 
     # left, bottom, width, height = [0.215, 0.535, 0.25, 0.25]
-    left, bottom, width, height = [0.225, 0.525, 0.25, 0.25]  # left = 0.12
+    left, bottom, width, height = [0.11, 0.665, 0.25, 0.25]  # left = 0.12
     ax5 = fig.add_axes([left, bottom, width, height], projection='3d')
 
     r = 5
@@ -188,10 +188,10 @@ if __name__ == '__main__':
 
     divider = make_axes_locatable(ax3)
     cax = divider.append_axes('right', size='10%', pad=0.10)
-    ax3.set_xlabel("$L_x$", fontsize=11)
+    ax3.set_xlabel("$L_x / a$", fontsize=11)
     ax3.set_xticks(np.arange(Lx, step=1))
     ax3.set_xticklabels([i + 1 for i in range(Lx)])
-    ax3.set_ylabel("$L_y$", fontsize=11)
+    ax3.set_ylabel("$L_y / a$", fontsize=11)
     ax3.set_yticks(np.arange(Ly, step=1))
     ax3.set_yticklabels([i + 1 for i in range(Ly)])
     im = ax3.imshow(matrix, origin='lower')
@@ -229,10 +229,10 @@ if __name__ == '__main__':
 
     divider = make_axes_locatable(ax4)
     cax = divider.append_axes('right', size='10%', pad=0.10)
-    ax4.set_xlabel("$L_x$", fontsize=11)
+    ax4.set_xlabel("$L_x / a$", fontsize=11)
     ax4.set_xticks(np.arange(Lx, step=1))
     ax4.set_xticklabels([i+1 for i in range(Lx)])
-    ax4.set_ylabel("$L_y$", fontsize=11)
+    ax4.set_ylabel("$L_y / a$", fontsize=11)
     ax4.set_yticks(np.arange(Ly, step=1))
     ax4.set_yticklabels([i + 1 for i in range(Ly)])
     im = ax4.imshow(matrix, origin='lower', vmin=0)
