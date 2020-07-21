@@ -195,7 +195,7 @@ if __name__ == '__main__':
                 SvN_perc_error = float('nan')
 
             if frac_nu.numerator == 3 and frac_nu.denominator == 7:
-                accept_threshold = 2
+                accept_threshold = 0.1
             else:
                 accept_threshold = 0.1
 

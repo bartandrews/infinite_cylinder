@@ -1695,7 +1695,8 @@ if __name__ == '__main__':
     ax5.errorbar(2, abs(c_3_7[1]), yerr=c_err_3_7[1], ls='none', capsize=3, color='g', marker='.', markersize=6)
     #ax5.errorbar(3, abs(c_3_7[2]), yerr=c_err_3_7[2], ls='none', capsize=3, color='r', marker='.', markersize=6)
     ax5.axhline(np.log(np.sqrt(7)), color='k', ls='dashed', linewidth=1, zorder=-1, label='theory')
-    ax5.set_xlabel("$\kappa$", fontsize=11, labelpad=0)
+    ax5.set_xlabel("$\kappa$", fontsize=11, labelpad=-8)
+    ax5.set_xticks([1, 2])
     ax5.set_ylabel("$\gamma$", fontsize=11)
 
     ####################################################################################################################

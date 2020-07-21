@@ -31,8 +31,8 @@ class HofSqu1Model(HofstadterModel):
 
 if __name__ == "__main__":
 
-    model_params = dict(statistics='fermions', Nmax=1, conserve='N', t1=1, n=(int(1), int(9)), nphi=(int(1), int(3)),
-                        LxMUC=1, Ly=6, V=10, Vtype='Coulomb', Vrange=1,
+    model_params = dict(statistics='fermions', Nmax=1, conserve='N', t1=1, n=(int(1), int(12)), nphi=(int(1), int(4)),
+                        LxMUC=1, Ly=12, V=10, Vtype='Coulomb', Vrange=1,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=0)
     M = HofSqu1Model(model_params)

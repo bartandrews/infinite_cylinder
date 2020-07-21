@@ -218,7 +218,7 @@ if __name__ == '__main__':
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         if r2value > 0.99:
-            straight_line_of_best_fit(ax, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+            straight_line_of_best_fit(ax, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), yval=1.3)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
@@ -401,7 +401,7 @@ if __name__ == '__main__':
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         if r2value > 0.99:
-            straight_line_of_best_fit(ax1, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), yval=1.3)
+            straight_line_of_best_fit(ax1, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), xval=0.20, yval=1.3)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
@@ -588,7 +588,7 @@ if __name__ == '__main__':
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         if r2value > 0.943:
-            straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), yval=1.4)
+            straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), xval=0.29, yval=1.475)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)

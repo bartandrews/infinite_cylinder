@@ -59,7 +59,7 @@ def straight_line_of_best_fit(axis, LylB_list, SvN_list, xpos=0.25, ypos=1.5):
     print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
     xvalues = np.linspace(0, max(LylB_list))
     axis.plot(xvalues, m * xvalues + c, '-', c='k', zorder=0)
-    axis.text(xpos, ypos, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})-({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.5f}$".format(
+    axis.text(xpos, ypos, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})-(\mathbf{{{intercept:.3f}\pm {cerror:.3f}}})$\n$R^2={rsquared:.5f}$".format(
         gradient=m, intercept=abs(c), cerror=c_err, rsquared=r2_value, fontsize=10))
 
     return m, m_err, c, c_err, r2_value
@@ -297,15 +297,15 @@ if __name__ == '__main__':
     ax1.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
     if "nu_1_2" in file:
-        ax1.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="theory", zorder=2)
+        ax1.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_1_3" in file or "nu_2_3" in file or "nu_1_3" in file:
-        ax1.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="theory", zorder=2)
+        ax1.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_2_5" in file:
-        ax1.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="theory", zorder=2)
+        ax1.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_4" in file or "nu_1_4" in file:
-        ax1.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="theory", zorder=2)
+        ax1.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_7" in file:
-        ax1.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="theory", zorder=2)
+        ax1.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="Abelian theory", zorder=2)
 
     ax1.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
@@ -313,6 +313,7 @@ if __name__ == '__main__':
     ax1.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
     ax1.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
     ax1.set_ylabel("$-\gamma_{\geq}$", fontsize=11)
+    ax1.set_yticks([-0.3, -0.1])
     ax1.set_xlim([0, None])
 
     ####################################################################################################################
@@ -547,15 +548,15 @@ if __name__ == '__main__':
     ax4.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
     if "nu_1_2" in file:
-        ax4.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="theory", zorder=2)
+        ax4.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_1_3" in file or "nu_2_3" in file or "nu_1_3" in file:
-        ax4.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="theory", zorder=2)
+        ax4.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_2_5" in file:
-        ax4.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="theory", zorder=2)
+        ax4.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_4" in file or "nu_1_4" in file:
-        ax4.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="theory", zorder=2)
+        ax4.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_7" in file:
-        ax4.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="theory", zorder=2)
+        ax4.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="Abelian theory", zorder=2)
 
     ax4.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
@@ -802,15 +803,15 @@ if __name__ == '__main__':
     ax7.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
     if "nu_1_2" in file:
-        ax7.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="theory", zorder=2)
+        ax7.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_1_3" in file or "nu_2_3" in file or "nu_1_3" in file:
-        ax7.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="theory", zorder=2)
+        ax7.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_2_5" in file:
-        ax7.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="theory", zorder=2)
+        ax7.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_4" in file or "nu_1_4" in file:
-        ax7.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="theory", zorder=2)
+        ax7.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_7" in file:
-        ax7.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="theory", zorder=2)
+        ax7.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="Abelian theory", zorder=2)
 
     ax7.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
@@ -986,7 +987,7 @@ if __name__ == '__main__':
     sorted_plot_data = plot_data[plot_data[:, 0].argsort()]
     length = len(sorted_plot_data)
 
-    threshold = 0.936
+    threshold = 0.945
 
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
@@ -1060,15 +1061,15 @@ if __name__ == '__main__':
     ax10.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
     if "nu_1_2" in file:
-        ax10.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="theory", zorder=2)
+        ax10.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_1_3" in file or "nu_2_3" in file or "nu_1_3" in file:
-        ax10.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="theory", zorder=2)
+        ax10.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_2_5" in file:
-        ax10.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="theory", zorder=2)
+        ax10.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_4" in file or "nu_1_4" in file:
-        ax10.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="theory", zorder=2)
+        ax10.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_7" in file:
-        ax10.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="theory", zorder=2)
+        ax10.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="Abelian theory", zorder=2)
 
     ax10.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
@@ -1076,6 +1077,7 @@ if __name__ == '__main__':
     ax10.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
     ax10.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
     ax10.set_ylabel("$-\gamma_{\geq}$", fontsize=11)
+    ax10.set_yticks([0.0, 2.5])
     ax10.set_xlim([0, None])
 
     ####################################################################################################################
@@ -1243,7 +1245,7 @@ if __name__ == '__main__':
     for i in range(length):
         _, _, _, _, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         if r2value > 0.99:
-            straight_line_of_best_fit(ax12, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), ypos=0.75)
+            straight_line_of_best_fit(ax12, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), xpos=0.20, ypos=0.75)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
@@ -1310,15 +1312,15 @@ if __name__ == '__main__':
     ax13.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
     if "nu_1_2" in file:
-        ax13.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="theory", zorder=2)
+        ax13.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_1_3" in file or "nu_2_3" in file or "nu_1_3" in file:
-        ax13.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="theory", zorder=2)
+        ax13.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_2_5" in file:
-        ax13.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="theory", zorder=2)
+        ax13.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_4" in file or "nu_1_4" in file:
-        ax13.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="theory", zorder=2)
+        ax13.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_7" in file:
-        ax13.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="theory", zorder=2)
+        ax13.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="Abelian theory", zorder=2)
 
     ax13.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                edgecolor='k', markerscale=1,
@@ -1326,6 +1328,7 @@ if __name__ == '__main__':
     ax13.axvline(critical_LylB, color='g', ls='dashed', linewidth=1, zorder=2)
     ax13.set_xlabel("$\left(L_y/l_\mathrm{B}\\right)_\mathrm{min}$", fontsize=11)
     ax13.set_ylabel("$-\gamma_{\geq}$", fontsize=11)
+    ax13.set_yticks([0.0, 1.5])
     ax13.set_xlim([0, None])
 
     ####################################################################################################################
@@ -1567,15 +1570,15 @@ if __name__ == '__main__':
     ax16.errorbar(xvalues, gamma_means, yerr=gamma_errors, ls='none', capsize=3, color='k')
 
     if "nu_1_2" in file:
-        ax16.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="theory", zorder=2)
+        ax16.axhline(-np.log(np.sqrt(2)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_1_3" in file or "nu_2_3" in file or "nu_1_3" in file:
-        ax16.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="theory", zorder=2)
+        ax16.axhline(-np.log(np.sqrt(3)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_2_5" in file:
-        ax16.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="theory", zorder=2)
+        ax16.axhline(-np.log(np.sqrt(5)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_4" in file or "nu_1_4" in file:
-        ax16.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="theory", zorder=2)
+        ax16.axhline(-np.log(np.sqrt(4)), color='r', linewidth=1, label="Abelian theory", zorder=2)
     elif "nu_3_7" in file:
-        ax16.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="theory", zorder=2)
+        ax16.axhline(-np.log(np.sqrt(7)), color='r', linewidth=1, label="Abelian theory", zorder=2)
 
     ax16.legend(loc='upper left', handletextpad=0, borderpad=0.4, framealpha=1,
                 edgecolor='k', markerscale=1,
