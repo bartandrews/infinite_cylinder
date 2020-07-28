@@ -11,7 +11,8 @@ from tenpy.algorithms import dmrg
 from tenpy.tools import hdf5_io
 # --- infinite_cylinder imports
 import functions.func_proc as fp
-from models.haldane.haldane import HalModel
+from models.haldane.C_1 import HalC1Model
+from models.haldane.C_3 import HalC3Model
 from models.hofstadter.squ_1 import HofSqu1Model
 from models.hofstadter.hex_1 import HofHex1Model
 from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
@@ -25,7 +26,7 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = [1, 0]*3
+    state = [1, 0]*6
 
     return state
 
@@ -38,30 +39,33 @@ def __get_custom_state():
 def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
 
     nn, nd, LxMUC, Ly = ham_params['n'][0], ham_params['n'][1], ham_params['LxMUC'], ham_params['Ly']
-    q = ham_params['nphi'][1] if "Hof" in model else 1
+    if "Hof" in model:
+        q = ham_params['nphi'][1]
+    elif model.endswith("HalC3"):
+        q = 3
+    else:
+        q = 1
 
     if "Orbital" in model:
-        numb_particles = 2 * int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(
-            nd)
+        numb_particles = 2 * int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(nd)
     else:
-        numb_particles = int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(
-            nd)
+        numb_particles = int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(nd)
 
     if not numb_particles.is_integer():
         raise ValueError("Cannot fit an integer number of particles into lattice geometry.")
     else:
         numb_particles = int(numb_particles)
 
-    if "Squ" in model:
+    if "Squ" in model or model.endswith("HalC3"):
         system_size = int(q * LxMUC * Ly)
-    else:  # "Hex"
+    else:  # "Hex" or "HalC1"
         system_size = int(2 * q * LxMUC * Ly)
 
     numb_sites_per_particle = int(system_size / numb_particles)
 
     if "Orbital" in model:
         empty_site = ['0_x 0_y'] if "Bos" in model else ['empty_x empty_y']
-        if orbital_preference in ['polarizedx', None]:
+        if orbital_preference in ['polarizedx', None]:  # default
             lattice_site = ['1_x 0_y'] if "Bos" in model else ['full_x empty_y']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
@@ -78,11 +82,41 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
                 lattice_site_2 = ['empty_x full_y']
             state = (lattice_site_1 + empty_site * (numb_sites_per_particle - 1)
                      + lattice_site_2 + empty_site * (numb_sites_per_particle - 1)) \
-                     * int((system_size / (2 * numb_sites_per_particle)))
+                     * int((system_size / numb_sites_per_particle))
+            state = state[:system_size]
         elif orbital_preference == 'filled':
             lattice_site = ['1_x 1_y'] if "Bos" in model else ['full_x full_y']
             state = (lattice_site + empty_site * (2 * numb_sites_per_particle - 1)) \
-                     * int((system_size / (2 * numb_sites_per_particle)))
+                     * int((system_size / numb_sites_per_particle))
+            state = state[:system_size]
+        else:
+            raise ValueError("Unknown orbital_preference parameter.")
+    elif model.endswith("HalC3"):
+        empty_site = ['0_A 0_B'] if "Bos" in model else ['empty_A empty_B']
+        if orbital_preference == 'polarizedA':
+            lattice_site = ['1_A 0_B'] if "Bos" in model else ['full_A empty_B']
+            state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
+                (system_size / numb_sites_per_particle))
+        elif orbital_preference == 'polarizedB':
+            lattice_site = ['0_A 1_B'] if "Bos" in model else ['empty_A full_B']
+            state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
+                (system_size / numb_sites_per_particle))
+        elif orbital_preference in ['unpolarized', None]:  # default
+            if "Bos" in model:
+                lattice_site_1 = ['1_A 0_B']
+                lattice_site_2 = ['0_A 1_B']
+            else:
+                lattice_site_1 = ['full_A empty_B']
+                lattice_site_2 = ['empty_A full_B']
+            state = (lattice_site_1 + empty_site * (numb_sites_per_particle - 1)
+                     + lattice_site_2 + empty_site * (numb_sites_per_particle - 1)) \
+                    * int((system_size / numb_sites_per_particle))
+            state = state[:system_size]
+        elif orbital_preference == 'filled':
+            lattice_site = ['1_A 1_B'] if "Bos" in model else ['full_A full_B']
+            state = (lattice_site + empty_site * (2 * numb_sites_per_particle - 1)) \
+                    * int((system_size / numb_sites_per_particle))
+            state = state[:system_size]
         else:
             raise ValueError("Unknown orbital_preference parameter.")
     else:
@@ -94,7 +128,7 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
     print("initial state = ", state)
     print("number of particles = ", numb_particles)
     print("number of lattice sites = ", len(state))
-    if "Orbital" in model:
+    if "Orbital" in model or model.endswith("HalC3"):
         print("number of orbital sites = ", 2 * len(state))
 
     return state
@@ -119,9 +153,12 @@ def define_iDMRG_model(model, ham_params):
     else:  # "Fer"
         model_params.update(statistics='fermions')
 
-    if model.endswith("Hal"):
-        del model_params['Vrange'], model_params['Vtype'], model_params['n'], model_params['nphi']
-        M = HalModel(model_params)
+    if model.endswith("HalC1"):
+        del model_params['nphi']
+        M = HalC1Model(model_params)
+    elif model.endswith("HalC3"):
+        del model_params['nphi']
+        M = HalC3Model(model_params)
     elif model.endswith("HofSqu1"):
         M = HofSqu1Model(model_params)
     elif model.endswith("HofHex1"):
@@ -218,13 +255,13 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
         psi = state_data['psi']
     else:
         M = define_iDMRG_model(model, ham_params)
+        orb_pref = 'unpolarized'
         product_state = __get_product_state(model, ham_params) if not ham_params['custom'] else __get_custom_state()
         print(product_state)
         psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
 
     dmrg_params = {
         'mixer': True,  # setting this to True helps to escape local minima
-        # 'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
         'mixer_params': {'amplitude': 1.e-5, 'decay': 1.2, 'disable_after': 30},
         'trunc_params': {
             # 'chi_max': chi_max,
@@ -280,5 +317,7 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
 
 if __name__ == "__main__":
 
-    __get_product_state(model="FerHofSqu1", ham_params=dict(n=(4, 45), nphi=(4, 15), LxMUC=1, Ly=6),
-                        filling_scale_factor=1, orbital_preference=None)
+    # __get_product_state(model="FerHofSqu1", ham_params=dict(n=(4, 45), nphi=(4, 15), LxMUC=1, Ly=6),
+    #                     filling_scale_factor=1, orbital_preference=None)
+    __get_product_state(model="FerHalC3", ham_params=dict(n=(1, 1), LxMUC=1, Ly=3),
+                         filling_scale_factor=1, orbital_preference=None)

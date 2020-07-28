@@ -2,71 +2,81 @@
 import numpy as np
 # --- TeNPy imports
 from tenpy.models.model import CouplingMPOModel
-from tenpy.tools.params import get_parameter
 from tenpy.networks.site import BosonSite, FermionSite
-from tenpy.models.lattice import Honeycomb
+# --- infinite_cylinder imports
+import functions.func_int as fi
 
 
-class HalModel(CouplingMPOModel):
+def stats(params):
+    return params.get('statistics', 'bosons')
+
+
+class HaldaneModel(CouplingMPOModel):
 
     def __init__(self, params):
         CouplingMPOModel.__init__(self, params)
 
-    def stats(self, params):
-        return get_parameter(params, 'statistics', 'bosons', self.name)
-
     def init_sites(self, params):
-        conserve = get_parameter(params, 'conserve', 'N', self.name)
-        if self.stats(params) == 'bosons':
-            Nmax = get_parameter(params, 'Nmax', 1, self.name)
-            site = BosonSite(Nmax=Nmax, conserve=conserve)
+        conserve = params.get('conserve', 'N')
+        if stats(params) == 'bosons':
+            Nmax = params.get('Nmax', 1)
+            n = params.get('n', (1, 2))
+            n = n[0] / n[1]
+            site = BosonSite(Nmax=Nmax, conserve=conserve, filling=n)
         else:
-            site = FermionSite(conserve=conserve)
+            n = params.get('n', (1, 3))
+            n = n[0] / n[1]
+            site = FermionSite(conserve=conserve, filling=n)
         return site
 
-    def init_lattice(self, params):
-        site = self.init_sites(params)
-        Lx = get_parameter(params, 'LxMUC', 1, self.name)
-        Ly = get_parameter(params, 'Ly', 3, self.name)
-        order = get_parameter(params, 'order', 'Cstyle', self.name)
-        bc_MPS = get_parameter(params, 'bc_MPS', 'infinite', self.name)
+    @staticmethod
+    def init_lattice_params(params):
+        Lx = params.get('LxMUC', 1)
+        Ly = params.get('Ly', 3)
+        order = params.get('order', 'Cstyle')
+        bc_MPS = params.get('bc_MPS', 'infinite')
         bc_x = 'periodic' if bc_MPS == 'infinite' else 'open'  # Next line needs default
-        bc_x = get_parameter(params, 'bc_x', bc_x, self.name)
-        bc_y = get_parameter(params, 'bc_y', 'cylinder', self.name)
+        bc_x = params.get('bc_x', bc_x)
+        bc_y = params.get('bc_y', 'cylinder')
         assert bc_y in ['cylinder', 'ladder']
         bc_y = 'periodic' if bc_y == 'cylinder' else 'open'
         if bc_MPS == 'infinite' and bc_x == 'open':
             raise ValueError("You need to use 'periodic' `bc_x` for infinite systems!")
         bc = [bc_x, bc_y]
-        lat = Honeycomb(Lx, Ly, site, order=order, bc_MPS=bc_MPS, bc=bc)
-        return lat
+        return Lx, Ly, order, bc_MPS, bc
 
     def init_terms(self, params):
-        if self.stats(params) == 'bosons':
+        if stats(params) == 'bosons':
             creation, annihilation = 'Bd', 'B'
             V_default, Vrange_default = 0, 0
         else:
             creation, annihilation = 'Cd', 'C'
-            V_default, Vrange_default = 1, 1
-        t1 = get_parameter(params, 't1', 1, self.name, True)
-        t2 = (np.sqrt(129) / 36) * t1 * np.exp(1j * np.arccos(3 * np.sqrt(3 / 43)))
-        mu = get_parameter(params, 'mu', 0, self.name, True)
-        V = get_parameter(params, 'V', V_default, self.name, True)
-        phi_2pi = 2 * np.pi * get_parameter(params, 'phi', 0, self.name)
+            V_default, Vrange_default = 0, 0
+        Nmax = params.get('Nmax', 1)
+        t1 = params.get('t1', 1)
+        mu = params.get('mu', 0)
+        V = params.get('V', V_default)
+        Vtype = params.get('Vtype', 'Coulomb')
+        Vrange = params.get('Vrange', Vrange_default)
+        phi_2pi = 2 * np.pi * params.get('phi', 0)
+        return creation, annihilation, Nmax, t1, mu, V, Vtype, Vrange, phi_2pi
 
+    def chemical_potential(self, mu, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
         for u in range(len(self.lat.unit_cell)):
-            self.add_onsite(mu, 0, 'N')
-            self.add_onsite(-mu, 1, 'N')
+            self.add_onsite(mu, 0, tot_numb_op)
+            self.add_onsite(-mu, 1, tot_numb_op)
 
-        for u1, u2, dx in self.lat.pairs['nearest_neighbors']:
-            t1_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_2pi])
-            self.add_coupling(t1_phi, u1, creation, u2, annihilation, dx)
-            self.add_coupling(np.conj(t1_phi), u2, creation, u1, annihilation, -dx)  # H.c.
-            self.add_coupling(V, u1, 'N', u2, 'N', dx)
+    def onsite_interaction(self, U, op1, op2):
+        op = op1 + ' ' + op2
+        for u in range(len(self.lat.unit_cell)):
+            print("u in range(len(self.lat.unit_cell)) = ", u)
+            self.add_onsite(U, u, op)
 
-        for u1, u2, dx in [(0, 0, np.array([-1, 1])), (0, 0, np.array([1, 0])),
-                           (0, 0, np.array([0, -1])), (1, 1, np.array([0, 1])),
-                           (1, 1, np.array([1, -1])), (1, 1, np.array([-1, 0]))]:
-            t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
-            self.add_coupling(t2_phi, u1, creation, u2, annihilation, dx)
-            self.add_coupling(np.conj(t2_phi), u2, creation, u1, annihilation, -dx)  # H.c.
+    def offsite_interaction(self, lattice, V, Vtype, Vrange, extra_dof=False):
+        tot_numb_op = 'N' if not extra_dof else 'Ntot'
+        for i in range(1, 11):  # offsite interaction only implemented up to 10th-NN
+            if Vrange >= i:
+                for u1, u2, dx in fi.NN(lattice, i):
+                    self.add_coupling(fi.interaction_strength(lattice, V, Vtype, i - 1),
+                                      u1, tot_numb_op, u2, tot_numb_op, dx)
