@@ -73,20 +73,20 @@ class HalC3Model(HaldaneModel):
         t3 = -0.34 * t1
         for u1, u2, dx in self.lat.NN:
             t1_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_2pi])
-            self.add_coupling(t1_phi, u1, 'CdA', u2, 'CB', dx, 'JW', True)
-            self.add_coupling(np.conj(t1_phi), u2, 'CdB', u1, 'CA', -dx, 'JW', True)
+            self.add_coupling(t1_phi, u1, creation+'A', u2, annihilation+'B', dx)
+            self.add_coupling(np.conj(t1_phi), u2, creation+'B', u1, annihilation+'A', -dx)
         for u1, u2, dx in self.lat.nNNA:
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
-            self.add_coupling(t2_phi, u1, 'CdA', u2, 'CA', dx, 'JW', True)
-            self.add_coupling(np.conj(t2_phi), u2, 'CdA', u1, 'CA', -dx, 'JW', True)
+            self.add_coupling(t2_phi, u1, creation+'A', u2, annihilation+'A', dx)
+            self.add_coupling(np.conj(t2_phi), u2, creation+'A', u1, annihilation+'A', -dx)
         for u1, u2, dx in self.lat.nNNB:
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
-            self.add_coupling(t2_phi, u1, 'CdB', u2, 'CB', dx, 'JW', True)
-            self.add_coupling(np.conj(t2_phi), u2, 'CdB', u1, 'CB', -dx, 'JW', True)
+            self.add_coupling(t2_phi, u1, creation+'B', u2, annihilation+'B', dx)
+            self.add_coupling(np.conj(t2_phi), u2, creation+'B', u1, annihilation+'B', -dx)
         for u1, u2, dx in self.lat.nnNN:
             t3_phi = self.coupling_strength_add_ext_flux(t3, dx, [0, phi_2pi])
-            self.add_coupling(t3_phi, u1, 'CdA', u2, 'CB', dx, 'JW', True)
-            self.add_coupling(np.conj(t3_phi), u2, 'CdB', u1, 'CA', -dx, 'JW', True)
+            self.add_coupling(t3_phi, u1, creation+'A', u2, annihilation+'B', dx)
+            self.add_coupling(np.conj(t3_phi), u2, creation+'B', u1, annihilation+'A', -dx)
 
 
 if __name__ == "__main__":
