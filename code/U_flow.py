@@ -27,7 +27,8 @@ def my_U_flow(path_flag, threads, model, chi_max, ham_params):
     for U in np.linspace(ham_params['U_min'], ham_params['U_max'], ham_params['U_samp']):
 
         ham_params.update(U=U)
-        (E, psi, M, _, _) = fd.my_iDMRG_pickle("U_flow", path, model, chi_max, ham_params, run=True)
+        state_data = fd.my_iDMRG_pickle("U_flow", path, model, chi_max, ham_params, run=True)
+        psi = state_data['psi']
 
         ###################
         # corr_len_U_flow #

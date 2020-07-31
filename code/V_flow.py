@@ -27,7 +27,8 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
     for V in np.linspace(ham_params['V_min'], ham_params['V_max'], ham_params['V_samp']):
 
         ham_params.update(V=V)
-        (E, psi, M, _, _) = fd.my_iDMRG_pickle("V_flow", path, model, chi_max, ham_params, run=True)
+        state_data = fd.my_iDMRG_pickle("V_flow", path, model, chi_max, ham_params, run=True)
+        psi = state_data['psi']
 
         ###################
         # corr_len_V_flow #

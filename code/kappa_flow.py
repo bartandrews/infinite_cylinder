@@ -31,7 +31,8 @@ def my_kappa_flow(path_flag, threads, model, chi_max, ham_params):
         ham_params.update(t5=kappa*t5)
         ham_params.update(t5dash=kappa*t5dash)
 
-        (E, psi, M, _, _) = fd.my_iDMRG_pickle("kappa_flow", path, model, chi_max, ham_params, run=True)
+        state_data = fd.my_iDMRG_pickle("kappa_flow", path, model, chi_max, ham_params, run=True)
+        psi = state_data['psi']
 
         #######################
         # corr_len_kappa_flow #

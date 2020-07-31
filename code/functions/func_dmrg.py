@@ -26,7 +26,7 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = [1, 0]*6
+    state = ['1_A 0_B', '1_A 0_B', '1_A 0_B', '1_A 0_B', '1_A 0_B', '1_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B']
 
     return state
 
@@ -93,7 +93,7 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
             raise ValueError("Unknown orbital_preference parameter.")
     elif model.endswith("HalC3"):
         empty_site = ['0_A 0_B'] if "Bos" in model else ['empty_A empty_B']
-        if orbital_preference == 'polarizedA':
+        if orbital_preference in ['polarizedA', None]:  # default
             lattice_site = ['1_A 0_B'] if "Bos" in model else ['full_A empty_B']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
@@ -101,7 +101,7 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
             lattice_site = ['0_A 1_B'] if "Bos" in model else ['empty_A full_B']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
-        elif orbital_preference in ['unpolarized', None]:  # default
+        elif orbital_preference == 'unpolarized':  # old default
             if "Bos" in model:
                 lattice_site_1 = ['1_A 0_B']
                 lattice_site_2 = ['0_A 1_B']
