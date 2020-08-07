@@ -13,8 +13,10 @@ def interaction_strength(lattice, Vvalue, Vtype_value, rindex):
         r = [1, np.sqrt(2), 2, np.sqrt(5), np.sqrt(8), 3, np.sqrt(10), np.sqrt(13), 4, np.sqrt(18)]
     elif lattice == "Hex":
         r = [1, np.sqrt(3), 2, np.sqrt(7), 3, np.sqrt(12), np.sqrt(13), 4, np.sqrt(19), np.sqrt(21)]
+    elif lattice == "Tri":
+        r = [1, np.sqrt(3), 2]
     else:
-        raise ValueError("Lattice parameter must be either Squ or Hex.")
+        raise ValueError("Unknown lattice parameter.")
 
     if Vtype_value == 'Coulomb':
         potential = Vvalue / r[rindex]
@@ -92,7 +94,16 @@ def NN(lattice, n):
                          (1, 1, np.array([3, -2])), (1, 1, np.array([2, -3])), (1, 1, np.array([1, -3]))]
         else:
             raise ValueError("nearest_neighbors not implemented for this value of n.")
+    elif lattice == "Tri":
+        if n == 1:
+            neighbors = [(0, 0, np.array([1, 0])), (0, 0, np.array([-1, 1])), (0, 0, np.array([0, -1]))]
+        elif n == 2:
+            neighbors = [(0, 0, np.array([1, 1])), (0, 0, np.array([-2, 1])), (0, 0, np.array([1, -2]))]
+        elif n == 3:
+            neighbors = [(0, 0, np.array([2, 0])), (0, 0, np.array([-2, 2])), (0, 0, np.array([0, -2]))]
+        else:
+            raise ValueError("nearest_neighbors not implemented for this value of n.")
     else:
-        raise ValueError("Neither Squ nor Hex in model name.")
+        raise ValueError("Unable to infer lattice from model name.")
 
     return neighbors

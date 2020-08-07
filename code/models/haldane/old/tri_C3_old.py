@@ -17,16 +17,19 @@ class TripartiteTriangular(lattice.Lattice):
         super().__init__([Lx, Ly], [site, site, site], **kwargs)
         self.site = site
 
+        # top-left, top-right, bottom
         self.NN = [(0, 2, np.array([-1, 1])), (0, 1, np.array([0, 0])), (0, 0, np.array([0, -1])),
                    (1, 0, np.array([0, 1])), (1, 2, np.array([0, 0])), (1, 1, np.array([0, -1])),
                    (2, 1, np.array([0, 1])), (2, 0, np.array([1, 0])), (2, 2, np.array([0, -1]))]
-        self.nNNA = [(0, 2, np.array([-1, 2])), (0, 2, np.array([0, -1])),
-                     (0, 2, np.array([-1, -1])), (1, 0, np.array([0, 2])), (1, 0, np.array([1, -1])),
-                     (1, 0, np.array([0, -1])), (2, 1, np.array([0, 2])), (2, 1, np.array([1, -1])),
-                     (2, 1, np.array([0, -1]))]
+        # top-left, right, bottom-left
+        self.nNNA = [(0, 2, np.array([-1, 2])), (0, 2, np.array([0, -1])), (0, 2, np.array([-1, -1])),
+                     (1, 0, np.array([0, 2])), (1, 0, np.array([1, -1])), (1, 0, np.array([0, -1])),
+                     (2, 1, np.array([0, 2])), (2, 1, np.array([1, -1])), (2, 1, np.array([0, -1]))]
+        # top-right, left, bottom-right
         self.nNNB = [(0, 1, np.array([0, 1])), (0, 1, np.array([-1, 1])), (0, 1, np.array([0, -2])),
                      (1, 2, np.array([0, 1])), (1, 2, np.array([-1, 1])), (1, 2, np.array([0, -2])),
                      (2, 0, np.array([1, 1])), (2, 0, np.array([0, 1])), (2, 0, np.array([1, -2]))]
+        # top-left, top-right, bottom
         self.nnNN = [(0, 1, np.array([-1, 2])), (0, 2, np.array([0, 0])), (0, 0, np.array([0, -2])),
                      (1, 2, np.array([-1, 2])), (1, 0, np.array([1, 0])), (1, 1, np.array([0, -2])),
                      (2, 0, np.array([0, 2])), (2, 1, np.array([1, 0])), (2, 2, np.array([0, -2]))]
@@ -44,7 +47,7 @@ class TripartiteTriangular(lattice.Lattice):
         plt.show()
 
 
-class HalC3Model(HaldaneModel):
+class HalTriC3Model(HaldaneModel):
 
     def __init__(self, params):
         HaldaneModel.__init__(self, params)
@@ -95,7 +98,7 @@ if __name__ == "__main__":
                         LxMUC=1, Ly=6, V=1, Vtype='Coulomb', Vrange=1,
                         bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle',
                         verbose=1, phi=0)
-    M = HalC3Model(model_params)
+    M = HalTriC3Model(model_params)
 
     print("max MPO bond dimension = ", max(M.H_MPO.chi))
     M.lat.plot_lattice()

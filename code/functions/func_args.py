@@ -14,7 +14,9 @@ def parse_input_arguments(program):
     stem = parser.add_argument_group("stem sub-arguments")
     leaf = parser.add_argument_group("leaf sub-arguments")
 
-    models = ["BosHalC1", "FerHalC1", "BosHalC3", "FerHalC3",
+    models = ["BosHalSquC1", "FerHalSquC1", "BosHalHexC1", "FerHalHexC1",
+              "BosHalSquC2", "FerHalSquC2",
+              "BosHalTriC3", "FerHalTriC3",
               "BosHofSqu1", "FerHofSqu1", "BosHofHex1", "FerHofHex1",
               "BosHofHex1Hex5", "FerHofHex1Hex5", "BosHofHex1Hex5Orbital", "FerHofHex1Hex5Orbital",
               "FerHofHex1Hex5OrbitalOld"]

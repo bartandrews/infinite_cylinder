@@ -11,8 +11,10 @@ from tenpy.algorithms import dmrg
 from tenpy.tools import hdf5_io
 # --- infinite_cylinder imports
 import functions.func_proc as fp
-from models.haldane.C_1 import HalC1Model
-from models.haldane.C_3 import HalC3Model
+from models.haldane.squ_C1 import HalSquC1Model
+from models.haldane.hex_C1 import HalHexC1Model
+from models.haldane.squ_C2 import HalSquC2Model
+from models.haldane.tri_C3 import HalTriC3Model
 from models.hofstadter.squ_1 import HofSqu1Model
 from models.hofstadter.hex_1 import HofHex1Model
 from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
@@ -39,31 +41,33 @@ def __get_custom_state():
 def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
 
     nn, nd, LxMUC, Ly = ham_params['n'][0], ham_params['n'][1], ham_params['LxMUC'], ham_params['Ly']
+
+    # check for Hofstadter model
     if "Hof" in model:
         q = ham_params['nphi'][1]
-    elif model.endswith("HalC3"):
-        q = 3
     else:
         q = 1
 
-    if "Orbital" in model:
-        numb_particles = 2 * int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(nd)
-    else:
-        numb_particles = int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor) * int(nn) / int(nd)
+    # calculate number of lattice sites
+    system_size = int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor)
+    if "Hex" in model:
+        system_size = system_size * 2
+    if "HalSquC1" in model:
+        system_size = system_size * 4
 
-    if not numb_particles.is_integer():
-        raise ValueError("Cannot fit an integer number of particles into lattice geometry.")
-    else:
+    # n corresponds to the filling fraction of lattice sites in the system
+    numb_particles = system_size * int(nn) / int(nd)
+
+    # enforce integer number of particles
+    if numb_particles.is_integer():
         numb_particles = int(numb_particles)
+    else:
+        raise ValueError("Cannot fit an integer number of particles into lattice geometry.")
 
-    if "Squ" in model or model.endswith("HalC3"):
-        system_size = int(q * LxMUC * Ly)
-    else:  # "Hex" or "HalC1"
-        system_size = int(2 * q * LxMUC * Ly)
-
+    # number of sites taken up by a particle (floored fraction)
     numb_sites_per_particle = int(system_size / numb_particles)
 
-    if "Orbital" in model:
+    if "Orbital" in model:  # x and y orbitals
         empty_site = ['0_x 0_y'] if "Bos" in model else ['empty_x empty_y']
         if orbital_preference in ['polarizedx', None]:  # default
             lattice_site = ['1_x 0_y'] if "Bos" in model else ['full_x empty_y']
@@ -91,7 +95,7 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
             state = state[:system_size]
         else:
             raise ValueError("Unknown orbital_preference parameter.")
-    elif model.endswith("HalC3"):
+    elif model.endswith("HalSquC2") or model.endswith("HalTriC3"):  # A and B orbitals
         empty_site = ['0_A 0_B'] if "Bos" in model else ['empty_A empty_B']
         if orbital_preference in ['polarizedA', None]:  # default
             lattice_site = ['1_A 0_B'] if "Bos" in model else ['full_A empty_B']
@@ -128,7 +132,7 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
     print("initial state = ", state)
     print("number of particles = ", numb_particles)
     print("number of lattice sites = ", len(state))
-    if "Orbital" in model or model.endswith("HalC3"):
+    if "Orbital" in model or model.endswith("HalSquC2") or model.endswith("HalTriC3"):  # two orbitals
         print("number of orbital sites = ", 2 * len(state))
 
     return state
@@ -153,12 +157,18 @@ def define_iDMRG_model(model, ham_params):
     else:  # "Fer"
         model_params.update(statistics='fermions')
 
-    if model.endswith("HalC1"):
+    if model.endswith("HalSquC1"):
         del model_params['nphi']
-        M = HalC1Model(model_params)
-    elif model.endswith("HalC3"):
+        M = HalSquC1Model(model_params)
+    elif model.endswith("HalHexC1"):
         del model_params['nphi']
-        M = HalC3Model(model_params)
+        M = HalHexC1Model(model_params)
+    elif model.endswith("HalSquC2"):
+        del model_params['nphi']
+        M = HalSquC2Model(model_params)
+    elif model.endswith("HalTriC3"):
+        del model_params['nphi']
+        M = HalTriC3Model(model_params)
     elif model.endswith("HofSqu1"):
         M = HofSqu1Model(model_params)
     elif model.endswith("HofHex1"):
@@ -319,5 +329,5 @@ if __name__ == "__main__":
 
     # __get_product_state(model="FerHofSqu1", ham_params=dict(n=(4, 45), nphi=(4, 15), LxMUC=1, Ly=6),
     #                     filling_scale_factor=1, orbital_preference=None)
-    __get_product_state(model="FerHalC3", ham_params=dict(n=(1, 1), LxMUC=1, Ly=3),
+    __get_product_state(model="BosHalHexC1", ham_params=dict(n=(1, 4), LxMUC=1, Ly=4),
                          filling_scale_factor=1, orbital_preference=None)

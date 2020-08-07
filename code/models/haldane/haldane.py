@@ -54,12 +54,14 @@ class HaldaneModel(CouplingMPOModel):
             V_default, Vrange_default = 0, 0
         Nmax = params.get('Nmax', 1)
         t1 = params.get('t1', 1)
+        t2 = params.get('t2', None)
+        t3 = params.get('t3', None)
         mu = params.get('mu', 0)
         V = params.get('V', V_default)
         Vtype = params.get('Vtype', 'Coulomb')
         Vrange = params.get('Vrange', Vrange_default)
         phi_2pi = 2 * np.pi * params.get('phi', 0)
-        return creation, annihilation, Nmax, t1, mu, V, Vtype, Vrange, phi_2pi
+        return creation, annihilation, Nmax, t1, t2, t3, mu, V, Vtype, Vrange, phi_2pi
 
     def chemical_potential(self, mu, extra_dof=False):
         tot_numb_op = 'N' if not extra_dof else 'Ntot'
