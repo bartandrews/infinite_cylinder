@@ -33,7 +33,7 @@ class HalSquC2Model(HaldaneModel):
         self.chemical_potential(mu, extra_dof=True)
         self.offsite_interaction("Squ", V, Vtype, Vrange, extra_dof=True)
 
-        t1 = -t1  # try -, since + sign gave rubbish for chi=100 FCI (even though it should be +)
+        # t1 = -t1  # try -, since + sign gave rubbish for chi=100 FCI (even though it should be +)
         t1_phase = t1 * np.exp(1j*np.pi/4)
         if t2 is None:
             t2 = t1 / (2 + np.sqrt(2))
@@ -74,7 +74,7 @@ class HalSquC2Model(HaldaneModel):
             self.add_coupling(t2_phi, u1, creation + 'B', u2, annihilation + 'B', dx)
             self.add_coupling(np.conj(t2_phi), u2, creation + 'B', u1, annihilation + 'B', -dx)
 
-        for u1, u2, dx in [(0, 0, np.array([2, 0])), (0, 0, np.array([2, 0]))]:  # nnNN (up, right)
+        for u1, u2, dx in [(0, 0, np.array([0, 2])), (0, 0, np.array([2, 0]))]:  # nnNN (up, right)
             t2_phi = self.coupling_strength_add_ext_flux(t3, dx, [0, phi_2pi])
             for orbital in ['A', 'B']:
                 self.add_coupling(t2_phi, u1, creation+orbital, u2, annihilation+orbital, dx)

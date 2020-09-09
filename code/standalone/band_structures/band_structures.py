@@ -241,8 +241,8 @@ if __name__ == '__main__':
 
     # initialization
     num_samples = 101
-    lattice = 'triangular'  # square, triangular, honeycomb
-    model = 'HalTriC3'  # HalSquC1, HalSquC2, HalTriC3, graphene, HalHexC1
+    lattice = 'square'  # square, triangular, honeycomb
+    model = 'HalSquC2'  # HalSquC1, HalSquC2, HalTriC3, graphene, HalHexC1
 
     # define unit cell
     num_bands, avec, bvec = define_unit_cell(lattice, model)
