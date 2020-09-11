@@ -9,26 +9,25 @@ from models.haldane.haldane import HaldaneModel
 class BipartiteSquare(lattice.Lattice):
     def __init__(self, Lx, Ly, site, **kwargs):
         basis = np.array(([2., 0.], [0., 2.]))
-        pos = np.array(([0., 0.], [1., 0.], [0., 1.], [1., 1.]))
+        pos = np.array(([1., 0.], [0., 1.]))
         kwargs.setdefault('basis', basis)
         kwargs.setdefault('positions', pos)
 
-        super().__init__([Lx, Ly], [site, site, site, site], **kwargs)
+        super().__init__([Lx, Ly], [site, site], **kwargs)
         self.site = site
 
-        # counterclockwise loop (bottom, right, top, left) & spikes (top, bottom, left, right)
-        self.NN = [(0, 1, np.array([0, 0])), (1, 3, np.array([0, 0])), (3, 2, np.array([0, 0])), (2, 0, np.array([0, 0])),
-                   (2, 0, np.array([0, 1])), (1, 3, np.array([0, -1])), (0, 1, np.array([-1, 0])), (3, 2, np.array([1, 0]))]
-        # inner cross (forward slash, back slash) & right extension (top, bottom)
-        self.nNNdashed = [(0, 3, np.array([0, 0])), (2, 1, np.array([0, 0])),
-                          (3, 0, np.array([1, 1])), (1, 2, np.array([1, -1]))]
-        # right cross (forward slash, back slash) & above cross (forward slash, back slash)
-        self.nNNdotted = [(1, 2, np.array([1, 0])), (3, 0, np.array([1, 0])),
-                          (2, 1, np.array([0, 1])), (3, 0, np.array([0, 1]))]
-        # nnNN (right x4, up x4)
-        self.nnNN = [(0, 0, np.array([1, 0])), (1, 1, np.array([1, 0])), (2, 2, np.array([1, 0])), (3, 3, np.array([1, 0])),
-                     (0, 0, np.array([0, 1])), (1, 1, np.array([0, 1])), (2, 2, np.array([0, 1])), (3, 3, np.array([0, 1]))]
+        # positive phase NN (for A: top-left, bottom-right; for B: top-right, bottom-left)
+        self.NN = [(1, 0, np.array([-1, 1])), (1, 0, np.array([0, 0])),
+                   (0, 1, np.array([1, 0])), (0, 1, np.array([0, -1]))]
 
+        # positive nNN (for A: right; for B: up)
+        self.pos_nNN = [(1, 1, np.array([1, 0])), (0, 0, np.array([0, 1]))]
+        # negative nNN (for A: up; for B: right)
+        self.neg_nNN = [(1, 1, np.array([0, 1])), (1, 1, np.array([1, 0]))]
+
+        # nnNN (for A: top-right, bottom-left; for B: top-right, bottom-left)
+        self.nnNN = [(1, 1, np.array([1, 1])), (1, 1, np.array([1, -1])),
+                     (0, 0, np.array([1, 1])), (0, 0, np.array([1, -1]))]
 
     def plot_lattice(self):
         import matplotlib.pyplot as plt
@@ -36,8 +35,8 @@ class BipartiteSquare(lattice.Lattice):
         lat = BipartiteSquare(3, 3, self.site)
         lat.plot_sites(ax)
         lat.plot_coupling(ax, lat.NN, linestyle='-', color='green')
-        lat.plot_coupling(ax, lat.nNNdashed, linestyle='--', color='black')
-        lat.plot_coupling(ax, lat.nNNdotted, linestyle='--', color='red')
+        lat.plot_coupling(ax, lat.pos_nNN, linestyle='--', color='black')
+        lat.plot_coupling(ax, lat.neg_nNN, linestyle='--', color='red')
         ax.set_aspect('equal')
         plt.show()
 
@@ -74,12 +73,12 @@ class HalSquC1Model(HaldaneModel):
             self.add_coupling(t1_phi, u1, creation, u2, annihilation, dx)
             self.add_coupling(np.conj(t1_phi), u2, creation, u1, annihilation, -dx)
 
-        for u1, u2, dx in self.lat.nNNdashed:
+        for u1, u2, dx in self.lat.pos_nNN:
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
             self.add_coupling(t2_phi, u1, creation, u2, annihilation, dx)
             self.add_coupling(np.conj(t2_phi), u2, creation, u1, annihilation, -dx)
 
-        for u1, u2, dx in self.lat.nNNdotted:
+        for u1, u2, dx in self.lat.neg_nNN:
             t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
             self.add_coupling(-t2_phi, u1, creation, u2, annihilation, dx)
             self.add_coupling(np.conj(-t2_phi), u2, creation, u1, annihilation, -dx)

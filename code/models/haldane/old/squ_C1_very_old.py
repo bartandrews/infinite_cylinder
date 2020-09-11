@@ -25,10 +25,6 @@ class BipartiteSquare(lattice.Lattice):
         # right cross (forward slash, back slash) & above cross (forward slash, back slash)
         self.nNNdotted = [(1, 2, np.array([1, 0])), (3, 0, np.array([1, 0])),
                           (2, 1, np.array([0, 1])), (3, 0, np.array([0, 1]))]
-        # nnNN (right x4, up x4)
-        self.nnNN = [(0, 0, np.array([1, 0])), (1, 1, np.array([1, 0])), (2, 2, np.array([1, 0])), (3, 3, np.array([1, 0])),
-                     (0, 0, np.array([0, 1])), (1, 1, np.array([0, 1])), (2, 2, np.array([0, 1])), (3, 3, np.array([0, 1]))]
-
 
     def plot_lattice(self):
         import matplotlib.pyplot as plt
@@ -63,31 +59,26 @@ class HalSquC1Model(HaldaneModel):
         self.chemical_potential(mu, extra_dof=False)
         self.offsite_interaction("Squ", V, Vtype, Vrange, extra_dof=False)
 
-        t1_phase = t1 * np.exp(1j * np.pi / 4)
+        t1 = -t1
         if t2 is None:
-            t2 = t1 / (2 + np.sqrt(2))
+            t2 = t1 * np.exp(1j * np.pi / 4)
         if t3 is None:
-            t3 = t1 / (2 + 2*np.sqrt(2))
+            t3 = t1 / np.sqrt(2)
 
         for u1, u2, dx in self.lat.NN:
-            t1_phi = self.coupling_strength_add_ext_flux(t1_phase, dx, [0, phi_2pi])
+            t1_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
             self.add_coupling(t1_phi, u1, creation, u2, annihilation, dx)
             self.add_coupling(np.conj(t1_phi), u2, creation, u1, annihilation, -dx)
 
         for u1, u2, dx in self.lat.nNNdashed:
-            t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
+            t2_phi = self.coupling_strength_add_ext_flux(t3, dx, [0, phi_2pi])
             self.add_coupling(t2_phi, u1, creation, u2, annihilation, dx)
             self.add_coupling(np.conj(t2_phi), u2, creation, u1, annihilation, -dx)
 
         for u1, u2, dx in self.lat.nNNdotted:
-            t2_phi = self.coupling_strength_add_ext_flux(t2, dx, [0, phi_2pi])
+            t2_phi = self.coupling_strength_add_ext_flux(t3, dx, [0, phi_2pi])
             self.add_coupling(-t2_phi, u1, creation, u2, annihilation, dx)
-            self.add_coupling(np.conj(-t2_phi), u2, creation, u1, annihilation, -dx)
-
-        for u1, u2, dx in self.lat.nnNN:
-            t3_phi = self.coupling_strength_add_ext_flux(t3, dx, [0, phi_2pi])
-            self.add_coupling(t3_phi, u1, creation, u2, annihilation, dx)
-            self.add_coupling(np.conj(t3_phi), u2, creation, u1, annihilation, -dx)
+            self.add_coupling(-np.conj(t2_phi), u2, creation, u1, annihilation, -dx)
 
 
 if __name__ == "__main__":

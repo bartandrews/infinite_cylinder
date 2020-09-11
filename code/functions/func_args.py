@@ -17,6 +17,7 @@ def parse_input_arguments(program):
     models = ["BosHalSquC1", "FerHalSquC1", "BosHalHexC1", "FerHalHexC1",
               "BosHalSquC2", "FerHalSquC2",
               "BosHalTriC3", "FerHalTriC3",
+              "BosHalSquCN", "FerHalSquCN",
               "BosHofSqu1", "FerHofSqu1", "BosHofHex1", "FerHofHex1",
               "BosHofHex1Hex5", "FerHofHex1Hex5", "BosHofHex1Hex5Orbital", "FerHofHex1Hex5Orbital",
               "FerHofHex1Hex5OrbitalOld"]
@@ -33,6 +34,8 @@ def parse_input_arguments(program):
 
     leaf.add_argument("-Nmax", type=int, default=1, help="maximum number of particles per cluster "
                                                          "before an interaction occurs")
+
+    leaf.add_argument("-C", type=int, default=3, help="Chern number (applicable to HalSquCN models)")
 
     for i in range(1, 11):  # search up to 10th-NN hoppings for both t and tdash
         tdefault = 1 if i == 1 else 0
@@ -68,7 +71,7 @@ def parse_input_arguments(program):
                       help="offsite interaction range (in units of nearest neighbors)")
 
     leaf.add_argument("-n", nargs=2, type=int, default=[1, 8],
-                      help="filling of the MPS unit cell (per lattice unit cell)")
+                      help="filling of the MPS unit cell (average filling of lattice sites)")
     leaf.add_argument("-nphi", nargs=2, type=int, default=[1, 4], help="flux density")
     leaf.add_argument("-LxMUC", type=int, default=1, required=True,
                         help="width of MPS unit cell (in units of magnetic unit cell)")
@@ -148,6 +151,9 @@ def __check_input_arguments(program, args):
 
     if "Nmax" in args and args['Nmax'] <= 0:
         raise ValueError("Nmax needs to be positive.")
+
+    if "C" in args and args['C'] < 3:
+        raise ValueError("C must satisfy 3<=C.")
 
     if "flow" in program:
         if args[f"{program.replace('flow', 'min')}"] > args[f"{program.replace('flow', 'max')}"]:

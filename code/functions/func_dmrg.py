@@ -4,6 +4,7 @@ import pickle
 import gzip
 import time
 import h5py
+import string
 # --- TeNPy imports
 from tenpy.networks.mps import MPS
 from tenpy.algorithms import dmrg
@@ -15,6 +16,7 @@ from models.haldane.squ_C1 import HalSquC1Model
 from models.haldane.hex_C1 import HalHexC1Model
 from models.haldane.squ_C2 import HalSquC2Model
 from models.haldane.tri_C3 import HalTriC3Model
+from models.haldane.squ_CN import HalSquCNModel
 from models.hofstadter.squ_1 import HofSqu1Model
 from models.hofstadter.hex_1 import HofHex1Model
 from models.hofstadter.hex_1_hex_5 import HofHex1Hex5Model
@@ -40,7 +42,7 @@ def __get_custom_state():
 
 def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_preference=None):
 
-    nn, nd, LxMUC, Ly = ham_params['n'][0], ham_params['n'][1], ham_params['LxMUC'], ham_params['Ly']
+    nn, nd, LxMUC, Ly, C = ham_params['n'][0], ham_params['n'][1], ham_params['LxMUC'], ham_params['Ly'], ham_params['C']
 
     # check for Hofstadter model
     if "Hof" in model:
@@ -50,10 +52,8 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
 
     # calculate number of lattice sites
     system_size = int(q) * int(LxMUC) * int(Ly) * int(filling_scale_factor)
-    if "Hex" in model:
+    if "Hex" in model or "HalSquC1" in model:  # 2 lattice sites per unit cell
         system_size = system_size * 2
-    if "HalSquC1" in model:
-        system_size = system_size * 4
 
     # n corresponds to the filling fraction of lattice sites in the system
     numb_particles = system_size * int(nn) / int(nd)
@@ -67,63 +67,102 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
     # number of sites taken up by a particle (floored fraction)
     numb_sites_per_particle = int(system_size / numb_particles)
 
-    if "Orbital" in model:  # x and y orbitals
-        empty_site = ['0_x 0_y'] if "Bos" in model else ['empty_x empty_y']
-        if orbital_preference in ['polarizedx', None]:  # default
-            lattice_site = ['1_x 0_y'] if "Bos" in model else ['full_x empty_y']
+    # define empty and full
+    empty = '0' if "Bos" in model else 'empty'
+    full = '1' if "Bos" in model else 'full'
+
+    if "Orbital" in model or model.endswith("HalSquC2") or model.endswith("HalTriC3"):  # 2 orbitals per site
+        # define orbitals
+        if "Orbital" in model:
+            o1, o2 = 'x', 'y'
+        elif model.endswith("HalSquC2") or model.endswith("HalTriC3"):
+            o1, o2 = 'A', 'B'
+        # define empty_site
+        empty_site = [f'{empty}_{o1} {empty}_{o2}']
+        if orbital_preference in [f'polarized{o1}', None]:  # default
+            lattice_site = [f'{full}_{o1} {empty}_{o2}']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
-        elif orbital_preference == 'polarizedy':
-            lattice_site = ['0_x 1_y'] if "Bos" in model else ['empty_x full_y']
+        elif orbital_preference == f'polarized{o2}':
+            lattice_site = [f'{empty}_{o1} {full}_{o2}']
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
         elif orbital_preference == 'unpolarized':
-            if "Bos" in model:
-                lattice_site_1 = ['1_x 0_y']
-                lattice_site_2 = ['0_x 1_y']
-            else:
-                lattice_site_1 = ['full_x empty_y']
-                lattice_site_2 = ['empty_x full_y']
+            lattice_site_1 = [f'{full}_{o1} {empty}_{o2}']
+            lattice_site_2 = [f'{empty}_{o1} {full}_{o2}']
             state = (lattice_site_1 + empty_site * (numb_sites_per_particle - 1)
                      + lattice_site_2 + empty_site * (numb_sites_per_particle - 1)) \
                      * int((system_size / numb_sites_per_particle))
             state = state[:system_size]
         elif orbital_preference == 'filled':
-            lattice_site = ['1_x 1_y'] if "Bos" in model else ['full_x full_y']
+            lattice_site = [f'{full}_{o1} {full}_{o2}']
             state = (lattice_site + empty_site * (2 * numb_sites_per_particle - 1)) \
                      * int((system_size / numb_sites_per_particle))
             state = state[:system_size]
         else:
             raise ValueError("Unknown orbital_preference parameter.")
-    elif model.endswith("HalSquC2") or model.endswith("HalTriC3"):  # A and B orbitals
-        empty_site = ['0_A 0_B'] if "Bos" in model else ['empty_A empty_B']
-        if orbital_preference in ['polarizedA', None]:  # default
-            lattice_site = ['1_A 0_B'] if "Bos" in model else ['full_A empty_B']
+    elif model.endswith("HalSquCN"):  # N orbitals per site
+        # define orbitals
+        o = []
+        alphabet = list(string.ascii_uppercase)
+        for i in range(C):
+            o += alphabet[i]
+        # define empty_site
+        empty_site = f'{empty}_{o[0]}'
+        for i in range(1, len(o)):
+            empty_site += f' {empty}_{o[i]}'
+        empty_site = [empty_site]
+        print("empty_site = ", empty_site)
+
+        if orbital_preference in [f'polarized{o[0]}', None]:  # default
+            # define lattice_site
+            lattice_site = f'{full}_{o[0]}'
+            for i in range(1, len(o)):
+                lattice_site += f' {empty}_{o[i]}'
+            lattice_site = [lattice_site]
+            print("lattice_site = ", lattice_site)
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
-        elif orbital_preference == 'polarizedB':
-            lattice_site = ['0_A 1_B'] if "Bos" in model else ['empty_A full_B']
+        elif orbital_preference == f'polarized{o[1]}':
+            # define lattice_site
+            lattice_site = f'{empty}_{o[0]} {full}_{o[1]}'
+            for i in range(2, len(o)):
+                lattice_site += f' {empty}_{o[i]}'
+            lattice_site = [lattice_site]
+            print("lattice_site = ", lattice_site)
             state = (lattice_site + empty_site * (numb_sites_per_particle - 1)) * int(
                 (system_size / numb_sites_per_particle))
-        elif orbital_preference == 'unpolarized':  # old default
-            if "Bos" in model:
-                lattice_site_1 = ['1_A 0_B']
-                lattice_site_2 = ['0_A 1_B']
-            else:
-                lattice_site_1 = ['full_A empty_B']
-                lattice_site_2 = ['empty_A full_B']
-            state = (lattice_site_1 + empty_site * (numb_sites_per_particle - 1)
-                     + lattice_site_2 + empty_site * (numb_sites_per_particle - 1)) \
-                    * int((system_size / numb_sites_per_particle))
+        elif orbital_preference == 'unpolarized':
+            lattice_sites = []
+            for i in range(len(o)):
+                lattice_site = ''
+                for j in range(len(o)):
+                    if j == 0:  # don't prepend space
+                        lattice_site += f'{full}_{o[j]}' if i == j else f'{empty}_{o[j]}'
+                    else:  # prepend space
+                        lattice_site += f' {full}_{o[j]}' if i == j else f' {empty}_{o[j]}'
+                lattice_site = [[lattice_site]]
+                lattice_sites += lattice_site
+            print("lattice_sites = ", lattice_sites)
+            state_internal = []
+            for i in range(len(o)):
+                state_internal += lattice_sites[i] + empty_site * (numb_sites_per_particle - 1)
+            state = state_internal * int((system_size / numb_sites_per_particle))
             state = state[:system_size]
         elif orbital_preference == 'filled':
-            lattice_site = ['1_A 1_B'] if "Bos" in model else ['full_A full_B']
+            if numb_particles % C != 0:
+                raise ValueError("numb_particles must be a multiple of C for filled orbital_preference.")
+            lattice_site = f'{full}_{o[0]}'
+            for i in range(1, len(o)):
+                lattice_site += f' {full}_{o[i]}'
+            lattice_site = [lattice_site]
+            print("lattice_site = ", lattice_site)
             state = (lattice_site + empty_site * (2 * numb_sites_per_particle - 1)) \
                     * int((system_size / numb_sites_per_particle))
             state = state[:system_size]
         else:
             raise ValueError("Unknown orbital_preference parameter.")
-    else:
+    else:  # 1 orbital per site
         empty_site = [0]
         state = ([1] + empty_site * (numb_sites_per_particle - 1)) * int((system_size / numb_sites_per_particle))
 
@@ -132,8 +171,10 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
     print("initial state = ", state)
     print("number of particles = ", numb_particles)
     print("number of lattice sites = ", len(state))
-    if "Orbital" in model or model.endswith("HalSquC2") or model.endswith("HalTriC3"):  # two orbitals
+    if "Orbital" in model or model.endswith("HalSquC2") or model.endswith("HalTriC3"):  # 2 orbitals per site
         print("number of orbital sites = ", 2 * len(state))
+    elif model.endswith("HalSquCN"):  # N orbitals per site
+        print("number of orbital sites = ", C * len(state))
 
     return state
 
@@ -169,6 +210,10 @@ def define_iDMRG_model(model, ham_params):
     elif model.endswith("HalTriC3"):
         del model_params['nphi']
         M = HalTriC3Model(model_params)
+    elif model.endswith("HalSquCN"):
+        del model_params['nphi']
+        model_params.update(C=ham_params['C'])
+        M = HalSquCNModel(model_params)
     elif model.endswith("HofSqu1"):
         M = HofSqu1Model(model_params)
     elif model.endswith("HofHex1"):
@@ -265,7 +310,6 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
         psi = state_data['psi']
     else:
         M = define_iDMRG_model(model, ham_params)
-        orb_pref = 'unpolarized'
         product_state = __get_product_state(model, ham_params) if not ham_params['custom'] else __get_custom_state()
         print(product_state)
         psi = MPS.from_product_state(M.lat.mps_sites(), product_state, bc=M.lat.bc_MPS)
@@ -329,5 +373,5 @@ if __name__ == "__main__":
 
     # __get_product_state(model="FerHofSqu1", ham_params=dict(n=(4, 45), nphi=(4, 15), LxMUC=1, Ly=6),
     #                     filling_scale_factor=1, orbital_preference=None)
-    __get_product_state(model="BosHalHexC1", ham_params=dict(n=(1, 4), LxMUC=1, Ly=4),
+    __get_product_state(model="BosHalSquCN", ham_params=dict(C=3, n=(1, 2), LxMUC=1, Ly=6),
                          filling_scale_factor=1, orbital_preference=None)

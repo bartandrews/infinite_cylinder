@@ -31,6 +31,8 @@ def file_name_leaf(program, model, ham_params):
     else:
         Nmax = ""
 
+    C = f"C_{ham_params['C']}_" if "HalSquCN" in model else ""
+
     t = ""
     for i in range(1, 11, 1):  # search up to 10th-NN hoppings for both t and tdash
         if f"{i}" in model:
@@ -78,7 +80,7 @@ def file_name_leaf(program, model, ham_params):
     else:
         ext = ".dat"
 
-    leaf = f"{Nmax}{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
+    leaf = f"{Nmax}{C}{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
 
     return leaf
 

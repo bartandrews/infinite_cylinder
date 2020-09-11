@@ -19,7 +19,7 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
     leaf = fp.file_name_leaf("V_flow", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("V_flow", path, model, chi_max, leaf)
 
-    tools = ["corr_len_V_flow", "ent_spec_V_flow"]
+    tools = ["ent_V_flow", "corr_len_V_flow", "ent_spec_V_flow"]
     data = fp.prepare_output_files(tools, path, model, chi_max, leaf)
 
     ##################################################################################################################
@@ -29,6 +29,16 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
         ham_params.update(V=V)
         state_data = fd.my_iDMRG_pickle("V_flow", path, model, chi_max, ham_params, run=True)
         psi = state_data['psi']
+
+        ##############
+        # ent_V_flow #
+        ##############
+
+        SvN = psi.entanglement_entropy()[0]
+
+        data_line = f"{V:.15f}\t{SvN:.15f}"
+        print(data_line)
+        data['ent_V_flow'].write(data_line + "\n")
 
         ###################
         # corr_len_V_flow #
