@@ -6,10 +6,26 @@ a0 = 1  # lattice constant
 t = 1  # hopping amplitude
 
 
-def define_unit_cell(lattice_val, model_val):
+def define_unit_cell(model_val, q_val=5):
 
-    if lattice_val is 'square':
-        if model_val is 'HalSquC1':
+    if 'Squ' in model_val:
+        if model_val is 'HofSqu1':
+            num_bands_val = q_val
+            # lattice vectors
+            a1 = a0 * np.array([num_bands_val, 0])
+            a2 = a0 * np.array([0, 1])
+            avec_val = np.vstack((a1, a2))
+            # reciprocal lattice vectors
+            b1 = (2. * np.pi) / a0 * np.array([1 / num_bands_val, 0])
+            b2 = (2. * np.pi) / a0 * np.array([0, 1])
+            bvec_val = np.vstack((b1, b2))
+            # symmetry points
+            GA = np.array([0, 0])
+            Y = np.array([0, 0.5])
+            S = np.array([0.5, 0.5])
+            X = np.array([0.5, 0])
+            sym_points_val = [GA, Y, S, X]
+        elif model_val is 'HalSquC1':
             num_bands_val = 2
             # lattice vectors
             a1 = a0 * np.array([2, 0])
@@ -19,6 +35,11 @@ def define_unit_cell(lattice_val, model_val):
             b1 = (2. * np.pi) / a0 * np.array([1 / 2, 0])
             b2 = (2. * np.pi) / a0 * np.array([0, 1])
             bvec_val = np.vstack((b1, b2))
+            # symmetry points
+            GA = np.array([0, 0])
+            M = np.array([0.5, 0.5])
+            X = np.array([0.5, 0])
+            sym_points_val = [GA, M, X]
         elif model_val is 'HalSquC2':
             num_bands_val = 2
             # lattice vectors
@@ -29,9 +50,14 @@ def define_unit_cell(lattice_val, model_val):
             b1 = (2. * np.pi) / a0 * np.array([1, 0])
             b2 = (2. * np.pi) / a0 * np.array([0, 1])
             bvec_val = np.vstack((b1, b2))
+            # symmetry points
+            GA = np.array([0, 0])
+            M = np.array([0.5, 0.5])
+            X = np.array([0.5, 0])
+            sym_points_val = [GA, M, X]
         else:
             return ValueError("Requested model is not implemented in define_unit_cell function.")
-    elif lattice_val is 'triangular':
+    elif 'Tri' in model_val:
         if model_val is 'HalTriC3':
             num_bands_val = 2
             # lattice vectors
@@ -42,9 +68,11 @@ def define_unit_cell(lattice_val, model_val):
             b1 = (2. * np.pi) / a0 * np.array([1, -1/np.sqrt(3)])
             b2 = (2. * np.pi) / a0 * np.array([0, 2/np.sqrt(3)])
             bvec_val = np.vstack((b1, b2))
+            # symmetry points
+            sym_points_val = []  # to implement
         else:
             return ValueError("Requested model is not implemented in define_unit_cell function.")
-    elif lattice_val is 'honeycomb':
+    elif 'Hex' in model_val or model_val is 'graphene':
         num_bands_val = 2
         # lattice vectors
         a1 = (a0 / 2) * np.array([3, np.sqrt(3)])
@@ -54,25 +82,49 @@ def define_unit_cell(lattice_val, model_val):
         b1 = (2. * np.pi) / (3 * a0) * np.array([1, np.sqrt(3)])
         b2 = (2. * np.pi) / (3 * a0) * np.array([1, -np.sqrt(3)])
         bvec_val = np.vstack((b1, b2))
+        # symmetry points
+        K1 = np.array([2/3, 1/3])
+        GA = np.array([0., 0.])
+        MM = np.array([0.5, 0.5])
+        K2 = np.array([1/3, 2/3])
+        sym_points_val = [K1, GA, MM, K2]
     else:
-        return ValueError("Requested lattice is not implemented in define_unit_cell function.")
+        return ValueError("Requested lattice cannot be read from model name.")
 
-    return num_bands_val, avec_val, bvec_val
+    return num_bands_val, avec_val, bvec_val, sym_points_val
 
 
-def hamiltonian(lattice_val, model_val, k_val, num_bands_val, avec_val):
+def hamiltonian(model_val, k_val, num_bands_val, avec_val, p_val=1, tx_factor_val=1):
 
     # initialize the Hamiltonian
     Hamiltonian = np.zeros((num_bands_val, num_bands_val), dtype=np.complex128)
 
-    if lattice_val is 'square':
+    if 'Squ' in model_val:
 
         # nearest neighbors
         delta = np.zeros((2, 2))
         delta[0, :] = a0 * np.array([1, 0])
         delta[1, :] = a0 * np.array([0, 1])
 
-        if model_val in ['HalSquC1', 'HalSquC2']:
+        if model_val is 'HofSqu1':
+
+            q_val = num_bands_val
+            nphi = p_val/q_val
+
+            def h(k_val_val, m_val):
+                return 2 * np.cos(2 * np.pi * nphi * m_val + k_val_val[1] * a0)
+
+            for n in range(q_val):
+                Hamiltonian[n][n] = t * h(k_val, n)
+
+            for n in range(q_val-1):
+                Hamiltonian[n][n+1] = tx_factor_val*t * np.exp(+1j*k_val[0]*a0)
+                Hamiltonian[n+1][n] = tx_factor_val*t * np.exp(-1j*k_val[0]*a0)
+
+            Hamiltonian[0][q_val-1] = tx_factor_val*t * np.exp(-1j*k_val[0]*a0)
+            Hamiltonian[q_val-1][0] = tx_factor_val*t * np.exp(+1j*k_val[0]*a0)
+
+        elif model_val in ['HalSquC1', 'HalSquC2']:
             tphi = t * np.exp(1j * np.pi/4)
             tdash = t/(2+np.sqrt(2))
             tddash = t/(2+2*np.sqrt(2))
@@ -117,7 +169,7 @@ def hamiltonian(lattice_val, model_val, k_val, num_bands_val, avec_val):
         else:
             return ValueError("Requested model is not implemented in hamiltonian function.")
 
-    elif lattice_val is 'triangular':
+    elif 'Tri' in model_val:
 
         # nearest neighbors
         delta = np.zeros((3, 2))
@@ -175,7 +227,7 @@ def hamiltonian(lattice_val, model_val, k_val, num_bands_val, avec_val):
         else:
             return ValueError("Requested model is not implemented in hamiltonian function.")
 
-    elif lattice_val is 'honeycomb':
+    elif 'Hex' in model_val or model_val is 'graphene':
 
         # nearest neighbors
         delta = np.zeros((3, 2))
@@ -224,7 +276,7 @@ def hamiltonian(lattice_val, model_val, k_val, num_bands_val, avec_val):
         else:
             return ValueError("Requested model is not implemented in hamiltonian function.")
     else:
-        return ValueError("Requested lattice is not implemented in hamiltonian function.")
+        return ValueError("Requested lattice cannot be read from model name.")
 
     return Hamiltonian
 
@@ -241,56 +293,86 @@ if __name__ == '__main__':
 
     # initialization
     num_samples = 101
-    lattice = 'square'  # square, triangular, honeycomb
-    model = 'HalSquC1'  # HalSquC1, HalSquC2, HalTriC3, graphene, HalHexC1
+    flag_3D = True  # choose between 3D or 2D band structure
+    model = 'HofSqu1'  # (HofSqu1, HalSquC1, HalSquC2), (HalTriC3), (graphene, HalHexC1)
+    p, q = 1, 4  # for Hofstadter model only
 
     # define unit cell
-    num_bands, avec, bvec = define_unit_cell(lattice, model)
+    num_bands, avec, bvec, sym_points = define_unit_cell(model, q_val=q)
 
-    # construct bands
-    eigenvalues = np.zeros((num_bands, num_samples, num_samples))  # real
-    eigenvectors = np.zeros((num_bands, num_bands, num_samples, num_samples), dtype=np.complex128)  # complex
-    for band in range(num_bands):
-        for idx_x in range(num_samples):
-            frac_kx = idx_x / (num_samples-1)
-            for idx_y in range(num_samples):
-                frac_ky = idx_y / (num_samples-1)
-                k = np.matmul(np.array([frac_kx, frac_ky]), bvec)
-                eigvals, eigvecs = np.linalg.eig(hamiltonian(lattice, model, k, num_bands, avec))
+    if flag_3D:
+        # construct bands
+        eigenvalues = np.zeros((num_bands, num_samples, num_samples))  # real
+        eigenvectors = np.zeros((num_bands, num_bands, num_samples, num_samples), dtype=np.complex128)  # complex
+        for band in range(num_bands):
+            for idx_x in range(num_samples):
+                frac_kx = idx_x / (num_samples-1)
+                for idx_y in range(num_samples):
+                    frac_ky = idx_y / (num_samples-1)
+                    k = np.matmul(np.array([frac_kx, frac_ky]), bvec)
+                    eigvals, eigvecs = np.linalg.eig(hamiltonian(model, k, num_bands, avec, p_val=p, tx_factor_val=1))
+                    idx = np.argsort(eigvals)
+                    eigenvalues[band][idx_x][idx_y] = np.real(eigvals[idx[band]])
+                    eigenvectors[:, band, idx_x, idx_y] = eigvecs[:, idx[band]]
+
+        # compute Chern numbers
+        berry_fluxes = np.zeros((num_bands, num_samples - 1, num_samples - 1))  # real
+        for band in range(num_bands):
+            for idx_x in range(num_samples - 1):
+                for idx_y in range(num_samples - 1):
+                    berry_fluxes[band, idx_x, idx_y] = berry_curv(eigenvectors[:, band, idx_x, idx_y],
+                                                                  eigenvectors[:, band, idx_x + 1, idx_y],
+                                                                  eigenvectors[:, band, idx_x, idx_y + 1],
+                                                                  eigenvectors[:, band, idx_x + 1, idx_y + 1])
+        chern_numbers = np.zeros(num_bands)
+        for band in range(num_bands):
+            chern_numbers[band] = np.sum(berry_fluxes[band, :, :]) / (2 * np.pi)
+            print(f"Chern number ({band}) = {chern_numbers[band]}")
+
+        # construct figure
+        fig = plt.figure()
+        ax = fig.gca(projection='3d')
+        idx_x = np.linspace(0, num_samples - 1, num_samples, dtype=int)
+        idx_y = np.linspace(0, num_samples - 1, num_samples, dtype=int)
+        kx, ky = np.meshgrid(idx_x, idx_y)
+        for i in range(num_bands):
+            ax.plot_surface(kx, ky, eigenvalues[i, kx, ky])
+        ax.set_xlabel('$k_x$')
+        ax.set_ylabel('$k_y$')
+        ax.set_zlabel('$E$')
+    else:
+        # construct bands
+        numb_paths = len(sym_points)
+        points_per_path = int(num_samples/numb_paths)
+        numb_points = numb_paths*points_per_path
+        eigenvalues = np.zeros((num_bands, numb_points))  # real
+        count = 0
+        for i in range(numb_paths):
+            for j in range(points_per_path):
+                k = sym_points[i] + (sym_points[(i+1) % numb_paths] - sym_points[i]) * float(j) / float(points_per_path - 1)
+                k = np.matmul(k, bvec)
+                eigvals = np.linalg.eigvals(hamiltonian(model, k, num_bands, avec, p_val=p, tx_factor_val=1))
                 idx = np.argsort(eigvals)
-                eigenvalues[band][idx_x][idx_y] = np.real(eigvals[idx[band]])
-                eigenvectors[:, band, idx_x, idx_y] = eigvecs[:, idx[band]]
+                for band in range(num_bands):
+                    eigenvalues[band, count] = np.real(eigvals[idx[band]])
+                count += 1
 
-    # compute Chern numbers
-    berry_fluxes = np.zeros((num_bands, num_samples-1, num_samples-1))  # real
-    for band in range(num_bands):
-        for idx_x in range(num_samples-1):
-            for idx_y in range(num_samples-1):
-                berry_fluxes[band, idx_x, idx_y] = berry_curv(eigenvectors[:, band, idx_x, idx_y],
-                                                              eigenvectors[:, band, idx_x+1, idx_y],
-                                                              eigenvectors[:, band, idx_x, idx_y+1],
-                                                              eigenvectors[:, band, idx_x+1, idx_y+1])
-    chern_numbers = np.zeros(num_bands)
-    for band in range(num_bands):
-        chern_numbers[band] = np.sum(berry_fluxes[band, :, :]) / (2*np.pi)
-        print(f"Chern number ({band}) = {chern_numbers[band]}")
+        # construct figure
+        fig = plt.figure()
+        ax = plt.subplot(111)
+        for i in range(num_bands):
+            ax.plot(eigenvalues[i])
+        for i in range(1, numb_paths):
+            ax.axvline(i*points_per_path, color='k', linewidth=0.5, ls='--')
+        ax.set_xlim([0, numb_points])
+        ax.set_xlabel('symmetry path')
+        ax.set_ylabel('$E$')
 
     # band analysis
     band_gap = np.min(eigenvalues[1]) - np.max(eigenvalues[0])
     band_width = np.max(eigenvalues[0]) - np.min(eigenvalues[0])
     print(f"band width (0) = {band_width}")
     print(f"band gap (0-1) = {band_gap}")
-    print(f"gap-to-width ratio (0-1) = {band_gap/band_width}")
+    print(f"gap-to-width ratio (0-1) = {band_gap / band_width}")
 
-    # plot figure
-    fig = plt.figure()
-    ax = fig.gca(projection='3d')
-    idx_x = np.linspace(0, num_samples-1, num_samples, dtype=int)
-    idx_y = np.linspace(0, num_samples-1, num_samples, dtype=int)
-    kx, ky = np.meshgrid(idx_x, idx_y)
-    for i in range(num_bands):
-        ax.plot_surface(kx, ky, eigenvalues[i, kx, ky])
-    ax.set_xlabel('$k_x$')
-    ax.set_ylabel('$k_y$')
-    ax.set_zlabel('$E$')
     plt.show()
