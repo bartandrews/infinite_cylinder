@@ -125,15 +125,19 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
                 else:
                     raise ValueError("N-body interaction is not implemented for N>3.")
 
-    def squ_1_hoppings(self, creation, annihilation, t, nphi, nphi_2pi, LxMUC, phi_2pi):
+    def squ_1_hoppings(self, creation, annihilation, t, nphi, nphi_2pi, LxMUC, phi_2pi, t_anisotropy=1):
+        tx = t_anisotropy * t
+        print(f"tx = {tx}")
         u1, u2, dx = (0, 0, np.array([1, 0]))  # right
-        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi])
+        t_phi = self.coupling_strength_add_ext_flux(tx, dx, [0, phi_2pi])
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
 
+        ty = t
+        print(f"ty = {ty}")
         u1, u2, dx = (0, 0, np.array([0, 1]))  # up
         m = np.arange(0, nphi[1] * LxMUC)
-        t_phi = self.coupling_strength_add_ext_flux(t, dx, [0, phi_2pi]) \
+        t_phi = self.coupling_strength_add_ext_flux(ty, dx, [0, phi_2pi]) \
                 * np.exp(-1j * nphi_2pi * m)[:, np.newaxis]
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.

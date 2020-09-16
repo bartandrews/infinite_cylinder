@@ -1,3 +1,4 @@
+# --- python imports
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
@@ -40,8 +41,15 @@ def define_unit_cell(model_val, q_val=5):
             M = np.array([0.5, 0.5])
             X = np.array([0.5, 0])
             sym_points_val = [GA, M, X]
-        elif model_val is 'HalSquC2':
-            num_bands_val = 2
+        elif model_val in ['HalSquC2', 'HalSquC3', 'HalSquC4', 'HalSquC5']:
+            if model_val is 'HalSquC2':
+                num_bands_val = 2
+            elif model_val is 'HalSquC3':
+                num_bands_val = 3
+            elif model_val is 'HalSquC4':
+                num_bands_val = 4
+            else:
+                num_bands_val = 5
             # lattice vectors
             a1 = a0 * np.array([1, 0])
             a2 = a0 * np.array([0, 1])
@@ -166,6 +174,112 @@ def hamiltonian(model_val, k_val, num_bands_val, avec_val, p_val=1, tx_factor_va
             Hamiltonian[0][1] = f_AdB + np.conj(f_BdA)
             Hamiltonian[1][0] = f_BdA + np.conj(f_AdB)
             Hamiltonian[1][1] = fdash_B + np.conj(fdash_B) + fddash + np.conj(fddash)
+        # elif model_val is 'HalSquC3':
+        #     t1 = t
+        #     t2 = - t / np.sqrt(3)
+        #     phi = np.pi / 3
+        #
+        #     # first-nearest neighbors
+        #     firstNN = np.zeros((2, 2))
+        #     # positive phase direction for inter-orbital creation
+        #     firstNN[0, :] = -delta[1, :]  # down
+        #     # neutral direction
+        #     firstNN[1, :] = delta[0, :]  # right
+        #
+        #     # second-nearest neighbors
+        #     secondNN = np.zeros((3, 2))
+        #     # positive phase direction for inter-orbital creation
+        #     secondNN[0, :] = (delta[0, :] - delta[1, :])  # bottom right
+        #     # positive phase direction for same-orbital creation
+        #     secondNN[1, :] = (-delta[0, :] - delta[1, :])  # bottom left
+        #     # negative phase direction for same orbital creation
+        #     secondNN[2, :] = (delta[0, :] + delta[1, :])  # top right
+        #
+        #     f_BdA = t1 * np.exp(1j * 2 * phi) * np.exp(1j * k_val.dot(firstNN[0, :]))
+        #     f_CdB = t1 * np.exp(1j * 4 * phi) * np.exp(1j * k_val.dot(firstNN[0, :]))
+        #     f_AdC = t1 * np.exp(1j * 6 * phi) * np.exp(1j * k_val.dot(firstNN[0, :]))
+        #     f_horizontal = t1 * np.exp(1j * k_val.dot(firstNN[1, :]))
+        #
+        #     fdash_AdA = t2 * np.exp(1j * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+        #     fdash_BdB = t2 * np.exp(1j * 3 * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+        #     fdash_CdC = t2 * np.exp(1j * 5 * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+        #
+        #     fdash_CdA = t2 * np.exp(1j * 3 * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+        #     fdash_AdB = t2 * np.exp(1j * 5 * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+        #     fdash_BdC = t2 * np.exp(1j * 7 * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+        #
+        #     Hamiltonian[0][0] = fdash_AdA
+        #     Hamiltonian[0][1] = fdash_AdB
+        #     Hamiltonian[0][2] = f_AdC + f_horizontal
+        #
+        #     Hamiltonian[1][0] = f_BdA + f_horizontal
+        #     Hamiltonian[1][1] = fdash_BdB
+        #     Hamiltonian[1][2] = fdash_BdC
+        #
+        #     Hamiltonian[2][0] = fdash_CdA
+        #     Hamiltonian[2][1] = f_CdB + f_horizontal
+        #     Hamiltonian[2][2] = fdash_CdC
+        #
+        #     Hamiltonian += Hamiltonian.conj().transpose()
+        elif model_val in ['HalSquC3', 'HalSquC4', 'HalSquC5']:
+            if model_val is 'HalSquC3':
+                N = 3
+            elif model_val is 'HalSquC4':
+                N = 4
+            else:
+                N = 5
+
+            t1 = t
+            t2 = - t / np.sqrt(N)
+            phi = np.pi / 3
+
+            # first-nearest neighbors
+            firstNN = np.zeros((2, 2))
+            # positive phase direction for inter-orbital creation
+            firstNN[0, :] = -delta[1, :]  # down
+            # neutral direction
+            firstNN[1, :] = delta[0, :]  # right
+
+            # second-nearest neighbors
+            secondNN = np.zeros((3, 2))
+            # positive phase direction for inter-orbital creation
+            secondNN[0, :] = (delta[0, :] - delta[1, :])  # bottom right
+            # positive phase direction for same-orbital creation
+            secondNN[1, :] = (-delta[0, :] - delta[1, :])  # bottom left
+            # negative phase direction for same orbital creation
+            secondNN[2, :] = (delta[0, :] + delta[1, :])  # top right
+
+            for a in range(N):
+                Hamiltonian[(a+1) % N][a] = t1 * (np.exp(1j * k_val.dot(firstNN[1, :])) + np.exp(1j * 2 * (a+1) * phi) * np.exp(1j * k_val.dot(firstNN[0, :])))
+                Hamiltonian[a][a] = t2 * np.exp(1j * (2 * (a+1) - 1) * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+                Hamiltonian[(a+2) % N][a] = t2 * np.exp(1j * (2 * (a+1) + 1) * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+
+            # f_BdA = t1 * np.exp(1j * 2 * phi) * np.exp(1j * k_val.dot(firstNN[0, :]))
+            # f_CdB = t1 * np.exp(1j * 4 * phi) * np.exp(1j * k_val.dot(firstNN[0, :]))
+            # f_AdC = t1 * np.exp(1j * 6 * phi) * np.exp(1j * k_val.dot(firstNN[0, :]))
+            # f_horizontal = t1 * np.exp(1j * k_val.dot(firstNN[1, :]))
+            #
+            # fdash_AdA = t2 * np.exp(1j * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+            # fdash_BdB = t2 * np.exp(1j * 3 * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+            # fdash_CdC = t2 * np.exp(1j * 5 * phi) * np.exp(1j * k_val.dot(secondNN[1, :]))
+            #
+            # fdash_CdA = t2 * np.exp(1j * 3 * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+            # fdash_AdB = t2 * np.exp(1j * 5 * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+            # fdash_BdC = t2 * np.exp(1j * 7 * phi) * np.exp(1j * k_val.dot(secondNN[0, :]))
+            #
+            # Hamiltonian[0][0] = fdash_AdA
+            # Hamiltonian[0][1] = fdash_AdB
+            # Hamiltonian[0][2] = f_AdC + f_horizontal
+            #
+            # Hamiltonian[1][0] = f_BdA + f_horizontal
+            # Hamiltonian[1][1] = fdash_BdB
+            # Hamiltonian[1][2] = fdash_BdC
+            #
+            # Hamiltonian[2][0] = fdash_CdA
+            # Hamiltonian[2][1] = f_CdB + f_horizontal
+            # Hamiltonian[2][2] = fdash_CdC
+
+            Hamiltonian += Hamiltonian.conj().transpose()
         else:
             return ValueError("Requested model is not implemented in hamiltonian function.")
 
@@ -293,14 +407,26 @@ if __name__ == '__main__':
 
     # initialization
     num_samples = 101
-    flag_3D = True  # choose between 3D or 2D band structure
-    model = 'HofSqu1'  # (HofSqu1, HalSquC1, HalSquC2), (HalTriC3), (graphene, HalHexC1)
-    p, q = 1, 4  # for Hofstadter model only
-
-    # define unit cell
-    num_bands, avec, bvec, sym_points = define_unit_cell(model, q_val=q)
+    model = 'HalSquC3'  # (HofSqu1, HalSquC1, HalSquC2), (HalTriC3), (graphene, HalHexC1)
+    mining = False  # data mining mode for 2D band structures
+    if mining:
+        flag_3D = False  # only works in 2D mode
+        p = [1, 4, 4, 4, 4]
+        q = [4, 7, 11, 15, 19]  # lists need to be the same length
+        if 'Hof' in model:
+            path_to_file = "code/models/hofstadter/squ_1_hoppings_ratio.dat"
+        elif 'Hal' in model:
+            path_to_file = "code/models/haldane/squ_hoppings_ratio.dat"
+        else:
+            raise ValueError("Chosen model is not implemented for mining.")
+    else:
+        flag_3D = False  # choose between 3D or 2D band structure
+        p, q = 1, 4  # for Hofstadter model only
 
     if flag_3D:
+        # define unit cell
+        num_bands, avec, bvec, sym_points = define_unit_cell(model, q_val=q)
+
         # construct bands
         eigenvalues = np.zeros((num_bands, num_samples, num_samples))  # real
         eigenvectors = np.zeros((num_bands, num_bands, num_samples, num_samples), dtype=np.complex128)  # complex
@@ -340,16 +466,50 @@ if __name__ == '__main__':
         ax.set_xlabel('$k_x$')
         ax.set_ylabel('$k_y$')
         ax.set_zlabel('$E$')
+    elif mining:
+        total_num_chern = len(p)
+        ratio = np.zeros((total_num_chern, num_samples))
+        # loop through all chern numbers
+        for num_chern in range(total_num_chern):
+            for num_sample, tx_factor in enumerate(np.linspace(0, 10, num_samples)):
+                # define unit cell
+                num_bands, avec, bvec, sym_points = define_unit_cell(model, q_val=q[num_chern])
+                # construct bands
+                num_paths = len(sym_points)
+                points_per_path = int(num_samples / num_paths)
+                num_points = num_paths * points_per_path
+                eigenvalues = np.zeros((num_bands, num_points))  # real
+                count = 0
+                for i in range(num_paths):
+                    for j in range(points_per_path):
+                        k = sym_points[i] + (sym_points[(i + 1) % num_paths] - sym_points[i]) * float(j) / float(
+                            points_per_path - 1)
+                        k = np.matmul(k, bvec)
+                        eigvals = np.linalg.eigvals(hamiltonian(model, k, num_bands, avec, p_val=p[num_chern], tx_factor_val=tx_factor))
+                        idx = np.argsort(eigvals)
+                        for band in range(num_bands):
+                            eigenvalues[band, count] = np.real(eigvals[idx[band]])
+                        count += 1
+                band_gap = np.min(eigenvalues[1]) - np.max(eigenvalues[0])
+                band_width = np.max(eigenvalues[0]) - np.min(eigenvalues[0])
+                ratio[num_chern][num_sample] = band_gap/band_width
+
+        with open(path_to_file, 'w') as file:
+            for num_sample, tx_factor in enumerate(np.linspace(0, 10, num_samples)):
+                file.write(f"{tx_factor}\t{ratio[0][num_sample]}\t{ratio[1][num_sample]}\t{ratio[2][num_sample]}\t{ratio[3][num_sample]}\t{ratio[4][num_sample]}\n")
     else:
+        # define unit cell
+        num_bands, avec, bvec, sym_points = define_unit_cell(model, q_val=q)
+
         # construct bands
-        numb_paths = len(sym_points)
-        points_per_path = int(num_samples/numb_paths)
-        numb_points = numb_paths*points_per_path
-        eigenvalues = np.zeros((num_bands, numb_points))  # real
+        num_paths = len(sym_points)
+        points_per_path = int(num_samples/num_paths)
+        num_points = num_paths*points_per_path
+        eigenvalues = np.zeros((num_bands, num_points))  # real
         count = 0
-        for i in range(numb_paths):
+        for i in range(num_paths):
             for j in range(points_per_path):
-                k = sym_points[i] + (sym_points[(i+1) % numb_paths] - sym_points[i]) * float(j) / float(points_per_path - 1)
+                k = sym_points[i] + (sym_points[(i+1) % num_paths] - sym_points[i]) * float(j) / float(points_per_path - 1)
                 k = np.matmul(k, bvec)
                 eigvals = np.linalg.eigvals(hamiltonian(model, k, num_bands, avec, p_val=p, tx_factor_val=1))
                 idx = np.argsort(eigvals)
@@ -362,9 +522,9 @@ if __name__ == '__main__':
         ax = plt.subplot(111)
         for i in range(num_bands):
             ax.plot(eigenvalues[i])
-        for i in range(1, numb_paths):
+        for i in range(1, num_paths):
             ax.axvline(i*points_per_path, color='k', linewidth=0.5, ls='--')
-        ax.set_xlim([0, numb_points])
+        ax.set_xlim([0, num_points])
         ax.set_xlabel('symmetry path')
         ax.set_ylabel('$E$')
 

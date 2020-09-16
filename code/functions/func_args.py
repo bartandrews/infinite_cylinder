@@ -37,6 +37,14 @@ def parse_input_arguments(program):
 
     leaf.add_argument("-C", type=int, default=3, help="Chern number (applicable to HalSquCN models)")
 
+    if program == "ratio_flow":
+        leaf.add_argument("-r_min", type=float, default=0, required=True, help="minimum gap-to-width ratio")
+        leaf.add_argument("-r_max", type=float, default=3, required=True, help="maximum gap-to-width ratio")
+        leaf.add_argument("-r_samp", type=int, default=11, required=True,
+                            help="number of gap-to-width ratio samples")
+    else:
+        leaf.add_argument("-r", type=float, default=None, help="gap-to-width ratio (applicable to HofSqu1 models)")
+
     for i in range(1, 11):  # search up to 10th-NN hoppings for both t and tdash
         tdefault = 1 if i == 1 else 0
         leaf.add_argument(f"-t{i}", type=float, default=tdefault, help=f"{i}-NN hopping parameter")
@@ -155,10 +163,13 @@ def __check_input_arguments(program, args):
     if "C" in args and args['C'] < 3:
         raise ValueError("C must satisfy 3<=C.")
 
+    if "r" in args and (args['r'] < 0 or args['r'] > 3):
+        raise ValueError("r must satisfy 0<=r<=3.")
+
     if "flow" in program:
-        if args[f"{program.replace('flow', 'min')}"] > args[f"{program.replace('flow', 'max')}"]:
-            raise ValueError(f"{program.replace('flow', 'max')} has to be greater "
-                             f"than {program.replace('flow', 'min')}.")
+        if args[f"{program.replace('flow', 'min').replace('ratio', 'r')}"] > args[f"{program.replace('flow', 'max').replace('ratio', 'r')}"]:
+            raise ValueError(f"{program.replace('flow', 'max').replace('ratio', 'r')} has to be greater "
+                             f"than {program.replace('flow', 'min').replace('ratio', 'r')}.")
 
     if "V" in args and ((args['V'] == 0 and args['Vrange'] != 0) or (args['V'] != 0 and args['Vrange'] == 0)):
         raise ValueError("Cannot have zero interaction over a finite range, or a finite interaction over zero range.")

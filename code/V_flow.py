@@ -19,7 +19,7 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
     leaf = fp.file_name_leaf("V_flow", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("V_flow", path, model, chi_max, leaf)
 
-    tools = ["ent_spec_V_flow", "corr_len_V_flow", "ent_V_flow", "ent_corr_len"]
+    tools = ["ent_spec_V_flow", "ent_V_flow", "corr_len_V_flow", "ent_corr_len_V"]
     data = fp.prepare_output_files(tools, path, model, chi_max, leaf)
 
     ##################################################################################################################
@@ -47,16 +47,6 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
                 print(data_line)
                 data['ent_spec_V_flow'].write(data_line+"\n")
 
-        ###################
-        # corr_len_V_flow #
-        ###################
-
-        xi = psi.correlation_length()
-
-        data_line = f"{V:.15f}\t{xi:.15f}"
-        print(data_line)
-        data['corr_len_V_flow'].write(data_line + "\n")
-
         ##############
         # ent_V_flow #
         ##############
@@ -66,6 +56,16 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
         data_line = f"{V:.15f}\t{SvN:.15f}"
         print(data_line)
         data['ent_V_flow'].write(data_line + "\n")
+
+        ###################
+        # corr_len_V_flow #
+        ###################
+
+        xi = psi.correlation_length()
+
+        data_line = f"{V:.15f}\t{xi:.15f}"
+        print(data_line)
+        data['corr_len_V_flow'].write(data_line + "\n")
 
         ################
         # ent_corr_len #

@@ -33,6 +33,14 @@ def file_name_leaf(program, model, ham_params):
 
     C = f"C_{ham_params['C']}_" if "HalSquCN" in model else ""
 
+    if program == "ratio_flow":
+        ratio = f"r_{ham_params['r_min']:g}_{ham_params['r_max']:g}_{ham_params['r_samp']}_"
+    else:
+        if "r" in ham_params:
+            ratio = f"r_{ham_params['r']:g}" if ham_params['r'] is not None else ""
+        else:
+            ratio = ""
+
     t = ""
     for i in range(1, 11, 1):  # search up to 10th-NN hoppings for both t and tdash
         if f"{i}" in model:
@@ -80,7 +88,7 @@ def file_name_leaf(program, model, ham_params):
     else:
         ext = ".dat"
 
-    leaf = f"{Nmax}{C}{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
+    leaf = f"{Nmax}{C}{ratio}{t}{kappa}{U}{mu}{V}{nu}{L}{phi}{custom}{ext}{ham_params['tag']}"
 
     return leaf
 

@@ -1,3 +1,7 @@
+# --- python imports
+import csv
+import numpy as np
+import os
 # --- TeNPy imports
 from tenpy.models.lattice import Square
 # --- infinite_cylinder imports
@@ -24,8 +28,43 @@ class HofSqu1Model(HofstadterModel):
         (creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
             HofstadterModel.init_terms(self, params)
 
+        ###########
+        # t_aniso #
+        ###########
+
+        r = params.get('r', None)
+        if r is not None:
+            # read in squ_1_hoppings_ratio.dat
+            path = 'code/models/hofstadter'
+            with open(os.path.join(path, 'squ_1_hoppings_ratio.dat'), 'r') as csvfile:
+                converter = csv.reader(csvfile, delimiter='\t')
+                tx_ty = []
+                ratios = [[] for i in range(5)]
+                for row in converter:
+                    tx_ty.append(float(row[0]))
+                    for i in range(5):
+                        ratios[i].append(float(row[i + 1]))
+            # determine chern number
+            if nphi == [1, 4]:
+                C = 1
+            elif nphi == [4, 7]:
+                C = 2
+            elif nphi == [4, 11]:
+                C = 3
+            elif nphi == [4, 15]:
+                C = 4
+            elif nphi == [4, 19]:
+                C = 5
+            else:
+                raise ValueError("Custom gap-to-width ratio is not implemented for this value of nphi.")
+            # find closest corresponding hoppings
+            lst = np.asarray(ratios[C - 1])
+            idx = (np.abs(lst - r)).argmin()
+            t_aniso = tx_ty[idx]
+            print(f"Closest tx-to-ty ratio corresponding to desired gap-to-width ratio {r} is {tx_ty[idx]}.")
+
         self.chemical_potential(mu)
-        self.squ_1_hoppings(creation, annihilation, t1, nphi, nphi_2pi, LxMUC, phi_2pi)
+        self.squ_1_hoppings(creation, annihilation, t1, nphi, nphi_2pi, LxMUC, phi_2pi, t_anisotropy=t_aniso)
         self.offsite_interaction("Squ", Nmax, V, Vtype, Vrange)
 
 

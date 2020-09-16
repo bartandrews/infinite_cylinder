@@ -215,6 +215,7 @@ def define_iDMRG_model(model, ham_params):
         model_params.update(C=ham_params['C'])
         M = HalSquCNModel(model_params)
     elif model.endswith("HofSqu1"):
+        model_params.update(r=ham_params['r'])
         M = HofSqu1Model(model_params)
     elif model.endswith("HofHex1"):
         M = HofHex1Model(model_params)
