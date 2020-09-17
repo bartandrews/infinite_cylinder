@@ -47,7 +47,7 @@ class HalSquCNModel(HaldaneModel):
         self.chemical_potential(mu, extra_dof=True)
         self.offsite_interaction("Squ", V, Vtype, Vrange, extra_dof=True)
 
-        phi = np.pi / 3
+        phi = np.pi / C
 
         for u1, u2, dx in [(0, 0, np.array([1, 0]))]:  # NN right
             t1_phi = self.coupling_strength_add_ext_flux(t1, dx, [0, phi_2pi])
