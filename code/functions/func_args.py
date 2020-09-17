@@ -163,7 +163,7 @@ def __check_input_arguments(program, args):
     if "C" in args and args['C'] < 3:
         raise ValueError("C must satisfy 3<=C.")
 
-    if "r" in args and (args['r'] < 0 or args['r'] > 3):
+    if "r" in args and (args['r'] is not None) and (args['r'] < 0 or args['r'] > 3):
         raise ValueError("r must satisfy 0<=r<=3.")
 
     if "flow" in program:

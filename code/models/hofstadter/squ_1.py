@@ -32,6 +32,7 @@ class HofSqu1Model(HofstadterModel):
         # t_aniso #
         ###########
 
+        t_aniso = 1
         r = params.get('r', None)
         if r is not None:
             # read in squ_1_hoppings_ratio.dat
