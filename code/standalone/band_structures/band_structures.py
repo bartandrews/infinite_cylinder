@@ -7,7 +7,7 @@ a0 = 1  # lattice constant
 t = 1  # hopping amplitude
 
 
-def define_unit_cell(model_val, q_val=5, C_val=1):
+def define_unit_cell(model_val, q_val=4, C_val=1):
 
     if 'Squ' in model_val:
         if model_val is 'HofSqu1':
@@ -29,10 +29,10 @@ def define_unit_cell(model_val, q_val=5, C_val=1):
         elif model_val in ['HalSquCN']:
             if C_val == 1:
                 num_bands_val = 2
-                lx = 2
+                lx = 2  # rectangular unit cell
             else:
                 num_bands_val = C_val
-                lx = 1
+                lx = 1  # square unit cell
             # lattice vectors
             a1 = a0 * np.array([lx, 0])
             a2 = a0 * np.array([0, 1])
@@ -42,13 +42,13 @@ def define_unit_cell(model_val, q_val=5, C_val=1):
             b2 = (2. * np.pi) / a0 * np.array([0, 1])
             bvec_val = np.vstack((b1, b2))
             # symmetry points
-            if C_val == 1:
+            if C_val == 1:  # rectangular BZ
                 GA = np.array([0, 0])
                 Y = np.array([0, 0.5])
                 S = np.array([0.5, 0.5])
                 X = np.array([0.5, 0])
                 sym_points_val = [GA, Y, S, X]
-            else:
+            else:  # square BZ
                 GA = np.array([0, 0])
                 M = np.array([0.5, 0.5])
                 X = np.array([0.5, 0])
@@ -163,14 +163,16 @@ def hamiltonian(model_val, k_val, num_bands_val, avec_val, p_val=1, C_val=1, tx_
                 for m in range(0, 2):
                     fddash += tddash * np.exp(1j * k_val.dot(thirdNN[m, :]))
 
-                Hamiltonian[0][0] = fdash_A + np.conj(fdash_A) + fddash + np.conj(fddash)
-                Hamiltonian[0][1] = f_AdB + np.conj(f_BdA)
-                Hamiltonian[1][0] = f_BdA + np.conj(f_AdB)
-                Hamiltonian[1][1] = fdash_B + np.conj(fdash_B) + fddash + np.conj(fddash)
+                Hamiltonian[0][0] = fdash_A + fddash
+                Hamiltonian[0][1] = f_AdB
+                Hamiltonian[1][0] = f_BdA
+                Hamiltonian[1][1] = fdash_B + fddash
+
+                Hamiltonian += Hamiltonian.conj().transpose()
             else:
                 N = C_val
                 t1 = tx_factor_val * t
-                if C_val < 6:  # need to include the t2 term otherwise cannot tune gap-to-width ratio
+                if C_val < 100:  # need to include the t2 term otherwise cannot tune gap-to-width ratio
                     t2 = - t / np.sqrt(N)
                 else:
                     t2 = 0
@@ -193,9 +195,9 @@ def hamiltonian(model_val, k_val, num_bands_val, avec_val, p_val=1, C_val=1, tx_
                 secondNN[2, :] = (delta[0, :] + delta[1, :])  # top right
 
                 for a in range(N):
-                    Hamiltonian[(a+1) % N][a] = t1 * (np.exp(1j * k_val.dot(firstNN[1, :])) + np.exp(1j * (2*(a+1)*phi + k_val.dot(firstNN[0, :]))))
+                    Hamiltonian[(a+1) % N][a] = t1 * (np.exp(1j * k_val.dot(firstNN[1, :])) + np.exp(1j * (k_val.dot(firstNN[0, :]) + 2*(a+1) * phi)))
                     Hamiltonian[a][a] = t2 * np.exp(1j * (k_val.dot(secondNN[2, :]) - (2*(a+1)-1) * phi))
-                    Hamiltonian[(a+2) % N][a] = t2 * np.exp(1j * ((2*(a+1)+1)*phi + k_val.dot(secondNN[0, :])))
+                    Hamiltonian[(a+2) % N][a] = t2 * np.exp(1j * (k_val.dot(secondNN[0, :]) + (2*(a+1)+1) * phi))
 
                 Hamiltonian += Hamiltonian.conj().transpose()
         else:
@@ -252,10 +254,12 @@ def hamiltonian(model_val, k_val, num_bands_val, avec_val, p_val=1, C_val=1, tx_
             for m in range(0, 3):
                 f3 += -t3 * np.exp(1j * k_val.dot(thirdNN[m, :]))
 
-            Hamiltonian[0][0] = f2_A + np.conj(f2_A)
-            Hamiltonian[0][1] = f1 + np.conj(f3)
-            Hamiltonian[1][0] = np.conj(f1) + f3
-            Hamiltonian[1][1] = f2_B + np.conj(f2_B)
+            Hamiltonian[0][0] = f2_A
+            Hamiltonian[0][1] = f1
+            Hamiltonian[1][0] = f3
+            Hamiltonian[1][1] = f2_B
+
+            Hamiltonian += Hamiltonian.conj().transpose()
         else:
             return ValueError("Requested model is not implemented in hamiltonian function.")
 
@@ -323,11 +327,15 @@ def berry_curv(eigvec, eigvec_alpha, eigvec_beta, eigvec_alpha_beta):
 
 if __name__ == '__main__':
 
-    # initialization
+    # initialization ###################################################################################################
     num_samples = 101
-    model = 'HalSquCN'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
-    mining = True  # data mining mode for 2D band structures
-    if mining:
+    model = 'HofSqu1'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
+    mining = False  # data mining mode for 2D band structures
+    if not mining:
+        flag_3D = True  # choose between 3D or 2D band structure
+        p, q = 3, 7  # for Hofstadter model only
+        C = 2  # for HalSquCN model only
+    else:
         tx_min, tx_max, tx_samp = 0, 1000, 1001
         flag_3D = False  # only works in 2D mode
         p = [1, 4, 4, 4, 4]
@@ -339,10 +347,7 @@ if __name__ == '__main__':
             path_to_file = "code/models/haldane/squ_hoppings_ratio.dat"
         else:
             raise ValueError("Chosen model is not implemented for mining.")
-    else:
-        flag_3D = False  # choose between 3D or 2D band structure
-        p, q = 1, 4  # for Hofstadter model only
-        C = 5  # for HalSquCN model only
+    ####################################################################################################################
 
     if flag_3D:
         # define unit cell

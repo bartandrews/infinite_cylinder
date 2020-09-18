@@ -374,5 +374,5 @@ if __name__ == "__main__":
 
     # __get_product_state(model="FerHofSqu1", ham_params=dict(n=(4, 45), nphi=(4, 15), LxMUC=1, Ly=6),
     #                     filling_scale_factor=1, orbital_preference=None)
-    __get_product_state(model="BosHalSquCN", ham_params=dict(C=3, n=(1, 2), LxMUC=1, Ly=6),
+    __get_product_state(model="FerHofSqu1", ham_params=dict(C=None, n=(4, 7), nphi=(4, 7), LxMUC=1, Ly=3),
                          filling_scale_factor=1, orbital_preference=None)

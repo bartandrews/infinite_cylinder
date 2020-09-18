@@ -61,7 +61,7 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
             nphi_default = (1, 4)
         else:
             creation, annihilation = 'Cd', 'C'
-            V_default, Vrange_default = 10, 1
+            V_default, Vrange_default = 0, 0  # 10, 1 (prior to 18/09/20)
             nphi_default = (1, 3)
         Nmax = params.get('Nmax', 1)
         t1 = params.get('t1', 1)
