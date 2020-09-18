@@ -7,8 +7,8 @@
 python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 3 -nphi 1 3 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, upwards, 3m 1s)
 python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 3 7 -nphi 3 7 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (...)  # changed to nphi=3/7 with -ve Chern band
 python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 4 11 -nphi 4 11 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 4 15 -nphi 1 15 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 4 19 -nphi 1 19 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11
+python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 4 15 -nphi 4 15 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11
+python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 4 19 -nphi 4 19 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11
 
 
 ########
@@ -19,9 +19,9 @@ python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 4 19 -nphi 1 1
 
 python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 1 8 -nphi 1 4 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 2 -phi_samp 21 (VERIFIED, upwards, 21m 2s)
 python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 4 21 -nphi 4 7 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31 (NOT WORKING)
-python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 1 11 -nphi 4 11 -LxMUC 2 -Ly 4 -phi_min 0 -phi_max 4 -phi_samp 41
-python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 4 75 -nphi 4 15 -LxMUC 2 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
-python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 2 57 -nphi 4 19 -LxMUC 2 -Ly 6 -phi_min 0 -phi_max 6 -phi_samp 61
+python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 1 11 -nphi 4 11 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 4 -phi_samp 41
+python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 4 75 -nphi 4 15 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
+python code/phi_flow.py -thr 1 -mod "BosHofSqu1" -chi 50 -t1 1 -n 2 57 -nphi 4 19 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 6 -phi_samp 61
 
 # fermions
 

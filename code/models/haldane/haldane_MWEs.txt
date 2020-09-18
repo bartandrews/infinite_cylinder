@@ -8,7 +8,7 @@ python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -n 1 2 -LxMUC 1 
 python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 5m 45s)
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 13m 54s)
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 31m)
-python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (...)
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 1h 16m 18s)
 
 
 ########
