@@ -27,6 +27,8 @@ class HofSqu1Model(HofstadterModel):
     def init_terms(self, params):
         (creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = \
             HofstadterModel.init_terms(self, params)
+        print("(creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi) = ",
+              creation, annihilation, nphi_default, Nmax, t1, mu, V, Vtype, Vrange, nphi, nphi_2pi, LxMUC, phi_2pi)
 
         ###########
         # t_aniso #

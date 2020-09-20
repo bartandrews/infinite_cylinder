@@ -16,9 +16,9 @@ class BipartiteSquare(lattice.Lattice):
         super().__init__([Lx, Ly], [site, site], **kwargs)
         self.site = site
 
-        # positive phase NN (for A: top-left, bottom-right; for B: top-right, bottom-left)
-        self.NN = [(1, 0, np.array([-1, 1])), (1, 0, np.array([0, 0])),
-                   (0, 1, np.array([1, 0])), (0, 1, np.array([0, -1]))]
+        # positive phase NN (for A: top-right, bottom-left; for B: top-left, bottom-right)
+        self.NN = [(1, 0, np.array([0, 1])), (1, 0, np.array([-1, 0])),
+                   (0, 1, np.array([0, 0])), (0, 1, np.array([1, -1]))]
 
         # positive nNN (for A: right; for B: up)
         self.pos_nNN = [(1, 1, np.array([1, 0])), (0, 0, np.array([0, 1]))]

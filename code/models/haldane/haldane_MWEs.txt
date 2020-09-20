@@ -1,32 +1,105 @@
-#######
-# CIs #
-#######
+########################################################################################################################
+# Chern Insulators                                                                                                     #
+########################################################################################################################
 
-# fermions
+############
+# fermions #
+############
 
-python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -n 1 2 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, upwards, 3m 49s)
+python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -n 1 2 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 2m 44s)
 python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 5m 45s)
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 13m 54s)
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 31m)
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -n 1 1 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 1h 16m 18s)
 
+########################################################################################################################
+# Fractional Chern Insulators                                                                                          #
+########################################################################################################################
 
-########
-# FCIs #
-########
+##########
+# bosons #
+##########
 
-# bosons
+# bosons (r=1 ==> nu=1/(C+1))
 
-python code/phi_flow.py -thr 1 -mod "BosHalSquC1" -chi 50 -t1 1 -n 1 4 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 2 -phi_samp 21
+python code/phi_flow.py -thr 1 -mod "BosHalSquC1" -chi 50 -t1 1 -n 1 4 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 2 -phi_samp 21 (VERIFIED, downwards, 7m 31s)
 python code/phi_flow.py -thr 1 -mod "BosHalSquC2" -chi 50 -t1 1 -n 1 3 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31
 python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 3 -t1 1 -n 1 4 -LxMUC 2 -Ly 4 -phi_min 0 -phi_max 4 -phi_samp 41
 python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 4 -t1 1 -n 1 5 -LxMUC 2 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
 python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 5 -t1 1 -n 1 6 -LxMUC 2 -Ly 6 -phi_min 0 -phi_max 6 -phi_samp 61
 
-# fermions
+# bosons (r=-2 ==> nu=2/(2C-1))
 
-python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 6 -LxMUC 2 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31
+python code/phi_flow.py -thr 1 -mod "BosHalSquC1" -chi 50 -t1 1 -n 1 1 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 1 -phi_samp 11
+python code/phi_flow.py -thr 1 -mod "BosHalSquC2" -chi 50 -t1 1 -n 2 3 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 3 -t1 1 -n 2 5 -LxMUC 2 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 4 -t1 1 -n 2 7 -LxMUC 2 -Ly 7 -phi_min 0 -phi_max 7 -phi_samp 71
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 5 -t1 1 -n 2 9 -LxMUC 3 -Ly 6 -phi_min 0 -phi_max 9 -phi_samp 91
+
+# bosons (r=2 ==> nu=2/(2C+1))
+
+python code/phi_flow.py -thr 1 -mod "BosHalSquC1" -chi 50 -t1 1 -n 1 5 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
+python code/phi_flow.py -thr 1 -mod "BosHalSquC2" -chi 50 -t1 1 -n 2 7 -LxMUC 2 -Ly 7 -phi_min 0 -phi_max 7 -phi_samp 71
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 3 -t1 1 -n 2 9 -LxMUC 3 -Ly 6 -phi_min 0 -phi_max 9 -phi_samp 91
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 4 -t1 1 -n 2 11 -LxMUC 2 -Ly 11 -phi_min 0 -phi_max 11 -phi_samp 111
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 5 -t1 1 -n 2 13 -LxMUC 2 -Ly 13 -phi_min 0 -phi_max 13 -phi_samp 131
+
+# bosons (r=-3 ==> nu=3/(3C+1))
+
+python code/phi_flow.py -thr 1 -mod "BosHalSquC1" -chi 50 -t1 1 -n 3 4 -LxMUC 1 -Ly 4 -phi_min 0 -phi_max 2 -phi_samp 21
+python code/phi_flow.py -thr 1 -mod "BosHalSquC2" -chi 50 -t1 1 -n 3 5 -LxMUC 2 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 3 -t1 1 -n 3 8 -LxMUC 2 -Ly 4 -phi_min 0 -phi_max 8 -phi_samp 81
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 4 -t1 1 -n 3 11 -LxMUC 1 -Ly 11 -phi_min 0 -phi_max 11 -phi_samp 111
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 5 -t1 1 -n 3 14 -LxMUC 2 -Ly 7 -phi_min 0 -phi_max 14 -phi_samp 141
+
+# bosons (r=3 ==> nu=3/(3C+1))
+
+python code/phi_flow.py -thr 1 -mod "BosHalSquC1" -chi 50 -t1 1 -n 3 8 -LxMUC 2 -Ly 4 -phi_min 0 -phi_max 4 -phi_samp 41
+python code/phi_flow.py -thr 1 -mod "BosHalSquC2" -chi 50 -t1 1 -n 3 7 -LxMUC 2 -Ly 7 -phi_min 0 -phi_max 7 -phi_samp 71
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 3 -t1 1 -n 3 10 -LxMUC 4 -Ly 5 -phi_min 0 -phi_max 10 -phi_samp 101
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 4 -t1 1 -n 3 13 -LxMUC 2 -Ly 13 -phi_min 0 -phi_max 13 -phi_samp 131
+python code/phi_flow.py -thr 1 -mod "BosHalSquCN" -chi 50 -C 5 -t1 1 -n 3 16 -LxMUC 4 -Ly 8 -phi_min 0 -phi_max 16 -phi_samp 161
+
+############
+# fermions #
+############
+
+# fermions (r=1 ==> 1/(2C+1))
+
+python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 6 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31 (...)
 python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 5 -LxMUC 2 -Ly 5 -phi_min 0 -phi_max 4 -phi_samp 41
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 7 -LxMUC 2 -Ly 7 -phi_min 0 -phi_max 5 -phi_samp 51
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 9 -LxMUC 2 -Ly 9 -phi_min 0 -phi_max 6 -phi_samp 61
 python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 11 -LxMUC 2 -Ly 11 -phi_min 0 -phi_max 7 -phi_samp 71
+
+# fermions (r=-2 ==> 2/(4C-1))
+
+python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 3 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 3 -phi_samp 31
+python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 7 -LxMUC 1 -Ly 7 -phi_min 0 -phi_max 7 -phi_samp 71
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 11 -LxMUC 1 -Ly 11 -phi_min 0 -phi_max 11 -phi_samp 111
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 15 -LxMUC 1 -Ly 15 -phi_min 0 -phi_max 15 -phi_samp 151
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 19 -LxMUC 1 -Ly 19 -phi_min 0 -phi_max 19 -phi_samp 191
+
+# fermions (r=2 ==> 2/(4C+1))
+
+python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 5 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
+python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 9 -LxMUC 1 -Ly 9 -phi_min 0 -phi_max 9 -phi_samp 91
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 13 -LxMUC 1 -Ly 13 -phi_min 0 -phi_max 13 -phi_samp 131
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 17 -LxMUC 1 -Ly 17 -phi_min 0 -phi_max 17 -phi_samp 171
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 2 21 -LxMUC 1 -Ly 21 -phi_min 0 -phi_max 21 -phi_samp 211
+
+# fermions (r=-3 ==> 3/(6C-1))
+
+python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 10 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 5 -phi_samp 51
+python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 11 -LxMUC 1 -Ly 11 -phi_min 0 -phi_max 11 -phi_samp 111
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 17 -LxMUC 1 -Ly 17 -phi_min 0 -phi_max 17 -phi_samp 171
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 23 -LxMUC 1 -Ly 23 -phi_min 0 -phi_max 23 -phi_samp 231
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 29 -LxMUC 1 -Ly 29 -phi_min 0 -phi_max 29 -phi_samp 291
+
+# fermions (r=3 ==> 3/(6C+1))
+
+python code/phi_flow.py -thr 1 -mod "FerHalSquC1" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 14 -LxMUC 1 -Ly 7 -phi_min 0 -phi_max 7 -phi_samp 71
+python code/phi_flow.py -thr 1 -mod "FerHalSquC2" -chi 50 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 13 -LxMUC 1 -Ly 13 -phi_min 0 -phi_max 13 -phi_samp 131
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 3 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 19 -LxMUC 1 -Ly 19 -phi_min 0 -phi_max 19 -phi_samp 191
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 4 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 25 -LxMUC 1 -Ly 25 -phi_min 0 -phi_max 25 -phi_samp 251
+python code/phi_flow.py -thr 1 -mod "FerHalSquCN" -chi 50 -C 5 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 3 31 -LxMUC 1 -Ly 31 -phi_min 0 -phi_max 31 -phi_samp 311

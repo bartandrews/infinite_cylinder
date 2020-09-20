@@ -138,7 +138,7 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
         u1, u2, dx = (0, 0, np.array([0, 1]))  # up
         m = np.arange(0, nphi[1] * LxMUC)
         t_phi = self.coupling_strength_add_ext_flux(ty, dx, [0, phi_2pi]) \
-                * np.exp(-1j * nphi_2pi * m)[:, np.newaxis]
+                * np.exp(+1j * nphi_2pi * m)[:, np.newaxis]  # changed to + on 20/09/20
         self.add_coupling(t_phi, u1, creation, u2, annihilation, dx)
         self.add_coupling(np.conj(t_phi), u2, creation, u1, annihilation, -dx)  # H.c.
 

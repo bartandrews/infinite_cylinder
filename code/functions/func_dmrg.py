@@ -164,7 +164,10 @@ def __get_product_state(model, ham_params, filling_scale_factor=1, orbital_prefe
             raise ValueError("Unknown orbital_preference parameter.")
     else:  # 1 orbital per site
         empty_site = [0]
-        state = ([1] + empty_site * (numb_sites_per_particle - 1)) * int((system_size / numb_sites_per_particle))
+        if nn / nd <= 0.5:
+            state = ([1] + empty_site * (numb_sites_per_particle - 1)) * int((system_size / numb_sites_per_particle))
+        else:
+            state = [1] * numb_particles
 
     state += (system_size-len(state)) * empty_site  # top up remainder with empty sites, if necessary
 

@@ -130,10 +130,10 @@ def hamiltonian(model_val, k_val, num_bands_val, avec_val, p_val=1, C_val=1, tx_
 
                 # first-nearest neighbors
                 firstNN = np.zeros((4, 2))
-                # positive direction for AdB
+                # positive direction for BdA
                 firstNN[0, :] = delta[1, :]  # up
                 firstNN[1, :] = -delta[1, :]  # down
-                # positive direction for BdA
+                # positive direction for AdB
                 firstNN[2, :] = -delta[0, :]  # left
                 firstNN[3, :] = delta[0, :]  # right
 
@@ -332,9 +332,9 @@ if __name__ == '__main__':
     model = 'HofSqu1'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
     mining = False  # data mining mode for 2D band structures
     if not mining:
-        flag_3D = False  # choose between 3D or 2D band structure
-        p, q = 4, 7  # for Hofstadter model only
-        C = 5  # for HalSquCN model only
+        flag_3D = True  # choose between 3D or 2D band structure
+        p, q = 4, 15  # for Hofstadter model only
+        C = 1  # for HalSquCN model only
     else:
         tx_min, tx_max, tx_samp = 0, 1000, 1001
         flag_3D = False  # only works in 2D mode

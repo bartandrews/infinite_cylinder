@@ -39,22 +39,12 @@ class HalSquC2Model(HaldaneModel):
         if t3 is None:
             t3 = t1 / (2 + 2*np.sqrt(2))
 
-        for u1, u2, dx in [(0, 0, np.array([0, 1]))]:  # NN up
+        for u1, u2, dx in [(0, 0, np.array([0, 1])), (0, 0, np.array([0, -1]))]:  # NN (up, down)
             t1_phi = self.coupling_strength_add_ext_flux(t1_phase, dx, [0, phi_2pi])
             self.add_coupling(t1_phi, u2, creation+'A', u1, annihilation+'B', dx)
             self.add_coupling(np.conj(t1_phi), u1, creation+'B', u2, annihilation+'A', -dx)
 
-        for u1, u2, dx in [(0, 0, np.array([0, -1]))]:  # NN down
-            t1_phi = self.coupling_strength_add_ext_flux(t1_phase, dx, [0, phi_2pi])
-            self.add_coupling(t1_phi, u2, creation+'A', u1, annihilation+'B', dx)
-            self.add_coupling(np.conj(t1_phi), u1, creation+'B', u2, annihilation+'A', -dx)
-
-        for u1, u2, dx in [(0, 0, np.array([-1, 0]))]:  # NN left
-            t1_phi = self.coupling_strength_add_ext_flux(t1_phase, dx, [0, phi_2pi])
-            self.add_coupling(t1_phi, u2, creation+'B', u1, annihilation+'A', dx)
-            self.add_coupling(np.conj(t1_phi), u1, creation+'A', u2, annihilation+'B', -dx)
-
-        for u1, u2, dx in [(0, 0, np.array([1, 0]))]:  # NN right
+        for u1, u2, dx in [(0, 0, np.array([-1, 0])), (0, 0, np.array([1, 0]))]:  # NN (left, right)
             t1_phi = self.coupling_strength_add_ext_flux(t1_phase, dx, [0, phi_2pi])
             self.add_coupling(t1_phi, u2, creation+'B', u1, annihilation+'A', dx)
             self.add_coupling(np.conj(t1_phi), u1, creation+'A', u2, annihilation+'B', -dx)
