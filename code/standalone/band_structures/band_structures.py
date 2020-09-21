@@ -329,7 +329,7 @@ if __name__ == '__main__':
 
     # initialization ###################################################################################################
     num_samples = 101
-    model = 'HofSqu1'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
+    model = 'HalSquCN'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
     mining = False  # data mining mode for 2D band structures
     if not mining:
         flag_3D = True  # choose between 3D or 2D band structure
