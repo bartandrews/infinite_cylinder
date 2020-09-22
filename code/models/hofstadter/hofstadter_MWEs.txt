@@ -9,15 +9,8 @@
 python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 4 -nphi 1 4 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 3m 57s)
 python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 7 -nphi 4 7 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 7m 49s)
 python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 11 -nphi 4 11 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 11m 22s)
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 15 -nphi 4 15 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 2h 22m 20s)
-
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 19 -nphi 4 19 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (NOT WORKING, upward by 10, 26m 51s)
-
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 100 -t1 1 -n 1 15 -nphi 4 15 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (HMMM, upwards, 1h 2m 55s)
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 100 -t1 1 -n 1 19 -nphi 4 19 -LxMUC 1 -Ly 3 -phi_min 0 -phi_max 1 -phi_samp 11 (NOT WORKING, upward by 13, 42m 4s)
-
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 100 -t1 1 -n 1 15 -nphi 4 15 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 1 -phi_samp 11 (NOT WORKING, mess, 57m 37s)
-python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 100 -t1 1 -n 1 19 -nphi 4 19 -LxMUC 1 -Ly 5 -phi_min 0 -phi_max 1 -phi_samp 11 (HMMM, upwards, 1h 20m 23s)
+python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 15 -nphi 4 15 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 1 -phi_samp 11 (VERIFIED, downwards, 2h 22m 20s)  # needs Ly=6
+python code/phi_flow.py -thr 1 -mod "FerHofSqu1" -chi 50 -t1 1 -n 1 19 -nphi 4 19 -LxMUC 1 -Ly 6 -phi_min 0 -phi_max 1 -phi_samp 11 (ALMOST, upwards, 1h 20m 23s)
 
 ########################################################################################################################
 # Fractional Chern Insulators                                                                                          #
