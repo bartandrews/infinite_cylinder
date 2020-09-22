@@ -1,5 +1,6 @@
 # --- python imports
 import numpy as np
+import math
 # --- TeNPy imports
 from tenpy.models.model import CouplingMPOModel
 from tenpy.models.model import MultiCouplingModel
@@ -10,6 +11,18 @@ import functions.func_int as fi
 
 def stats(params):
     return params.get('statistics', 'bosons')
+
+
+def mult_coeff(kappa_dash, kappa):
+
+    if kappa < kappa_dash:
+        factor = 0
+    elif kappa_dash < kappa < kappa_dash + 1:
+        factor = kappa - kappa_dash
+    else:
+        factor = 1
+
+    return factor
 
 
 class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
@@ -90,10 +103,12 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
     def offsite_interaction(self, lattice, Nmax, V, Vtype, Vrange, extra_dof=False):
         tot_numb_op = 'N' if not extra_dof else 'Ntot'
         for i in range(1, 11):  # offsite interaction only implemented up to 10th-NN
-            if Vrange >= i:
+            if math.ceil(Vrange) >= i:
                 if Nmax == 1:
+                    coupling_coeff = mult_coeff(i, Vrange)*fi.interaction_strength(lattice, V, Vtype, i-1)
+                    print("kappa_dash, kappa, mult_coeff = ", i, Vrange, mult_coeff(i-1, Vrange))
                     for u1, u2, dx in fi.NN(lattice, i):
-                        self.add_coupling(fi.interaction_strength(lattice, V, Vtype, i-1),
+                        self.add_coupling(coupling_coeff,
                                           u1, tot_numb_op, u2, tot_numb_op, dx)
                 elif Nmax == 2:
                     if lattice != "Squ" or Vrange > 1:

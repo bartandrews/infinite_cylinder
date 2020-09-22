@@ -75,7 +75,7 @@ def parse_input_arguments(program):
         leaf.add_argument("-V", type=float, default=0, help="offsite interaction strength")
     leaf.add_argument("-Vtype", type=str, default="Coulomb", choices=Vtypes,
                         help="offsite interaction type")
-    leaf.add_argument("-Vrange", type=int, default=0, choices=range(11),
+    leaf.add_argument("-Vrange", type=float, default=0,
                       help="offsite interaction range (in units of nearest neighbors)")
 
     leaf.add_argument("-n", nargs=2, type=int, default=[1, 8],
@@ -173,6 +173,9 @@ def __check_input_arguments(program, args):
 
     if "V" in args and ((args['V'] == 0 and args['Vrange'] != 0) or (args['V'] != 0 and args['Vrange'] == 0)):
         raise ValueError("Cannot have zero interaction over a finite range, or a finite interaction over zero range.")
+
+    if "Vrange" in args and (args['Vrange'] > 10 or args['Vrange'] < 0):
+        raise ValueError("Vrange must be between 0 and 10.")
 
     if "n" in args and (args['n'][0] <= 0 or args['n'][1] <= 0):
         raise ValueError("n needs to have positive entries.")
