@@ -69,7 +69,7 @@ def sort_list(mylist):
         _p = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 1])
         _q = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 2])
         _nphi = _p / _q
-        _nu = (_nn / _nd) / _nphi
+        _nu = (_nn / _nd) / (1/_q)
         _frac_nu = Frac(str(_nu)).limit_denominator(100)
         decomposed_list[_i] += ['nu', _frac_nu.numerator, _frac_nu.denominator]
 
@@ -164,7 +164,7 @@ if __name__ == '__main__':
             p = int(debased_dat_entries[debased_dat_entries.index("nphi") + 1])
             q = int(debased_dat_entries[debased_dat_entries.index("nphi") + 2])
             nphi = p / q
-            nu = (nn / nd) / nphi
+            nu = (nn / nd) / (1/q)
             frac_nu = Frac(str(nu)).limit_denominator(100)
             LylB = np.sqrt(2 * np.pi * nphi) * Ly
 
@@ -192,17 +192,19 @@ if __name__ == '__main__':
                 # SvN_error = float('nan')
                 SvN_perc_error = float('nan')
 
+            # manually adjust the accept threshold
             if frac_nu.numerator == 3 and frac_nu.denominator == 7:
                 accept_threshold = 2
             else:
                 accept_threshold = 0.1
 
-            if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < accept_threshold:  # compute the status
+            # compute the status
+            if isinstance(SvN_perc_error, float) and abs(SvN_perc_error) < accept_threshold:
                 status = f"{Fore.GREEN}OK{Style.RESET_ALL}"
             else:
                 status = f"{Fore.RED}ERROR{Style.RESET_ALL}"
 
-            # write to file
+            # write to total file, if status is green also write to accepted file
             if frac_nu != frac_nu_previous:  # if the nu is different, open new files
                 total_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out', 'w')
                 accepted_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out', 'w')
@@ -211,14 +213,14 @@ if __name__ == '__main__':
             if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
                 accepted_file.write(data_line)
 
+            # if nu has changed and it's not the last line, print the report and reinitialize stats
             if frac_nu != frac_nu_previous and j != len(system_grouped_list[i]) - 1:
                 if frac_nu_previous != 0:
                     # frac_nu_previous = Frac(str(nu_previous)).limit_denominator(100)
                     print(f"Total number of acceptable data points "
                           f"for the nu={frac_nu_previous.numerator:d}/{frac_nu_previous.denominator:d} {model} model"
                           f" = {acceptable_data_points}/{total_data_points}")
-                    acceptable_data_points = 1 if status == f"{Fore.GREEN}OK{Style.RESET_ALL}" else 0
-                    total_data_points = 1
+                    acceptable_data_points, total_data_points = 0, 0
                 frac_nu_previous = frac_nu
 
             # write to terminal
@@ -228,12 +230,13 @@ if __name__ == '__main__':
                           '{:d}/{:d}'.format(p, q), '{:<10.10g}'.format(LylB), second_max_chi, max_chi,
                           '{:<10.10g}'.format(SvN_estimate), '{:<10.10g}'.format(SvN_perc_error), status))
 
+            # increment the counters
+            if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
+                acceptable_data_points += 1
+            total_data_points += 1
+
+            # if last line, print the report
             if j == len(system_grouped_list[i]) - 1:
                 print(f"Total number of acceptable data points "
                       f"for the nu={frac_nu.numerator:d}/{frac_nu.denominator:d} {model} model"
                       f" = {acceptable_data_points}/{total_data_points}")
-
-            if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
-                acceptable_data_points += 1
-
-            total_data_points += 1
