@@ -210,11 +210,11 @@ if __name__ == '__main__':
 
             # write to total file, if status is green also write to accepted file
             if Vrange != Vrange_previous or frac_nu != frac_nu_previous:  # if the Vrange or nu is different, open new files
-                total_file = open(f'{model}_Vrange_{Vrange}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out', 'w')
-                accepted_file = open(f'{model}_Vrange_{Vrange}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out', 'w')
+                total_file = open(os.path.join('out', f'{model}_Vrange_{Vrange}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out'), 'w')
+                accepted_file = open(os.path.join('out', f'{model}_Vrange_{Vrange}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out'), 'w')
             if Vrange != Vrange_previous:
                 Vrange_previous = Vrange
-            data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\t{V:.15f}\n"
+            data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\t{V:.5f}\n"
             total_file.write(data_line)
             if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
                 accepted_file.write(data_line)

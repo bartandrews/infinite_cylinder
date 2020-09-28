@@ -206,8 +206,8 @@ if __name__ == '__main__':
 
             # write to total file, if status is green also write to accepted file
             if frac_nu != frac_nu_previous:  # if the nu is different, open new files
-                total_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out', 'w')
-                accepted_file = open(f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out', 'w')
+                total_file = open(os.path.join('out', f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_total.out'), 'w')
+                accepted_file = open(os.path.join('out', f'{model}_nu_{frac_nu.numerator}_{frac_nu.denominator}_accepted.out'), 'w')
             data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\n"
             total_file.write(data_line)
             if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
