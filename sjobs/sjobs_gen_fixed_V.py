@@ -48,7 +48,7 @@ if __name__ == '__main__':
     nu[2].append({"chi": 2000, "n": (3, 91), "nphi": (2, 13), "Ly": 14})
 
     # pick filling factor index (0 for nu=1/3, 1 for nu=2/5, 2 for nu=3/7)
-    fidx = 2
+    fidx = 1
 
     # define the directory
     if fidx == 0:
@@ -65,7 +65,7 @@ if __name__ == '__main__':
         # loop over configurations
         for j in range(len(nu[fidx])):
             V_val = V0 / np.sqrt(2*np.pi*(nu[fidx][j]['nphi'][0]/nu[fidx][j]['nphi'][1]))
-            file = open(os.path.join(f"{base}", f"chi_{nu[fidx][j]['chi']}_V_{V_val:.5f}_Vrange_{i:g}_"
+            file = open(os.path.join(f"fixed_V/{base}", f"chi_{nu[fidx][j]['chi']}_V_{V_val:.5f}_Vrange_{i:g}_"
                                      f"n_{nu[fidx][j]['n'][0]}_{nu[fidx][j]['n'][1]}_"
                                      f"nphi_{nu[fidx][j]['nphi'][0]}_{nu[fidx][j]['nphi'][1]}_"
                                      f"Ly_{nu[fidx][j]['Ly']}"), "w+")
