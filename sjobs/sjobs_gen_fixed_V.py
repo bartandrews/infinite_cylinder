@@ -48,7 +48,7 @@ if __name__ == '__main__':
     nu[2].append({"chi": 2000, "n": (3, 91), "nphi": (2, 13), "Ly": 14})
 
     # pick filling factor index (0 for nu=1/3, 1 for nu=2/5, 2 for nu=3/7)
-    fidx = 1
+    fidx = 0
 
     # define the directory
     if fidx == 0:
