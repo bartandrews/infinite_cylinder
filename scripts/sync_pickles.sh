@@ -25,7 +25,6 @@ BAANDR_BASE=/home/cluster/baandr  # the home directory on the remote computers w
 DST_BASE=/disk/data11/tfp/BartMadhav  # the base directory on data11
 DIR_PATH_HOME=PycharmProjects/infinite_cylinder/pickles/ground_state  # path to the ground_state directory relative to home
 DIR_PATH_BASE=project1/pickles/ground_state  # path to directory relative to base
-DIR_PATH_BASE_2=project1/pickles/ground_state/fixed_V
 
 # dry run
 for DIR in ${MODELS}
@@ -53,9 +52,9 @@ do
 	if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
 	then
 		echo
-		echo ">>> Dry run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE_2}/${DIR}/"
+		echo ">>> Dry run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
 		echo
-		ssh -A dirac rsync --remove-source-files -nvtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE_2}/"${DIR}"/
+		ssh -A dirac rsync --remove-source-files -nvtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
 	fi
 done
 
@@ -90,9 +89,9 @@ then
 		if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
 		then
 			echo
-			echo ">>> Actual run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE_2}/${DIR}/"
+			echo ">>> Actual run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
 			echo
-			ssh -A dirac rsync --remove-source-files -vtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE_2}/"${DIR}"/
+			ssh -A dirac rsync --remove-source-files -vtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
 		fi
 	done
 else
