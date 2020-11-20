@@ -69,7 +69,7 @@ def sort_list(mylist):
         _p = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 1])
         _q = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 2])
         _nphi = _p / _q
-        _nu = (_nn / _nd) / (1/_q)
+        _nu = (_nn / _nd) / _nphi
         _frac_nu = Frac(str(_nu)).limit_denominator(100)
         decomposed_list[_i] += ['nu', _frac_nu.numerator, _frac_nu.denominator]
 
@@ -164,7 +164,7 @@ if __name__ == '__main__':
             p = int(debased_dat_entries[debased_dat_entries.index("nphi") + 1])
             q = int(debased_dat_entries[debased_dat_entries.index("nphi") + 2])
             nphi = p / q
-            nu = (nn / nd) / (1/q)
+            nu = (nn / nd) / nphi
             frac_nu = Frac(str(nu)).limit_denominator(100)
             LylB = np.sqrt(2 * np.pi * nphi) * Ly
 

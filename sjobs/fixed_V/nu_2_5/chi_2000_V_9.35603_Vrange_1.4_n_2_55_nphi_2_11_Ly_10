@@ -1,3 +1,0 @@
-#!/bin/bash
-export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun python code/ground_state.py -path -thr 12 -mod FerHofSqu1 -chi 2000 -t1 1 -V 9.35603 -Vtype Coulomb -Vrange 1.4 -n 2 55 -nphi 2 11 -LxMUC 1 -Ly 10

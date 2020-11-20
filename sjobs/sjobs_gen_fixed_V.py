@@ -10,45 +10,25 @@ if __name__ == '__main__':
     nu = [[], [], []]
 
     # populate nu=1/3 list
-    nu[0].append({"chi": 1950, "n": (1, 12), "nphi": (1, 4), "Ly": 9})
-    nu[0].append({"chi": 2000, "n": (1, 12), "nphi": (1, 4), "Ly": 9})
-    nu[0].append({"chi": 950, "n": (1, 15), "nphi": (1, 5), "Ly": 9})
-    nu[0].append({"chi": 1000, "n": (1, 15), "nphi": (1, 5), "Ly": 9})
-    nu[0].append({"chi": 1950, "n": (1, 15), "nphi": (1, 5), "Ly": 12})
-    nu[0].append({"chi": 2000, "n": (1, 15), "nphi": (1, 5), "Ly": 12})
-    nu[0].append({"chi": 950, "n": (1, 18), "nphi": (1, 6), "Ly": 9})
-    nu[0].append({"chi": 1000, "n": (1, 18), "nphi": (1, 6), "Ly": 9})
-    nu[0].append({"chi": 1950, "n": (1, 18), "nphi": (1, 6), "Ly": 12})
-    nu[0].append({"chi": 2000, "n": (1, 18), "nphi": (1, 6), "Ly": 12})
-    nu[0].append({"chi": 950, "n": (1, 21), "nphi": (1, 7), "Ly": 9})
-    nu[0].append({"chi": 1000, "n": (1, 21), "nphi": (1, 7), "Ly": 9})
-    nu[0].append({"chi": 1950, "n": (1, 27), "nphi": (2, 9), "Ly": 9})
-    nu[0].append({"chi": 2000, "n": (1, 27), "nphi": (2, 9), "Ly": 9})
-    nu[0].append({"chi": 950, "n": (1, 33), "nphi": (2, 11), "Ly": 9})
-    nu[0].append({"chi": 1000, "n": (1, 33), "nphi": (2, 11), "Ly": 9})
+    nu[0].append({"chi": 1950, "n": (2, 27), "nphi": (2, 9), "Ly": 9})
+    nu[0].append({"chi": 2000, "n": (2, 27), "nphi": (2, 9), "Ly": 9})
+    nu[0].append({"chi": 950, "n": (2, 33), "nphi": (2, 11), "Ly": 9})
+    nu[0].append({"chi": 1000, "n": (2, 33), "nphi": (2, 11), "Ly": 9})
 
     # populate nu=2/5 list
-    nu[1].append({"chi": 1950, "n": (1, 15), "nphi": (1, 6), "Ly": 10})
-    nu[1].append({"chi": 2000, "n": (1, 15), "nphi": (1, 6), "Ly": 10})
-    nu[1].append({"chi": 1950, "n": (2, 35), "nphi": (1, 7), "Ly": 10})
-    nu[1].append({"chi": 2000, "n": (2, 35), "nphi": (1, 7), "Ly": 10})
-    nu[1].append({"chi": 1950, "n": (2, 55), "nphi": (2, 11), "Ly": 10})
-    nu[1].append({"chi": 2000, "n": (2, 55), "nphi": (2, 11), "Ly": 10})
-    nu[1].append({"chi": 1950, "n": (2, 65), "nphi": (2, 13), "Ly": 10})
-    nu[1].append({"chi": 2000, "n": (2, 65), "nphi": (2, 13), "Ly": 10})
+    nu[1].append({"chi": 1950, "n": (4, 55), "nphi": (2, 11), "Ly": 10})
+    nu[1].append({"chi": 2000, "n": (4, 55), "nphi": (2, 11), "Ly": 10})
+    nu[1].append({"chi": 1950, "n": (4, 65), "nphi": (2, 13), "Ly": 10})
+    nu[1].append({"chi": 2000, "n": (4, 65), "nphi": (2, 13), "Ly": 10})
 
     # populate nu=3/7 list
-    nu[2].append({"chi": 1950, "n": (3, 35), "nphi": (1, 5), "Ly": 14})
-    nu[2].append({"chi": 2000, "n": (3, 35), "nphi": (1, 5), "Ly": 14})
-    nu[2].append({"chi": 1950, "n": (3, 70), "nphi": (1, 10), "Ly": 14})
-    nu[2].append({"chi": 2000, "n": (3, 70), "nphi": (1, 10), "Ly": 14})
-    nu[2].append({"chi": 1950, "n": (3, 77), "nphi": (2, 11), "Ly": 14})
-    nu[2].append({"chi": 2000, "n": (3, 77), "nphi": (2, 11), "Ly": 14})
-    nu[2].append({"chi": 1950, "n": (3, 91), "nphi": (2, 13), "Ly": 14})
-    nu[2].append({"chi": 2000, "n": (3, 91), "nphi": (2, 13), "Ly": 14})
+    nu[2].append({"chi": 1950, "n": (6, 77), "nphi": (2, 11), "Ly": 14})
+    nu[2].append({"chi": 2000, "n": (6, 77), "nphi": (2, 11), "Ly": 14})
+    nu[2].append({"chi": 1950, "n": (6, 91), "nphi": (2, 13), "Ly": 14})
+    nu[2].append({"chi": 2000, "n": (6, 91), "nphi": (2, 13), "Ly": 14})
 
     # pick filling factor index (0 for nu=1/3, 1 for nu=2/5, 2 for nu=3/7)
-    fidx = 0
+    fidx = 2
 
     # define the directory
     if fidx == 0:

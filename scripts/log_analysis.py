@@ -69,7 +69,7 @@ def sort_list(mylist):
         _p = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 1])
         _q = int(decomposed_list[_i][decomposed_list[_i].index("nphi") + 2])
         _nphi = _p / _q
-        _nu = (_nn / _nd) / (1/_q)
+        _nu = (_nn / _nd) / _nphi
         _frac_nu = Frac(str(_nu)).limit_denominator(100)
         decomposed_list[_i] += ['nu', _frac_nu.numerator, _frac_nu.denominator]
 
@@ -160,7 +160,7 @@ if __name__ == '__main__':
             debased_dat_entries = debased_dat.split('_')
             model = debased_dat_entries[0]
             V = float(debased_dat_entries[debased_dat_entries.index("V") + 1])
-            Vrange = int(debased_dat_entries[debased_dat_entries.index("V") + 3])
+            Vrange = debased_dat_entries[debased_dat_entries.index("V") + 3]
             LxMUC = int(debased_dat_entries[debased_dat_entries.index("LxMUC") + 1])
             Ly = int(debased_dat_entries[debased_dat_entries.index("Ly") + 1])
             nn = int(debased_dat_entries[debased_dat_entries.index("n") + 1])
@@ -168,7 +168,7 @@ if __name__ == '__main__':
             p = int(debased_dat_entries[debased_dat_entries.index("nphi") + 1])
             q = int(debased_dat_entries[debased_dat_entries.index("nphi") + 2])
             nphi = p / q
-            nu = (nn / nd) / (1/q)
+            nu = (nn / nd) / nphi
             frac_nu = Frac(str(nu)).limit_denominator(100)
             LylB = np.sqrt(2 * np.pi * nphi) * Ly
 
@@ -215,9 +215,10 @@ if __name__ == '__main__':
             if Vrange != Vrange_previous:
                 Vrange_previous = Vrange
             data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\t{V:.5f}\n"
-            total_file.write(data_line)
-            if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
-                accepted_file.write(data_line)
+            if abs(V-10) > 10e-5:
+                total_file.write(data_line)
+                if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
+                    accepted_file.write(data_line)
 
             # if nu has changed and it's not the last line, print the report and reinitialize stats
             if frac_nu != frac_nu_previous and j != len(system_grouped_list[i]) - 1:
