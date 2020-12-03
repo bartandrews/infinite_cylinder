@@ -54,6 +54,7 @@ if __name__ == '__main__':
     ax1.text(0.45, 1.4, "$\displaystyle{\sigma_\\text{H}=\\frac{2}{5}\\frac{e^2}{h}}$",
              bbox=dict(facecolor='white', alpha=1, lw=0.5, ls='-'))
 
+    ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax1.tick_params(axis="x", labelsize=10)
     ax1.set_xlim([0, 5])
     ax1.set_xticks(np.arange(0, 5.1, 1))

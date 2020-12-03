@@ -8,8 +8,8 @@ import sys
 
 if __name__ == "__main__":
 
-    input = "/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat"
-    output = "/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_FerHofSqu1_chi_800_chiK_800_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat.rotated"
+    input = "/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_12.6157_Coulomb_2_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat"
+    output = "/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_12.6157_Coulomb_2_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat.rotated"
 
     ent_spec_mom_rotated_file = output
     open(ent_spec_mom_rotated_file, "w")
@@ -23,13 +23,13 @@ if __name__ == "__main__":
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
             charge.append(int(row[0]))
-            mom.append(float(row[1]))
+            mom.append(-float(row[1]))
             energy.append(float(row[2]))
 
     # original Ly of file
-    Ly = 10
+    Ly = 14
     # desired rotation to the left (integer)
-    shift = 6
+    shift = 12
 
     for i in range(len(mom)):
 

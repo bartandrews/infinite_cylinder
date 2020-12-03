@@ -2300,6 +2300,7 @@ if __name__ == '__main__':
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
 
     R2p2_2_5 = r2value
+    print("2.2 : ", c, c_err)
 
     # nu=2/5, Vrange=2.4 ###############################################################################################
 
@@ -2412,6 +2413,7 @@ if __name__ == '__main__':
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
 
     R2p4_2_5 = r2value
+    print("2.4 : ", c, c_err)
 
     # nu=2/5, Vrange=2.6 ###############################################################################################
 
@@ -2524,6 +2526,7 @@ if __name__ == '__main__':
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
 
     R2p6_2_5 = r2value
+    print("2.6 : ", c, c_err)
 
     # nu=2/5, Vrange=2.8 ###############################################################################################
 
@@ -2636,6 +2639,7 @@ if __name__ == '__main__':
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
 
     R2p8_2_5 = r2value
+    print("2.8 : ", c, c_err)
 
     # nu=2/5, Vrange=3 #################################################################################################
 

@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
     ax1.plot(phi, charge, 's', marker='x', color='k', markersize=3, label='$\kappa=1$')
 
-    charge_pump_file = 'charge_pump_FerHofSqu1_chi_400_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10_phi_0_5_51.dat'
+    charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_10.555_Coulomb_2_n_2_35_nphi_1_7_LxMUC_1_Ly_10_phi_0_5_51.dat.reflected'
     charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
 
     # extract data from file
@@ -60,7 +60,7 @@ if __name__ == '__main__':
 
     ax1.plot(phi, charge, 's', marker='x', color='g', markersize=3, label='$\kappa=2$')
 
-    charge_pump_file = 'charge_pump_FerHofSqu1_chi_400_t1_1_V_10_Coulomb_1_n_2_35_nphi_1_7_LxMUC_1_Ly_10_phi_0_5_51.dat'
+    charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_10.555_Coulomb_3_n_2_35_nphi_1_7_LxMUC_1_Ly_10_phi_0_5_51.dat.reflected'
     charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
 
     # extract data from file
@@ -127,9 +127,9 @@ if __name__ == '__main__':
         if value != 0:
             ax2.scatter(xvalue, yvalue, marker='_', c='k', label='{}'.format(value))
         else:
-            ax2.scatter(xvalue, yvalue, marker='x', c='k', label='{}'.format(value))
+            ax2.scatter(xvalue, yvalue, marker='_', c='k', label='{}'.format(value))
 
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_10.555_Coulomb_2_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_10.555_Coulomb_2_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     with open(ent_spec_mom_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
-            x.append(float(row[1]))
+            x.append(float(row[1])+0.02879)
             y.append(float(row[2]))
             z.append(int(row[0]))
 
@@ -153,9 +153,9 @@ if __name__ == '__main__':
         if value != 0:
             ax2.scatter(xvalue, yvalue, marker='_', c='g', label='{}'.format(value))
         else:
-            ax2.scatter(xvalue, yvalue, marker='x', c='g', label='{}'.format(value))
+            ax2.scatter(xvalue, yvalue, marker='_', c='g', label='{}'.format(value))
 
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_10.555_Coulomb_3_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_10.555_Coulomb_3_n_2_35_nphi_1_7_LxMUC_1_Ly_10.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -165,7 +165,7 @@ if __name__ == '__main__':
     with open(ent_spec_mom_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
-            x.append(float(row[1]))
+            x.append(float(row[1])-0.04702)
             y.append(float(row[2]))
             z.append(int(row[0]))
 
@@ -179,7 +179,7 @@ if __name__ == '__main__':
         if value != 0:
             ax2.scatter(xvalue, yvalue, marker='_', c='r', label='{}'.format(value))
         else:
-            ax2.scatter(xvalue, yvalue, marker='x', c='r', label='{}'.format(value))
+            ax2.scatter(xvalue, yvalue, marker='_', c='r', label='{}'.format(value))
 
     ax2.set_yticks(np.arange(0, 15.1, 5))
     ax2.set_ylim([0, 15])
@@ -215,7 +215,7 @@ if __name__ == '__main__':
 
     ax3.plot(phi, charge, 's', marker='x', color='k', markersize=3)
 
-    charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_3_70_nphi_1_10_LxMUC_1_Ly_14_phi_0_7_71.dat'
+    charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_12.6157_Coulomb_3_n_3_70_nphi_1_10_LxMUC_1_Ly_14_phi_0_7_71.dat.reflected'
     charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
 
     # extract data from file
@@ -231,21 +231,21 @@ if __name__ == '__main__':
 
     ax3.plot(phi, charge, 's', marker='x', color='g', markersize=3)
 
-    charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_3_70_nphi_1_10_LxMUC_1_Ly_14_phi_0_7_71.dat'
-    charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
-
-    # extract data from file
-    with open(charge_pump_path, 'r') as csvfile:
-        plots = csv.reader(csvfile, delimiter='\t')
-        phi = []
-        charge = []
-        for row in plots:
-            phi.append(float(row[0]))
-            charge.append(float(row[1]))
-
-    charge = [i - charge[0] for i in charge]
-
-    ax3.plot(phi, charge, 's', marker='x', color='r', markersize=3)
+    # charge_pump_file = 'charge_pump_FerHofSqu1_chi_500_t1_1_V_12.6157_Coulomb_3_n_3_70_nphi_1_10_LxMUC_1_Ly_14_phi_0_7_71.dat.reflected'
+    # charge_pump_path = os.path.join(charge_pump_dir, charge_pump_file)
+    #
+    # # extract data from file
+    # with open(charge_pump_path, 'r') as csvfile:
+    #     plots = csv.reader(csvfile, delimiter='\t')
+    #     phi = []
+    #     charge = []
+    #     for row in plots:
+    #         phi.append(float(row[0]))
+    #         charge.append(float(row[1]))
+    #
+    # charge = [i - charge[0] for i in charge]
+    #
+    # ax3.plot(phi, charge, 's', marker='x', color='r', markersize=3)
 
     # ax1.axhline(charge[0], color='k', linewidth=0.5, ls='--')
     # ax1.axhline(charge[-1], color='k', linewidth=0.5, ls='--')
@@ -297,9 +297,9 @@ if __name__ == '__main__':
         if value != 0:
             ax4.scatter(xvalue, yvalue, marker='_', c='k', label='{}'.format(value))
         else:
-            ax4.scatter(xvalue, yvalue, marker='x', c='k', label='{}'.format(value))
+            ax4.scatter(xvalue, yvalue, marker='_', c='k', label='{}'.format(value))
 
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_12.6157_Coulomb_2_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_12.6157_Coulomb_2_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -309,7 +309,7 @@ if __name__ == '__main__':
     with open(ent_spec_mom_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         for row in plots:
-            x.append(float(row[1]))
+            x.append(float(row[1])+0.08085)
             y.append(float(row[2]))
             z.append(int(row[0]))
 
@@ -323,33 +323,33 @@ if __name__ == '__main__':
         if value != 0:
             ax4.scatter(xvalue, yvalue, marker='_', c='g', label='{}'.format(value))
         else:
-            ax4.scatter(xvalue, yvalue, marker='x', c='g', label='{}'.format(value))
+            ax4.scatter(xvalue, yvalue, marker='_', c='g', label='{}'.format(value))
 
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_12.6157_Coulomb_3_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat'
-    ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
-
-    x = []
-    y = []
-    z = []
-
-    with open(ent_spec_mom_path, 'r') as csvfile:
-        plots = csv.reader(csvfile, delimiter='\t')
-        for row in plots:
-            x.append(float(row[1]))
-            y.append(float(row[2]))
-            z.append(int(row[0]))
-
-    for value in np.linspace(3, -3, 7, dtype=int):
-        xvalue = []
-        yvalue = []
-        for i in range(len(x)):
-            if z[i] == value:
-                xvalue.append(x[i])
-                yvalue.append(y[i])
-        if value != 0:
-            ax4.scatter(xvalue, yvalue, marker='_', c='r', label='{}'.format(value))
-        else:
-            ax4.scatter(xvalue, yvalue, marker='x', c='r', label='{}'.format(value))
+    # ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_2000_chiK_2000_t1_1_V_12.6157_Coulomb_3_n_3_70_nphi_1_10_LxMUC_1_Ly_14.dat.rotated'
+    # ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
+    #
+    # x = []
+    # y = []
+    # z = []
+    #
+    # with open(ent_spec_mom_path, 'r') as csvfile:
+    #     plots = csv.reader(csvfile, delimiter='\t')
+    #     for row in plots:
+    #         x.append(float(row[1])-0.02216)
+    #         y.append(float(row[2]))
+    #         z.append(int(row[0]))
+    #
+    # for value in np.linspace(3, -3, 7, dtype=int):
+    #     xvalue = []
+    #     yvalue = []
+    #     for i in range(len(x)):
+    #         if z[i] == value:
+    #             xvalue.append(x[i])
+    #             yvalue.append(y[i])
+    #     if value != 0:
+    #         ax4.scatter(xvalue, yvalue, marker='_', c='r', label='{}'.format(value))
+    #     else:
+    #         ax4.scatter(xvalue, yvalue, marker='_', c='r', label='{}'.format(value))
 
     ax4.set_yticks(np.arange(0, 15.1, 5))
     ax4.set_ylim([0, 15])
@@ -366,10 +366,10 @@ if __name__ == '__main__':
 
     # complete plot ####################################################################################################
 
-    fig.text(0.04, 0.86, "(a)", fontsize=12)
-    fig.text(0.5, 0.86, "(b)", fontsize=12)
-    fig.text(0.04, 0.41, "(c)", fontsize=12)
-    fig.text(0.5, 0.41, "(d)", fontsize=12)
+    fig.text(0.04, 0.88, "(a)", fontsize=12)
+    fig.text(0.5, 0.88, "(b)", fontsize=12)
+    fig.text(0.04, 0.43, "(c)", fontsize=12)
+    fig.text(0.5, 0.43, "(d)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/case_study_kappa.png", bbox_inches='tight', dpi=300)
     plt.show()
