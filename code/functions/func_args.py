@@ -14,7 +14,8 @@ def parse_input_arguments(program):
     stem = parser.add_argument_group("stem sub-arguments")
     leaf = parser.add_argument_group("leaf sub-arguments")
 
-    models = ["BosHalSquC1", "FerHalSquC1", "BosHalHexC1", "FerHalHexC1",
+    models = ["Heisenberg", "SSH",
+              "BosHalSquC1", "FerHalSquC1", "BosHalHexC1", "FerHalHexC1",
               "BosHalSquC2", "FerHalSquC2",
               "BosHalTriC3", "FerHalTriC3",
               "BosHalSquCN", "FerHalSquCN",
@@ -77,6 +78,11 @@ def parse_input_arguments(program):
                         help="offsite interaction type")
     leaf.add_argument("-Vrange", type=float, default=0,
                       help="offsite interaction range (in units of nearest neighbors)")
+
+    if program == "D_flow":
+        leaf.add_argument("-D_min", type=float, default=0, required=True, help="minimum D")
+        leaf.add_argument("-D_max", type=float, default=1, required=True, help="maximum D")
+        leaf.add_argument("-D_samp", type=int, default=11, required=True, help="number of D samples")
 
     leaf.add_argument("-n", nargs=2, type=int, default=[1, 8],
                       help="filling of the MPS unit cell (average filling of lattice sites)")

@@ -12,6 +12,8 @@ from tenpy.algorithms import dmrg
 from tenpy.tools import hdf5_io
 # --- infinite_cylinder imports
 import functions.func_proc as fp
+from models.ssh.ssh import SSHModel
+from models.heisenberg.heisenberg import HeisenbergModel
 from models.haldane.squ_C1 import HalSquC1Model
 from models.haldane.hex_C1 import HalHexC1Model
 from models.haldane.squ_C2 import HalSquC2Model
@@ -30,7 +32,7 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = ['1_A 0_B', '1_A 0_B', '1_A 0_B', '1_A 0_B', '1_A 0_B', '1_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B', '0_A 0_B']
+    state = ['up', 'down', 'up', 'down', 'up', 'down']
 
     return state
 
@@ -201,7 +203,18 @@ def define_iDMRG_model(model, ham_params):
     else:  # "Fer"
         model_params.update(statistics='fermions')
 
-    if model.endswith("HalSquC1"):
+    if model.endswith("Heisenberg"):
+        model_params.clear()
+        model_params.update(J=ham_params['t1'])
+        model_params.update(D=ham_params['t2'])
+        model_params.update(L=ham_params['LxMUC'])
+        M = HeisenbergModel(model_params)
+    elif model.endswith("SSH"):
+        del model_params['statistics'], model_params['phi'], model_params['Nmax'], model_params['mu'], \
+            model_params['nphi'], model_params['bc_y'], model_params['order']
+        model_params.update(t2=ham_params['t2'])
+        M = SSHModel(model_params)
+    elif model.endswith("HalSquC1"):
         del model_params['nphi']
         M = HalSquC1Model(model_params)
     elif model.endswith("HalHexC1"):
