@@ -23,13 +23,66 @@ def spatial_inversion(self):
     (L-1)/2 (odd L) as a fixpoint.
     For infinite MPS, the bond between MPS unit cells is another fix point.
     """
+    #print("spatial_inversion")
+    ###
+    #print("1) self.sites = ", self.sites)
     self.sites = self.sites[::-1]
+    #print("1) self.sites flipped = ", self.sites)
+    ###
+    #print("2) self.form = ", self.form)
     self.form = [(f if f is None else (f[1], f[0])) for f in self.form[::-1]]
+    #print("2) self.form flipped = ", self.form)
+    ###
+    #print("3) self._B = ", self._B)
     self._B = [
         B.replace_labels(['vL', 'vR'], ['vR', 'vL']).transpose(self._B_labels)
         for B in self._B[::-1]
     ]
+    #print("3) self._B flipped = ", self._B)
+    ###
+    #print("4) self._S = ", self._S)
     self._S = self._S[::-1]
+    #print("4) self._S flipped = ", self._S)
+    ###
+    self.test_sanity()
+    return self
+
+
+def partial_spatial_inversion(self, n):
+    if n % 2 != 0 or n < 4:
+        raise ValueError("n must be even and greater than 4")
+    ###
+    #print("partial_spatial_inversion")
+    ###
+    #print("1) self.sites = ", self.sites)
+    if self.L != n:
+        self.sites = [self.sites[0]] + self.sites[n:0:-1] + self.sites[n+1:]
+    else:
+        self.sites = self.sites[::-1]
+    #print("1) self.sites flipped = ", self.sites)
+    ###
+    #print("2) self.form = ", self.form)
+    if self.L != n:
+        self.form = [self.form[0]] + [(f if f is None else (f[1], f[0])) for f in self.form[n:0:-1]] + self.form[n+1:]
+    else:
+        self.form = [(f if f is None else (f[1], f[0])) for f in self.form[::-1]]
+    #print("2) self.form flipped = ", self.form)
+    ###
+    #print("3) self._B = ", self._B)
+    if self.L != n:
+        self._B = [self._B[0]] + [B.replace_labels(['vL', 'vR'], ['vR', 'vL']).transpose(self._B_labels) for B in self._B[n:0:-1]] \
+                + self._B[n+1:]
+    else:
+        self._B = [B.replace_labels(['vL', 'vR'], ['vR', 'vL']).transpose(self._B_labels) for B in self._B[::-1]]
+    #print("3) self._B flipped = ", self._B)
+    ###
+    #print("4) self._S = ", self._S)
+    if self.L != n:
+        self._S = [self._S[0]] + self._S[n:0:-1] + self._S[n+1:]
+    else:
+        self._S = self._S[::-1]
+    #print("4) self._S flipped = ", self._S)
+    ###
     self.test_sanity()
     return self
 
@@ -43,7 +96,7 @@ def my_D_flow(path_flag, threads, model, chi_max, ham_params):
     leaf = fp.file_name_leaf("D_flow", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("D_flow", path, model, chi_max, leaf)
 
-    tools = ["ent_D_flow", "O_sym_flow"]
+    tools = ["ent_D_flow", "O_sym_D_flow", "O_I_n_flow"]
     data = fp.prepare_output_files(tools, path, model, chi_max, leaf)
 
     ####################################################################################################################
@@ -64,9 +117,9 @@ def my_D_flow(path_flag, threads, model, chi_max, ham_params):
         print(data_line)
         data['ent_D_flow'].write(data_line + "\n")
 
-        ##############
-        # O_sym_flow #
-        ##############
+        ################
+        # O_sym_D_flow #
+        ################
 
         site = SpinSite(S=1, conserve=None)
 
@@ -151,7 +204,28 @@ def my_D_flow(path_flag, threads, model, chi_max, ham_params):
 
         data_line = f"{t2:.15f}\t{O_Z2xZ2:.15f}\t{O_I:.15f}\t{O_TR:.15f}"
         print(data_line)
-        data['O_sym_flow'].write(data_line + "\n")
+        data['O_sym_D_flow'].write(data_line + "\n")
+
+        ##############
+        # O_I_n_flow #
+        ##############
+
+        data_line = f"D = {t2:.15f}"
+        print(data_line)
+        data['O_I_n_flow'].write(data_line + "\n")
+
+        for i in range(4, psi.L, 2):
+            psi_t = psi.copy()
+            lst = list(range(psi.L))
+            print("lst = ", lst)
+            perm_lst = [lst[0]] + lst[i:0:-1] + lst[i+1:]
+            print("perm_lst = ", perm_lst)
+            psi_t.permute_sites(perm_lst, swap_op='auto')
+            overlap = psi.overlap(psi_t)
+            trace_4 = np.sum(np.power(psi_t.get_SR(0), 4))
+            data_line = f"{i:.15f}\t{overlap:.15f}\t{trace_4:.15f}\t{np.real(overlap)/trace_4:.15f}"
+            print(data_line)
+            data['O_I_n_flow'].write(data_line + "\n")
 
     print("Total time taken (seconds) = ", time.time() - t0)
 

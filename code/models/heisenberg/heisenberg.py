@@ -13,8 +13,6 @@ class HeisenbergModel(CouplingMPOModel):
 
     def init_sites(self, params):
         site = SpinSite(S=1, conserve=None)
-        print("site.opnames = ", site.opnames)
-        print("site.get_op('Sz') = ", site.get_op('Sz'), type(site.get_op('Sz')))
         return site
 
     def init_lattice(self, params):

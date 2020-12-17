@@ -32,7 +32,7 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = ['up', 'down', 'up', 'down', 'up', 'down']
+    state = ['up', 'down']*16
 
     return state
 
