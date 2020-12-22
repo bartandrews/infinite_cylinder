@@ -1,10 +1,10 @@
 # --- python imports
 import numpy as np
+import matplotlib.pyplot as plt
 # --- tenpy imports
 from tenpy.models.model import CouplingMPOModel
 from tenpy.networks.site import FermionSite
-# --- infinite_cylinder imports
-from lattices.BipartiteChain import BipartiteChain
+from tenpy.models.lattice import Chain
 
 
 class SSHModel(CouplingMPOModel):
@@ -20,35 +20,30 @@ class SSHModel(CouplingMPOModel):
         return site
 
     def init_lattice(self, params):
-        Lx = params.get('LxMUC', 6)
-        Ly = params.get('Ly', 1)
+        L = params.get('L', 8)
         site = self.init_sites(params)
-        order = params.get('order', 'default')
-        bc_MPS = params.get('bc_MPS', 'infinite')
-        bc_x = params.get('bc_x', 'periodic')
-        bc_y = params.get('bc_y', 'open')
-        bc = [bc_x, bc_y]
-        lat = BipartiteChain(Lx, Ly, site, order=order, bc_MPS=bc_MPS, bc=bc)
+        lat = Chain(L, site, bc='periodic', bc_MPS='infinite')
         return lat
 
     def init_terms(self, params):
-        creation, annihilation = 'Cd', 'C'
         t1 = params.get('t1', 1)
         t2 = params.get('t2', 1)
 
-        # inter-cell hopping
-        u1, u2, dx = (0, 1, np.array([0, 0]))
-        self.add_coupling(t1, u1, creation, u2, annihilation, dx)
-        self.add_coupling(np.conj(t1), u2, creation, u1, annihilation, -dx)  # H.c.
-        # intra-cell hopping
-        u1, u2, dx = (1, 0, np.array([1, 0]))
-        self.add_coupling(t2, u1, creation, u2, annihilation, dx)
-        self.add_coupling(np.conj(t2), u2, creation, u1, annihilation, -dx)  # H.c.
+        # u1, u2, dx = (0, 0, 1)
+        self.add_coupling([np.conj(-t1), -t2], 0, 'Cd', 0, 'C', 1, plus_hc=True)
+        # self.add_coupling([-t1, np.conj(-t2)], u1, creation, u2, annihilation, -dx)  # H.c.
 
 
 if __name__ == "__main__":
 
-    model_params = dict(t1=0.5, t2=1, n=(int(1), int(2)), LxMUC=6, Ly=1)
+    model_params = dict(t1=-1, t2=0, n=(int(1), int(2)), L=8)
     M = SSHModel(model_params)
 
     print("max MPO bond dimension = ", max(M.H_MPO.chi))
+
+    ax = plt.gca()
+    M.lat.plot_sites(ax)
+    M.lat.plot_coupling(ax, linestyle='-', color='red')
+    ax.set_aspect('equal')
+    M.lat.plot_order(ax, linestyle='dotted', color='k')
+    plt.show()

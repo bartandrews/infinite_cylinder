@@ -12,8 +12,9 @@ from tenpy.algorithms import dmrg
 from tenpy.tools import hdf5_io
 # --- infinite_cylinder imports
 import functions.func_proc as fp
-from models.ssh.ssh import SSHModel
 from models.heisenberg.heisenberg import HeisenbergModel
+from models.ssh.ssh import SSHModel
+from models.bbh.squ_2d import BBHSqu2dModel
 from models.haldane.squ_C1 import HalSquC1Model
 from models.haldane.hex_C1 import HalHexC1Model
 from models.haldane.squ_C2 import HalSquC2Model
@@ -32,7 +33,10 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
-    state = ['up', 'down']*16
+    # N/4 must be even! e.g. N=8,16,24,32,40,48,etc.
+
+    state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1
+    # state = [0, 1, 1, 0] * int(8 / 4)  # subregion starts at site 2
 
     return state
 
@@ -210,10 +214,18 @@ def define_iDMRG_model(model, ham_params):
         model_params.update(L=ham_params['LxMUC'])
         M = HeisenbergModel(model_params)
     elif model.endswith("SSH"):
-        del model_params['statistics'], model_params['phi'], model_params['Nmax'], model_params['mu'], \
-            model_params['nphi'], model_params['bc_y'], model_params['order']
+        model_params.clear()
+        model_params.update(t1=ham_params['t1'])
         model_params.update(t2=ham_params['t2'])
+        model_params.update(n=ham_params['n'])
+        model_params.update(L=ham_params['LxMUC'])
         M = SSHModel(model_params)
+    elif model.endswith("BBH"):
+        del model_params['phi'], model_params['mu'], model_params['nphi']
+        model_params.update(t2=ham_params['t2'])
+        model_params.update(t3=ham_params['t3'])
+        model_params.update(t4=ham_params['t4'])
+        M = BBHSqu2dModel(model_params)
     elif model.endswith("HalSquC1"):
         del model_params['nphi']
         M = HalSquC1Model(model_params)
