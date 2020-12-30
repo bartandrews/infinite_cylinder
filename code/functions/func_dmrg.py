@@ -14,7 +14,7 @@ from tenpy.tools import hdf5_io
 import functions.func_proc as fp
 from models.heisenberg.heisenberg import HeisenbergModel
 from models.ssh.ssh import SSHModel
-from models.bbh.squ_2d import BBHSqu2dModel
+from models.bbh.bbh import BBHModel
 from models.haldane.squ_C1 import HalSquC1Model
 from models.haldane.hex_C1 import HalHexC1Model
 from models.haldane.squ_C2 import HalSquC2Model
@@ -35,8 +35,9 @@ def __get_custom_state():
 
     # N/4 must be even! e.g. N=8,16,24,32,40,48,etc.
 
-    state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1
-    # state = [0, 1, 1, 0] * int(8 / 4)  # subregion starts at site 2
+    state = [0, 1]*18
+    # state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1
+    # state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
 
     return state
 
@@ -225,7 +226,7 @@ def define_iDMRG_model(model, ham_params):
         model_params.update(t2=ham_params['t2'])
         model_params.update(t3=ham_params['t3'])
         model_params.update(t4=ham_params['t4'])
-        M = BBHSqu2dModel(model_params)
+        M = BBHModel(model_params)
     elif model.endswith("HalSquC1"):
         del model_params['nphi']
         M = HalSquC1Model(model_params)
