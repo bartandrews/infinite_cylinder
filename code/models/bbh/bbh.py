@@ -80,12 +80,12 @@ class BBHModel(CouplingMPOModel):
                                 [0, 0, 0, 0, 0, 0],
                                 [np.conj(t3), np.conj(t3), np.conj(t3), np.conj(t3), np.conj(t3), np.conj(t3)]])
         # lambda_y
-        t4_coupling = np.array([[0, np.conj(-t4), 0, np.conj(-t4), 0, -np.conj(-t4)],
-                                [0, t4, 0, t4, 0, -t4],
-                                [0, np.conj(-t4), 0, np.conj(-t4), 0, -np.conj(-t4)],
-                                [0, t4, 0, t4, 0, -t4],
-                                [0, np.conj(-t4), 0, np.conj(-t4), 0, -np.conj(-t4)],
-                                [0, t4, 0, t4, 0, -t4]])
+        t4_coupling = np.array([[0, np.conj(-t4), 0, np.conj(-t4), 0, np.conj(-t4)],
+                                [0, t4, 0, t4, 0, t4],
+                                [0, np.conj(-t4), 0, np.conj(-t4), 0, np.conj(-t4)],
+                                [0, t4, 0, t4, 0, t4],
+                                [0, np.conj(-t4), 0, np.conj(-t4), 0, np.conj(-t4)],
+                                [0, t4, 0, t4, 0, t4]])
 
         self.add_coupling(t1_coupling, 0, creation, 0, annihilation, np.array([1, 0]), plus_hc=True, category='t1')
         self.add_coupling(t2_coupling, 0, creation, 0, annihilation, np.array([0, 1]), plus_hc=True, category='t2')
