@@ -35,7 +35,7 @@ def __get_custom_state():
 
     # N/4 must be even! e.g. N=8,16,24,32,40,48,etc.
 
-    state = [0, 1]*18
+    state = [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]*3
     # state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1
     # state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
 

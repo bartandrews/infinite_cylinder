@@ -1,9 +1,9 @@
 #!/bin/bash
 
 SLOGS="/home/cluster/baandr/infinite_cylinder/slogs"
-SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/fixed_V/nu_1_3/*"
+SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/vary_V/nu_1_3/*"
 
-for FILE_PATH in $(ls $SJOBS_FILES | sort -h -t '_' -k10,10n -k6,6n)  # first Vrange, then chi
+for FILE_PATH in $(ls $SJOBS_FILES | sort -h -t '_' -k8,8n -k6,6n)  # first V, then chi
 do
 	FILE="$(basename "$FILE_PATH")"  # strip the file from the path
 	sbatch --output=$SLOGS/"$FILE".out --error=$SLOGS/"$FILE".err --job-name="$FILE" --mail-type=ALL \
@@ -12,9 +12,9 @@ do
 done
 
 SLOGS="/home/cluster/baandr/infinite_cylinder/slogs"
-SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/fixed_V/nu_2_5/*"
+SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/vary_V/nu_2_5/*"
 
-for FILE_PATH in $(ls $SJOBS_FILES | sort -h -t '_' -k10,10n -k6,6n)  # first Vrange, then chi
+for FILE_PATH in $(ls $SJOBS_FILES | sort -h -t '_' -k8,8n -k6,6n)  # first V, then chi
 do
 	FILE="$(basename "$FILE_PATH")"  # strip the file from the path
 	sbatch --output=$SLOGS/"$FILE".out --error=$SLOGS/"$FILE".err --job-name="$FILE" --mail-type=ALL \
@@ -23,9 +23,9 @@ do
 done
 
 SLOGS="/home/cluster/baandr/infinite_cylinder/slogs"
-SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/fixed_V/nu_3_7/*"
+SJOBS_FILES="/home/cluster/baandr/infinite_cylinder/sjobs/vary_V/nu_3_7/*"
 
-for FILE_PATH in $(ls $SJOBS_FILES | sort -h -t '_' -k10,10n -k6,6n)  # first Vrange, then chi
+for FILE_PATH in $(ls $SJOBS_FILES | sort -h -t '_' -k8,8n -k6,6n)  # first V, then chi
 do
 	FILE="$(basename "$FILE_PATH")"  # strip the file from the path
 	sbatch --output=$SLOGS/"$FILE".out --error=$SLOGS/"$FILE".err --job-name="$FILE" --mail-type=ALL \

@@ -77,54 +77,39 @@ def line_of_best_fit_values(LylB_list, SvN_list):
 
 legend_y = 1.75
 
+# define a list of easily-visible markers
+markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
+           (3, 2, 0), (4, 2, 0), (5, 2, 0), (6, 2, 0), 'X', 'x', 'd', 'D', 'P',
+           '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
+           '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
+
 if __name__ == '__main__':
+
+    fig = plt.figure(figsize=(6, 6))
+    outer_grid = gridspec.GridSpec(1, 1)
+    upper_cell = outer_grid[0, 0]
+    upper_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, upper_cell, hspace=1.4)
+
+    # nu=1/3 ###########################################################################################################
+
+    ax = plt.subplot(upper_inner_grid[0])
 
     model="FerHofSqu1"
     filling="nu_1_3"
-
-    # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_accepted.out'
-
-    # plot with error bars?
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-
-    # identify the outliers?
     identify_outliers = False
-
-    # plot only the systematically collected points for Ly/lB > 8?
     systematic_points = True
-
-    # set Ly_min
     Ly_min = 0
-
-    fig = plt.figure(figsize=(6, 6))
-
-    outer_grid = gridspec.GridSpec(1, 1)
-    upper_cell = outer_grid[0, 0]
-
-    upper_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, upper_cell, hspace=1.4)
-
-    ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
         LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
                                LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
                                LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
                                LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
                                LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
-    ####################################################################################################################
-
-    ax = plt.subplot(upper_inner_grid[0])
 
     # append data from file to a list
     data = []
@@ -178,12 +163,6 @@ if __name__ == '__main__':
 
     # group data by flux density
     flux_grouped_data = [list(i) for j, i in groupby(grouped_data, key=lambda a: a[0]/a[1])]
-
-    # define a list of easily-visible markers
-    markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
-               (3, 2, 0), (4, 2, 0), (5, 2, 0), (6, 2, 0), 'X', 'x', 'd', 'D', 'P',
-               '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
-               '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
 
     # gather the data by flux density
     for flux_density_index in range(len(flux_grouped_data)):
@@ -264,50 +243,27 @@ if __name__ == '__main__':
     metal0 = Polygon(((0, -10), (8, -10), (8, 10), (0, 10)), fc=(0, 0, 0, 0.1))
     ax.add_artist(metal0)
 
-    ####################################################################################################################
+    # nu=2/5 ###########################################################################################################
+
+    ax1 = plt.subplot(upper_inner_grid[1])
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-
-    # specify the input file
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/{model}_Vrange_1_{filling}_accepted.out'
-
-    # plot with error bars?
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-
-    # identify the outliers?
     identify_outliers = False
-
-    # plot only the systematically collected points for Ly/lB > 8?
     systematic_points = False
-
-    # set Ly_min
     Ly_min = 0
-
-    # set LylB_min
     LylB_min = 9
-
-    ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
         LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
                                LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
                                LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
                                LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
                                LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
-    ####################################################################################################################
-
-    ax1 = plt.subplot(upper_inner_grid[1])
 
     # append data from file to a list
     data = []
@@ -361,12 +317,6 @@ if __name__ == '__main__':
 
     # group data by flux density
     flux_grouped_data = [list(i) for j, i in groupby(grouped_data, key=lambda a: a[0] / a[1])]
-
-    # define a list of easily-visible markers
-    markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
-               (3, 2, 0), (4, 2, 0), (5, 2, 0), (6, 2, 0), 'X', 'x', 'd', 'D', 'P',
-               '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
-               '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
 
     # gather the data by flux density
     for flux_density_index in range(len(flux_grouped_data)):
@@ -453,47 +403,26 @@ if __name__ == '__main__':
     metal0 = Polygon(((0, -10), (9, -10), (9, 10), (0, 10)), fc=(0, 0, 0, 0.1))
     ax1.add_artist(metal0)
 
-    ####################################################################################################################
+    # nu=3/7 ###########################################################################################################
+
+    ax2 = plt.subplot(upper_inner_grid[2])
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-
-    # specify the input file
     file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
-
-    # plot with error bars?
     error_bars = True
-
-    # identify the outliers?
     identify_outliers = False
-
-    # plot only the systematically collected points for Ly/lB > 8?
     systematic_points = False
-
-    # set Ly_min
     Ly_min = 0
-
-    ####################################################################################################################
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        # BosHofSqu1 nu=1/2
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(2 / 7, 6), LylB_func(4/13, 4), LylB_func(1/4, 6), LylB_func(2/9, 6)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4)]
-        # LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
-        #                        LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
-        #                        LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
-        #                        LylB_func(2 / 9, 6), LylB_func(2 / 13, 6)]
         LylB_outlier_values = [LylB_func(1 / 3, 4), LylB_func(1 / 4, 4), LylB_func(1 / 5, 4), LylB_func(1 / 6, 4),
                                LylB_func(2 / 7, 4), LylB_func(2 / 9, 4), LylB_func(2 / 13, 4), LylB_func(4 / 13, 4),
                                LylB_func(1 / 4, 6), LylB_func(1 / 5, 6), LylB_func(1 / 6, 6), LylB_func(2 / 7, 6),
                                LylB_func(2 / 9, 6), LylB_func(2 / 13, 6),
                                LylB_func(1 / 5, 8), LylB_func(1 / 6, 8), LylB_func(2 / 9, 8), LylB_func(2 / 13, 8)]
-    ####################################################################################################################
-
-    ax2 = plt.subplot(upper_inner_grid[2])
 
     # append data from file to a list
     data = []
@@ -548,19 +477,12 @@ if __name__ == '__main__':
     # group data by flux density
     flux_grouped_data = [list(i) for j, i in groupby(grouped_data, key=lambda a: a[0] / a[1])]
 
-    # define a list of easily-visible markers
-    markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
-               (3, 2, 0), (4, 2, 0), (5, 2, 0), (6, 2, 0), 'X', 'x', 'd', 'D', 'P',
-               '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
-               '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
-
     # gather the data by flux density
     for flux_density_index in range(len(flux_grouped_data)):
         LylB, SvN, SvN_error = [], [], []
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
-            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[
-                2] < Ly_min:
+            if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
                 if data_line[3] > 8:
                     LylB_outliers.append(data_line[3])
                     SvN_outliers.append(data_line[4])
@@ -637,16 +559,15 @@ if __name__ == '__main__':
     metal1 = Polygon(((0, -10), (10, -10), (10, 10), (0, 10)), fc=(0, 0, 0, 0.1))
     ax2.add_artist(metal1)
 
-    ####################################################################################################################
+    # complete plot ####################################################################################################
 
     # plt.setp(ax.get_xticklabels(), visible=False)
-
     # ax.tick_params(axis='both', which='major', labelsize=10)
 
     fig.text(0, 0.93, "(a) $\\nu=1/3$\n error $<0.1\%$", fontsize=12)
     fig.text(0, 0.61, "(b) $\\nu=2/5$\n error $<0.1\%$", fontsize=12)
     fig.text(0, 0.29, "(c) $\\nu=3/7$\n error $\lesssim 3\%$", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TEE/figures/short_range_int.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TEE/short_range_int_test.png", bbox_inches='tight', dpi=300)
     plt.show()
 

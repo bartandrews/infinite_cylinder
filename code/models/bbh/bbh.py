@@ -66,11 +66,11 @@ class BBHModel(CouplingMPOModel):
                                [np.conj(t1), t1, np.conj(t1), t1, np.conj(t1), t1],
                                [0, 0, 0, 0, 0, 0]])
         # gamma_y
-        t2_coupling = np.array([[np.conj(-t2), 0, np.conj(-t2), 0, np.conj(-t2), 0],
+        t2_coupling = np.array([[np.conj(+t2), 0, np.conj(+t2), 0, np.conj(+t2), 0],
                                 [t2, 0, t2, 0, t2, 0],
-                                [np.conj(-t2), 0, np.conj(-t2), 0, np.conj(-t2), 0],
+                                [np.conj(+t2), 0, np.conj(+t2), 0, np.conj(+t2), 0],
                                 [t2, 0, t2, 0, t2, 0],
-                                [np.conj(-t2), 0, np.conj(-t2), 0, np.conj(-t2), 0],
+                                [np.conj(+t2), 0, np.conj(+t2), 0, np.conj(+t2), 0],
                                 [t2, 0, t2, 0, t2, 0]])
         # lambda_x
         t3_coupling = np.array([[0, 0, 0, 0, 0, 0],
@@ -80,11 +80,11 @@ class BBHModel(CouplingMPOModel):
                                 [0, 0, 0, 0, 0, 0],
                                 [np.conj(t3), np.conj(t3), np.conj(t3), np.conj(t3), np.conj(t3), np.conj(t3)]])
         # lambda_y
-        t4_coupling = np.array([[0, np.conj(-t4), 0, np.conj(-t4), 0, np.conj(-t4)],
+        t4_coupling = np.array([[0, np.conj(+t4), 0, np.conj(+t4), 0, np.conj(+t4)],
                                 [0, t4, 0, t4, 0, t4],
-                                [0, np.conj(-t4), 0, np.conj(-t4), 0, np.conj(-t4)],
+                                [0, np.conj(+t4), 0, np.conj(+t4), 0, np.conj(+t4)],
                                 [0, t4, 0, t4, 0, t4],
-                                [0, np.conj(-t4), 0, np.conj(-t4), 0, np.conj(-t4)],
+                                [0, np.conj(+t4), 0, np.conj(+t4), 0, np.conj(+t4)],
                                 [0, t4, 0, t4, 0, t4]])
 
         self.add_coupling(t1_coupling, 0, creation, 0, annihilation, np.array([1, 0]), plus_hc=True, category='t1')
@@ -95,7 +95,7 @@ class BBHModel(CouplingMPOModel):
 
 if __name__ == "__main__":
 
-    model_params = dict(statistics='fermions', conserve='N', t1=1, t2=1, t3=1, t4=1, n=(int(1), int(2)),
+    model_params = dict(statistics='fermions', conserve='N', t1=1, t2=1, t3=1, t4=1, n=(int(1), int(4)),
                         LxMUC=6, Ly=6, bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle', verbose=1)
     M = BBHModel(model_params)
 

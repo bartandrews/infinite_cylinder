@@ -17,9 +17,9 @@ def plot_MPS_unit_cell(M):
     # M.lat.plot_coupling(ax, linestyle='-', color='black')
     # M.coupling_terms['t1'].plot_coupling_terms(ax, M.lat, text='t1={strength:.2g}')
     # M.coupling_terms['t2'].plot_coupling_terms(ax, M.lat, text='t2={strength:.2g}')
-    # M.coupling_terms['t3'].plot_coupling_terms(ax, M.lat, text='t3={strength:.2g}')
-    M.coupling_terms['t4'].plot_coupling_terms(ax, M.lat, text='t4={strength:.2g}')
-    # M.lat.plot_order(ax)
+    #M.coupling_terms['t3'].plot_coupling_terms(ax, M.lat, text='t3={strength:.2g}')
+    #M.coupling_terms['t4'].plot_coupling_terms(ax, M.lat, text='t4={strength:.2g}')
+    M.lat.plot_order(ax)
     # formatting
     plt.title('MPS unit cell')
     ax.set_xlabel('x')

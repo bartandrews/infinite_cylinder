@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
     model="FerHofSqu1"
     filling="nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -227,7 +227,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.2_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.2_{filling}_accepted.out'
     error_bars = True
     identify_outliers = True
     systematic_points = True
@@ -339,7 +339,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.4_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.4_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -449,7 +449,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.6_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.6_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -559,7 +559,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.8_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.8_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -669,7 +669,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/V_is_10/{model}_Vrange_2_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_10/{model}_Vrange_2_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -811,7 +811,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.2_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.2_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -921,7 +921,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.4_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.4_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -1031,7 +1031,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.6_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.6_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -1141,7 +1141,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.8_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.8_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -1251,7 +1251,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_3_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_3_{filling}_total.out'
     error_bars = True
     identify_outliers = True
     systematic_points = True
@@ -1420,7 +1420,7 @@ if __name__ == '__main__':
     ax.text(7.5, 2.75, f"$R_2^2={R2_1_3:.3f}$", c='g')
     ax.text(7.5, 2.1, f"$R_3^2={R3_1_3:.3f}$", c='r')
 
-    # nu=1/3 subplot ######################################################################################################
+    # nu=1/3 subplot ###################################################################################################
 
     left, bottom, width, height = [0.22, 0.82, 0.3, 0.05]
     ax3 = fig.add_axes([left, bottom, width, height])
@@ -1450,7 +1450,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -1604,7 +1604,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.2_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.2_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -1714,7 +1714,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.4_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.4_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -1824,7 +1824,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.6_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.6_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -1934,7 +1934,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.8_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.8_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2044,7 +2044,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2193,7 +2193,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.2_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.2_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2306,7 +2306,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.4_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.4_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2419,7 +2419,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.6_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.6_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2532,7 +2532,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_2.8_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_2.8_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2645,7 +2645,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_3_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_3_{filling}_total.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -2806,7 +2806,7 @@ if __name__ == '__main__':
     ax1.text(5.5, 2.4, f"$R_2^2={R2_2_5:.3f}$", c='g')
     ax1.text(5.5, 1.6, f"$R_3^2={R3_2_5:.3f}$", c='r')
 
-    # nu=2/5 subplot ######################################################################################################
+    # nu=2/5 subplot ###################################################################################################
 
     left, bottom, width, height = [0.19, 0.5225, 0.3, 0.05]
     ax4 = fig.add_axes([left, bottom, width, height])
@@ -2836,7 +2836,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/V_is_10/{model}_Vrange_1_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_10/{model}_Vrange_1_{filling}_total.out'
     error_bars = True
     identify_outliers = True
     systematic_points = False
@@ -2991,7 +2991,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.2_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.2_{filling}_total.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -3103,7 +3103,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.4_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.4_{filling}_total.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -3216,7 +3216,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.6_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.6_{filling}_total.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -3328,7 +3328,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/{model}_Vrange_1.8_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_not_10/{model}_Vrange_1.8_{filling}_total.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -3440,7 +3440,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/V_is_10/{model}_Vrange_2_{filling}_total.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_range/V_is_10/{model}_Vrange_2_{filling}_total.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -3742,7 +3742,7 @@ if __name__ == '__main__':
     ax2.text(8.1, 3.25, f"$R_2^2={R2_3_7:.3f}$", c='g')
     # #ax2.text(8.1, 2.4, f"$R_3^2={R3_3_7:.3f}$", c='r')
 
-    # nu=3/7 subplot ######################################################################################################
+    # nu=3/7 subplot ###################################################################################################
 
     left, bottom, width, height = [0.19, 0.226, 0.3, 0.05]
     ax5 = fig.add_axes([left, bottom, width, height])
@@ -3770,6 +3770,6 @@ if __name__ == '__main__':
     fig.text(0, 0.6225, "(b) $\\nu=2/5$\n error $<0.1\%$", fontsize=12)
     fig.text(0, 0.325, "(c) $\\nu=3/7$\n error $\lesssim 3\%$", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_range_new.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_range_test.png", bbox_inches='tight', dpi=300)
     plt.show()
 

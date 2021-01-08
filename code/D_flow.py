@@ -208,13 +208,13 @@ def my_D_flow(path_flag, threads, model, chi_max, ham_params):
         lst = list(range(psi.L))
         print("lst = ", lst)
         # 90 degree (+ve direction)
-        perm_lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                    15, 21, 16, 17, 18, 19, 14, 20,
-                    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
-        # 180 degree (+ve direction)
         # perm_lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-        #             21, 20, 16, 17, 18, 19, 15, 14,
+        #             15, 21, 16, 17, 18, 19, 14, 20,
         #             22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+        # 180 degree (+ve direction)
+        perm_lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+                    21, 20, 16, 17, 18, 19, 15, 14,
+                    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
         print("perm_lst = ", perm_lst)
         leg = psi.sites[0].leg
         swap_op = npc.Array.from_ndarray(np.diag([1., -1.j, -1.j, 1]).reshape([2, 2, 2, 2]),
