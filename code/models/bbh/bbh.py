@@ -95,7 +95,7 @@ class BBHModel(CouplingMPOModel):
 
 if __name__ == "__main__":
 
-    model_params = dict(statistics='fermions', conserve='N', t1=1, t2=1, t3=1, t4=1, n=(int(1), int(4)),
+    model_params = dict(statistics='fermions', conserve='N', t1=1, t2=1, t3=0, t4=0, n=(int(1), int(4)),
                         LxMUC=6, Ly=6, bc_MPS='infinite', bc_x='periodic', bc_y='cylinder', order='Cstyle', verbose=1)
     M = BBHModel(model_params)
 
