@@ -213,19 +213,19 @@ def my_D_flow(path_flag, threads, model, chi_max, ham_params):
                     15, 21, 16, 17, 18, 19, 14, 20,
                     22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
         # 180 degree (+ve direction)
-        perm_lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-                    21, 20, 16, 17, 18, 19, 15, 14,
-                    22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
+        # perm_lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+        #             21, 20, 16, 17, 18, 19, 15, 14,
+        #             22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
         # 270 degree (+ve direction)
         # perm_lst = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,
         #             20, 14, 16, 17, 18, 19, 21, 15,
         #             22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]
         print("perm_lst = ", perm_lst)
-        # leg = psi.sites[0].leg
-        # swap_op = npc.Array.from_ndarray(np.diag([1., np.exp(1j*np.pi/4), np.exp(1j*np.pi/4), 1]).reshape([2, 2, 2, 2]),
-        #                                  [leg, leg, leg.conj(), leg.conj()], labels=['p1', 'p0', 'p0*', 'p1*'])
-        # psi_t.permute_sites(perm_lst, swap_op=swap_op, trunc_par={'chi_max': 100, 'verbose': 0})
-        psi_t.permute_sites(perm_lst, swap_op='auto', trunc_par={'chi_max': 100, 'verbose': 0})
+        leg = psi.sites[0].leg
+        swap_op = npc.Array.from_ndarray(np.diag([1., np.exp(1j*np.pi/16), np.exp(1j*np.pi/16), -np.exp(1j*np.pi/8)]).reshape([2, 2, 2, 2]),
+                                         [leg, leg, leg.conj(), leg.conj()], labels=['p1', 'p0', 'p0*', 'p1*'])
+        psi_t.permute_sites(perm_lst, swap_op=swap_op, trunc_par={'chi_max': 100, 'verbose': 0})
+        # psi_t.permute_sites(perm_lst, swap_op='auto', trunc_par={'chi_max': 100, 'verbose': 0})
         overlap = psi.overlap(psi_t)
         quantity = np.imag(np.log(overlap)) / (np.pi / 4)
         data_line = f"{D:.15f}\t{overlap:.15f}\t{np.abs(overlap):.15f}\t{quantity:.15f}"

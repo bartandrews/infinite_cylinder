@@ -20,16 +20,18 @@ plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 
 if __name__ == '__main__':
 
-    fig = plt.figure()
-    gs = gridspec.GridSpec(2, 2, hspace=0.5, wspace=0.4)
+    fig = plt.figure(figsize=(6, 4))
+    gs = gridspec.GridSpec(2, 2, hspace=0, wspace=0.5)
+
+    name = "derivation_plus"
 
     ####################################################################################################################
 
-    ax1 = plt.subplot(gs[0], anchor=(0, 0.85))
+    ax1 = plt.subplot(gs[0])
 
     plot_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/FerBBH'
-    f90_1 = 'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.90.auto_part_1'
-    f90_2 = 'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.90.auto_part_2'
+    f90_1 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.90.{name}_part_1'
+    f90_2 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.90.{name}_part_2'
     p90_1 = os.path.join(plot_dir, f90_1)
     p90_2 = os.path.join(plot_dir, f90_2)
 
@@ -46,13 +48,16 @@ if __name__ == '__main__':
                 ang.append(float(row[3]))
 
     ax1.plot(t, mag, 's', marker='x', color='k', markersize=3)
-    ax1.set_xlabel("$t_{3,4}/t_{1,2}$", fontsize=11)
+    # ax1.set_xlabel("$t_{3,4}/t_{1,2}$", fontsize=11)
     ax1.set_ylabel("$|z_1|$", fontsize=11)
     ax1.set_xlim([0, 4])
     ax1.axvspan(0, 1, alpha=0.5, color='slateblue')
     ax1.axvspan(1, 4, alpha=0.5, color='gold')
 
-    ax2 = plt.subplot(gs[1])
+    ax2 = plt.subplot(gs[2], sharex=ax1)
+    ax1.tick_params('x', direction='in', bottom=True)
+    ax2.tick_params('x', direction='in', top=True)
+    plt.setp(ax1.get_xticklabels(), visible=False)
     ax2.plot(t, ang, 's', marker='x', color='k', markersize=3)
     ax2.set_ylabel("$\\angle z_1 / (\pi/4)$", fontsize=11)
     ax2.set_xlabel("$t_{3,4}/t_{1,2}$", fontsize=11)
@@ -62,11 +67,11 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax3 = plt.subplot(gs[2])
+    ax3 = plt.subplot(gs[1])
 
     plot_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/FerBBH'
-    f180_1 = 'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.180.auto_part_1'
-    f180_2 = 'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.180.auto_part_2'
+    f180_1 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.180.{name}_part_1'
+    f180_2 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.180.{name}_part_2'
     p180_1 = os.path.join(plot_dir, f180_1)
     p180_2 = os.path.join(plot_dir, f180_2)
 
@@ -84,12 +89,15 @@ if __name__ == '__main__':
 
     ax3.plot(t, mag, 's', marker='x', color='k', markersize=3)
     ax3.set_ylabel("$|z_2|$", fontsize=11)
-    ax3.set_xlabel("$t_{3,4}/t_{1,2}$", fontsize=11)
+    # ax3.set_xlabel("$t_{3,4}/t_{1,2}$", fontsize=11)
     ax3.set_xlim([0, 4])
     ax3.axvspan(0, 1, alpha=0.5, color='slateblue')
     ax3.axvspan(1, 4, alpha=0.5, color='gold')
 
-    ax4 = plt.subplot(gs[3])
+    ax4 = plt.subplot(gs[3], sharex=ax3)
+    ax3.tick_params('x', direction='in', bottom=True)
+    ax4.tick_params('x', direction='in', top=True)
+    plt.setp(ax3.get_xticklabels(), visible=False)
     ax4.plot(t, ang, 's', marker='x', color='k', markersize=3)
     ax4.set_ylabel("$\\angle z_2 / (\pi/4)$", fontsize=11)
     ax4.set_xlabel("$t_{3,4}/t_{1,2}$", fontsize=11)
@@ -104,5 +112,5 @@ if __name__ == '__main__':
     # fig.text(0.04, 0.45, "(c)", fontsize=12)
     # fig.text(0.5, 0.45, "(d)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/BBH/figures/auto.png", bbox_inches='tight', dpi=300)
+    plt.savefig(f"/home/bart/Documents/papers/BBH/figures/{name}.png", bbox_inches='tight', dpi=300)
     plt.show()
