@@ -24,41 +24,31 @@ def line_of_best_fit(LylB_list, SvN_list):
     m, m_err, c, c_err = parameters[0], np.sqrt(cov[0][0]), parameters[1], np.sqrt(cov[1][1])
     r2_value = r_value*r_value
 
-    # print("SvN = m*(Ly/lB) + c")
-    # print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
-    # xvalues = np.arange(max(LylB_list) + 1)
-    # ax.plot(xvalues, m * xvalues + c, '-', c='k', zorder=0)
-    # fig.text(0.4, 0.2, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.10f}$".format(
-    #     gradient=m, intercept=c, cerror=c_err, rsquared=r2_value))
-
     return m, m_err, c, c_err, r2_value
 
 
-def straight_line_of_best_fit(axis, LylB_list, SvN_list, color='k'):
+def diagnostic_plot(title, x, y):
 
-    parameters, cov = np.polyfit(LylB_list, SvN_list, 1, cov=True)
-    _, _, r_value, _, _ = stats.linregress(LylB_list, SvN_list)
+    # scatter plot
+    plt.scatter(x, y)
+
+    # line of best fit
+    parameters, cov = np.polyfit(x, y, 1, cov=True)
+    _, _, r_value, _, _ = stats.linregress(x, y)
     m, m_err, c, c_err = parameters[0], np.sqrt(cov[0][0]), parameters[1], np.sqrt(cov[1][1])
-    r2_value = r_value*r_value
+    r2_value = r_value * r_value
+    xvalues = np.linspace(0, max(x))
+    plt.plot(np.array(xvalues), m * np.array(xvalues) + c, '-', c='k', zorder=0)
+    plt.text(0.25, 0.9*max(y),
+              "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.5f}$"
+             .format(gradient=m, intercept=c, cerror=c_err, rsquared=r2_value, fontsize=10))
 
-    print("SvN = m*(Ly/lB) + c")
-    print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
-    xvalues = np.linspace(0, max(LylB_list))
-    axis.plot(xvalues, m * xvalues + c, '-', c=color, zorder=0)
-    # axis.text(0.25, 1.8, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.5f}$".format(
-    #     gradient=m, intercept=c, cerror=c_err, rsquared=r2_value, fontsize=10))
-
-    return m, m_err, c, c_err, r2_value
-
-
-def line_of_best_fit_values(LylB_list, SvN_list):
-
-    parameters, cov = np.polyfit(LylB_list, SvN_list, 1, cov=True)
-    _, _, r_value, _, _ = stats.linregress(LylB_list, SvN_list)
-    m, m_err, c, c_err = parameters[0], np.sqrt(cov[0][0]), parameters[1], np.sqrt(cov[1][1])
-    r2_value = r_value*r_value
-
-    return m, m_err, c, c_err, r2_value
+    # formatting
+    plt.title(title, fontsize=12)
+    plt.xlabel("$L_y/l_B$", fontsize=11)
+    plt.xlim(0)
+    plt.ylabel("$S_\mathrm{vN}$", fontsize=11)
+    plt.show()
 
 
 # define a list of easily-visible markers
@@ -67,12 +57,15 @@ markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6,
            '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
            '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
 
+
 if __name__ == '__main__':
 
     fig = plt.figure(figsize=(6, 4))
     outer_grid = gridspec.GridSpec(1, 1)
     upper_cell = outer_grid[0, 0]
     upper_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, upper_cell, hspace=0)
+
+    diagnos_plot = "nu_3_7_V_50"
 
     # nu=1/3, V=10 #####################################################################################################
 
@@ -81,7 +74,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -176,16 +169,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        # print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        # print(r2value)
         if r2value > 0.99:
-            # straight_line_of_best_fit(ax, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
             c_1_3.append(c)
             c_err_1_3.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_1_3_V_10":
+        diagnostic_plot("$\\nu=1/3$, $V_0=10$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R10_1_3 = r2value
 
@@ -193,7 +186,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -288,16 +281,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        # print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        # print(r2value)
         if r2value > 0.99:
-            # straight_line_of_best_fit(ax, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
             c_1_3.append(c)
             c_err_1_3.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_1_3_V_20":
+        diagnostic_plot("$\\nu=1/3$, $V_0=20$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R20_1_3 = r2value
 
@@ -305,7 +298,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -402,12 +395,14 @@ if __name__ == '__main__':
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         if r2value > 0.99:
-            # straight_line_of_best_fit(ax, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
             c_1_3.append(c)
             c_err_1_3.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_1_3_V_30":
+        diagnostic_plot("$\\nu=1/3$, $V_0=30$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R30_1_3 = r2value
 
@@ -415,7 +410,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -512,12 +507,14 @@ if __name__ == '__main__':
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         if r2value > 0.99:
-            # straight_line_of_best_fit(ax, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
             c_1_3.append(c)
             c_err_1_3.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_1_3_V_40":
+        diagnostic_plot("$\\nu=1/3$, $V_0=40$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R40_1_3 = r2value
 
@@ -525,7 +522,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_1_3"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = True
@@ -628,6 +625,9 @@ if __name__ == '__main__':
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_1_3_V_50":
+        diagnostic_plot("$\\nu=1/3$, $V_0=50$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R50_1_3 = r2value
 
@@ -638,7 +638,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -741,6 +741,9 @@ if __name__ == '__main__':
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_2_5_V_10":
+        diagnostic_plot("$\\nu=2/5$, $V_0=10$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R1p2_2_5 = r2value
 
@@ -748,7 +751,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -852,13 +855,16 @@ if __name__ == '__main__':
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
 
+    if diagnos_plot == "nu_2_5_V_20":
+        diagnostic_plot("$\\nu=2/5$, $V_0=20$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+
     R20_2_5 = r2value
 
     # nu=2/5, V=30 #####################################################################################################
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -961,6 +967,9 @@ if __name__ == '__main__':
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_2_5_V_30":
+        diagnostic_plot("$\\nu=2/5$, $V_0=30$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R30_2_5 = r2value
 
@@ -968,7 +977,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -1071,6 +1080,9 @@ if __name__ == '__main__':
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_2_5_V_40":
+        diagnostic_plot("$\\nu=2/5$, $V_0=40$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R40_2_5 = r2value
 
@@ -1078,7 +1090,7 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_2_5"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/short_range_int/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
     identify_outliers = False
     systematic_points = False
@@ -1181,6 +1193,9 @@ if __name__ == '__main__':
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_2_5_V_50":
+        diagnostic_plot("$\\nu=2/5$, $V_0=50$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R50_2_5 = r2value
 
@@ -1191,16 +1206,17 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-    identify_outliers = False
+    identify_outliers = True
     systematic_points = False
-    Ly_min = 0
+    Ly_min = 14
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
 
     # append data from file to a list
     data = []
@@ -1261,12 +1277,11 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                if data_line[3] > 8:
-                    LylB_outliers.append(data_line[3])
-                    SvN_outliers.append(data_line[4])
-                    SvN_outliers_error.append(data_line[5])
+                LylB_outliers.append(data_line[3])
+                SvN_outliers.append(data_line[4])
+                SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > 10:
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -1286,16 +1301,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        print(r2value)
-        if r2value > 0.943:
-            # straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
+        if r2value > 0.99:
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_3_7_V_10":
+        diagnostic_plot("$\\nu=3/7$, $V_0=10$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R10_3_7 = r2value
 
@@ -1303,16 +1318,17 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-    identify_outliers = False
+    identify_outliers = True
     systematic_points = False
     Ly_min = 0
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
 
     # append data from file to a list
     data = []
@@ -1373,12 +1389,11 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                if data_line[3] > 8:
-                    LylB_outliers.append(data_line[3])
-                    SvN_outliers.append(data_line[4])
-                    SvN_outliers_error.append(data_line[5])
+                LylB_outliers.append(data_line[3])
+                SvN_outliers.append(data_line[4])
+                SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > 10:
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -1398,16 +1413,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        print(r2value)
-        if r2value > 0.943:
-            # straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
+        if r2value > 0.99:
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_3_7_V_20":
+        diagnostic_plot("$\\nu=3/7$, $V_0=20$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R20_3_7 = r2value
 
@@ -1415,16 +1430,17 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-    identify_outliers = False
+    identify_outliers = True
     systematic_points = False
     Ly_min = 0
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
 
     # append data from file to a list
     data = []
@@ -1485,12 +1501,11 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                if data_line[3] > 8:
-                    LylB_outliers.append(data_line[3])
-                    SvN_outliers.append(data_line[4])
-                    SvN_outliers_error.append(data_line[5])
+                LylB_outliers.append(data_line[3])
+                SvN_outliers.append(data_line[4])
+                SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > 10:
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -1510,16 +1525,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        print(r2value)
-        if r2value > 0.943:
-            # straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
+        if r2value > 0.99:
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_3_7_V_30":
+        diagnostic_plot("$\\nu=3/7$, $V_0=30$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R30_3_7 = r2value
 
@@ -1527,16 +1542,17 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-    identify_outliers = False
+    identify_outliers = True
     systematic_points = False
     Ly_min = 0
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
 
     # append data from file to a list
     data = []
@@ -1597,12 +1613,11 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                if data_line[3] > 8:
-                    LylB_outliers.append(data_line[3])
-                    SvN_outliers.append(data_line[4])
-                    SvN_outliers_error.append(data_line[5])
+                LylB_outliers.append(data_line[3])
+                SvN_outliers.append(data_line[4])
+                SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > 10:
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -1622,16 +1637,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        # print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        # print(r2value)
-        if r2value > 0.943:
-            # straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
+        if r2value > 0.99:  # 0.943
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_3_7_V_40":
+        diagnostic_plot("$\\nu=3/7$, $V_0=40$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R40_3_7 = r2value
 
@@ -1639,16 +1654,17 @@ if __name__ == '__main__':
 
     model = "FerHofSqu1"
     filling = "nu_3_7"
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
     error_bars = True
-    identify_outliers = False
+    identify_outliers = True
     systematic_points = False
     Ly_min = 0
 
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 3, 4)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
 
     # append data from file to a list
     data = []
@@ -1709,12 +1725,11 @@ if __name__ == '__main__':
         LylB_outliers, SvN_outliers, SvN_outliers_error = [], [], []
         for i, data_line in enumerate(flux_grouped_data[flux_density_index]):
             if any(math.isclose(j, data_line[3], rel_tol=1e-5) is True for j in LylB_outlier_values) or data_line[2] < Ly_min:
-                if data_line[3] > 8:
-                    LylB_outliers.append(data_line[3])
-                    SvN_outliers.append(data_line[4])
-                    SvN_outliers_error.append(data_line[5])
+                LylB_outliers.append(data_line[3])
+                SvN_outliers.append(data_line[4])
+                SvN_outliers_error.append(data_line[5])
             else:
-                if data_line[3] > 8:
+                if data_line[3] > 10:
                     LylB.append(data_line[3])
                     SvN.append(data_line[4])
                     SvN_error.append(data_line[5])
@@ -1734,16 +1749,16 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        print(r2value)
-        if r2value > 0.943:
-            # straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
+        if r2value > 0.99:  # 0.943
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
             break
         sorted_plot_data = np.delete(sorted_plot_data, 0, axis=0)
+
+    if diagnos_plot == "nu_3_7_V_50":
+        diagnostic_plot("$\\nu=3/7$, $V_0=50$", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
 
     R50_3_7 = r2value
 
@@ -1759,12 +1774,12 @@ if __name__ == '__main__':
     plt.setp(ax1.get_xticklabels(), visible=False)
 
     V = [10, 20, 30, 40, 50]
-    print("c_1_3 = ", c_1_3)
-    print("c_err_1_3 = ", c_err_1_3)
-    print("c_2_5 = ", c_2_5)
-    print("c_err_2_5 = ", c_err_2_5)
-    print("c_3_7 = ", c_3_7)
-    print("c_err_3_7 = ", c_err_3_7)
+    # print("c_1_3 = ", c_1_3)
+    # print("c_err_1_3 = ", c_err_1_3)
+    # print("c_2_5 = ", c_2_5)
+    # print("c_err_2_5 = ", c_err_2_5)
+    # print("c_3_7 = ", c_3_7)
+    # print("c_err_3_7 = ", c_err_3_7)
 
     gamma_1_3 = [-x for x in c_1_3]
     gamma_2_5 = [-x for x in c_2_5]
@@ -1795,5 +1810,5 @@ if __name__ == '__main__':
 
     ax2.set_xticks(V)
 
-    plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_strength.png", bbox_inches='tight', dpi=300)
-    plt.show()
+    # plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_strength.png", bbox_inches='tight', dpi=300)
+    # plt.show()
