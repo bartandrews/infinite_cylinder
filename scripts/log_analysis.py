@@ -217,7 +217,7 @@ if __name__ == '__main__':
             if Vrange != Vrange_previous:
                 Vrange_previous = Vrange
             data_line = f"{p}\t{q}\t{Ly}\t{LylB:.15f}\t{SvN_estimate:.15f}\t{abs(SvN_error):.15f}\t{V:.5f}\n"
-            if V>11:  # if V!=10,  abs(V-10) < 10e-5
+            if abs(V-10) < 10e-5:  # if V!=10,  abs(V-10) < 10e-5
                 total_file.write(data_line)
                 if status == f"{Fore.GREEN}OK{Style.RESET_ALL}":
                     accepted_file.write(data_line)

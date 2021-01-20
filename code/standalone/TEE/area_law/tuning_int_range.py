@@ -3535,9 +3535,9 @@ if __name__ == '__main__':
     length = len(sorted_plot_data)
 
     for i in range(length):
-        print(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
+        print("this = ", sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        print(r2value)
+        print("this = ", r2value)
         if r2value > 0.98:
             straight_line_of_best_fit(ax2, sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist(), 'g')
             c_3_7.append(c)
@@ -3770,6 +3770,6 @@ if __name__ == '__main__':
     fig.text(0, 0.6225, "(b) $\\nu=2/5$\n error $<0.1\%$", fontsize=12)
     fig.text(0, 0.325, "(c) $\\nu=3/7$\n error $\lesssim 3\%$", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_range_test.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_range_new.png", bbox_inches='tight', dpi=300)
     plt.show()
 

@@ -63,9 +63,9 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(6, 4))
     outer_grid = gridspec.GridSpec(1, 1)
     upper_cell = outer_grid[0, 0]
-    upper_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, upper_cell, hspace=0.3)
+    upper_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, upper_cell, hspace=0.6)
 
-    diagnos_plot = "nu_2_5_V_70"
+    diagnos_plot = "nu_3_7_V_70"
 
     # nu=1/3, V=10 #####################################################################################################
 
@@ -1317,7 +1317,7 @@ if __name__ == '__main__':
     model = "FerHofSqu1"
     filling = "nu_3_7"
     # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_not_10/{model}_Vrange_1_{filling}_accepted.out.V_20'
     error_bars = True
     identify_outliers = True
     systematic_points = False
@@ -1326,7 +1326,7 @@ if __name__ == '__main__':
     if not identify_outliers:
         LylB_outlier_values = []
     else:  # identify_outliers
-        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14)]
+        LylB_outlier_values = [LylB_func(1 / 6, 14), LylB_func(1 / 7, 14), LylB_func(1 / 8, 14), LylB_func(1 / 11, 14), LylB_func(1 / 10, 14)]
 
     # append data from file to a list
     data = []
@@ -1412,7 +1412,7 @@ if __name__ == '__main__':
 
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.99:
+        if r2value > 0.5:
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
@@ -1429,7 +1429,7 @@ if __name__ == '__main__':
     model = "FerHofSqu1"
     filling = "nu_3_7"
     # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_not_10/{model}_Vrange_1_{filling}_accepted.out.V_30'
     error_bars = True
     identify_outliers = True
     systematic_points = False
@@ -1524,7 +1524,7 @@ if __name__ == '__main__':
 
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.99:
+        if r2value > 0.5:
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
@@ -1541,7 +1541,7 @@ if __name__ == '__main__':
     model = "FerHofSqu1"
     filling = "nu_3_7"
     # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_not_10/{model}_Vrange_1_{filling}_accepted.out.V_40'
     error_bars = True
     identify_outliers = True
     systematic_points = False
@@ -1636,7 +1636,7 @@ if __name__ == '__main__':
 
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.99:  # 0.943
+        if r2value > 0.5:  # 0.943
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
@@ -1653,7 +1653,7 @@ if __name__ == '__main__':
     model = "FerHofSqu1"
     filling = "nu_3_7"
     # file = f'/home/bart/PycharmProjects/infinite_cylinder/code/standalone/TEE/area_law/{model}_Vrange_1_{filling}_total_Ly_14.out'
-    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_10/{model}_Vrange_1_{filling}_accepted.out'
+    file = f'/home/bart/PycharmProjects/infinite_cylinder/logs/observables/{model}/out/tuning_int_strength/V_is_not_10/{model}_Vrange_1_{filling}_accepted.out.V_40'
     error_bars = True
     identify_outliers = True
     systematic_points = False
@@ -1748,7 +1748,7 @@ if __name__ == '__main__':
 
     for i in range(length):
         _, _, c, c_err, r2value = line_of_best_fit(sorted_plot_data[:, 0].tolist(), sorted_plot_data[:, 1].tolist())
-        if r2value > 0.99:  # 0.943
+        if r2value > 0.5:  # 0.943
             c_3_7.append(c)
             c_err_3_7.append(c_err)
             critical_LylB = sorted_plot_data[0][0]
@@ -1766,8 +1766,8 @@ if __name__ == '__main__':
     ax1 = plt.subplot(upper_inner_grid[1], sharex=ax)
     ax2 = plt.subplot(upper_inner_grid[2], sharex=ax1)
 
-    ax.tick_params('x', direction='in', bottom=True)
-    ax1.tick_params('x', direction='in', bottom=True)
+    ax.tick_params('x', direction='out', bottom=False)
+    ax1.tick_params('x', direction='out', bottom=False)
     plt.setp(ax.get_xticklabels(), visible=False)
     plt.setp(ax1.get_xticklabels(), visible=False)
 
@@ -1800,18 +1800,18 @@ if __name__ == '__main__':
     ax2.set_ylabel("$\gamma$", fontsize=11, color=color_3_7)
     ax2.tick_params('y', labelcolor=color_3_7)
     ax2.axhline(np.log(np.sqrt(7)), color=color_3_7, ls='dashed', linewidth=1, zorder=2)
-    ax.legend(loc='upper left', bbox_to_anchor=(0.05, 0.99), handletextpad=0, borderpad=0.4,
-              framealpha=1,
-              edgecolor='k', markerscale=1,
-              fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
-    ax1.legend(loc='upper left', bbox_to_anchor=(0.05, 0.99), handletextpad=0, borderpad=0.4,
-              framealpha=1,
-              edgecolor='k', markerscale=1,
-              fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
-    ax2.legend(loc='upper left', bbox_to_anchor=(0.05, 0.99), handletextpad=0, borderpad=0.4,
-              framealpha=1,
-              edgecolor='k', markerscale=1,
-              fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
+    # ax.legend(loc='upper left', bbox_to_anchor=(0.05, 0.99), handletextpad=0, borderpad=0.4,
+    #           framealpha=1,
+    #           edgecolor='k', markerscale=1,
+    #           fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
+    # ax1.legend(loc='upper left', bbox_to_anchor=(0.05, 0.99), handletextpad=0, borderpad=0.4,
+    #           framealpha=1,
+    #           edgecolor='k', markerscale=1,
+    #           fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
+    # ax2.legend(loc='upper left', bbox_to_anchor=(0.05, 0.99), handletextpad=0, borderpad=0.4,
+    #           framealpha=1,
+    #           edgecolor='k', markerscale=1,
+    #           fontsize=10, ncol=8, labelspacing=0.3, columnspacing=0)
 
     ax3 = ax.twinx()
     ax3.set_ylabel('$R^2$', color='k')  # we already handled the x-label with ax1
@@ -1823,7 +1823,20 @@ if __name__ == '__main__':
     ax4.plot(V, [R10_2_5, R20_2_5, R30_2_5, R40_2_5, R50_2_5], '.', marker='x', color='k', mew=0.5, zorder=-4)
     ax4.tick_params('y', labelcolor='k')
 
+    ax5 = ax2.twinx()
+    ax5.set_ylabel('$R^2$', color='k')  # we already handled the x-label with ax1
+    ax5.plot(V, [R10_3_7, R20_3_7, R30_3_7, R40_3_7, R50_3_7], '.', marker='x', color='k', mew=0.5, zorder=-4)
+    ax5.tick_params('y', labelcolor='k')
+
     ax2.set_xticks(V)
+
+    ax.set_title("$\\nu=1/3$, $S_\mathrm{vN}$ error $<0.1\%$", fontsize=12)
+    ax1.set_title("$\\nu=2/5$, $S_\mathrm{vN}$ error $<0.1\%$", fontsize=12)
+    ax2.set_title("$\\nu=3/7$, $S_\mathrm{vN}$ error $\lesssim 3\%$", fontsize=12)
+
+    fig.text(0.02, 0.905, "(a)", fontsize=12)
+    fig.text(0.02, 0.61, "(b)", fontsize=12)
+    fig.text(0.02, 0.32, "(c)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/TEE/tuning_int_strength.png", bbox_inches='tight', dpi=300)
     plt.show()
