@@ -15,6 +15,7 @@ import functions.func_proc as fp
 from models.heisenberg.heisenberg import HeisenbergModel
 from models.ssh.ssh import SSHModel
 from models.bbh.bbh import BBHModel
+from models.bbh.bbh2 import BBH2Model
 from models.haldane.squ_C1 import HalSquC1Model
 from models.haldane.hex_C1 import HalHexC1Model
 from models.haldane.squ_C2 import HalSquC2Model
@@ -35,7 +36,8 @@ def __get_custom_state():
 
     # N/4 must be even! e.g. N=8,16,24,32,40,48,etc.
 
-    state = [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]*3  # BBH
+    # state = [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]*3  # BBH
+    state = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0] * 3  # BBH2
     # state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1 (SSH)
     # state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
 
@@ -227,6 +229,12 @@ def define_iDMRG_model(model, ham_params):
         model_params.update(t3=ham_params['t3'])
         model_params.update(t4=ham_params['t4'])
         M = BBHModel(model_params)
+    elif model.endswith("BBH2"):
+        del model_params['phi'], model_params['mu'], model_params['nphi']
+        model_params.update(t2=ham_params['t2'])
+        model_params.update(t3=ham_params['t3'])
+        model_params.update(t4=ham_params['t4'])
+        M = BBH2Model(model_params)
     elif model.endswith("HalSquC1"):
         del model_params['nphi']
         M = HalSquC1Model(model_params)

@@ -15,7 +15,7 @@ def parse_input_arguments(program):
     leaf = parser.add_argument_group("leaf sub-arguments")
 
     models = ["Heisenberg", "SSH",
-              "BosBBH", "FerBBH",
+              "BosBBH", "FerBBH", "BosBBH2", "FerBBH2",
               "BosHalSquC1", "FerHalSquC1", "BosHalHexC1", "FerHalHexC1",
               "BosHalSquC2", "FerHalSquC2",
               "BosHalTriC3", "FerHalTriC3",

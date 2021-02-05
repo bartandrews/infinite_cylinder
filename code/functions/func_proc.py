@@ -43,7 +43,7 @@ def file_name_leaf(program, model, ham_params):
 
     t = ""
     for i in range(1, 11, 1):  # search up to 10th-NN hoppings for both t and tdash
-        if f"{i}" in model:
+        if f"{i}" in model and "BBH2" not in model:
             t += f"t{i}_{ham_params[f't{i}']:g}_" if ham_params[f't{i}'] != 0 else ""
             if f"t{i}dash" in ham_params:
                 t += f"t{i}dash_{ham_params[f't{i}dash']:g}_" if ham_params[f't{i}dash'] != 0 else ""

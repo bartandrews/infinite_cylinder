@@ -23,15 +23,17 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(6, 4))
     gs = gridspec.GridSpec(2, 2, hspace=0, wspace=0.5)
 
-    name = "derivation_plus"
+    name = "pi_by_4"
+    model = "FerBBH2"
+    nu = (1, 2)
 
     ####################################################################################################################
 
     ax1 = plt.subplot(gs[0])
 
-    plot_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/FerBBH'
-    f90_1 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.90.{name}_part_1'
-    f90_2 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.90.{name}_part_2'
+    plot_dir = f'/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/{model}/diag_initial_state'
+    f90_1 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.90.{name}_part_1'
+    f90_2 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.90.{name}_part_2'
     p90_1 = os.path.join(plot_dir, f90_1)
     p90_2 = os.path.join(plot_dir, f90_2)
 
@@ -69,9 +71,9 @@ if __name__ == '__main__':
 
     ax3 = plt.subplot(gs[1])
 
-    plot_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/FerBBH'
-    f180_1 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.180.{name}_part_1'
-    f180_2 = f'O_I_n_flow_FerBBH_chi_100_n_1_4_LxMUC_6_Ly_6_custom.dat.180.{name}_part_2'
+    plot_dir = f'/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/{model}/diag_initial_state'
+    f180_1 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.180.{name}_part_1'
+    f180_2 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.180.{name}_part_2'
     p180_1 = os.path.join(plot_dir, f180_1)
     p180_2 = os.path.join(plot_dir, f180_2)
 
@@ -112,5 +114,5 @@ if __name__ == '__main__':
     # fig.text(0.04, 0.45, "(c)", fontsize=12)
     # fig.text(0.5, 0.45, "(d)", fontsize=12)
 
-    plt.savefig(f"/home/bart/Documents/papers/BBH/figures/{name}.png", bbox_inches='tight', dpi=300)
+    plt.savefig(f"/home/bart/Documents/papers/BBH/figures/BBH2/{name}.png", bbox_inches='tight', dpi=300)
     plt.show()
