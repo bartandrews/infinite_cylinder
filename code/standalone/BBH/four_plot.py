@@ -23,7 +23,7 @@ if __name__ == '__main__':
     fig = plt.figure(figsize=(6, 4))
     gs = gridspec.GridSpec(2, 2, hspace=0, wspace=0.5)
 
-    name = "pi_by_4"
+    name = "pi_by_2"
     model = "FerBBH2"
     nu = (1, 2)
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
 
     ax1 = plt.subplot(gs[0])
 
-    plot_dir = f'/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/{model}/diag_initial_state'
+    plot_dir = f'/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/{model}'
     f90_1 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.90.{name}_part_1'
     f90_2 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.90.{name}_part_2'
     p90_1 = os.path.join(plot_dir, f90_1)
@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
     ax3 = plt.subplot(gs[1])
 
-    plot_dir = f'/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/{model}/diag_initial_state'
+    plot_dir = f'/home/bart/PycharmProjects/infinite_cylinder/data/O_I_n_flow/{model}'
     f180_1 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.180.{name}_part_1'
     f180_2 = f'O_I_n_flow_{model}_chi_100_n_{nu[0]}_{nu[1]}_LxMUC_6_Ly_6_custom.dat.180.{name}_part_2'
     p180_1 = os.path.join(plot_dir, f180_1)
