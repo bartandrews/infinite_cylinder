@@ -19,7 +19,7 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
     leaf = fp.file_name_leaf("V_flow", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("V_flow", path, model, chi_max, leaf)
 
-    tools = ["ent_spec_V_flow", "ent_V_flow", "corr_len_V_flow", "ent_corr_len_V"]
+    tools = ["ent_spec_V_flow", "ent_V_flow", "corr_len_V_flow", "ent_corr_len_V", "ent_corr_len"]
     data = fp.prepare_output_files(tools, path, model, chi_max, leaf)
 
     ##################################################################################################################

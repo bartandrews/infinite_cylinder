@@ -61,7 +61,7 @@ def file_name_leaf(program, model, ham_params):
     mu = f"mu_{ham_params['mu']:g}_" if ham_params['mu'] != 0 else ""
 
     if program == "V_flow":
-        V = f"V_{ham_params['V_min']:g}_{ham_params['V_max']:g}_{ham_params['V_samp']}_{ham_params['Vtype']}_{ham_params['Vrange']}_"
+        V = f"V_{ham_params['V_min']:g}_{ham_params['V_max']:g}_{ham_params['V_samp']}_{ham_params['Vtype']}_{ham_params['Vrange']:g}_"
     else:
         V = f"V_{ham_params['V']:g}_{ham_params['Vtype']}_{ham_params['Vrange']:g}_" if ham_params['V'] != 0 else ""
 

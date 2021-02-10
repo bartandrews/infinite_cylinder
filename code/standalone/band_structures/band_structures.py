@@ -332,8 +332,8 @@ if __name__ == '__main__':
     model = 'HofSqu1'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
     mining = False  # data mining mode for 2D band structures
     if not mining:
-        flag_3D = False  # choose between 3D or 2D band structure
-        p, q = 4, 11  # for Hofstadter model only
+        flag_3D = True  # choose between 3D or 2D band structure
+        p, q = 1, 4  # for Hofstadter model only
         C = 1  # for HalSquCN model only
     else:
         tx_min, tx_max, tx_samp = 0, 1000, 1001
