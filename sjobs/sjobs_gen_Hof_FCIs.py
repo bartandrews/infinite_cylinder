@@ -7,18 +7,13 @@ if __name__ == '__main__':
     r = [[], [], [], [], [], [], [], [], []]
 
     # populate r=-5 list (5 particles for C=1)
-    r[0].append({"chi": 250, "V": 10, "n": (5, 27), "nphi": (1, 3), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[0].append({"chi": 250, "V": 10, "n": (5, 36), "nphi": (1, 4), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[0].append({"chi": 250, "V": 10, "n": (1, 9), "nphi": (1, 5), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[0].append({"chi": 250, "V": 10, "n": (5, 54), "nphi": (1, 6), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[0].append({"chi": 250, "V": 10, "n": (5, 63), "nphi": (1, 7), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[0].append({"chi": 250, "V": 10, "n": (5, 72), "nphi": (1, 8), "LxMUC": 1, "Ly": 9, "phi_max": 9})
+    # r[0].append({"chi": 250, "V": 10, "n": (5, 27), "nphi": (1, 3), "LxMUC": 1, "Ly": 9, "phi_max": 9})
 
     # populate r=-4 list (8 particles for C=1)
     # r[1].append({"chi": 200, "V": 10, "n": (4, 21), "nphi": (1, 3), "LxMUC": 1, "Ly": 14, "phi_max": 7})
 
     # populate r=-3 list (6 particles for C=1, 3 particles for C=2)
-    # for chi_val in [50, 100, 150]:
+    # for chi_val in [200, 250]:
     #     r[2].append({"chi": chi_val, "V": 10, "n": (3, 55), "nphi": (3, 5), "LxMUC": 1, "Ly": 11, "phi_max": 11})
     #     r[2].append({"chi": chi_val, "V": 10, "n": (3, 77), "nphi": (4, 7), "LxMUC": 1, "Ly": 11, "phi_max": 11})
     #     r[2].append({"chi": chi_val, "V": 10, "n": (1, 33), "nphi": (5, 9), "LxMUC": 1, "Ly": 11, "phi_max": 11})
@@ -27,54 +22,49 @@ if __name__ == '__main__':
     #     r[2].append({"chi": chi_val, "V": 10, "n": (1, 55), "nphi": (8, 15), "LxMUC": 1, "Ly": 11, "phi_max": 11})
 
     # populate r=-2 list (4 particles for C=1, 4 particles for C=2)
-    # for chi_val in [50, 100, 150]:
-    #     r[3].append({"chi": chi_val, "V": 10, "n": (2, 35), "nphi": (3, 5), "LxMUC": 1, "Ly": 14, "phi_max": 7})
-    #     r[3].append({"chi": chi_val, "V": 10, "n": (2, 49), "nphi": (4, 7), "LxMUC": 1, "Ly": 14, "phi_max": 7})
-    #     r[3].append({"chi": chi_val, "V": 10, "n": (2, 63), "nphi": (5, 9), "LxMUC": 1, "Ly": 14, "phi_max": 7})
-    #     r[3].append({"chi": chi_val, "V": 10, "n": (2, 77), "nphi": (6, 11), "LxMUC": 1, "Ly": 14, "phi_max": 7})
-    #     r[3].append({"chi": chi_val, "V": 10, "n": (2, 91), "nphi": (7, 13), "LxMUC": 1, "Ly": 14, "phi_max": 7})
-    #     r[3].append({"chi": chi_val, "V": 10, "n": (2, 105), "nphi": (8, 15), "LxMUC": 1, "Ly": 14, "phi_max": 7})
+    for chi_val in [100, 150]:
+        r[3].append({"chi": chi_val, "V": 10, "n": (1, 44), "nphi": (3, 8), "LxMUC": 1, "Ly": 11, "phi_max": 11})
+        r[3].append({"chi": chi_val, "V": 10, "n": (2, 121), "nphi": (4, 11), "LxMUC": 1, "Ly": 11, "phi_max": 11})
+        r[3].append({"chi": chi_val, "V": 10, "n": (1, 77), "nphi": (5, 14), "LxMUC": 1, "Ly": 11, "phi_max": 11})
+        r[3].append({"chi": chi_val, "V": 10, "n": (2, 187), "nphi": (6, 17), "LxMUC": 1, "Ly": 11, "phi_max": 11})
+        r[3].append({"chi": chi_val, "V": 10, "n": (1, 110), "nphi": (7, 20), "LxMUC": 1, "Ly": 11, "phi_max": 11})
+        r[3].append({"chi": chi_val, "V": 10, "n": (2, 253), "nphi": (8, 23), "LxMUC": 1, "Ly": 11, "phi_max": 11})
 
     # populate r=-1 list (2 particles for C=2)
-    # for chi_val in [50, 100, 150]:
-    #     r[4].append({"chi": chi_val, "V": 10, "n": (1, 15), "nphi": (3, 5), "LxMUC": 1, "Ly": 6, "phi_max": 3})
-    #     r[4].append({"chi": chi_val, "V": 10, "n": (1, 21), "nphi": (4, 7), "LxMUC": 1, "Ly": 6, "phi_max": 3})
-    #     r[4].append({"chi": chi_val, "V": 10, "n": (1, 27), "nphi": (5, 9), "LxMUC": 1, "Ly": 6, "phi_max": 3})
-    #     r[4].append({"chi": chi_val, "V": 10, "n": (1, 33), "nphi": (6, 11), "LxMUC": 1, "Ly": 6, "phi_max": 3})
-    #     r[4].append({"chi": chi_val, "V": 10, "n": (1, 39), "nphi": (7, 13), "LxMUC": 1, "Ly": 6, "phi_max": 3})
-    #     r[4].append({"chi": chi_val, "V": 10, "n": (1, 45), "nphi": (8, 15), "LxMUC": 1, "Ly": 6, "phi_max": 3})
+    for chi_val in [100, 150]:
+        r[4].append({"chi": chi_val, "V": 10, "n": (1, 40), "nphi": (3, 8), "LxMUC": 1, "Ly": 10, "phi_max": 5})
+        r[4].append({"chi": chi_val, "V": 10, "n": (1, 55), "nphi": (4, 11), "LxMUC": 1, "Ly": 10, "phi_max": 5})
+        r[4].append({"chi": chi_val, "V": 10, "n": (1, 70), "nphi": (5, 14), "LxMUC": 1, "Ly": 10, "phi_max": 5})
+        r[4].append({"chi": chi_val, "V": 10, "n": (1, 85), "nphi": (6, 17), "LxMUC": 1, "Ly": 10, "phi_max": 5})
+        r[4].append({"chi": chi_val, "V": 10, "n": (1, 100), "nphi": (7, 20), "LxMUC": 1, "Ly": 10, "phi_max": 5})
+        r[4].append({"chi": chi_val, "V": 10, "n": (1, 15), "nphi": (8, 23), "LxMUC": 1, "Ly": 10, "phi_max": 5})
 
     # populate r=1 list (2 particles for C=1, 2 particles for C=2)
-    # for chi_val in [50, 100, 150]:
-    #     r[5].append({"chi": chi_val, "V": 10, "n": (1, 25), "nphi": (3, 5), "LxMUC": 1, "Ly": 10, "phi_max": 5})
-    #     r[5].append({"chi": chi_val, "V": 10, "n": (1, 35), "nphi": (4, 7), "LxMUC": 1, "Ly": 10, "phi_max": 5})
-    #     r[5].append({"chi": chi_val, "V": 10, "n": (1, 45), "nphi": (5, 9), "LxMUC": 1, "Ly": 10, "phi_max": 5})
-    #     r[5].append({"chi": chi_val, "V": 10, "n": (1, 55), "nphi": (6, 11), "LxMUC": 1, "Ly": 10, "phi_max": 5})
-    #     r[5].append({"chi": chi_val, "V": 10, "n": (1, 65), "nphi": (7, 13), "LxMUC": 1, "Ly": 10, "phi_max": 5})
-    #     r[5].append({"chi": chi_val, "V": 10, "n": (1, 75), "nphi": (8, 15), "LxMUC": 1, "Ly": 10, "phi_max": 5})
+    for chi_val in [100, 150]:
+        r[5].append({"chi": chi_val, "V": 10, "n": (1, 56), "nphi": (3, 8), "LxMUC": 1, "Ly": 14, "phi_max": 7})
+        r[5].append({"chi": chi_val, "V": 10, "n": (1, 77), "nphi": (4, 11), "LxMUC": 1, "Ly": 14, "phi_max": 7})
+        r[5].append({"chi": chi_val, "V": 10, "n": (1, 98), "nphi": (5, 14), "LxMUC": 1, "Ly": 14, "phi_max": 7})
+        r[5].append({"chi": chi_val, "V": 10, "n": (1, 119), "nphi": (6, 17), "LxMUC": 1, "Ly": 14, "phi_max": 7})
+        r[5].append({"chi": chi_val, "V": 10, "n": (1, 140), "nphi": (7, 20), "LxMUC": 1, "Ly": 14, "phi_max": 7})
+        r[5].append({"chi": chi_val, "V": 10, "n": (1, 161), "nphi": (8, 23), "LxMUC": 1, "Ly": 14, "phi_max": 7})
 
     # populate r=2 list (4 particles for C=1, 2 particles for C=2)
-    # for chi_val in [50, 100, 150]:
-    #     r[6].append({"chi": chi_val, "V": 10, "n": (2, 45), "nphi": (3, 5), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    #     r[6].append({"chi": chi_val, "V": 10, "n": (2, 63), "nphi": (4, 7), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    #     r[6].append({"chi": chi_val, "V": 10, "n": (2, 81), "nphi": (5, 9), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    #     r[6].append({"chi": chi_val, "V": 10, "n": (2, 99), "nphi": (6, 11), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    #     r[6].append({"chi": chi_val, "V": 10, "n": (2, 117), "nphi": (7, 13), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    #     r[6].append({"chi": chi_val, "V": 10, "n": (2, 135), "nphi": (8, 15), "LxMUC": 1, "Ly": 9, "phi_max": 9})
+    for chi_val in [100, 150]:
+        r[6].append({"chi": chi_val, "V": 10, "n": (1, 52), "nphi": (3, 8), "LxMUC": 1, "Ly": 13, "phi_max": 13})
+        r[6].append({"chi": chi_val, "V": 10, "n": (2, 143), "nphi": (4, 11), "LxMUC": 1, "Ly": 13, "phi_max": 13})
+        r[6].append({"chi": chi_val, "V": 10, "n": (1, 91), "nphi": (5, 14), "LxMUC": 1, "Ly": 13, "phi_max": 13})
+        r[6].append({"chi": chi_val, "V": 10, "n": (2, 221), "nphi": (6, 17), "LxMUC": 1, "Ly": 13, "phi_max": 13})
+        r[6].append({"chi": chi_val, "V": 10, "n": (1, 130), "nphi": (7, 20), "LxMUC": 1, "Ly": 13, "phi_max": 13})
+        r[6].append({"chi": chi_val, "V": 10, "n": (2, 229), "nphi": (8, 23), "LxMUC": 1, "Ly": 13, "phi_max": 13})
 
     # populate r=3 list (6 particles for C=1)
     # r[7].append({"chi": 250, "V": 10, "n": (1, 7), "nphi": (1, 3), "LxMUC": 1, "Ly": 14, "phi_max": 7})
 
     # populate r=4 list (4 particles for C=1)
-    r[8].append({"chi": 250, "V": 10, "n": (4, 27), "nphi": (1, 3), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[8].append({"chi": 250, "V": 10, "n": (1, 9), "nphi": (1, 4), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[8].append({"chi": 250, "V": 10, "n": (4, 25), "nphi": (1, 5), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[8].append({"chi": 250, "V": 10, "n": (2, 27), "nphi": (1, 6), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[8].append({"chi": 250, "V": 10, "n": (4, 63), "nphi": (1, 7), "LxMUC": 1, "Ly": 9, "phi_max": 9})
-    r[8].append({"chi": 250, "V": 10, "n": (1, 18), "nphi": (1, 8), "LxMUC": 1, "Ly": 9, "phi_max": 9})
+    # r[8].append({"chi": 250, "V": 10, "n": (4, 27), "nphi": (1, 3), "LxMUC": 1, "Ly": 9, "phi_max": 9})
 
     # pick r index
-    ridx = 8
+    ridx = 6
 
     # define the directory
     if ridx == 0:
