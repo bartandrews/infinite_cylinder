@@ -1,3 +1,0 @@
-#!/bin/bash
-export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun python code/V_flow.py -path -thr 12 -mod FerHofSqu1 -chi 250 -t1 1 -Vtype Coulomb -Vrange 1 -n 1 24 -nphi 1 8 -LxMUC 1 -Ly 6 -V_min 0 -V_max 0.2 -V_samp 41

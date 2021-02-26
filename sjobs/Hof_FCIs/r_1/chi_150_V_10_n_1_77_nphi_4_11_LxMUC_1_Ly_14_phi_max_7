@@ -1,3 +1,0 @@
-#!/bin/bash
-export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
-srun python code/phi_flow.py -path -thr 12 -mod FerHofSqu1 -chi 150 -t1 1 -V 10 -Vtype Coulomb -Vrange 1 -n 1 77 -nphi 4 11 -LxMUC 1 -Ly 14 -phi_min 0 -phi_max 7 -phi_samp 71
