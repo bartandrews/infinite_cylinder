@@ -24,7 +24,7 @@ plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 if __name__ == '__main__':
 
     fig = plt.figure(figsize=(6, 6))
-    gs = gridspec.GridSpec(3, 2, hspace=0.4, wspace=0.4)
+    gs = gridspec.GridSpec(4, 2, hspace=0.6, wspace=0.4)
 
     # define a list of easily-visible markers
     markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
@@ -34,31 +34,39 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    for filling in range(6):
+    for filling in range(8):
         if filling == 0:
-            ax1 = plt.subplot(gs[5])
-            nu = (4, 7)
-            Ly_val = 14
-        elif filling == 1:
-            ax1 = plt.subplot(gs[3])
-            nu = (3, 5)
-            Ly_val = 10
-        elif filling == 2:
-            ax1 = plt.subplot(gs[1])
-            nu = (2, 3)
-            Ly_val = 6
-        elif filling == 3:
             ax1 = plt.subplot(gs[0])
             nu = (1, 3)
             Ly_val = 6
-        elif filling == 4:
+        elif filling == 1:
+            ax1 = plt.subplot(gs[1])
+            nu = (2, 3)
+            Ly_val = 6
+        elif filling == 2:
             ax1 = plt.subplot(gs[2])
             nu = (2, 5)
             Ly_val = 10
-        elif filling == 5:
+        elif filling == 3:
+            ax1 = plt.subplot(gs[3])
+            nu = (3, 5)
+            Ly_val = 10
+        elif filling == 4:
             ax1 = plt.subplot(gs[4])
             nu = (3, 7)
             Ly_val = 14
+        elif filling == 5:
+            ax1 = plt.subplot(gs[5])
+            nu = (4, 7)
+            Ly_val = 14
+        elif filling == 6:
+            ax1 = plt.subplot(gs[6])
+            nu = (4, 9)
+            Ly_val = 18
+        elif filling == 7:
+            ax1 = plt.subplot(gs[7])
+            nu = (5, 9)
+            Ly_val = 18
 
         for q in range(3, 9):
 
@@ -81,18 +89,19 @@ if __name__ == '__main__':
 
             charge = [i - charge[0] for i in charge]
 
-            ax1.plot(phi, charge, '.', c=f'C{q}', marker=markers[q-3], fillstyle='none', markersize=2.5, label=f'${nphi[0]}/{nphi[1]}$')
+            ax1.plot(phi, charge, '.', c=f'C{q-3}', marker=markers[q-3], fillstyle='none', markersize=2.5, label=f'${nphi[0]}/{nphi[1]}$')
 
-            if filling == 3:
+            if filling == 0:
                 leg = ax1.legend(loc='upper center', handletextpad=0.3, handlelength=1, labelspacing=0.1, borderpad=0.3,
                                  framealpha=1,
                                  edgecolor='k', markerscale=2, fontsize=10, ncol=6, columnspacing=0.5,
-                                 bbox_to_anchor=(1.2, 1.6), title='$n_\\phi$')
+                                 bbox_to_anchor=(1.2, 1.9), title='$n_\\phi$', title_fontsize=11)
                 leg.get_frame().set_linewidth(0.5)
 
             ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
             ax1.set_xlim([0, nu[1]])
             ax1.set_xticks(np.arange(0, nu[1]+0.1, 1))
+            ax1.set_yticks([-nu[0], 0])
             # ax1.set_ylim([-nu[0], 0])
             ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
             ax1.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
@@ -102,12 +111,14 @@ if __name__ == '__main__':
     ####################################################################################################################
     ####################################################################################################################
 
-    fig.text(0.02, 0.87, "(a)", fontsize=12)
+    fig.text(0.03, 0.87, "(a)", fontsize=12)
     fig.text(0.48, 0.87, "(b)", fontsize=12)
-    fig.text(0.02, 0.59, "(c)", fontsize=12)
-    fig.text(0.48, 0.59, "(d)", fontsize=12)
-    fig.text(0.02, 0.31, "(e)", fontsize=12)
-    fig.text(0.48, 0.31, "(f)", fontsize=12)
+    fig.text(0.03, 0.655, "(c)", fontsize=12)
+    fig.text(0.48, 0.655, "(d)", fontsize=12)
+    fig.text(0.03, 0.445, "(e)", fontsize=12)
+    fig.text(0.48, 0.445, "(f)", fontsize=12)
+    fig.text(0.03, 0.231, "(g)", fontsize=12)
+    fig.text(0.48, 0.231, "(h)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/BT/phiflow_analysis.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/FCI/phiflow_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()

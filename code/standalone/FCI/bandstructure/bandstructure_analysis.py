@@ -2,6 +2,12 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import axes3d
+import csv
+import matplotlib.gridspec as gridspec
+
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.verbose.level = 'debug-annoying'
 
 a0 = 1  # lattice constant
 t = 1  # hopping amplitude
@@ -327,13 +333,25 @@ def berry_curv(eigvec, eigvec_alpha, eigvec_beta, eigvec_alpha_beta):
 
 if __name__ == '__main__':
 
+    fig = plt.figure(figsize=(6, 2.5))
+    outer_grid = gridspec.GridSpec(1, 2, wspace=0.5, width_ratios=[1.3, 1])
+    left_cell = outer_grid[0, 0]
+    right_cell = outer_grid[0, 1]
+    right_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, right_cell, hspace=0)
+
+    # define a list of easily-visible markers
+    markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
+               (3, 2, 0), (4, 2, 0), (5, 2, 0), (6, 2, 0), 'X', 'x', 'd', 'D', 'P',
+               '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
+               '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
+
     # initialization ###################################################################################################
     num_samples = 101
     model = 'HofSqu1'  # (HofSqu1, HalSquCN), (HalTriC3), (graphene, HalHexC1)
     mining = False  # data mining mode for 2D band structures
     if not mining:
         flag_3D = True  # choose between 3D or 2D band structure
-        p, q = 9, 44  # for Hofstadter model only
+        p, q = 1, 3  # for Hofstadter model only
         C = 1  # for HalSquCN model only
     else:
         tx_min, tx_max, tx_samp = 0, 1000, 1001
@@ -382,16 +400,41 @@ if __name__ == '__main__':
             print(f"Chern number ({band}) = {chern_numbers[band]}")
 
         # construct figure
-        fig = plt.figure()
-        ax = fig.gca(projection='3d')
+        ax = plt.subplot(left_cell, projection='3d')
         idx_x = np.linspace(0, num_samples - 1, num_samples, dtype=int)
         idx_y = np.linspace(0, num_samples - 1, num_samples, dtype=int)
         kx, ky = np.meshgrid(idx_x, idx_y)
         for i in range(num_bands):
             ax.plot_surface(kx, ky, eigenvalues[i, kx, ky])
-        ax.set_xlabel('$k_x$')
-        ax.set_ylabel('$k_y$')
+        ax.xaxis.labelpad = -1
+        ax.yaxis.labelpad = -1
+        ax.zaxis.labelpad = -5
+        ax.set_xlabel('$k_x / |\mathbf{b}_x|$')
+        ax.set_ylabel('$k_y / |\mathbf{b}_y|$')
+
+
+        def custom(value, tick_number):
+
+            if value == 0:
+                return "$0$"
+            elif value == num_samples - 1:
+                return "$1$"
+            else:
+                return "${}$".format(round(value / (num_samples - 1), 2))
+
+
+        ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
+        ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
+
+        ax.set_xticks([0, 50, 100])
+        ax.set_yticks([0, 50, 100])
+
         ax.set_zlabel('$E$')
+        ax.set_title('$p=4$, $C=1$ $\Rightarrow\;n_\phi=\\frac{1}{3}$', pad=-5)
+        ax.tick_params(axis='x', which='major', pad=-1)
+        ax.tick_params(axis='y', which='major', pad=-1)
+        ax.tick_params(axis='z', which='major', pad=-1)
+        ax.view_init(elev=4, azim=135)
     elif mining:
         total_num_chern = len(C)
         ratio = np.zeros((total_num_chern, tx_samp))
@@ -453,11 +496,68 @@ if __name__ == '__main__':
         ax.set_xlabel('symmetry path')
         ax.set_ylabel('$E$')
 
-    # band analysis
-    band_gap = np.min(eigenvalues[1]) - np.max(eigenvalues[0])
-    band_width = np.max(eigenvalues[0]) - np.min(eigenvalues[0])
-    print(f"band width (0) = {band_width}")
-    print(f"band gap (0-1) = {band_gap}")
-    print(f"gap-to-width ratio (0-1) = {band_gap / band_width}")
+    ####################################################################################################################
 
+    # extract data from file
+    with open('/home/bart/PycharmProjects/infinite_cylinder/code/standalone/FCI/bandstructure/gaps.txt', 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        chern_numbers = []
+        p_values = []
+        widths = []
+        gaps = []
+        flatness_ratios = []
+        for row in plots:
+            chern_numbers.append(float(row[0]))
+            p_values.append(float(row[1]))
+            widths.append(float(row[2]))
+            gaps.append(float(row[3]))
+            flatness_ratios.append(float(row[3])/float(row[2]))
+
+    ax1 = plt.subplot(right_inner_grid[0])
+    ax2 = plt.subplot(right_inner_grid[1])
+    ax3 = plt.subplot(right_inner_grid[2])
+
+    for i in range(5):
+        if i == 0:
+            p_min = 0
+            p_max = 6
+        else:
+            p_min = 6 + 7*(i-1)
+            p_max = 6 + 7*(i-1) + 7
+        ax1.plot(p_values[p_min:p_max], np.log(gaps[p_min:p_max]), '.', marker=markers[i], markersize=5, fillstyle='none',
+                 c=f"C{i}", label=f"${int(chern_numbers[p_min])}$")
+        ax2.plot(p_values[p_min:p_max], np.log(widths[p_min:p_max]), '.', marker=markers[i], markersize=5, fillstyle='none',
+                 c=f"C{i}", label=f"${int(chern_numbers[p_min])}$")
+        ax3.plot(p_values[p_min:p_max], np.log(flatness_ratios[p_min:p_max]), '.', marker=markers[i], markersize=5, fillstyle='none',
+                 c=f"C{i}", label=f"${int(chern_numbers[p_min])}$")
+
+    ax1.set_ylabel('$\ln(\Delta)$')
+    ax2.set_ylabel('$\ln(W)$')
+    ax3.set_ylabel('$\ln(\Delta / W)$')
+    ax3.set_xlabel('$p$')
+    ax3.set_xticks([3, 4, 5, 6, 7, 8, 9])
+
+    leg = ax1.legend(loc='upper center', handletextpad=0.3, handlelength=1, labelspacing=0.1, borderpad=0.3,
+                     framealpha=1,
+                     edgecolor='k', markerscale=0.8, fontsize=10, ncol=6, columnspacing=0.5,
+                     bbox_to_anchor=(0.5, 1.8), title='$C$')
+    leg.get_frame().set_linewidth(0.5)
+
+    ####################################################################################################################
+
+    ax.annotate('', xy=(0.17, 0.3), xycoords='axes fraction', xytext=(0.17, 0.455),
+                arrowprops=dict(arrowstyle="<->", color='k'))
+    ax.annotate('', xy=(0.17, 0.225), xycoords='axes fraction', xytext=(0.17, 0.33),
+                arrowprops=dict(arrowstyle="<->", color='k'))
+    fig.text(0.14, 0.385, "$\Delta$")
+    fig.text(0.14, 0.31, "$W$")
+
+    fig.text(0.26, 0.31, "$C=1$", c='white')
+    fig.text(0.26, 0.5, "$C=-2$", c='white')
+    fig.text(0.26, 0.675, "$C=1$", c='white')
+
+    fig.text(0.13, 0.95, "(a)", fontsize=12)
+    fig.text(0.525, 0.95, "(b)", fontsize=12)
+
+    plt.savefig("/home/bart/Documents/papers/FCI/bandstructure_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()

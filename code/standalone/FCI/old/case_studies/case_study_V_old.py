@@ -29,7 +29,7 @@ if __name__ == '__main__':
 
     ax1 = plt.subplot(gs[0], anchor=(0, 0.85))
 
-    ent_spec_V_flow_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHalHexC1'
+    ent_spec_V_flow_dir = '/data/ent_spec_V_flow/FerHalHexC1'
     ent_spec_V_flow_file = 'ent_spec_V_flow_FerHalHexC1_chi_100_t1_1_V_0_10_41_Coulomb_1_n_1_2_LxMUC_1_Ly_3.dat'
     ent_spec_V_flow_path = os.path.join(ent_spec_V_flow_dir, ent_spec_V_flow_file)
 
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     ax2 = plt.subplot(gs[1])
 
-    corr_len_V_flow_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHalHexC1'
+    corr_len_V_flow_dir = '/data/corr_len_V_flow/FerHalHexC1'
     corr_len_V_flow_file = 'corr_len_V_flow_FerHalHexC1_chi_100_t1_1_V_0_10_41_Coulomb_1_n_1_2_LxMUC_1_Ly_3.dat'
     corr_len_V_flow_path = os.path.join(corr_len_V_flow_dir, corr_len_V_flow_file)
 
@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
     ax3 = plt.subplot(gs[2])
 
-    ent_V_flow_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHalHexC1'
+    ent_V_flow_dir = '/data/ent_V_flow/FerHalHexC1'
     ent_V_flow_file = 'ent_V_flow_FerHalHexC1_chi_100_t1_1_V_0_10_41_Coulomb_1_n_1_2_LxMUC_1_Ly_3.dat'
     ent_V_flow_path = os.path.join(ent_V_flow_dir, ent_V_flow_file)
 
@@ -131,7 +131,7 @@ if __name__ == '__main__':
 
     ax4 = plt.subplot(gs[3])
 
-    ent_corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_corr_len/FerHalHexC1'
+    ent_corr_len_dir = '/data/ent_corr_len/FerHalHexC1'
     ent_corr_len_file = 'ent_corr_len_FerHalHexC1_chi_100_t1_1_V_0_10_41_Coulomb_1_n_1_2_LxMUC_1_Ly_3.dat'
     ent_corr_len_path = os.path.join(ent_corr_len_dir, ent_corr_len_file)
 

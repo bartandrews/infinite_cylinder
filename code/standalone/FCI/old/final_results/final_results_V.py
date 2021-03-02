@@ -36,7 +36,7 @@ if __name__ == '__main__':
     ax1 = plt.subplot(gs[0], anchor=(0, 0.85))
     ax1.tick_params('x', direction='in', bottom=True)
 
-    TFB_dir = '/home/bart/PycharmProjects/infinite_cylinder/code/standalone/BT/final_results'
+    TFB_dir = '/standalone/FCI/final_results'
     TFB_file = 'TFB.dat'
     TFB_path = os.path.join(TFB_dir, TFB_file)
 
@@ -72,7 +72,7 @@ if __name__ == '__main__':
     ax2 = plt.subplot(gs[1])
     ax2.tick_params('x', direction='in', bottom=True)
 
-    Hofstadter_dir = '/home/bart/PycharmProjects/infinite_cylinder/code/standalone/BT/final_results'
+    Hofstadter_dir = '/standalone/FCI/final_results'
     Hofstadter_file = 'Hofstadter.dat'
     Hofstadter_path = os.path.join(Hofstadter_dir, Hofstadter_file)
 
