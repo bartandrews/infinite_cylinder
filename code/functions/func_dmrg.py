@@ -34,12 +34,14 @@ from models.old.magnetic_lattice.hex_1_hex_5_orbital import FermionicHex1Hex5Orb
 
 def __get_custom_state():
 
+    # state = ['up', 'down']*16  # Heisenberg
+
     # N/4 must be even! e.g. N=8,16,24,32,40,48,etc.
 
     # state = [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]*3  # BBH
-    state = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0] * 3  # BBH2
+    # state = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0] * 3  # BBH2
     # state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1 (SSH)
-    # state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
+    state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
 
     return state
 
