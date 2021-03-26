@@ -54,11 +54,11 @@ if __name__ == '__main__':
         elif filling == 2:
             ax1 = plt.subplot(top_left_grid[1])
             nphi = (1, 3)
-            Ly_val = 7
+            Ly_val = 14
         elif filling == 3:
             ax1 = plt.subplot(top_right_grid[1])
             nphi = (1, 4)
-            Ly_val = 7
+            Ly_val = 14
         elif filling == 4:
             ax1 = plt.subplot(bottom_left_grid[0])
             nphi = (1, 5)
@@ -70,11 +70,11 @@ if __name__ == '__main__':
         elif filling == 6:
             ax1 = plt.subplot(bottom_left_grid[1])
             nphi = (1, 5)
-            Ly_val = 7
+            Ly_val = 14
         elif filling == 7:
             ax1 = plt.subplot(bottom_right_grid[1])
             nphi = (1, 6)
-            Ly_val = 7
+            Ly_val = 14
 
         for chi_num, chi in enumerate([50, 100, 150, 200, 250]):
 

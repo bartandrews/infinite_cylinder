@@ -46,11 +46,11 @@ if __name__ == '__main__':
         if filling == 0:
             ax1 = plt.subplot(top_left_grid[0])
             nu = (3, 7)
-            Ly_val = 14
+            Ly_val = 7
         elif filling == 1:
             ax1 = plt.subplot(top_right_grid[0])
             nu = (4, 7)
-            Ly_val = 14
+            Ly_val = 7
         elif filling == 2:
             ax1 = plt.subplot(top_left_grid[1])
             nu = (3, 7)
@@ -110,6 +110,8 @@ if __name__ == '__main__':
             ax1.set_xlim([0, nu[1]])
             ax1.set_xticks(np.arange(0, nu[1]+0.1, 1))
             ax1.set_yticks([-nu[0], 0])
+            if filling == 1:
+                ax1.set_ylim([-nu[0]-0.2, 0.2])
             # ax1.set_ylim([-nu[0], 0])
             ax1.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
             if q == 3:
