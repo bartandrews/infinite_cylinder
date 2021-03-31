@@ -371,9 +371,10 @@ def __my_iDMRG(model, chi_max, ham_params, state_data, run=True):
         'max_S_err': 1.e-6,
         # 'norm_tol': 1.e-6,
         # 'norm_tol_iter': 1000,
-        'max_sweeps': 1000,
+        # 'update_env': 1000,
+        'max_sweeps': 1000,  # default=1000
         'verbose': 5,  # 5
-        'N_sweeps_check': 10,
+        'N_sweeps_check': 10,  # default=10
         'diag_method': 'default',
         'max_hours': 24*140  # 20 weeks
     }

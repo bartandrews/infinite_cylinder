@@ -146,17 +146,17 @@ if __name__ == '__main__':
     charge = [i - charge[0] for i in charge]
     ax3.plot(phi, charge, '.', c=f'C2', marker=markers[9], fillstyle='none', markersize=5, markeredgewidth=0.2)
 
-    # phiflow_file = f'charge_pump_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_2_105_nphi_8_15_LxMUC_1_Ly_14_phi_0_7_71.dat'
-    # phiflow_path = os.path.join(phiflow_dir, phiflow_file)
-    # with open(phiflow_path, 'r') as csvfile:
-    #     plots = csv.reader(csvfile, delimiter='\t')
-    #     phi = []
-    #     charge = []
-    #     for row in plots:
-    #         phi.append(float(row[0]))
-    #         charge.append(float(row[1]))
-    # charge = [i - charge[0] for i in charge]
-    # ax3.plot(phi, charge, '.', c=f'C3', marker=markers[9], fillstyle='none', markersize=5, markeredgewidth=0.2)
+    phiflow_file = f'charge_pump_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_2_105_nphi_8_15_LxMUC_1_Ly_14_phi_0_7_71.dat'
+    phiflow_path = os.path.join(phiflow_dir, phiflow_file)
+    with open(phiflow_path, 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        phi = []
+        charge = []
+        for row in plots:
+            phi.append(float(row[0]))
+            charge.append(float(row[1]))
+    charge = [i - charge[0] for i in charge]
+    ax3.plot(phi, charge, '.', c=f'C3', marker=markers[9], fillstyle='none', markersize=5, markeredgewidth=0.2)
 
     ax3.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax3.set_xlim([0, nu[1]])

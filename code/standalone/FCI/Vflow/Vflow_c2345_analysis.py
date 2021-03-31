@@ -43,7 +43,7 @@ if __name__ == '__main__':
     ax1 = plt.subplot(upper_left_cell)
 
     corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
-    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_250_t1_1_V_0_10_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_25_t1_1_V_0_10_41_Coulomb_1_n_1_33_nphi_6_11_LxMUC_1_Ly_6.dat'
     corr_len_path = os.path.join(corr_len_dir, corr_len_file)
 
     # extract data from file
@@ -61,7 +61,7 @@ if __name__ == '__main__':
     ax1.set_xlabel("$V$", fontsize=11)
     ax1.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax1.set_ylabel("$\\xi$", fontsize=11)
-    ax1.set_title("(a) $n_\phi=1/4$", fontsize=12)
+    ax1.set_title("(a) $C=2$, $\\nu=1/3$", fontsize=12)
     ax1.axvspan(0, 0.4, alpha=0.5, color='grey')
     line1 = plt.Line2D((.125, .125), (.645, .748), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line1)
@@ -73,7 +73,7 @@ if __name__ == '__main__':
     ax2 = plt.subplot(left_inner_grid[0])
 
     corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
-    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_250_t1_1_V_0_0.4_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_25_t1_1_V_0_10_41_Coulomb_1_n_1_33_nphi_6_11_LxMUC_1_Ly_6.dat'
     corr_len_path = os.path.join(corr_len_dir, corr_len_file)
 
     # extract data from file
@@ -87,7 +87,7 @@ if __name__ == '__main__':
 
     ax2.plot(V, xi, 'x', c='k', markersize=2)
 
-    ax2.set_xlim([0, 0.4])
+    ax2.set_xlim([0, 10])
     ax2.set_ylabel("$\\xi$", fontsize=11)
     plt.setp(ax2.get_xticklabels(), visible=False)
     ax2.tick_params(
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     ax3 = plt.subplot(left_inner_grid[1])
 
     ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
-    ent_file = f'ent_V_flow_FerHofSqu1_chi_250_t1_1_V_0_0.4_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+    ent_file = f'ent_V_flow_FerHofSqu1_chi_25_t1_1_V_0_10_41_Coulomb_1_n_1_33_nphi_6_11_LxMUC_1_Ly_6.dat'
     ent_path = os.path.join(ent_dir, ent_file)
 
     # extract data from file
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
     ax3.plot(V, xi, 'x', c='k', markersize=2)
 
-    ax3.set_xlim([0, 0.4])
+    ax3.set_xlim([0, 10])
     ax3.set_ylabel("$S_\mathrm{vN}$", fontsize=11)
     plt.setp(ax3.get_xticklabels(), visible=False)
     ax3.tick_params(
@@ -131,7 +131,7 @@ if __name__ == '__main__':
     ax4 = plt.subplot(left_inner_grid[2])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
-    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_250_t1_1_V_0_0.4_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_25_t1_1_V_0_10_41_Coulomb_1_n_1_33_nphi_6_11_LxMUC_1_Ly_6.dat'
     ent_spec_path = os.path.join(ent_spec_dir, ent_spec_file)
 
     x = []
@@ -164,7 +164,7 @@ if __name__ == '__main__':
     ax4.tick_params(axis="x", labelsize=10)
     ax4.tick_params(axis="y", labelsize=10)
 
-    ax4.set_xlim([0, 0.4])
+    ax4.set_xlim([0, 10])
     ax4.set_ylim([0, 10])
     ax4.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax4.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
@@ -177,7 +177,7 @@ if __name__ == '__main__':
     ax5 = plt.subplot(upper_right_cell)
 
     corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
-    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_250_t1_1_V_0_10_41_Coulomb_1_n_1_24_nphi_1_8_LxMUC_1_Ly_6.dat'
+    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_50_t1_1_V_0_10_41_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat'
     corr_len_path = os.path.join(corr_len_dir, corr_len_file)
 
     # extract data from file
@@ -195,7 +195,7 @@ if __name__ == '__main__':
     ax5.set_xlabel("$V$", fontsize=11)
     ax5.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax5.set_ylabel("$\\xi$", fontsize=11)
-    ax5.set_title("(b) $n_\phi=1/8$", fontsize=12)
+    ax5.set_title("(b) $C=2$, $\\nu=1/5$", fontsize=12)
     ax5.axvspan(0, 0.4, alpha=0.5, color='grey')
     line1 = plt.Line2D((.59, .59), (.645, .748), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line1)
@@ -207,7 +207,7 @@ if __name__ == '__main__':
     ax6 = plt.subplot(right_inner_grid[0])
 
     corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
-    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_250_t1_1_V_0_0.2_41_Coulomb_1_n_1_24_nphi_1_8_LxMUC_1_Ly_6.dat'
+    corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_50_t1_1_V_0_10_41_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat'
     corr_len_path = os.path.join(corr_len_dir, corr_len_file)
 
     # extract data from file
@@ -221,7 +221,7 @@ if __name__ == '__main__':
 
     ax6.plot(V, xi, 'x', c='k', markersize=2)
 
-    ax6.set_xlim([0, 0.2])
+    ax6.set_xlim([0, 10])
     # ax6.set_ylim([5, 10])
     ax6.set_ylabel("$\\xi$", fontsize=11)
     plt.setp(ax6.get_xticklabels(), visible=False)
@@ -237,7 +237,7 @@ if __name__ == '__main__':
     ax7 = plt.subplot(right_inner_grid[1])
 
     ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
-    ent_file = f'ent_V_flow_FerHofSqu1_chi_250_t1_1_V_0_0.2_41_Coulomb_1_n_1_24_nphi_1_8_LxMUC_1_Ly_6.dat'
+    ent_file = f'ent_V_flow_FerHofSqu1_chi_50_t1_1_V_0_10_41_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat'
     ent_path = os.path.join(ent_dir, ent_file)
 
     # extract data from file
@@ -251,7 +251,7 @@ if __name__ == '__main__':
 
     ax7.plot(V, xi, 'x', c='k', markersize=2)
 
-    ax7.set_xlim([0, 0.2])
+    ax7.set_xlim([0, 10])
     ax7.set_ylabel("$S_\mathrm{vN}$", fontsize=11)
     plt.setp(ax7.get_xticklabels(), visible=False)
     ax7.tick_params(
@@ -266,7 +266,7 @@ if __name__ == '__main__':
     ax8 = plt.subplot(right_inner_grid[2])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
-    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_250_t1_1_V_0_0.2_41_Coulomb_1_n_1_24_nphi_1_8_LxMUC_1_Ly_6.dat'
+    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_50_t1_1_V_0_10_41_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat'
     ent_spec_path = os.path.join(ent_spec_dir, ent_spec_file)
 
     x = []
@@ -299,7 +299,7 @@ if __name__ == '__main__':
     ax8.tick_params(axis="x", labelsize=10)
     ax8.tick_params(axis="y", labelsize=10)
 
-    ax8.set_xlim([0, 0.2])
+    ax8.set_xlim([0, 10])
     ax8.set_ylim([0, 10])
     ax8.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax8.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
@@ -311,5 +311,5 @@ if __name__ == '__main__':
     # fig.text(0.03, 0.87, "(a)", fontsize=12)
     # fig.text(0.5, 0.87, "(b)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_analysis.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_c2345_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()
