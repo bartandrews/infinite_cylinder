@@ -159,23 +159,23 @@ if __name__ == '__main__':
     ax3 = plt.subplot(gs[3])  # 071829 #################################################################################
     nu = (2, 7)
 
-    # corrfunc_file = f'corr_func_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_2_105_nphi_8_15_LxMUC_1_Ly_14.dat'
-    # corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
-    # with open(corrfunc_path, 'r') as csvfile:
-    #     plots = csv.reader(csvfile, delimiter='\t')
-    #     sites = np.arange(14)
-    #     corr_func = []
-    #     for i, row in enumerate(plots):
-    #         if i == 0:
-    #             corr_func = row
-    #             break
-    # corr_func = [float(i) for i in corr_func]
-    # min_val = min(corr_func)
-    # corr_func = [float(i) - min_val for i in corr_func]
-    # sites_cont = [sites[-1], sites[-1] + 1]
-    # corr_func_cont = [corr_func[-1], corr_func[0]]
-    # ax3.plot(sites, corr_func, '.-', c=f'C2', marker=markers[9], fillstyle='none', markersize=5)
-    # ax3.plot(sites_cont, corr_func_cont, '--', c=f'C2')
+    corrfunc_file = f'corr_func_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_2_105_nphi_8_15_LxMUC_1_Ly_14.dat'
+    corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
+    with open(corrfunc_path, 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        sites = np.arange(14)
+        corr_func = []
+        for i, row in enumerate(plots):
+            if i == 0:
+                corr_func = row
+                break
+    corr_func = [float(i) for i in corr_func]
+    min_val = min(corr_func)
+    corr_func = [float(i) - min_val for i in corr_func]
+    sites_cont = [sites[-1], sites[-1] + 1]
+    corr_func_cont = [corr_func[-1], corr_func[0]]
+    ax3.plot(sites, corr_func, '.-', c=f'C2', marker=markers[9], fillstyle='none', markersize=5)
+    ax3.plot(sites_cont, corr_func_cont, '--', c=f'C2')
 
     # corrfunc_file = f'corr_func_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_2_105_nphi_8_15_LxMUC_1_Ly_14.dat'
     # corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
