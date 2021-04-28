@@ -42,23 +42,23 @@ if __name__ == '__main__':
     ax = plt.subplot(gs[0])  # 071829 #################################################################################
     nu = (1, 7)
 
-    corrfunc_file = f'corr_func_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_133_nphi_5_19_LxMUC_1_Ly_14.dat'
-    corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
-    with open(corrfunc_path, 'r') as csvfile:
-        plots = csv.reader(csvfile, delimiter='\t')
-        sites = np.arange(14)
-        corr_func = []
-        for i, row in enumerate(plots):
-            if i == 0:
-                corr_func = row
-                break
-    corr_func = [float(i) for i in corr_func]
-    min_val = min(corr_func)
-    corr_func = [float(i) - min_val for i in corr_func]
-    sites_cont = [sites[-1], sites[-1] + 1]
-    corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax.plot(sites, corr_func, '.-', c=f'C0', marker=markers[1], fillstyle='none', markersize=5)
-    ax.plot(sites_cont, corr_func_cont, '--', c=f'C0')
+    # corrfunc_file = f'corr_func_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_133_nphi_5_19_LxMUC_1_Ly_14.dat'
+    # corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
+    # with open(corrfunc_path, 'r') as csvfile:
+    #     plots = csv.reader(csvfile, delimiter='\t')
+    #     sites = np.arange(14)
+    #     corr_func = []
+    #     for i, row in enumerate(plots):
+    #         if i == 0:
+    #             corr_func = row
+    #             break
+    # corr_func = [float(i) for i in corr_func]
+    # min_val = min(corr_func)
+    # corr_func = [float(i) - min_val for i in corr_func]
+    # sites_cont = [sites[-1], sites[-1] + 1]
+    # corr_func_cont = [corr_func[-1], corr_func[0]]
+    # ax.plot(sites, corr_func, '.-', c=f'C0', marker=markers[1], fillstyle='none', markersize=5)
+    # ax.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_161_nphi_6_23_LxMUC_1_Ly_14.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -75,16 +75,16 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax.plot(sites, corr_func, '.-', c=f'C0', marker=markers[8], fillstyle='none', markersize=5)
-    ax.plot(sites_cont, corr_func_cont, '--', c=f'C0')
+    ax.plot(sites[1:], corr_func[1:], '.-', c=f'C0', marker=markers[8], fillstyle='none', markersize=5)
+    # ax.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax.set_xlim([0, 14])
-    ax.set_xticks(np.arange(0, 14 + 0.1, 1))
-    ax.set_ylim(0)
+    ax.set_xticks(np.arange(0, 14 + 0.1, 2))
+    # ax.set_ylim(0)
     ax.set_xlabel("$y$", fontsize=11)
     ax.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax.text(0.05 * nu[1], -0.9 * 4 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax.text(0.35 * 14, 0.003358475, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     # nphi_legend_elements = [
     #     Line2D([0], [0], linestyle='none', marker=markers[0], color='k', label='$3/8$', fillstyle='none', markersize=5),
@@ -116,8 +116,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax1.plot(sites, corr_func, '.-', c=f'C0', marker=markers[7], fillstyle='none', markersize=5)
-    ax1.plot(sites_cont, corr_func_cont, '--', c=f'C0')
+    ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C0', marker=markers[7], fillstyle='none', markersize=5)
+    # ax1.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_2_225_nphi_4_15_LxMUC_1_Ly_15.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -134,16 +134,16 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax1.plot(sites, corr_func, '.-', c=f'C1', marker=markers[7], fillstyle='none', markersize=5)
-    ax1.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[7], fillstyle='none', markersize=5)
+    # ax1.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax1.set_xlim([0, 15])
     ax1.set_xticks(np.arange(0, 15+0.1, 5))
-    ax1.set_ylim(0)
+    # ax1.set_ylim(0)
     ax1.set_xlabel("$y$", fontsize=11)
     ax1.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax1.text(0.05*nu[1], -0.9*4*nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax1.text(0.35*15, 0.013, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     ####################################################################################################################
     ####################################################################################################################

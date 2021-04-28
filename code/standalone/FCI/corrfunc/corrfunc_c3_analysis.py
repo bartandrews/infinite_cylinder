@@ -57,8 +57,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax.plot(sites, corr_func, '.-', c=f'C1', marker=markers[1], fillstyle='none', markersize=5)
-    ax.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    ax.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[1], fillstyle='none', markersize=5)
+    # ax.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_1_140_nphi_7_20_LxMUC_1_Ly_14.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -75,8 +75,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax.plot(sites, corr_func, '.-', c=f'C1', marker=markers[2], fillstyle='none', markersize=5)
-    ax.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    ax.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[2], fillstyle='none', markersize=5)
+    # ax.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_1_98_nphi_5_14_LxMUC_1_Ly_14.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -93,8 +93,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax.plot(sites, corr_func, '.-', c=f'C2', marker=markers[1], fillstyle='none', markersize=5)
-    ax.plot(sites_cont, corr_func_cont, '--', c=f'C2')
+    ax.plot(sites[1:], corr_func[1:], '.-', c=f'C2', marker=markers[1], fillstyle='none', markersize=5)
+    # ax.plot(sites_cont, corr_func_cont, '--', c=f'C2')
 
     # phiflow_file = f'charge_pump_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_1_98_nphi_5_14_LxMUC_1_Ly_14_phi_0_7_71.dat'
     # phiflow_path = os.path.join(phiflow_dir, phiflow_file)
@@ -111,10 +111,10 @@ if __name__ == '__main__':
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax.set_xlim([0, 14])
     ax.set_xticks(np.arange(0, 14 + 0.1, 2))
-    ax.set_ylim(0)
+    # ax.set_ylim(0)
     ax.set_xlabel("$y$", fontsize=11)
     ax.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax.text(0.05 * nu[1], -0.9 * 3 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax.text(0.35 * 14, 0.0053, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     nphi_legend_elements = [
         Line2D([0], [0], linestyle='none', marker=markers[0], color='k', label='$3/8$', fillstyle='none', markersize=5),
@@ -146,8 +146,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax1.plot(sites, corr_func, '.-', c=f'C1', marker=markers[8], fillstyle='none', markersize=5)
-    ax1.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[8], fillstyle='none', markersize=5)
+    # ax1.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_1_100_nphi_7_20_LxMUC_1_Ly_10.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -164,8 +164,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax1.plot(sites, corr_func, '.-', c=f'C1', marker=markers[2], fillstyle='none', markersize=5)
-    ax1.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[2], fillstyle='none', markersize=5)
+    # ax1.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     # phiflow_file = f'charge_pump_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_1_85_nphi_6_17_LxMUC_1_Ly_10_phi_0_5_51.dat'
     # phiflow_path = os.path.join(phiflow_dir, phiflow_file)
@@ -182,10 +182,10 @@ if __name__ == '__main__':
     ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax1.set_xlim([0, 10])
     ax1.set_xticks(np.arange(0, 10+0.1, 1))
-    ax1.set_ylim(0)
+    # ax1.set_ylim(0)
     ax1.set_xlabel("$y$", fontsize=11)
     ax1.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax1.text(0.05*nu[1], -0.9*3*nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax1.text(0.35*10, 0.02, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     ax2 = plt.subplot(gs[3])  # 071829 #################################################################################
     nu = (2, 11)
@@ -205,8 +205,8 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax2.plot(sites, corr_func, '.-', c=f'C1', marker=markers[7], fillstyle='none', markersize=5)
-    ax2.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    ax2.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[7], fillstyle='none', markersize=5)
+    # ax2.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_2_121_nphi_4_11_LxMUC_1_Ly_11.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -223,16 +223,16 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax2.plot(sites, corr_func, '.-', c=f'C2', marker=markers[7], fillstyle='none', markersize=5)
-    ax2.plot(sites_cont, corr_func_cont, '--', c=f'C2')
+    ax2.plot(sites[1:], corr_func[1:], '.-', c=f'C2', marker=markers[7], fillstyle='none', markersize=5)
+    # ax2.plot(sites_cont, corr_func_cont, '--', c=f'C2')
 
     ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax2.set_xlim([0, 11])
     ax2.set_xticks(np.arange(0, 11 + 0.1, 1))
-    ax2.set_ylim(0)
+    # ax2.set_ylim(0)
     ax2.set_xlabel("$y$", fontsize=11)
     ax2.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax2.text(0.05 * nu[1], -0.9 * 3 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax2.text(0.35 * 11, 0.0205, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     chi_legend_elements = [Patch(facecolor='C1', label='$50$'), Patch(facecolor='C2', label='$100$')]
     leg2 = ax2.legend(handles=chi_legend_elements, loc='center', handletextpad=0.3, handlelength=1, labelspacing=0.1,

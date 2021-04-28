@@ -57,16 +57,16 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax2.plot(sites, corr_func, '.-', c=f'C0', marker=markers[1], fillstyle='none', markersize=5)
-    ax2.plot(sites_cont, corr_func_cont, '--', c=f'C0')
+    ax2.plot(sites[1:], corr_func[1:], '.-', c=f'C0', marker=markers[1], fillstyle='none', markersize=5)
+    # ax2.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax2.set_xlim([0, 18])
     ax2.set_xticks(np.arange(0, 18 + 0.1, 2))
-    ax2.set_ylim(0)
+    # ax2.set_ylim(0)
     ax2.set_xlabel("$y$", fontsize=11)
     ax2.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax2.text(0.05 * nu[1], -0.9 * 5 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax2.text(0.675 * 18, 0.0059451, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     ax3 = plt.subplot(gs[1])  # 071829 #################################################################################
     nu = (2, 19)
@@ -86,17 +86,17 @@ if __name__ == '__main__':
     corr_func = [float(i) - min_val for i in corr_func]
     sites_cont = [sites[-1], sites[-1] + 1]
     corr_func_cont = [corr_func[-1], corr_func[0]]
-    ax3.plot(sites, corr_func, '.-', c=f'C0', marker=markers[7], fillstyle='none', markersize=5)
-    ax3.plot(sites_cont, corr_func_cont, '--', c=f'C0')
+    ax3.plot(sites[1:], corr_func[1:], '.-', c=f'C0', marker=markers[7], fillstyle='none', markersize=5)
+    # ax3.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     ax3.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax3.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax3.set_xlim([0, 19])
     ax3.set_xticks(np.arange(0, 19 + 0.1, 4.75))
-    ax3.set_ylim(0)
+    # ax3.set_ylim(0)
     ax3.set_xlabel("$y$", fontsize=11)
     ax3.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    # ax3.text(0.05 * nu[1], -0.9 * 5 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax3.text(0.55 * 19, 0.021185, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     # chi_legend_elements = [Patch(facecolor='C1', label='$50$'), Patch(facecolor='C2', label='$100$')]
     # leg2 = ax3.legend(handles=chi_legend_elements, loc='center', handletextpad=0.3, handlelength=1, labelspacing=0.1,

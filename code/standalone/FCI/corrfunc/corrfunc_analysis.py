@@ -39,49 +39,50 @@ if __name__ == '__main__':
             ax1 = plt.subplot(gs[0])
             nu = (1, 3)
             Ly_val = 6
-            ax1.text(Ly_val/3, 0.05, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val/3, 0.05, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [3, 4, 5, 6, 7, 8]
         elif filling == 1:
             ax1 = plt.subplot(gs[1])
             nu = (2, 3)
             Ly_val = 6
-            ax1.text(Ly_val/3, 0.05, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val/3, 0.05, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [5, 6, 7, 8]
         elif filling == 2:
             ax1 = plt.subplot(gs[2])
             nu = (2, 5)
             Ly_val = 10
-            ax1.text(Ly_val / 3, 0.025, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val / 3, 0.025, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [3, 4, 5, 6, 7, 8]
         elif filling == 3:
             ax1 = plt.subplot(gs[3])
             nu = (3, 5)
             Ly_val = 10
-            ax1.text(Ly_val / 3, 0.025, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val / 3, 0.025, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [5, 6, 7, 8]
         elif filling == 4:
             ax1 = plt.subplot(gs[4])
             nu = (3, 7)
             Ly_val = 14
-            ax1.text(Ly_val / 3, 0.025, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val / 3, 0.025, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [5, 6, 7, 8]
         elif filling == 5:
             ax1 = plt.subplot(gs[5])
             nu = (4, 7)
             Ly_val = 14
-            ax1.text(Ly_val / 3, 0.07, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val / 3, 0.07, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [6, 7, 8]
         elif filling == 6:
             ax1 = plt.subplot(gs[6])
             nu = (4, 9)
             Ly_val = 18
-            ax1.text(Ly_val/3, 0.005, f"$\\nu={nu[0]}/{nu[1]}$")
+            ax1.text(Ly_val/3, 0.016, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [8]
-        # elif filling == 7:
-        #     ax1 = plt.subplot(gs[7])
-        #     nu = (5, 9)
-        #     Ly_val = 18
-        #     q_list = [8]
+        elif filling == 7:
+            ax1 = plt.subplot(gs[7])
+            nu = (5, 9)
+            Ly_val = 18
+            ax1.text(Ly_val / 3, 0.04, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+            q_list = [8]
 
         for q in q_list:
 
@@ -147,7 +148,7 @@ if __name__ == '__main__':
     fig.text(0, 0.445, "(e)", fontsize=12)
     fig.text(0.48, 0.445, "(f)", fontsize=12)
     fig.text(0, 0.231, "(g)", fontsize=12)
-    # fig.text(0.48, 0.231, "(h)", fontsize=12)
+    fig.text(0.48, 0.231, "(h)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/FCI/corrfunc_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()
