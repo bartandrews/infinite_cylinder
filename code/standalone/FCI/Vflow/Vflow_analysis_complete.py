@@ -208,5 +208,5 @@ if __name__ == '__main__':
     fig.text(0, 0.314, "(e) $\\nu=2/5$", fontsize=12)
     fig.text(0, 0.18, "(f) $\\nu=3/7$", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/BT/Vflow_analysis_complete.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_analysis_complete.png", bbox_inches='tight', dpi=300)
     plt.show()

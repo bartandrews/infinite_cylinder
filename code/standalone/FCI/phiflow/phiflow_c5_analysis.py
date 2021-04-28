@@ -41,7 +41,7 @@ if __name__ == '__main__':
     ax2 = plt.subplot(gs[0])  # 071829 #################################################################################
     nu = (1, 9)
 
-    phiflow_file = f'charge_pump_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_216_nphi_5_24_LxMUC_1_Ly_18_phi_0_9_91.dat'
+    phiflow_file = f'charge_pump_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_216_nphi_5_24_LxMUC_1_Ly_18_phi_0_9_91.dat.modified'
     phiflow_path = os.path.join(phiflow_dir, phiflow_file)
     with open(phiflow_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')

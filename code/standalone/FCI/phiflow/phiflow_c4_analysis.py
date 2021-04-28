@@ -41,19 +41,19 @@ if __name__ == '__main__':
     ax = plt.subplot(gs[0])  # 071829 #################################################################################
     nu = (1, 7)
 
-    phiflow_file = f'charge_pump_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_133_nphi_5_19_LxMUC_1_Ly_14_phi_0_7_71.dat'
-    phiflow_path = os.path.join(phiflow_dir, phiflow_file)
-    with open(phiflow_path, 'r') as csvfile:
-        plots = csv.reader(csvfile, delimiter='\t')
-        phi = []
-        charge = []
-        for row in plots:
-            phi.append(float(row[0]))
-            charge.append(float(row[1]))
-    charge = [i - charge[0] for i in charge]
-    ax.plot(phi, charge, '.', c=f'C0', marker=markers[1], fillstyle='none', markersize=5, markeredgewidth=0.2)
+    # phiflow_file = f'charge_pump_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_133_nphi_5_19_LxMUC_1_Ly_14_phi_0_7_71.dat'
+    # phiflow_path = os.path.join(phiflow_dir, phiflow_file)
+    # with open(phiflow_path, 'r') as csvfile:
+    #     plots = csv.reader(csvfile, delimiter='\t')
+    #     phi = []
+    #     charge = []
+    #     for row in plots:
+    #         phi.append(float(row[0]))
+    #         charge.append(float(row[1]))
+    # charge = [i - charge[0] for i in charge]
+    # ax.plot(phi, charge, '.', c=f'C0', marker=markers[1], fillstyle='none', markersize=5, markeredgewidth=0.2)
 
-    phiflow_file = f'charge_pump_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_161_nphi_6_23_LxMUC_1_Ly_14_phi_0_7_71.dat'
+    phiflow_file = f'charge_pump_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_161_nphi_6_23_LxMUC_1_Ly_14_phi_0_7_71.dat.modified'
     phiflow_path = os.path.join(phiflow_dir, phiflow_file)
     with open(phiflow_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
@@ -100,7 +100,7 @@ if __name__ == '__main__':
     charge = [i - charge[0] for i in charge]
     ax1.plot(phi, charge, '.', c=f'C0', marker=markers[7], fillstyle='none', markersize=5, markeredgewidth=0.2)
 
-    phiflow_file = f'charge_pump_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_2_225_nphi_4_15_LxMUC_1_Ly_15_phi_0_15_151.dat'
+    phiflow_file = f'charge_pump_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_2_225_nphi_4_15_LxMUC_1_Ly_15_phi_0_15_151.dat.modified'
     phiflow_path = os.path.join(phiflow_dir, phiflow_file)
     with open(phiflow_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
