@@ -207,41 +207,41 @@ if __name__ == '__main__':
     ax4 = plt.subplot(gs[5])  # 071829 #################################################################################
     nu = (3, 11)
 
-    # corrfunc_file = f'corr_func_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_1_55_nphi_8_15_LxMUC_1_Ly_11.dat'
-    # corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
-    # with open(corrfunc_path, 'r') as csvfile:
-    #     plots = csv.reader(csvfile, delimiter='\t')
-    #     sites = np.arange(11)
-    #     corr_func = []
-    #     for i, row in enumerate(plots):
-    #         if i == 0:
-    #             corr_func = row
-    #             break
-    # corr_func = [float(i) for i in corr_func]
-    # min_val = min(corr_func)
-    # corr_func = [float(i) - min_val for i in corr_func]
-    # sites_cont = [sites[-1], sites[-1] + 1]
-    # corr_func_cont = [corr_func[-1], corr_func[0]]
-    # ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[9], fillstyle='none', markersize=5)
-    # # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C1')
+    corrfunc_file = f'corr_func_FerHofSqu1_chi_50_t1_1_V_10_Coulomb_1_n_1_55_nphi_8_15_LxMUC_1_Ly_11.dat'
+    corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
+    with open(corrfunc_path, 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        sites = np.arange(11)
+        corr_func = []
+        for i, row in enumerate(plots):
+            if i == 0:
+                corr_func = row
+                break
+    corr_func = [float(i) for i in corr_func]
+    min_val = min(corr_func)
+    corr_func = [float(i) - min_val for i in corr_func]
+    sites_cont = [sites[-1], sites[-1] + 1]
+    corr_func_cont = [corr_func[-1], corr_func[0]]
+    ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[9], fillstyle='none', markersize=5)
+    # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
-    # corrfunc_file = f'corr_func_pump_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_3_143_nphi_7_13_LxMUC_1_Ly_11.dat'
-    # corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
-    # with open(corrfunc_path, 'r') as csvfile:
-    #     plots = csv.reader(csvfile, delimiter='\t')
-    #     sites = np.arange(11)
-    #     corr_func = []
-    #     for i, row in enumerate(plots):
-    #         if i == 0:
-    #             corr_func = row
-    #             break
-    # corr_func = [float(i) for i in corr_func]
-    # min_val = min(corr_func)
-    # corr_func = [float(i) - min_val for i in corr_func]
-    # sites_cont = [sites[-1], sites[-1] + 1]
-    # corr_func_cont = [corr_func[-1], corr_func[0]]
-    # ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C2', marker=markers[2], fillstyle='none', markersize=5)
-    # # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C2')
+    corrfunc_file = f'corr_func_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_3_143_nphi_7_13_LxMUC_1_Ly_11.dat'
+    corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
+    with open(corrfunc_path, 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        sites = np.arange(11)
+        corr_func = []
+        for i, row in enumerate(plots):
+            if i == 0:
+                corr_func = row
+                break
+    corr_func = [float(i) for i in corr_func]
+    min_val = min(corr_func)
+    corr_func = [float(i) - min_val for i in corr_func]
+    sites_cont = [sites[-1], sites[-1] + 1]
+    corr_func_cont = [corr_func[-1], corr_func[0]]
+    ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C2', marker=markers[2], fillstyle='none', markersize=5)
+    # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C2')
 
     corrfunc_file = f'corr_func_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_3_121_nphi_6_11_LxMUC_1_Ly_11.dat'
     corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
@@ -267,7 +267,7 @@ if __name__ == '__main__':
     # ax4.set_ylim(0)
     ax4.set_xlabel("$y$", fontsize=11)
     ax4.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{0,y}}: \\rangle$", fontsize=11)
-    ax4.text(0.35*11, 0.0241, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax4.text(0.35*11, 0.0185, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     chi_legend_elements = [Patch(facecolor='C0', label='$25$'), Patch(facecolor='C1', label='$50$'),
                            Patch(facecolor='C2', label='$100$'), Patch(facecolor='C3', label='$150$')]
@@ -279,11 +279,16 @@ if __name__ == '__main__':
     ####################################################################################################################
     ####################################################################################################################
 
-    fig.text(0, 0.87, "(a)", fontsize=12)
-    fig.text(0.48, 0.87, "(b)", fontsize=12)
-    fig.text(0, 0.575, "(c)", fontsize=12)
-    fig.text(0.48, 0.575, "(d)", fontsize=12)
-    fig.text(0.48, 0.28, "(e)", fontsize=12)
+    # fig.text(0, 0.87, "(a)", fontsize=12)
+    # fig.text(0.48, 0.87, "(b)", fontsize=12)
+    # fig.text(0, 0.575, "(c)", fontsize=12)
+    # fig.text(0.48, 0.575, "(d)", fontsize=12)
+    # fig.text(0.48, 0.28, "(e)", fontsize=12)
+    fig.text(0, 0.89, "(a)", fontsize=12)
+    fig.text(0.48, 0.89, "(b)", fontsize=12)
+    fig.text(0, 0.595, "(c)", fontsize=12)
+    fig.text(0.48, 0.595, "(d)", fontsize=12)
+    fig.text(0.48, 0.30, "(e)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/FCI/corrfunc_c2_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()

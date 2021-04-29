@@ -121,7 +121,7 @@ if __name__ == '__main__':
                 leg = ax1.legend(loc='upper center', handletextpad=0.3, handlelength=1, labelspacing=0.1, borderpad=0.3,
                                  framealpha=1,
                                  edgecolor='k', markerscale=2, fontsize=10, ncol=6, columnspacing=0.5,
-                                 bbox_to_anchor=(1.2, 1.9), title='$n_\\phi$', title_fontsize=11)
+                                 bbox_to_anchor=(1.2, 2.0), title='$n_\\phi$', title_fontsize=11)
                 leg.get_frame().set_linewidth(0.5)
 
             ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
@@ -141,14 +141,22 @@ if __name__ == '__main__':
     ####################################################################################################################
     ####################################################################################################################
 
-    fig.text(0, 0.87, "(a)", fontsize=12)
-    fig.text(0.48, 0.87, "(b)", fontsize=12)
-    fig.text(0, 0.655, "(c)", fontsize=12)
-    fig.text(0.48, 0.655, "(d)", fontsize=12)
-    fig.text(0, 0.445, "(e)", fontsize=12)
-    fig.text(0.48, 0.445, "(f)", fontsize=12)
-    fig.text(0, 0.231, "(g)", fontsize=12)
-    fig.text(0.48, 0.231, "(h)", fontsize=12)
+    # fig.text(0, 0.87, "(a)", fontsize=12)
+    # fig.text(0.48, 0.87, "(b)", fontsize=12)
+    # fig.text(0, 0.655, "(c)", fontsize=12)
+    # fig.text(0.48, 0.655, "(d)", fontsize=12)
+    # fig.text(0, 0.445, "(e)", fontsize=12)
+    # fig.text(0.48, 0.445, "(f)", fontsize=12)
+    # fig.text(0, 0.231, "(g)", fontsize=12)
+    # fig.text(0.48, 0.231, "(h)", fontsize=12)
+    fig.text(0, 0.88, "(a)", fontsize=12)
+    fig.text(0.48, 0.88, "(b)", fontsize=12)
+    fig.text(0, 0.665, "(c)", fontsize=12)
+    fig.text(0.48, 0.665, "(d)", fontsize=12)
+    fig.text(0, 0.455, "(e)", fontsize=12)
+    fig.text(0.48, 0.455, "(f)", fontsize=12)
+    fig.text(0, 0.241, "(g)", fontsize=12)
+    fig.text(0.48, 0.241, "(h)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/FCI/corrfunc_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()

@@ -243,9 +243,12 @@ if __name__ == '__main__':
     ####################################################################################################################
     ####################################################################################################################
 
-    fig.text(0, 0.865, "(f)", fontsize=12)
-    fig.text(0.48, 0.865, "(g)", fontsize=12)
-    fig.text(0.48, 0.39, "(h)", fontsize=12)
+    # fig.text(0, 0.865, "(f)", fontsize=12)
+    # fig.text(0.48, 0.865, "(g)", fontsize=12)
+    # fig.text(0.48, 0.39, "(h)", fontsize=12)
+    fig.text(0, 0.885, "(f)", fontsize=12)
+    fig.text(0.48, 0.885, "(g)", fontsize=12)
+    fig.text(0.48, 0.41, "(h)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/FCI/corrfunc_c3_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()
