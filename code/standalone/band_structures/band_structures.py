@@ -333,7 +333,7 @@ if __name__ == '__main__':
     mining = False  # data mining mode for 2D band structures
     if not mining:
         flag_3D = True  # choose between 3D or 2D band structure
-        p, q = 9, 44  # for Hofstadter model only
+        p, q = 5, 9  # for Hofstadter model only
         C = 1  # for HalSquCN model only
     else:
         tx_min, tx_max, tx_samp = 0, 1000, 1001

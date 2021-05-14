@@ -30,13 +30,13 @@ do
 		rsync -nvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
 	fi
 	# shellcheck disable=SC2029
-	if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/data/${TOOL}/FerHofSqu1/ ]"
-	then
-		echo
-		echo ">>> Dry run from bart@dart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
-		echo
-		rsync -nvtzhre ssh bart@dart:${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
-	fi
+#	if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/data/${TOOL}/FerHofSqu1/ ]"
+#	then
+#		echo
+#		echo ">>> Dry run from bart@dart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
+#		echo
+#		rsync -nvtzhre ssh bart@dart:${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
+#	fi
 	for PC in ${PCS}
 	do
 		# shellcheck disable=SC2029
@@ -67,13 +67,13 @@ then
 			rsync -vtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
 		fi
 		# shellcheck disable=SC2029
-		if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/data/${TOOL}/FerHofSqu1/ ]"
-		then
-			echo
-			echo ">>> Actual run from bart@dart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
-			echo
-			rsync -vtzhre ssh bart@dart:${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
-		fi
+#		if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/data/${TOOL}/FerHofSqu1/ ]"
+#		then
+#			echo
+#			echo ">>> Actual run from bart@dart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
+#			echo
+#			rsync -vtzhre ssh bart@dart:${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
+#		fi
 		for PC in ${PCS}
 		do
 			# shellcheck disable=SC2029

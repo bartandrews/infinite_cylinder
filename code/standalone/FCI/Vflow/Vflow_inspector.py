@@ -25,9 +25,9 @@ plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 if __name__ == '__main__':
 
     # Configuration to inspect #########################################################################################
-    n = (1, 12)
-    nphi = (1, 4)
-    Ly = 6
+    n = (2, 81)
+    nphi = (5, 9)
+    Ly = 9
     ####################################################################################################################
 
     fig = plt.figure(figsize=(20, 10))
@@ -93,7 +93,7 @@ if __name__ == '__main__':
 
             ax2.plot(V, SvN, c=f"C{i}", marker=markers[i], markersize=5, label=f"$\chi={chi_val}$")
 
-            chi_val_max = chi_val  # for next two subplots
+            chi_val_max = chi_val-100  # for next two subplots
 
     ax2.legend(loc='upper right', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor='k',
                markerscale=1, fontsize=10, ncol=1)
