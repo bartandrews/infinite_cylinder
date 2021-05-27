@@ -60,6 +60,7 @@ if __name__ == '__main__':
     ax.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax.text(0.05 * nu[1], -0.9 * 2 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax.text(0.68 * nu[1], -0.28 * 2 * nu[0], "$L_y=10$", fontsize=11)
 
     ax1 = plt.subplot(gs[1])  # 071829 ##################################################################################
     nu = (1, 3)
@@ -95,6 +96,7 @@ if __name__ == '__main__':
     ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax1.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax1.text(0.05*nu[1], -0.9*2*nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax1.text(0.71 * nu[1], -0.28 * 2 * nu[0], "$L_y=6$", fontsize=11)
 
     ax2 = plt.subplot(gs[2])  # 071829 #################################################################################
     nu = (2, 9)
@@ -118,6 +120,7 @@ if __name__ == '__main__':
     ax2.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax2.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax2.text(0.05 * nu[1], -0.9 * 2 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax2.text(0.71 * nu[1], -0.28 * 2 * nu[0], "$L_y=9$", fontsize=11)
 
     nphi_legend_elements = [
         Line2D([0], [0], linestyle='none', marker=markers[0], color='k', label='$3/5$', fillstyle='none', markersize=5),
@@ -165,6 +168,7 @@ if __name__ == '__main__':
     ax3.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax3.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax3.text(0.05 * nu[1], -0.9 * 2 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax3.text(0.68 * nu[1], -0.28 * 2 * nu[0], "$L_y=14$", fontsize=11)
 
     ax4 = plt.subplot(gs[5])  # 071829 #################################################################################
     nu = (3, 11)
@@ -212,6 +216,7 @@ if __name__ == '__main__':
     ax4.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax4.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax4.text(0.05 * nu[1], -0.9 * 2 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax4.text(0.68 * nu[1], -0.28 * 2 * nu[0], "$L_y=11$", fontsize=11)
 
     chi_legend_elements = [Patch(facecolor='C0', label='$25$'), Patch(facecolor='C1', label='$50$'),
                            Patch(facecolor='C2', label='$100$'), Patch(facecolor='C3', label='$150$')]

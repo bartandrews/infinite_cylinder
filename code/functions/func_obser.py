@@ -29,6 +29,8 @@ def nonscalar_observables(tools, data, psi, M, chiK_max, extra_dof, print_data=F
         expectation_value(data, 'density', psi, M, extra_dof, print_data)
     if 'corr_func' in tools:
         expectation_value(data, 'corr_func', psi, M, extra_dof, print_data)
+    if 'corr_func_ext' in tools:
+        expectation_value(data, 'corr_func_ext', psi, M, extra_dof, print_data)
     return
 
 
@@ -98,15 +100,22 @@ def expectation_value(data, name, psi, M, extra_dof, print_data):
     if name == 'density':
         site_list = psi.expectation_value(tot_numb_op)
     elif name == 'corr_func':
-        # corr_func can be computed beyond psi.L, however then the mps2lat function will not work
         raw_site_list = psi.correlation_function(tot_numb_op, tot_numb_op, sites1=range(0, psi.L), sites2=[0])[:, 0]
         average_density = np.sum(psi.expectation_value(tot_numb_op))/psi.L
         site_list = [average_density - i for i in raw_site_list]
+    elif name == 'corr_func_ext':
+        raw_site_list = psi.correlation_function(tot_numb_op, tot_numb_op, sites1=range(0, 100*psi.L), sites2=[0])[:, 0]
+        average_density = np.sum(psi.expectation_value(tot_numb_op)) / psi.L
+        site_list = [average_density - i for i in raw_site_list]
+        site_array = np.array(site_list)  # list type does not work in mps2lat_values_masked
+        lattice_array = M.lat.mps2lat_values_masked(site_array)
     else:
         raise ValueError("Unknown name for the expectation_value function.")
 
-    lattice_array = M.lat.mps2lat_values(site_list)
-    assert lattice_array.shape[:2] == M.lat.shape[:2]
+    if not name.endswith('ext'):  # corr_func can be computed beyond psi.L, however then mps2lat function will not work
+        lattice_array = M.lat.mps2lat_values(site_list)
+        assert lattice_array.shape[:2] == M.lat.shape[:2]
+
     if print_data:
         print(lattice_array)
     if len(lattice_array.shape) == 2:  # one site per unit cell

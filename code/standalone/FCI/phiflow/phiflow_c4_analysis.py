@@ -72,6 +72,7 @@ if __name__ == '__main__':
     ax.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax.text(0.05 * nu[1], -0.9 * 4 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax.text(0.68 * nu[1], -0.28 * 4 * nu[0], "$L_y=14$", fontsize=11)
 
     # nphi_legend_elements = [
     #     Line2D([0], [0], linestyle='none', marker=markers[0], color='k', label='$3/8$', fillstyle='none', markersize=5),
@@ -119,6 +120,7 @@ if __name__ == '__main__':
     ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax1.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax1.text(0.05*nu[1], -0.9*4*nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax1.text(0.68 * nu[1], -0.28 * 4 * nu[0], "$L_y=15$", fontsize=11)
 
     ####################################################################################################################
     ####################################################################################################################

@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
     ax1 = plt.subplot(upper_left_cell)
 
-    for i, chi_val in enumerate(np.arange(100, 400, 100)):
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
         corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_10_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
         corr_len_path = os.path.join(corr_len_dir, corr_len_file)
@@ -56,10 +56,10 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 xi.append(float(row[1]))
 
-        ax1.plot(V, xi, c=f"C{i}", marker=markers[i], markersize=2, label=f"${chi_val/100:g}$")
+        ax1.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"${chi_val/100:g}$")
 
     ax1.legend(loc='upper right', handletextpad=0, handlelength=1, borderpad=0, framealpha=1, edgecolor='w',
-               markerscale=2, fontsize=10, ncol=3, columnspacing=0.5, labelspacing=0.25, title="$\chi/10^2$")
+               markerscale=2, fontsize=10, ncol=5, columnspacing=0.5, labelspacing=0.25, title="$\chi/10^2$")
 
     ax1.axvline(0.215, c='b', linestyle=':', zorder=-2)
     ax1.axvline(1.53, c='r', linestyle=':', zorder=-2)
@@ -79,7 +79,7 @@ if __name__ == '__main__':
 
     ax2 = plt.subplot(left_inner_grid[0])
 
-    for i, chi_val in enumerate(np.arange(100, 400, 100)):
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
         corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_1_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
         corr_len_path = os.path.join(corr_len_dir, corr_len_file)
@@ -93,13 +93,13 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 xi.append(float(row[1]))
 
-        ax2.plot(V, xi, c=f"C{i}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
+        ax2.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
 
     ax2.axvline(0.215, c='b', linestyle=':', zorder=-2)
     ax2.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax2.set_xlim([0, 1])
-    ax2.set_xticks(np.arange(0, 1.1, 0.2))
-    ax2.set_yticks(np.arange(0, 100.1, 50))
+    ax2.set_xlim([0, 0.6])
+    ax2.set_xticks(np.arange(0, 0.61, 0.2))
+    ax2.set_yticks(np.arange(0, 200.1, 50))
     ax2.set_ylabel("$\\xi$", fontsize=11)
     plt.setp(ax2.get_xticklabels(), visible=False)
     ax2.tick_params(
@@ -113,7 +113,7 @@ if __name__ == '__main__':
 
     ax3 = plt.subplot(left_inner_grid[1])
 
-    for i, chi_val in enumerate(np.arange(100, 400, 100)):
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
         ent_file = f'ent_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_1_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
         ent_path = os.path.join(ent_dir, ent_file)
@@ -127,13 +127,13 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 SvN.append(float(row[1]))
 
-        ax3.plot(V, SvN, c=f"C{i}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
+        ax3.plot(V, SvN, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
 
     ax3.axvline(0.215, c='b', linestyle=':', zorder=-2)
     ax3.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax3.set_xlim([0, 1])
-    ax3.set_xticks(np.arange(0, 1.1, 0.2))
-    ax3.set_yticks(np.arange(0, 3, 1))
+    ax3.set_xlim([0, 0.6])
+    ax3.set_xticks(np.arange(0, 0.61, 0.2))
+    ax3.set_yticks(np.arange(0, 4, 1))
     ax3.set_ylabel("$S_\mathrm{vN}$", fontsize=11)
     plt.setp(ax3.get_xticklabels(), visible=False)
     ax3.tick_params(
@@ -148,7 +148,7 @@ if __name__ == '__main__':
     ax4 = plt.subplot(left_inner_grid[2])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
-    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_300_t1_1_V_0_1_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_1000_t1_1_V_0_1_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
     ent_spec_path = os.path.join(ent_spec_dir, ent_spec_file)
 
     x = []
@@ -183,15 +183,15 @@ if __name__ == '__main__':
 
     ax4.axvline(0.215, c='b', linestyle=':', zorder=-2)
     ax4.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax4.set_xlim([0, 1])
-    ax4.set_xticks(np.arange(0, 1.1, 0.2))
+    ax4.set_xlim([0, 0.6])
+    ax4.set_xticks(np.arange(0, 0.61, 0.2))
     ax4.set_yticks(np.arange(0, 10, 2))
     ax4.set_ylim([0, 10])
     ax4.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax4.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax4.set_xlabel("$V$", fontsize=11)
     ax4.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
-    ax4.text(0.7, 9.3, '$\chi=300$', fontsize=10, verticalalignment='top',
+    ax4.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     ####################################################################################################################
@@ -199,7 +199,7 @@ if __name__ == '__main__':
 
     ax5 = plt.subplot(upper_right_cell)
 
-    for i, chi_val in enumerate(np.arange(100, 400, 100)):
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
         corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_10_41_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
         corr_len_path = os.path.join(corr_len_dir, corr_len_file)
@@ -213,10 +213,10 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 xi.append(float(row[1]))
 
-        ax5.plot(V, xi, c=f"C{i}", marker=markers[i], markersize=2, label=f"${chi_val/100:g}$")
+        ax5.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"${chi_val/100:g}$")
 
     ax5.legend(loc='upper right', handletextpad=0, handlelength=1, borderpad=0, framealpha=1, edgecolor='w',
-               markerscale=2, fontsize=10, ncol=3, columnspacing=0.5, labelspacing=0.25, title="$\chi/10^2$")
+               markerscale=2, fontsize=10, ncol=5, columnspacing=0.5, labelspacing=0.25, title="$\chi/10^2$")
 
     ax5.axvline(0.0192, c='b', linestyle=':', zorder=-2)
     ax5.axvline(1.48, c='r', linestyle=':', zorder=-2)
@@ -236,7 +236,7 @@ if __name__ == '__main__':
 
     ax6 = plt.subplot(right_inner_grid[0])
 
-    for i, chi_val in enumerate(np.arange(100, 400, 100)):
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
         corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_1_41_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
         corr_len_path = os.path.join(corr_len_dir, corr_len_file)
@@ -250,13 +250,13 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 xi.append(float(row[1]))
 
-        ax6.plot(V, xi, c=f"C{i}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
+        ax6.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
 
     ax6.axvline(0.0192, c='b', linestyle=':', zorder=-2)
     ax6.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax6.set_xlim([0, 1])
-    ax6.set_xticks(np.arange(0, 1.1, 0.2))
-    ax6.set_yticks(np.arange(0, 150, 50))
+    ax6.set_xlim([0, 0.6])
+    ax6.set_xticks(np.arange(0, 0.61, 0.2))
+    ax6.set_yticks(np.arange(0, 200.1, 50))
     # ax6.set_ylim([5, 10])
     ax6.set_ylabel("$\\xi$", fontsize=11)
     plt.setp(ax6.get_xticklabels(), visible=False)
@@ -271,7 +271,7 @@ if __name__ == '__main__':
 
     ax7 = plt.subplot(right_inner_grid[1])
 
-    for i, chi_val in enumerate(np.arange(100, 400, 100)):
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
         ent_file = f'ent_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_1_41_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
         ent_path = os.path.join(ent_dir, ent_file)
@@ -285,13 +285,13 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 SvN.append(float(row[1]))
 
-        ax7.plot(V, SvN, c=f"C{i}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
+        ax7.plot(V, SvN, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
 
     ax7.axvline(0.0192, c='b', linestyle=':', zorder=-2)
     ax7.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax7.set_xlim([0, 1])
-    ax7.set_xticks(np.arange(0, 1.1, 0.2))
-    ax7.set_yticks(np.arange(0, 3, 1))
+    ax7.set_xlim([0, 0.6])
+    ax7.set_xticks(np.arange(0, 0.61, 0.2))
+    ax7.set_yticks(np.arange(0, 4, 1))
     ax7.set_ylabel("$S_\mathrm{vN}$", fontsize=11)
     plt.setp(ax7.get_xticklabels(), visible=False)
     ax7.tick_params(
@@ -306,7 +306,7 @@ if __name__ == '__main__':
     ax8 = plt.subplot(right_inner_grid[2])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
-    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_300_t1_1_V_0_1_41_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
+    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_1000_t1_1_V_0_1_41_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
     ent_spec_path = os.path.join(ent_spec_dir, ent_spec_file)
 
     x = []
@@ -341,15 +341,15 @@ if __name__ == '__main__':
 
     ax8.axvline(0.0192, c='b', linestyle=':', zorder=-2)
     ax8.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax8.set_xlim([0, 1])
-    ax8.set_xticks(np.arange(0, 1.1, 0.2))
+    ax8.set_xlim([0, 0.6])
+    ax8.set_xticks(np.arange(0, 0.61, 0.2))
     ax8.set_yticks(np.arange(0, 10, 2))
     ax8.set_ylim([0, 10])
     ax8.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax8.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax8.set_xlabel("$V$", fontsize=11)
     ax8.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
-    ax8.text(0.7, 9.3, '$\chi=300$', fontsize=10, verticalalignment='top',
+    ax8.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     
     ####################################################################################################################

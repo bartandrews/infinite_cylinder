@@ -96,6 +96,7 @@ if __name__ == '__main__':
     ax.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax.text(0.05 * nu[1], -0.9 * 3 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax.text(0.68 * nu[1], -0.28 * 3 * nu[0], "$L_y=14$", fontsize=11)
 
     nphi_legend_elements = [
         Line2D([0], [0], linestyle='none', marker=markers[0], color='k', label='$3/8$', fillstyle='none', markersize=5),
@@ -155,6 +156,7 @@ if __name__ == '__main__':
     ax1.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax1.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax1.text(0.05*nu[1], -0.9*3*nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax1.text(0.68 * nu[1], -0.28 * 3 * nu[0], "$L_y=10$", fontsize=11)
 
     ax2 = plt.subplot(gs[3])  # 071829 #################################################################################
     nu = (2, 11)
@@ -190,6 +192,7 @@ if __name__ == '__main__':
     ax2.set_xlabel("$\\Phi_x / 2\pi$", fontsize=11)
     ax2.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
     ax2.text(0.05 * nu[1], -0.9 * 3 * nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax2.text(0.68 * nu[1], -0.28 * 3 * nu[0], "$L_y=11$", fontsize=11)
 
     chi_legend_elements = [Patch(facecolor='C1', label='$50$'), Patch(facecolor='C2', label='$100$')]
     leg2 = ax2.legend(handles=chi_legend_elements, loc='center', handletextpad=0.3, handlelength=1, labelspacing=0.1,
