@@ -1,7 +1,15 @@
 # --- python imports
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import axes3d
+from mpl_toolkits.mplot3d import axes3d, Axes3D
+import csv
+import matplotlib.gridspec as gridspec
+from scipy import stats
+from uncertainties import ufloat
+
+plt.rc('text', usetex=True)
+plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
+# matplotlib.verbose.level = 'debug-annoying'
 
 a0 = 1  # lattice constant
 t = 1  # hopping amplitude
@@ -325,7 +333,39 @@ def berry_curv(eigvec, eigvec_alpha, eigvec_beta, eigvec_alpha_beta):
     return Berry_curv
 
 
+def line_of_best_fit(x_list, y_list):
+
+    parameters, cov = np.polyfit(x_list, y_list, 1, cov=True)
+    _, _, r_value, _, _ = stats.linregress(x_list, y_list)
+    m, m_err, c, c_err = parameters[0], np.sqrt(cov[0][0]), parameters[1], np.sqrt(cov[1][1])
+    r2_value = r_value*r_value
+
+    # print("SvN = m*(Ly/lB) + c")
+    # print(f"(m, m_err, c, c_err) = ({m:.3f}, {m_err:.3f}, {c:.3f}, {c_err:.3f})")
+    # xvalues = np.arange(max(LylB_list) + 1)
+    # ax.plot(xvalues, m * xvalues + c, '-', c='k', zorder=0)
+    # fig.text(0.4, 0.2, "$S_\mathrm{{vN}}={gradient:.3f}(L_y/l_\mathrm{{B}})+({intercept:.3f}\pm {cerror:.3f})$\n$R^2={rsquared:.10f}$".format(
+    #     gradient=m, intercept=c, cerror=c_err, rsquared=r2_value))
+
+    return m, m_err, c, c_err, r2_value
+
+
 if __name__ == '__main__':
+
+    fig = plt.figure(figsize=(6, 4.05))  # 4.5
+    outer_grid = gridspec.GridSpec(2, 1, height_ratios=[1, 0.4], hspace=0.5)  # 0.5
+    top_grid = outer_grid[0, 0]
+    bottom_grid = outer_grid[1, 0]
+    top_inner_grid = gridspec.GridSpecFromSubplotSpec(1, 2, top_grid, wspace=0.5, width_ratios=[1.3, 1])
+    left_top_inner_grid = top_inner_grid[0, 0]
+    right_top_inner_grid = top_inner_grid[0, 1]
+    inner_right_top_inner_grid = gridspec.GridSpecFromSubplotSpec(3, 1, right_top_inner_grid, hspace=0)
+
+    # define a list of easily-visible markers
+    markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
+               (3, 2, 0), (4, 2, 0), (5, 2, 0), (6, 2, 0), 'X', 'x', 'd', 'D', 'P',
+               '$a$', '$b$', '$c$', '$d$', '$e$', '$f$', '$g$', '$h$', '$i$', '$j$', '$k$', '$l$', '$m$', '$n$', '$o$',
+               '$p$', '$q$', '$r$', '$s$', '$t$', '$u$', '$v$', '$w$', '$x$', '$y$', '$z$']
 
     # initialization ###################################################################################################
     num_samples = 101
@@ -333,7 +373,7 @@ if __name__ == '__main__':
     mining = False  # data mining mode for 2D band structures
     if not mining:
         flag_3D = True  # choose between 3D or 2D band structure
-        p, q = 9, 44  # for Hofstadter model only
+        p, q = 3, 5  # for Hofstadter model only
         C = 1  # for HalSquCN model only
     else:
         tx_min, tx_max, tx_samp = 0, 1000, 1001
@@ -380,22 +420,44 @@ if __name__ == '__main__':
         for band in range(num_bands):
             chern_numbers[band] = np.sum(berry_fluxes[band, :, :]) / (2 * np.pi)
             print(f"Chern number ({band}) = {chern_numbers[band]}")
-            if band == 0:
-                # print(f"Average Berry curvature ({band}) = {np.average(berry_fluxes[band, :, :])}")
-                # print(f"Standard deviation Berry curvature ({band}) = {np.std(berry_fluxes[band, :, :])}")
-                print(f"Stdev/|average| Berry curvature ({band}) = {np.std(berry_fluxes[band, :, :])/np.abs(np.average(berry_fluxes[band, :, :]))}")
 
         # construct figure
-        fig = plt.figure()
-        ax = fig.gca(projection='3d')
+        ax = plt.subplot(left_top_inner_grid, projection='3d')
         idx_x = np.linspace(0, num_samples - 1, num_samples, dtype=int)
         idx_y = np.linspace(0, num_samples - 1, num_samples, dtype=int)
         kx, ky = np.meshgrid(idx_x, idx_y)
         for i in range(num_bands):
+            # ax.get_proj = lambda: np.dot(Axes3D.get_proj(ax), np.diag([0.5, 0.5, 1, 1]))
             ax.plot_surface(kx, ky, eigenvalues[i, kx, ky])
-        ax.set_xlabel('$k_x$')
-        ax.set_ylabel('$k_y$')
-        ax.set_zlabel('$E$')
+        ax.xaxis.labelpad = -1
+        ax.yaxis.labelpad = -1
+        ax.zaxis.labelpad = -5
+        ax.set_xlabel('$k_x / |\mathbf{b}_x|$')
+        ax.set_ylabel('$k_y / |\mathbf{b}_y|$')
+
+
+        def custom(value, tick_number):
+
+            if value == 0:
+                return "$0$"
+            elif value == num_samples - 1:
+                return "$1$"
+            else:
+                return "${}$".format(round(value / (num_samples - 1), 2))
+
+
+        ax.xaxis.set_major_formatter(plt.FuncFormatter(custom))
+        ax.yaxis.set_major_formatter(plt.FuncFormatter(custom))
+
+        ax.set_xticks([0, 50, 100])
+        ax.set_yticks([0, 50, 100])
+
+        ax.set_zlabel('$E$', labelpad=-7)
+        ax.set_title('$p=3$, $C=2$ $\Rightarrow\;n_\phi=\\frac{3}{5}$', pad=-5)
+        ax.tick_params(axis='x', which='major', pad=-1.5)
+        ax.tick_params(axis='y', which='major', pad=-1.5)
+        ax.tick_params(axis='z', which='major', pad=-1.5)
+        ax.view_init(elev=8, azim=135)
     elif mining:
         total_num_chern = len(C)
         ratio = np.zeros((total_num_chern, tx_samp))
@@ -457,11 +519,129 @@ if __name__ == '__main__':
         ax.set_xlabel('symmetry path')
         ax.set_ylabel('$E$')
 
-    # band analysis
-    band_gap = np.min(eigenvalues[1]) - np.max(eigenvalues[0])
-    band_width = np.max(eigenvalues[0]) - np.min(eigenvalues[0])
-    print(f"band width (0) = {band_width}")
-    print(f"band gap (0-1) = {band_gap}")
-    print(f"gap-to-width ratio (0-1) = {band_gap / band_width}")
+    ####################################################################################################################
 
+    # extract data from file
+    with open('/home/bart/PycharmProjects/infinite_cylinder/code/standalone/FCI/bandstructure/gaps.txt', 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        chern_numbers = []
+        p_values = []
+        widths = []
+        gaps = []
+        flatness_ratios = []
+        for row in plots:
+            chern_numbers.append(float(row[0]))
+            p_values.append(float(row[1]))
+            widths.append(float(row[2]))
+            gaps.append(float(row[3]))
+            flatness_ratios.append(float(row[3])/float(row[2]))
+
+    ax1 = plt.subplot(inner_right_top_inner_grid[0])
+    ax2 = plt.subplot(inner_right_top_inner_grid[1])
+    ax3 = plt.subplot(inner_right_top_inner_grid[2])
+
+    for i in range(5):
+        if i == 0:
+            p_min = 0
+            p_max = 6
+        else:
+            p_min = 6 + 7*(i-1)
+            p_max = 6 + 7*(i-1) + 7
+        ax1.plot(p_values[p_min:p_max], np.log(gaps[p_min:p_max]), '.', marker=markers[i], markersize=5, fillstyle='none',
+                 c=f"C{i}", label=f"${int(chern_numbers[p_min])}$")
+        ax2.plot(p_values[p_min:p_max], np.log(widths[p_min:p_max]), '.', marker=markers[i], markersize=5, fillstyle='none',
+                 c=f"C{i}", label=f"${int(chern_numbers[p_min])}$")
+        ax3.plot(p_values[p_min:p_max], np.log(flatness_ratios[p_min:p_max]), '.', marker=markers[i], markersize=5, fillstyle='none',
+                 c=f"C{i}", label=f"${int(chern_numbers[p_min])}$")
+
+    ax1.set_ylabel('$\ln(\Delta)$')
+    ax2.set_ylabel('$\ln(W)$')
+    ax3.set_ylabel('$\ln(\Delta / W)$')
+    ax3.set_xlabel('$p$')
+    ax3.set_xticks([3, 4, 5, 6, 7, 8, 9])
+
+    leg = ax1.legend(loc='upper center', handletextpad=0.3, handlelength=1, labelspacing=0.1, borderpad=0.3,
+                     framealpha=1,
+                     edgecolor='k', markerscale=0.8, fontsize=10, ncol=6, columnspacing=0.5,
+                     bbox_to_anchor=(0.5, 1.8), title='$C$')
+    leg.get_frame().set_linewidth(0.5)
+
+    ####################################################################################################################
+
+    # extract data from file
+    with open('/home/bart/PycharmProjects/infinite_cylinder/code/standalone/FCI/bandstructure/berry.txt', 'r') as csvfile:
+        plots = csv.reader(csvfile, delimiter='\t')
+        p_values = []
+        berry_c1 = []
+        berry_c2 = []
+        berry_c3 = []
+        berry_c4 = []
+        berry_c5 = []
+        for row in plots:
+            p_values.append(float(row[0]))
+            berry_c1.append(float(row[1]))
+            berry_c2.append(float(row[2]))
+            berry_c3.append(float(row[3]))
+            berry_c4.append(float(row[4]))
+            berry_c5.append(float(row[5]))
+
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(p_values[1:], np.log(berry_c1[1:]))
+    print(f"C=1 has slope = {m1}+-{m1_err} and R2 = {r2_value1}")
+    (m2, m2_err, c, c_err, r2_value2) = line_of_best_fit(p_values, np.log(berry_c2))
+    print(f"C=2 has slope = {m2}+-{m2_err} and R2 = {r2_value2}")
+    (m3, m3_err, c, c_err, r2_value3) = line_of_best_fit(p_values, np.log(berry_c3))
+    print(f"C=3 has slope = {m3}+-{m3_err} and R2 = {r2_value3}")
+    (m4, m4_err, c, c_err, r2_value4) = line_of_best_fit(p_values, np.log(berry_c4))
+    print(f"C=4 has slope = {m4}+-{m4_err} and R2 = {r2_value4}")
+    (m5, m5_err, c, c_err, r2_value5) = line_of_best_fit(p_values, np.log(berry_c5))
+    print(f"C=5 has slope = {m5}+-{m5_err} and R2 = {r2_value5}")
+
+    m_array = np.array([ufloat(m1, m1_err), ufloat(m2, m2_err), ufloat(m3, m3_err), ufloat(m4, m4_err), ufloat(m5, m5_err)])
+    R2_array = np.array([r2_value1, r2_value2, r2_value3, r2_value4, r2_value5])
+
+    print(np.mean(m_array))
+    print(np.mean(R2_array))
+
+    ax4 = plt.subplot(bottom_grid)
+    pos1 = ax4.get_position()  # get the original position
+    pos2 = [pos1.x0 + 0.1, pos1.y0, pos1.width * 0.858 + 0.01, pos1.height]
+    ax4.set_position(pos2)
+
+    ax4.plot(p_values[1:], np.log(berry_c1[1:]), '.', marker=markers[0], markersize=5, fillstyle='none', c="C0", label="$1$")
+    ax4.plot(p_values, np.log(berry_c2), '.', marker=markers[1], markersize=5, fillstyle='none', c="C1", label="$2$")
+    ax4.plot(p_values, np.log(berry_c3), '.', marker=markers[2], markersize=5, fillstyle='none', c="C2", label="$3$")
+    ax4.plot(p_values, np.log(berry_c4), '.', marker=markers[3], markersize=5, fillstyle='none', c="C3", label="$4$")
+    ax4.plot(p_values, np.log(berry_c5), '.', marker=markers[4], markersize=5, fillstyle='none', c="C4", label="$5$")
+
+    ax4.set_ylabel('$\ln(\sigma_{\mathcal{B}}/|\\bar{\mathcal{B}}|)$')
+    ax4.set_xlabel('$p$')
+    ax4.set_xticks([3, 4, 5, 6, 7, 8, 9])
+    ax4.text(6.15, -0.25, "average slope = $-0.924\pm0.006$")
+    ax4.text(8.12, -1.7, "$R^2 = 0.999$")
+
+    # leg = ax4.legend(loc='upper right', handletextpad=0.3, handlelength=1, labelspacing=0.1, borderpad=0.3,
+    #                  framealpha=1,
+    #                  edgecolor='k', markerscale=0.8, fontsize=10, ncol=6, columnspacing=0.5, title='$C$')
+    # leg.get_frame().set_linewidth(0.5)
+
+    ####################################################################################################################
+
+    ax.annotate('', xy=(0.17, 0.28), xycoords='axes fraction', xytext=(0.17, 0.3),
+                arrowprops=dict(arrowstyle="<->", color='k'))
+    ax.annotate('', xy=(0.82, 0.24), xycoords='axes fraction', xytext=(0.82, 0.28),
+                arrowprops=dict(arrowstyle="<->", color='k'))
+    fig.text(0.16, 0.54 +0.015, "$\Delta$")
+    fig.text(0.42, 0.53 + 0.015, "$W$")
+
+    fig.text(0.25, 0.525 + 0.015, "$2$", c='w')
+    fig.text(0.3, 0.56 + 0.01, "$-3$", c='w')
+    fig.text(0.25, 0.645 + 0.01, "$2$", c='w')
+    fig.text(0.3, 0.735 + 0.005, "$-3$", c='w')
+    fig.text(0.25, 0.763 + 0.004, "$2$", c='w')
+
+    fig.text(0.13, 0.95, "(a)", fontsize=12)
+    fig.text(0.525, 0.95, "(b)", fontsize=12)
+    fig.text(0.13, 0.32, "(c)", fontsize=12)
+
+    plt.savefig("/home/bart/Documents/papers/FCI/bandstructure_analysis_c2_berry.png", bbox_inches='tight', dpi=300)
     plt.show()
