@@ -21,10 +21,21 @@ plt.rc('text', usetex=True)
 plt.rc('text.latex', preamble=r'\usepackage{amsmath}')
 # matplotlib.verbose.level = 'debug-annoying'
 
+
+def line_of_best_fit(x_list, y_list):
+
+    parameters, cov = np.polyfit(x_list, y_list, 1, cov=True)
+    _, _, r_value, _, _ = stats.linregress(x_list, y_list)
+    m, m_err, c, c_err = parameters[0], np.sqrt(cov[0][0]), parameters[1], np.sqrt(cov[1][1])
+    r2_value = r_value*r_value
+
+    return m, m_err, c, c_err, r2_value
+
+
 if __name__ == '__main__':
 
-    fig = plt.figure(figsize=(6, 6))
-    gs = gridspec.GridSpec(4, 2, hspace=0.6, wspace=0.6)
+    fig = plt.figure(figsize=(6, 6))  # 6, 6
+    gs = gridspec.GridSpec(4, 2, hspace=0.6, wspace=0.6)  # 0.6, 0.6
 
     # define a list of easily-visible markers
     markers = [(3, 0, 0), (4, 0, 0), (5, 0, 0), (6, 0, 0), (4, 1, 0), (5, 1, 0), (6, 1, 0),
@@ -91,7 +102,7 @@ if __name__ == '__main__':
 
             corrfunc_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_func_ext/FerHofSqu1'
             corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_250_t1_1_V_10_Coulomb_1_' \
-                         f'n_{n.numerator}_{n.denominator}_nphi_{nphi[0]}_{nphi[1]}_LxMUC_1_Ly_{Ly_val}.dat'
+                            f'n_{n.numerator}_{n.denominator}_nphi_{nphi[0]}_{nphi[1]}_LxMUC_1_Ly_{Ly_val}.dat'
             corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
 
             # extract data from file
@@ -106,10 +117,13 @@ if __name__ == '__main__':
             min_val = min(corr_func)
             corr_func = [float(i)-min_val for i in corr_func]
 
-            # print(sites)
-            # print(corr_func)
+            # offset
+            corr_func_offset = []
+            (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+            for i in corr_func:
+                corr_func_offset.append(i-c)
 
-            ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C{q-3}', marker=markers[q-3], fillstyle='none', markersize=2.5, label=f'${nphi[0]}/{nphi[1]}$')
+            ax1.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C{q-3}', marker=markers[q-3], fillstyle='none', markersize=2.5, label=f'${nphi[0]}/{nphi[1]}$')
 
             if filling == 0:
                 leg = ax1.legend(loc='upper center', handletextpad=0.3, handlelength=1, labelspacing=0.1, borderpad=0.3,
