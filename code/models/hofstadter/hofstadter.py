@@ -102,7 +102,7 @@ class HofstadterModel(CouplingMPOModel, MultiCouplingModel):
 
     def offsite_interaction(self, lattice, Nmax, V, Vtype, Vrange, extra_dof=False):
         tot_numb_op = 'N' if not extra_dof else 'Ntot'
-        for i in range(1, 21):  # offsite interaction only implemented up to 20th-NN
+        for i in range(1, 51):  # offsite interaction only implemented up to 50th-NN
             if math.ceil(Vrange) >= i:
                 if Nmax == 1:
                     coupling_coeff = mult_coeff(i, Vrange)*fi.interaction_strength(lattice, V, Vtype, i-1)

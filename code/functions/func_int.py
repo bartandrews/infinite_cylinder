@@ -11,7 +11,10 @@ def interaction_strength(lattice, Vvalue, Vtype_value, rindex):
 
     if lattice == "Squ":
         r = [1, np.sqrt(2), 2, np.sqrt(5), np.sqrt(8), 3, np.sqrt(10), np.sqrt(13), 4, np.sqrt(17),
-             np.sqrt(18), np.sqrt(20), 5, np.sqrt(26), np.sqrt(29), np.sqrt(32), np.sqrt(34), 6, np.sqrt(37), np.sqrt(40)]
+             np.sqrt(18), np.sqrt(20), 5, np.sqrt(26), np.sqrt(29), np.sqrt(32), np.sqrt(34), 6, np.sqrt(37), np.sqrt(40),
+             np.sqrt(41), np.sqrt(45), 7, np.sqrt(50), np.sqrt(52), np.sqrt(53), np.sqrt(58), np.sqrt(61), 8, np.sqrt(65),
+             np.sqrt(68), np.sqrt(72), np.sqrt(73), np.sqrt(74), np.sqrt(80), 9, np.sqrt(82), np.sqrt(85), np.sqrt(89), np.sqrt(90),
+             np.sqrt(97), np.sqrt(98), 10, np.sqrt(101), np.sqrt(104), np.sqrt(106), np.sqrt(109), np.sqrt(113), np.sqrt(116), np.sqrt(117)]
     elif lattice == "Hex":
         r = [1, np.sqrt(3), 2, np.sqrt(7), 3, np.sqrt(12), np.sqrt(13), 4, np.sqrt(19), np.sqrt(21)]
     elif lattice == "Tri":
@@ -87,6 +90,97 @@ def NN(lattice, n):
         elif n == 20:
             neighbors = [(0, 0, np.array([6, 2])), (0, 0, np.array([6, -2])),
                          (0, 0, np.array([2, 6])), (0, 0, np.array([2, -6]))]
+        elif n == 21:
+            neighbors = [(0, 0, np.array([5, 4])), (0, 0, np.array([5, -4])),
+                         (0, 0, np.array([4, 5])), (0, 0, np.array([4, -5]))]
+        elif n == 22:
+            neighbors = [(0, 0, np.array([6, 3])), (0, 0, np.array([6, -3])),
+                         (0, 0, np.array([3, 6])), (0, 0, np.array([3, -6]))]
+        elif n == 23:
+            neighbors = [(0, 0, np.array([7, 0])), (0, 0, np.array([0, 7]))]
+        elif n == 24:
+            neighbors = [(0, 0, np.array([5, 5])), (0, 0, np.array([5, -5])),
+                         (0, 0, np.array([7, 1])), (0, 0, np.array([7, -1])),
+                         (0, 0, np.array([1, 7])), (0, 0, np.array([1, -7]))]
+        elif n == 25:
+            neighbors = [(0, 0, np.array([6, 4])), (0, 0, np.array([6, -4])),
+                         (0, 0, np.array([4, 6])), (0, 0, np.array([4, -6]))]
+        elif n == 26:
+            neighbors = [(0, 0, np.array([7, 2])), (0, 0, np.array([7, -2])),
+                         (0, 0, np.array([2, 7])), (0, 0, np.array([2, -7]))]
+        elif n == 27:
+            neighbors = [(0, 0, np.array([7, 3])), (0, 0, np.array([7, -3])),
+                         (0, 0, np.array([3, 7])), (0, 0, np.array([3, -7]))]
+        elif n == 28:
+            neighbors = [(0, 0, np.array([6, 5])), (0, 0, np.array([6, -5])),
+                         (0, 0, np.array([5, 6])), (0, 0, np.array([5, -6]))]
+        elif n == 29:
+            neighbors = [(0, 0, np.array([8, 0])), (0, 0, np.array([0, 8])),
+                         (0, 0, np.array([7, 4])), (0, 0, np.array([7, -4])),
+                         (0, 0, np.array([4, 7])), (0, 0, np.array([4, -7]))]
+        elif n == 30:
+            neighbors = [(0, 0, np.array([8, 1])), (0, 0, np.array([8, -1])),
+                         (0, 0, np.array([1, 8])), (0, 0, np.array([1, -8]))]
+        elif n == 31:
+            neighbors = [(0, 0, np.array([8, 2])), (0, 0, np.array([8, -2])),
+                         (0, 0, np.array([2, 8])), (0, 0, np.array([2, -8]))]
+        elif n == 32:
+            neighbors = [(0, 0, np.array([6, 6])), (0, 0, np.array([6, -6]))]
+        elif n == 33:
+            neighbors = [(0, 0, np.array([8, 3])), (0, 0, np.array([8, -3])),
+                         (0, 0, np.array([3, 8])), (0, 0, np.array([3, -8]))]
+        elif n == 34:
+            neighbors = [(0, 0, np.array([7, 5])), (0, 0, np.array([7, -5])),
+                         (0, 0, np.array([5, 7])), (0, 0, np.array([5, -7]))]
+        elif n == 35:
+            neighbors = [(0, 0, np.array([8, 4])), (0, 0, np.array([8, -4])),
+                         (0, 0, np.array([4, 8])), (0, 0, np.array([4, -8]))]
+        elif n == 36:
+            neighbors = [(0, 0, np.array([9, 0])), (0, 0, np.array([0, 9]))]
+        elif n == 37:
+            neighbors = [(0, 0, np.array([9, 1])), (0, 0, np.array([9, -1])),
+                         (0, 0, np.array([1, 9])), (0, 0, np.array([1, -9]))]
+        elif n == 38:
+            neighbors = [(0, 0, np.array([7, 6])), (0, 0, np.array([7, -6])),
+                         (0, 0, np.array([6, 7])), (0, 0, np.array([6, -7])),
+                         (0, 0, np.array([9, 2])), (0, 0, np.array([9, -2])),
+                         (0, 0, np.array([2, 9])), (0, 0, np.array([2, -9]))]
+        elif n == 39:
+            neighbors = [(0, 0, np.array([8, 5])), (0, 0, np.array([8, -5])),
+                         (0, 0, np.array([5, 8])), (0, 0, np.array([5, -8]))]
+        elif n == 40:
+            neighbors = [(0, 0, np.array([9, 3])), (0, 0, np.array([9, -3])),
+                         (0, 0, np.array([3, 9])), (0, 0, np.array([3, -9]))]
+        elif n == 41:
+            neighbors = [(0, 0, np.array([9, 4])), (0, 0, np.array([9, -4])),
+                         (0, 0, np.array([4, 9])), (0, 0, np.array([4, -9]))]
+        elif n == 42:
+            neighbors = [(0, 0, np.array([7, 7])), (0, 0, np.array([7, -7]))]
+        elif n == 43:
+            neighbors = [(0, 0, np.array([8, 6])), (0, 0, np.array([8, -6])),
+                         (0, 0, np.array([6, 8])), (0, 0, np.array([6, -8])),
+                         (0, 0, np.array([10, 0])), (0, 0, np.array([0, 10]))]
+        elif n == 44:
+            neighbors = [(0, 0, np.array([10, 1])), (0, 0, np.array([10, -1])),
+                         (0, 0, np.array([1, 10])), (0, 0, np.array([1, -10]))]
+        elif n == 45:
+            neighbors = [(0, 0, np.array([10, 2])), (0, 0, np.array([10, -2])),
+                         (0, 0, np.array([2, 10])), (0, 0, np.array([2, -10]))]
+        elif n == 46:
+            neighbors = [(0, 0, np.array([9, 5])), (0, 0, np.array([9, -5])),
+                         (0, 0, np.array([5, 9])), (0, 0, np.array([5, -9]))]
+        elif n == 47:
+            neighbors = [(0, 0, np.array([10, 3])), (0, 0, np.array([10, -3])),
+                         (0, 0, np.array([3, 10])), (0, 0, np.array([3, -10]))]
+        elif n == 48:
+            neighbors = [(0, 0, np.array([8, 7])), (0, 0, np.array([8, -7])),
+                         (0, 0, np.array([7, 8])), (0, 0, np.array([7, -8]))]
+        elif n == 49:
+            neighbors = [(0, 0, np.array([10, 4])), (0, 0, np.array([10, -4])),
+                         (0, 0, np.array([4, 10])), (0, 0, np.array([4, -10]))]
+        elif n == 50:
+            neighbors = [(0, 0, np.array([9, 6])), (0, 0, np.array([9, -6])),
+                         (0, 0, np.array([6, 9])), (0, 0, np.array([6, -9]))]
         else:
             raise ValueError("nearest_neighbors not implemented for this value of n.")
     elif lattice == "Hex":
