@@ -69,10 +69,10 @@ if __name__ == '__main__':
     ax1.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax1.set_ylabel("$\\xi$", fontsize=11)
     ax1.set_title("(a) $n_\phi=1/4$", fontsize=12)
-    ax1.axvspan(0, 1, alpha=0.5, color='grey')
+    ax1.axvspan(0, 0.6, alpha=0.5, color='grey')
     line1 = plt.Line2D((.125, .125), (.645, .748), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line1)
-    line2 = plt.Line2D((.435, .158), (.645, .745), color="k", linewidth=1, linestyle='--', alpha=0.5)
+    line2 = plt.Line2D((.435, .144), (.645, .745), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line2)
 
     ####################################################################################################################
@@ -226,10 +226,10 @@ if __name__ == '__main__':
     ax5.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax5.set_ylabel("$\\xi$", fontsize=11)
     ax5.set_title("(b) $n_\phi=1/6$", fontsize=12)
-    ax5.axvspan(0, 1, alpha=0.5, color='grey')
+    ax5.axvspan(0, 0.6, alpha=0.5, color='grey')
     line1 = plt.Line2D((.59, .59), (.645, .748), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line1)
-    line2 = plt.Line2D((.9, .622), (.645, .745), color="k", linewidth=1, linestyle='--', alpha=0.5)
+    line2 = plt.Line2D((.9, .61), (.645, .745), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line2)
 
     ####################################################################################################################

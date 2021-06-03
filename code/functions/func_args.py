@@ -181,8 +181,8 @@ def __check_input_arguments(program, args):
     if "V" in args and ((args['V'] == 0 and args['Vrange'] != 0) or (args['V'] != 0 and args['Vrange'] == 0)):
         raise ValueError("Cannot have zero interaction over a finite range, or a finite interaction over zero range.")
 
-    if "Vrange" in args and (args['Vrange'] > 10 or args['Vrange'] < 0):
-        raise ValueError("Vrange must be between 0 and 10.")
+    if "Vrange" in args and (args['Vrange'] > 20 or args['Vrange'] < 0):
+        raise ValueError("Vrange must be between 0 and 20.")
 
     if "n" in args and (args['n'][0] <= 0 or args['n'][1] <= 0):
         raise ValueError("n needs to have positive entries.")
