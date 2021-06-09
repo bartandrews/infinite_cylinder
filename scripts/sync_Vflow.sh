@@ -4,6 +4,7 @@
 # rsync options
 #
 # n = dry run (optional)
+# c = checksum
 # v = verbose
 # t = preserve modification time
 # z = compress files for transfer
@@ -27,7 +28,7 @@ do
 		echo
 		echo ">>> Dry run from bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
 		echo
-		rsync -nvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
+		rsync -cnvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
 	fi
 	# shellcheck disable=SC2029
 #	if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/data/${TOOL}/FerHofSqu1/ ]"
@@ -45,7 +46,7 @@ do
 			echo
 			echo ">>> Dry run from ubuntu@${PC}:${UBUNTU_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
 			echo
-			rsync -nvtzhre ssh ubuntu@"${PC}":${UBUNTU_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
+			rsync -cnvtzhre ssh ubuntu@"${PC}":${UBUNTU_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
 		fi
 	done
 done
@@ -64,7 +65,7 @@ then
 			echo
 			echo ">>> Actual run from bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
 			echo
-			rsync -vtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
+			rsync -cvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
 		fi
 		# shellcheck disable=SC2029
 #		if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/data/${TOOL}/FerHofSqu1/ ]"
@@ -82,7 +83,7 @@ then
 				echo
 				echo ">>> Actual run from ubuntu@${PC}:${UBUNTU_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/ to bart@bart:${BART_BASE}/${DIR_PATH_HOME}/${TOOL}/FerHofSqu1/"
 				echo
-				rsync -vtzhre ssh ubuntu@"${PC}":${UBUNTU_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
+				rsync -cvtzhre ssh ubuntu@"${PC}":${UBUNTU_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/ ${BART_BASE}/${DIR_PATH_HOME}/"${TOOL}"/FerHofSqu1/
 			fi
 		done
 	done

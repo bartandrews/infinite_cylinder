@@ -41,7 +41,9 @@ def __get_custom_state():
     # state = [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0]*3  # BBH
     # state = [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0] * 3  # BBH2
     # state = [0, 1, 0, 1] * int(32 / 4)  # subregion starts at site 1 (SSH)
-    state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
+    # state = [0, 1, 1, 0] * int(32 / 4)  # subregion starts at site 2
+
+    state = [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     return state
 

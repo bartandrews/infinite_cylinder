@@ -19,7 +19,8 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
     leaf = fp.file_name_leaf("V_flow", model, ham_params)
     sys.stdout = sys.stderr = fp.Logger("V_flow", path, model, chi_max, leaf)
 
-    tools = ["ent_spec_V_flow", "ent_V_flow", "corr_len_V_flow", "ent_corr_len", "energy_V_flow"]
+    # tools = ["ent_spec_V_flow", "ent_V_flow", "corr_len_V_flow", "ent_corr_len", "energy_V_flow"]
+    tools = ["energy_V_flow"]
     data = fp.prepare_output_files(tools, path, model, chi_max, leaf)
 
     ##################################################################################################################
@@ -34,56 +35,81 @@ def my_V_flow(path_flag, threads, model, chi_max, ham_params):
         # ent_spec_V_flow #
         ###################
 
-        # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
-        spectrum = psi.entanglement_spectrum(by_charge=True)
+        if "ent_spec_V_flow" in tools:
 
-        bond = 0
+            # spectrum[bond][sector][0][0] --> spectrum[bond][sector][0][n] for different charge entries
+            spectrum = psi.entanglement_spectrum(by_charge=True)
 
-        for sector in range(0, len(spectrum[bond])):
-            for i in range(0, len(spectrum[bond][sector][1])):
-                data_line = "{charge:d}\t{V:.15f}\t{spectrum:.15f}"\
-                    .format(charge=spectrum[bond][sector][0][0],
-                            V=V, spectrum=spectrum[bond][sector][1][i])
-                print(data_line)
-                data['ent_spec_V_flow'].write(data_line+"\n")
+            bond = 0
+
+            for sector in range(0, len(spectrum[bond])):
+                for i in range(0, len(spectrum[bond][sector][1])):
+                    data_line = "{charge:d}\t{V:.15f}\t{spectrum:.15f}"\
+                        .format(charge=spectrum[bond][sector][0][0],
+                                V=V, spectrum=spectrum[bond][sector][1][i])
+                    print(data_line)
+                    data['ent_spec_V_flow'].write(data_line+"\n")
 
         ##############
         # ent_V_flow #
         ##############
 
-        SvN = psi.entanglement_entropy()[0]
+        if "ent_V_flow" in tools:
 
-        data_line = f"{V:.15f}\t{SvN:.15f}"
-        print(data_line)
-        data['ent_V_flow'].write(data_line + "\n")
+            SvN = psi.entanglement_entropy()[0]
+
+            data_line = f"{V:.15f}\t{SvN:.15f}"
+            print(data_line)
+            data['ent_V_flow'].write(data_line + "\n")
 
         ###################
         # corr_len_V_flow #
         ###################
 
-        xi = psi.correlation_length()
+        if "corr_len_V_flow" in tools:
 
-        data_line = f"{V:.15f}\t{xi:.15f}"
-        print(data_line)
-        data['corr_len_V_flow'].write(data_line + "\n")
+            xi = psi.correlation_length()
+
+            data_line = f"{V:.15f}\t{xi:.15f}"
+            print(data_line)
+            data['corr_len_V_flow'].write(data_line + "\n")
 
         ################
         # ent_corr_len #
         ################
 
-        data_line = f"{np.log(xi):.15f}\t{SvN:.15f}\t{V:.15f}"
-        print(data_line)
-        data['ent_corr_len'].write(data_line + "\n")
+        if "ent_corr_len" in tools:
+
+            data_line = f"{np.log(xi):.15f}\t{SvN:.15f}\t{V:.15f}"
+            print(data_line)
+            data['ent_corr_len'].write(data_line + "\n")
 
         #################
         # energy_V_flow #
         #################
 
-        energy = state_data['E']
+        if "energy_V_flow" in tools:
 
-        data_line = f"{V:.15f}\t{energy:.15f}"
-        print(data_line)
-        data['energy_V_flow'].write(data_line + "\n")
+            energy = state_data['E']
+
+            pot_energy = 0
+            Ly = state_data['M'].lat.Ls[1]
+            for i in range(psi.L):
+                if (i + 1) % Ly == 0:  # top edge
+                    pot_energy += psi.expectation_value_term([('N', i), ('N', i - Ly)])
+                else:
+                    pot_energy += psi.expectation_value_term([('N', i), ('N', i + 1)])
+                if i >= psi.L - Ly:  # right edge
+                    pot_energy += psi.expectation_value_term([('N', i), ('N', i % Ly)])
+                else:
+                    pot_energy += psi.expectation_value_term([('N', i), ('N', i + Ly)])
+            pot_energy *= V
+
+            kin_energy = energy - pot_energy
+
+            data_line = f"{V:.15f}\t{kin_energy:.15f}\t{pot_energy:.15f}\t{energy:.15f}"
+            print(data_line)
+            data['energy_V_flow'].write(data_line + "\n")
 
     print("Total time taken (seconds) = ", time.time() - t0)
 
