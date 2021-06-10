@@ -15,6 +15,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from matplotlib.patches import ConnectionPatch
 from scipy import stats
 from fractions import Fraction
+import math
 
 
 plt.rc('text', usetex=True)
@@ -32,7 +33,13 @@ def line_of_best_fit(x_list, y_list):
     return m, m_err, c, c_err, r2_value
 
 
+def roundup(x):
+    return int(math.ceil(x / 10.0)) * 10
+
+
 if __name__ == '__main__':
+
+    corr_len_scale = True
 
     fig = plt.figure(figsize=(6, 6))  # 6, 6
     gs = gridspec.GridSpec(4, 2, hspace=0.6, wspace=0.6)  # 0.6, 0.6
@@ -95,6 +102,7 @@ if __name__ == '__main__':
             # ax1.text(Ly_val / 3, 0.04, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
             q_list = [8]
 
+        corr_len = []
         for q in q_list:
 
             nphi = (1, q)
@@ -133,7 +141,7 @@ if __name__ == '__main__':
                 leg.get_frame().set_linewidth(0.5)
 
             ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-            ax1.set_xlim([0, 20])
+            ax1.set_xlim([0, 30])
             # if Ly_val < 14:
             #     ax1.set_xticks(np.arange(0, Ly_val+0.1, 1))
             # else:
@@ -142,20 +150,42 @@ if __name__ == '__main__':
             # if q == 8:
             #     ax1.set_ylim(bottom=0)
             ax1.set_xlabel("$x$", fontsize=11)
-            ax1.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{x,0}}: \\rangle$", fontsize=11)
+            ax1.set_ylabel("$g(x)$", fontsize=11)
             # if q == 3:
             #     ax1.text(0.05*nu[1], -0.9*nu[0], f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
+            if corr_len_scale:
+                corrlen_dir = '/home/bart/PycharmProjects/infinite_cylinder/logs/observables/FerHofSqu1'
+                corrlen_file = f'log_observables_FerHofSqu1_chi_250_t1_1_V_10_Coulomb_1_' \
+                               f'n_{n.numerator}_{n.denominator}_nphi_{nphi[0]}_{nphi[1]}_LxMUC_1_Ly_{Ly_val}.dat'
+                corrlen_path = os.path.join(corrlen_dir, corrlen_file)
+
+                # extract corrlen from file
+                for line in list(open(corrlen_path)):  # find the max SnV
+                    if "xi" in line:
+                        xi_line = line.rstrip()
+                        xi = float(xi_line.split()[-1])
+                        ax1.axvline(xi, c=f'C{q-3}', ls='--', zorder=-3)
+                        corr_len.append(xi)
+                        break
+
+                if q == 8:
+                    ax1.set_xlim([0, roundup(np.max(corr_len))])
+                    ax1.set_xticks(np.arange(0, roundup(np.max(corr_len))+1, 10))
+            else:
+                ax1.set_xlim([0, 20])
+                ax1.set_xticks(np.arange(0, 21, 10))
+
     ####################################################################################################################
     ####################################################################################################################
 
-    fig.text(0, 0.88, "(a)", fontsize=12)
+    fig.text(0-0.01, 0.88, "(a)", fontsize=12)
     fig.text(0.48, 0.88, "(b)", fontsize=12)
-    fig.text(0, 0.665, "(c)", fontsize=12)
+    fig.text(0-0.01, 0.665, "(c)", fontsize=12)
     fig.text(0.48, 0.665, "(d)", fontsize=12)
-    fig.text(0, 0.455, "(e)", fontsize=12)
+    fig.text(0-0.01, 0.455, "(e)", fontsize=12)
     fig.text(0.48, 0.455, "(f)", fontsize=12)
-    fig.text(0, 0.241, "(g)", fontsize=12)
+    fig.text(0-0.01, 0.241, "(g)", fontsize=12)
     fig.text(0.48, 0.241, "(h)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/FCI/corrfuncext_analysis.png", bbox_inches='tight', dpi=300)

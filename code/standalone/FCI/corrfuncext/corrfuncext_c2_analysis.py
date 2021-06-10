@@ -36,6 +36,8 @@ def line_of_best_fit(x_list, y_list):
 
 if __name__ == '__main__':
 
+    corr_len_scale = True
+
     fig = plt.figure(figsize=(6, 4.5))
     gs = gridspec.GridSpec(3, 2, hspace=0.6, wspace=0.6)
 
@@ -63,15 +65,32 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[8], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C1', marker=markers[8], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax.axvline(24.50763761530804, c=f'C1', ls='--', zorder=-3)
 
     ax.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax.set_xlim([0, 100])
+    if corr_len_scale:
+        ax.set_xlim([0, 30])
+        ax.set_xticks(np.arange(0, 31, 10))
+    else:
+        ax.set_xlim([0, 20])
+        ax.set_xticks(np.arange(0, 21, 10))
+    # ax.set_xlim([0, 110])
     # ax.set_xticks(np.arange(0, 10 + 0.1, 1))
     # ax.set_ylim(bottom=0)
     ax.set_xlabel("$x$", fontsize=11)
-    ax.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{x,0}}: \\rangle$", fontsize=11)
-    ax.text(0.05*10, 0.011425, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax.set_ylabel("$g(x)$", fontsize=11)
+    # ax.text(0.05*10, 0, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)  # 0.011425
+    ax.annotate(f"$\\nu={nu[0]}/{nu[1]}$", xy=(0.69, 0.87), xycoords='axes fraction', fontsize=10, verticalalignment='top',
+                bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     # ax.set_title(f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
 
     ax1 = plt.subplot(gs[1])  # 071829 ##################################################################################
@@ -88,7 +107,16 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C0', marker=markers[1], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax1.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C0', marker=markers[1], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax1.axvline(12.381443957055637, c=f'C0', ls='--', zorder=-3)
     # ax1.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_25_t1_1_V_10_Coulomb_1_n_1_33_nphi_6_11_LxMUC_1_Ly_6.dat'
@@ -102,16 +130,29 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax1.plot(sites[1:], corr_func[1:], '.-', c=f'C0', marker=markers[8], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax1.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C0', marker=markers[8], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax1.axvline(16.978643738691847, c=f'C0', ls='--', zorder=-3)
     # ax1.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     ax1.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax1.set_xlim([0, 100])
+    ax1.set_xlim([0, 20])
+    ax1.set_xticks(np.arange(0, 21, 10))
     # ax1.set_xticks(np.arange(0, 6+0.1, 1))
     # ax1.set_ylim(0)
     ax1.set_xlabel("$x$", fontsize=11)
-    ax1.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{x,0}}: \\rangle$", fontsize=11)
-    ax1.text(0.3*6, 0.09, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax1.set_ylabel("$g(x)$", fontsize=11)
+    # ax1.text(0.3*6, 0, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)  # 0.09
+    ax1.annotate(f"$\\nu={nu[0]}/{nu[1]}$", xy=(0.69, 0.87), xycoords='axes fraction', fontsize=10,
+                verticalalignment='top',
+                bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     ax2 = plt.subplot(gs[2])  # 071829 #################################################################################
     nu = (2, 9)
@@ -127,16 +168,34 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax2.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[1], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax2.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C1', marker=markers[1], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax2.axvline(63.80363247769049, c=f'C1', ls='--', zorder=-3)
     # ax2.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     ax2.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax2.set_xlim([0, 100])
+    if corr_len_scale:
+        ax2.set_xlim([0, 70])
+        ax2.set_xticks(np.arange(0, 71, 35))
+    else:
+        ax2.set_xlim([0, 20])
+        ax2.set_xticks(np.arange(0, 21, 10))
+    # ax2.set_xlim([0, 90])
     # ax2.set_xticks(np.arange(0, 9 + 0.1, 1))
     # ax2.set_ylim(0)
     ax2.set_xlabel("$x$", fontsize=11)
-    ax2.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{x,0}}: \\rangle$", fontsize=11)
-    ax2.text(0.35*9, 0.0308, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax2.set_ylabel("$g(x)$", fontsize=11)
+    # ax2.text(0.35*9, 0, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)  # 0.0308
+    ax2.annotate(f"$\\nu={nu[0]}/{nu[1]}$", xy=(0.69, 0.87), xycoords='axes fraction', fontsize=10,
+                 verticalalignment='top',
+                 bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     nphi_legend_elements = [
         Line2D([0], [0], linestyle='none', marker=markers[0], color='k', label='$3/5$', fillstyle='none', markersize=5),
@@ -164,7 +223,16 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax3.plot(sites[1:], corr_func[1:], '.-', c=f'C2', marker=markers[9], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax3.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C2', marker=markers[9], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax3.axvline(54.80752722646903, c=f'C2', ls='--', zorder=-3)
     # ax3.plot(sites_cont, corr_func_cont, '--', c=f'C2')
 
     corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_2_105_nphi_8_15_LxMUC_1_Ly_14.dat'
@@ -178,16 +246,34 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax3.plot(sites[1:], corr_func[1:], '.-', c=f'C3', marker=markers[9], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax3.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C3', marker=markers[9], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax3.axvline(69.50673627086873, c=f'C3', ls='--', zorder=-3)
     # ax3.plot(sites_cont, corr_func_cont, '--', c=f'C3')
 
     ax3.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax3.set_xlim([0, 100])
+    if corr_len_scale:
+        ax3.set_xlim([0, 70])
+        ax3.set_xticks(np.arange(0, 71, 35))
+    else:
+        ax3.set_xlim([0, 20])
+        ax3.set_xticks(np.arange(0, 21, 10))
+    # ax3.set_xlim([0, 150])
     # ax3.set_xticks(np.arange(0, 14 + 0.1, 2))
     # ax3.set_ylim(0)
     ax3.set_xlabel("$x$", fontsize=11)
-    ax3.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{x,0}}: \\rangle$", fontsize=11)
-    ax3.text(0.35*14, 0.01265, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax3.set_ylabel("$g(x)$", fontsize=11)
+    # ax3.text(0.35*14, 0, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)  # 0.01265
+    ax3.annotate(f"$\\nu={nu[0]}/{nu[1]}$", xy=(0.69, 0.87), xycoords='axes fraction', fontsize=10,
+                 verticalalignment='top',
+                 bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     ax4 = plt.subplot(gs[5])  # 071829 #################################################################################
     nu = (3, 11)
@@ -203,7 +289,16 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C1', marker=markers[9], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax4.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C1', marker=markers[9], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax4.axvline(51.53909790997497, c=f'C1', ls='--', zorder=-3)
     # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C1')
 
     corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_3_143_nphi_7_13_LxMUC_1_Ly_11.dat'
@@ -217,7 +312,16 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C2', marker=markers[2], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax4.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C2', marker=markers[2], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax4.axvline(70.21306138185336, c=f'C2', ls='--', zorder=-3)
     # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C2')
 
     corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_150_t1_1_V_10_Coulomb_1_n_3_121_nphi_6_11_LxMUC_1_Ly_11.dat'
@@ -231,16 +335,34 @@ if __name__ == '__main__':
     corr_func = [float(i) for i in corr_func]
     min_val = min(corr_func)
     corr_func = [float(i) - min_val for i in corr_func]
-    ax4.plot(sites[1:], corr_func[1:], '.-', c=f'C3', marker=markers[8], fillstyle='none', markersize=5)
+
+    # offset
+    corr_func_offset = []
+    (m1, m1_err, c, c_err, r2_value1) = line_of_best_fit(sites[-200:], corr_func[-200:])
+    for i in corr_func:
+        corr_func_offset.append(i - c)
+
+    ax4.plot(sites[1:], corr_func_offset[1:], '.-', c=f'C3', marker=markers[8], fillstyle='none', markersize=5)
+    if corr_len_scale:
+        ax4.axvline(71.91924134595075, c=f'C3', ls='--', zorder=-3)
     # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C3')
 
     ax4.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax4.set_xlim([0, 100])
+    if corr_len_scale:
+        ax4.set_xlim([0, 80])
+        ax4.set_xticks(np.arange(0, 81, 20))
+    else:
+        ax4.set_xlim([0, 20])
+        ax4.set_xticks(np.arange(0, 21, 10))
+    # ax4.set_xlim([0, 110])
     # ax4.set_xticks(np.arange(0, 11 + 0.1, 1))
     # ax4.set_ylim(0)
     ax4.set_xlabel("$x$", fontsize=11)
-    ax4.set_ylabel("$\langle :\mathrel{\\rho_{0,0} \\rho_{x,0}}: \\rangle$", fontsize=11)
-    ax4.text(0.35*11, 0.0185, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
+    ax4.set_ylabel("$g(x)$", fontsize=11)
+    # ax4.text(0.35*11, 0, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)  # 0.0185
+    ax4.annotate(f"$\\nu={nu[0]}/{nu[1]}$", xy=(0.65, 0.87), xycoords='axes fraction', fontsize=10,
+                 verticalalignment='top',
+                 bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     chi_legend_elements = [Patch(facecolor='C0', label='$25$'), Patch(facecolor='C1', label='$50$'),
                            Patch(facecolor='C2', label='$100$'), Patch(facecolor='C3', label='$150$')]
@@ -257,11 +379,11 @@ if __name__ == '__main__':
     # fig.text(0, 0.575, "(c)", fontsize=12)
     # fig.text(0.48, 0.575, "(d)", fontsize=12)
     # fig.text(0.48, 0.28, "(e)", fontsize=12)
-    fig.text(0, 0.89, "(a)", fontsize=12)
-    fig.text(0.48, 0.89, "(b)", fontsize=12)
-    fig.text(0, 0.595, "(c)", fontsize=12)
-    fig.text(0.48, 0.595, "(d)", fontsize=12)
-    fig.text(0.48, 0.30, "(e)", fontsize=12)
+    fig.text(0-0.02, 0.89, "(a)", fontsize=12)
+    fig.text(0.48-0.02, 0.89, "(b)", fontsize=12)
+    fig.text(0-0.02, 0.595, "(c)", fontsize=12)
+    fig.text(0.48-0.02, 0.595, "(d)", fontsize=12)
+    fig.text(0.48-0.02, 0.30, "(e)", fontsize=12)
 
     plt.savefig("/home/bart/Documents/papers/FCI/corrfuncext_c2_analysis.png", bbox_inches='tight', dpi=300)
     plt.show()

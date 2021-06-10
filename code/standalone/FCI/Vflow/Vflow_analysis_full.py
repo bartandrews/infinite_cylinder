@@ -79,45 +79,7 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax1_2 = plt.subplot(middle_left_inner_grid[0])
-
-    # extract data from file
-    with open('/home/bart/PycharmProjects/infinite_cylinder/code/standalone/FCI/Vflow/E_flow.dat', 'r') as csvfile:
-        plots = csv.reader(csvfile, delimiter='\t')
-        V = []
-        kin = []
-        pot = []
-        tot = []
-        for row in plots:
-            V.append(float(row[0]))
-            kin.append(float(row[1]))
-            pot.append(float(row[2]))
-            tot.append(float(row[3]))
-
-    ax1_2.plot(V, kin, c=f"C0", marker=markers[0], markersize=2, label=f"$\langle \hat{{T}} \\rangle$")
-    ax1_2.plot(V, pot, c=f"C1", marker=markers[1], markersize=2, label=f"$\langle \hat{{V}} \\rangle$")
-    ax1_2.plot(V, tot, c=f"C2", marker=markers[2], markersize=2, label=f"$\langle \hat{{H}} \\rangle$")
-
-    ax1_2.legend(loc='right', handletextpad=0, handlelength=1, borderpad=0, framealpha=1, edgecolor='w',
-                 markerscale=2, fontsize=10, ncol=5, columnspacing=0.5, labelspacing=0.25)
-
-    ax1_2.axvline(0.215, c='b', linestyle=':', zorder=-2)
-    ax1_2.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax1_2.set_xlim([0, 0.6])
-    ax1_2.set_xticks(np.arange(0, 0.61, 0.2))
-    # ax1_2.set_yticks(np.arange(0, 200.1, 50))
-    ax1_2.set_ylabel("$E$", fontsize=11)
-    plt.setp(ax1_2.get_xticklabels(), visible=False)
-    ax1_2.tick_params(
-        axis='x',  # changes apply to the x-axis
-        which='both',  # both major and minor ticks are affected
-        bottom=False,  # ticks along the bottom edge are off
-        top=False,  # ticks along the top edge are off
-        labelbottom=False)
-
-    ####################################################################################################################
-
-    ax2 = plt.subplot(middle_left_inner_grid[1])
+    ax2 = plt.subplot(middle_left_inner_grid[0])
 
     for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
@@ -151,7 +113,7 @@ if __name__ == '__main__':
     
     ####################################################################################################################
 
-    ax3 = plt.subplot(middle_left_inner_grid[2])
+    ax3 = plt.subplot(middle_left_inner_grid[1])
 
     for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
@@ -185,7 +147,58 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax4 = plt.subplot(middle_left_inner_grid[3])
+    ax4 = plt.subplot(middle_left_inner_grid[2])
+
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
+
+        if chi_val == 200:
+            V_min = 0
+            V_samples = 25
+        else:
+            V_min = 0.025
+            V_samples = 24
+
+        energy_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/energy_V_flow/FerHofSqu1'
+        energy_file = f'energy_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_{V_min}_0.6_{V_samples}_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+        energy_path = os.path.join(energy_dir, energy_file)
+
+        # extract data from file
+        with open(energy_path, 'r') as csvfile:
+            plots = csv.reader(csvfile, delimiter='\t')
+            V = []
+            kin = []
+            pot = []
+            tot = []
+            for row in plots:
+                V.append(float(row[0]))
+                kin.append(float(row[1]))
+                pot.append(float(row[2]))
+                tot.append(float(row[3]))
+
+        if V_min == 0:
+            ax4.plot(V[1:], np.log(pot[1:]), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+                     label=f"${chi_val / 100:g}$")
+        else:
+            ax4.plot(V, np.log(pot), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+                     label=f"${chi_val / 100:g}$")
+
+    ax4.axvline(0.215, c='b', linestyle=':', zorder=-2)
+    ax4.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
+    ax4.set_xlim([0, 0.6])
+    ax4.set_xticks(np.arange(0, 0.61, 0.2))
+    # ax4.set_yticks(np.arange(0, 200.1, 50))
+    ax4.set_ylabel("$\ln \langle \hat{V} \\rangle$", fontsize=11)
+    plt.setp(ax4.get_xticklabels(), visible=False)
+    ax4.tick_params(
+        axis='x',  # changes apply to the x-axis
+        which='both',  # both major and minor ticks are affected
+        bottom=False,  # ticks along the bottom edge are off
+        top=False,  # ticks along the top edge are off
+        labelbottom=False)
+    
+    ####################################################################################################################
+
+    ax5 = plt.subplot(middle_left_inner_grid[3])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
     ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_1000_t1_1_V_0_1_41_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
@@ -210,33 +223,33 @@ if __name__ == '__main__':
                 xvalue.append(x[i])
                 yvalue.append(y[i])
         if value != 0:
-            ax4.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='{}'.format(value), s=20)
+            ax5.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='${}$'.format(value), s=20)
         else:
-            ax4.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value), s=20)
+            ax5.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value), s=20)
 
-    ax4.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
+    ax5.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
                markerscale=1,
                fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
 
-    ax4.tick_params(axis="x", labelsize=10)
-    ax4.tick_params(axis="y", labelsize=10)
+    ax5.tick_params(axis="x", labelsize=10)
+    ax5.tick_params(axis="y", labelsize=10)
 
-    ax4.axvline(0.215, c='b', linestyle=':', zorder=-2)
-    ax4.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax4.set_xlim([0, 0.6])
-    ax4.set_xticks(np.arange(0, 0.61, 0.2))
-    ax4.set_yticks(np.arange(0, 10, 2))
-    ax4.set_ylim([0, 10])
-    ax4.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax4.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax4.set_xlabel("$V$", fontsize=11)
-    ax4.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
-    ax4.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
+    ax5.axvline(0.215, c='b', linestyle=':', zorder=-2)
+    ax5.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
+    ax5.set_xlim([0, 0.6])
+    ax5.set_xticks(np.arange(0, 0.61, 0.2))
+    ax5.set_yticks(np.arange(0, 10, 2))
+    ax5.set_ylim([0, 10])
+    ax5.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
+    ax5.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
+    ax5.set_xlabel("$V$", fontsize=11)
+    ax5.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
+    ax5.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
     ####################################################################################################################
 
-    ax4_2 = plt.subplot(lower_left_cell)
+    ax6 = plt.subplot(lower_left_cell)
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_data'
     ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_250_chiK_500_t1_1_V_10_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
@@ -261,27 +274,27 @@ if __name__ == '__main__':
                 xvalue.append(x[i])
                 yvalue.append(y[i])
         if value != 0:
-            ax4_2.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
+            ax6.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
         else:
-            ax4_2.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
+            ax6.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
-    ax4_2.set_yticks(np.arange(0, 15.1, 5))
-    ax4_2.set_ylim([0, 15])
+    ax6.set_yticks(np.arange(0, 15.1, 5))
+    ax6.set_ylim([0, 15])
 
-    # ax4_2.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
+    # ax6.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
-    ax4_2.set_xlim([-np.pi / 3, np.pi / 3])
-    ax4_2.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
-    ax4_2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+    ax6.set_xlim([-np.pi / 3, np.pi / 3])
+    ax6.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
+    ax6.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
-    ax4_2.tick_params(axis="x", labelsize=10)
-    ax4_2.tick_params(axis="y", labelsize=10)
+    ax6.tick_params(axis="x", labelsize=10)
+    ax6.tick_params(axis="y", labelsize=10)
 
     ####################################################################################################################
     ####################################################################################################################
 
-    ax5 = plt.subplot(upper_right_cell)
+    ax7 = plt.subplot(upper_right_cell)
 
     for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
@@ -297,20 +310,20 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 xi.append(float(row[1]))
 
-        ax5.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"${chi_val/100:g}$")
+        ax7.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"${chi_val/100:g}$")
 
-    ax5.legend(loc='upper right', handletextpad=0, handlelength=1, borderpad=0, framealpha=1, edgecolor='w',
+    ax7.legend(loc='upper right', handletextpad=0, handlelength=1, borderpad=0, framealpha=1, edgecolor='w',
                markerscale=2, fontsize=10, ncol=5, columnspacing=0.5, labelspacing=0.25, title="$\chi/10^2$")
 
-    ax5.axvline(0.0192, c='b', linestyle=':', zorder=-2)
-    ax5.axvline(1.48, c='r', linestyle=':', zorder=-2)
-    ax5.set_xlim([0, 10])
-    ax5.set_xticks(np.arange(0, 10.1, 2))
-    ax5.set_xlabel("$V$", fontsize=11)
-    ax5.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax5.set_ylabel("$\\xi$", fontsize=11)
-    ax5.set_title("(b) $n_\phi=1/6$", fontsize=12)
-    ax5.axvspan(0, 0.6, alpha=0.5, color='grey')
+    ax7.axvline(0.0192, c='b', linestyle=':', zorder=-2)
+    ax7.axvline(1.48, c='r', linestyle=':', zorder=-2)
+    ax7.set_xlim([0, 10])
+    ax7.set_xticks(np.arange(0, 10.1, 2))
+    ax7.set_xlabel("$V$", fontsize=11)
+    ax7.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
+    ax7.set_ylabel("$\\xi$", fontsize=11)
+    ax7.set_title("(b) $n_\phi=1/6$", fontsize=12)
+    ax7.axvspan(0, 0.6, alpha=0.5, color='grey')
     line1 = plt.Line2D((.59, .59), (.735, .8), color="k", linewidth=1, linestyle='--', alpha=0.5)
     fig.add_artist(line1)
     line2 = plt.Line2D((.9, .61), (.735, .8), color="k", linewidth=1, linestyle='--', alpha=0.5)
@@ -318,45 +331,7 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax5_2 = plt.subplot(middle_right_inner_grid[0])
-
-    # extract data from file
-    with open('/home/bart/PycharmProjects/infinite_cylinder/code/standalone/FCI/Vflow/E_flow.dat', 'r') as csvfile:
-        plots = csv.reader(csvfile, delimiter='\t')
-        V = []
-        kin = []
-        pot = []
-        tot = []
-        for row in plots:
-            V.append(float(row[0]))
-            kin.append(float(row[1]))
-            pot.append(float(row[2]))
-            tot.append(float(row[3]))
-
-    ax5_2.plot(V, kin, c=f"C0", marker=markers[0], markersize=2, label=f"$\langle \hat{{T}} \\rangle$")
-    ax5_2.plot(V, pot, c=f"C1", marker=markers[1], markersize=2, label=f"$\langle \hat{{V}} \\rangle$")
-    ax5_2.plot(V, tot, c=f"C2", marker=markers[2], markersize=2, label=f"$\langle \hat{{H}} \\rangle$")
-
-    ax5_2.legend(loc='right', handletextpad=0, handlelength=1, borderpad=0, framealpha=1, edgecolor='w',
-                 markerscale=2, fontsize=10, ncol=5, columnspacing=0.5, labelspacing=0.25)
-
-    ax5_2.axvline(0.0192, c='b', linestyle=':', zorder=-2)
-    ax5_2.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax5_2.set_xlim([0, 0.6])
-    ax5_2.set_xticks(np.arange(0, 0.61, 0.2))
-    # ax5_2.set_yticks(np.arange(0, 200.1, 50))
-    ax5_2.set_ylabel("$E$", fontsize=11)
-    plt.setp(ax5_2.get_xticklabels(), visible=False)
-    ax5_2.tick_params(
-        axis='x',  # changes apply to the x-axis
-        which='both',  # both major and minor ticks are affected
-        bottom=False,  # ticks along the bottom edge are off
-        top=False,  # ticks along the top edge are off
-        labelbottom=False)
-
-    ####################################################################################################################
-
-    ax6 = plt.subplot(middle_right_inner_grid[1])
+    ax8 = plt.subplot(middle_right_inner_grid[0])
 
     for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
@@ -372,17 +347,17 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 xi.append(float(row[1]))
 
-        ax6.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
+        ax8.plot(V, xi, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
 
-    ax6.axvline(0.0192, c='b', linestyle=':', zorder=-2)
-    ax6.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax6.set_xlim([0, 0.6])
-    ax6.set_xticks(np.arange(0, 0.61, 0.2))
-    ax6.set_yticks(np.arange(0, 200.1, 50))
-    # ax6.set_ylim([5, 10])
-    ax6.set_ylabel("$\\xi$", fontsize=11)
-    plt.setp(ax6.get_xticklabels(), visible=False)
-    ax6.tick_params(
+    ax8.axvline(0.0192, c='b', linestyle=':', zorder=-2)
+    ax8.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
+    ax8.set_xlim([0, 0.6])
+    ax8.set_xticks(np.arange(0, 0.61, 0.2))
+    ax8.set_yticks(np.arange(0, 200.1, 50))
+    # ax8.set_ylim([5, 10])
+    ax8.set_ylabel("$\\xi$", fontsize=11)
+    plt.setp(ax8.get_xticklabels(), visible=False)
+    ax8.tick_params(
         axis='x',  # changes apply to the x-axis
         which='both',  # both major and minor ticks are affected
         bottom=False,  # ticks along the bottom edge are off
@@ -391,7 +366,7 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax7 = plt.subplot(middle_right_inner_grid[2])
+    ax9 = plt.subplot(middle_right_inner_grid[1])
 
     for i, chi_val in enumerate(np.arange(200, 1100, 200)):
         ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
@@ -407,16 +382,16 @@ if __name__ == '__main__':
                 V.append(float(row[0]))
                 SvN.append(float(row[1]))
 
-        ax7.plot(V, SvN, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
+        ax9.plot(V, SvN, c=f"C{2*i+1}", marker=markers[i], markersize=2, label=f"$\chi={chi_val}$")
 
-    ax7.axvline(0.0192, c='b', linestyle=':', zorder=-2)
-    ax7.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax7.set_xlim([0, 0.6])
-    ax7.set_xticks(np.arange(0, 0.61, 0.2))
-    ax7.set_yticks(np.arange(0, 4, 1))
-    ax7.set_ylabel("$S_\mathrm{vN}$", fontsize=11)
-    plt.setp(ax7.get_xticklabels(), visible=False)
-    ax7.tick_params(
+    ax9.axvline(0.0192, c='b', linestyle=':', zorder=-2)
+    ax9.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
+    ax9.set_xlim([0, 0.6])
+    ax9.set_xticks(np.arange(0, 0.61, 0.2))
+    ax9.set_yticks(np.arange(0, 4, 1))
+    ax9.set_ylabel("$S_\mathrm{vN}$", fontsize=11)
+    plt.setp(ax9.get_xticklabels(), visible=False)
+    ax9.tick_params(
         axis='x',  # changes apply to the x-axis
         which='both',  # both major and minor ticks are affected
         bottom=False,  # ticks along the bottom edge are off
@@ -425,7 +400,58 @@ if __name__ == '__main__':
 
     ####################################################################################################################
 
-    ax8 = plt.subplot(middle_right_inner_grid[3])
+    ax10 = plt.subplot(middle_right_inner_grid[2])
+
+    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
+
+        if chi_val == 200:
+            V_min = 0
+            V_samples = 25
+        else:
+            V_min = 0.025
+            V_samples = 24
+
+        energy_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/energy_V_flow/FerHofSqu1'
+        energy_file = f'energy_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_{V_min}_0.6_{V_samples}_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
+        energy_path = os.path.join(energy_dir, energy_file)
+
+        # extract data from file
+        with open(energy_path, 'r') as csvfile:
+            plots = csv.reader(csvfile, delimiter='\t')
+            V = []
+            kin = []
+            pot = []
+            tot = []
+            for row in plots:
+                V.append(float(row[0]))
+                kin.append(float(row[1]))
+                pot.append(float(row[2]))
+                tot.append(float(row[3]))
+
+        if V_min == 0:
+            ax10.plot(V[1:], np.log(pot[1:]), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+                     label=f"${chi_val / 100:g}$")
+        else:
+            ax10.plot(V, np.log(pot), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+                      label=f"${chi_val / 100:g}$")
+
+    ax10.axvline(0.0192, c='b', linestyle=':', zorder=-2)
+    ax10.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
+    ax10.set_xlim([0, 0.6])
+    ax10.set_xticks(np.arange(0, 0.61, 0.2))
+    # ax10.set_yticks(np.arange(0, 200.1, 50))
+    ax10.set_ylabel("$\ln \langle \hat{V} \\rangle$", fontsize=11)
+    plt.setp(ax10.get_xticklabels(), visible=False)
+    ax10.tick_params(
+        axis='x',  # changes apply to the x-axis
+        which='both',  # both major and minor ticks are affected
+        bottom=False,  # ticks along the bottom edge are off
+        top=False,  # ticks along the top edge are off
+        labelbottom=False)
+    
+    ####################################################################################################################
+
+    ax11 = plt.subplot(middle_right_inner_grid[3])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
     ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_1000_t1_1_V_0_1_41_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
@@ -450,33 +476,33 @@ if __name__ == '__main__':
                 xvalue.append(x[i])
                 yvalue.append(y[i])
         if value != 0:
-            ax8.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='{}'.format(value), s=20)
+            ax11.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='${}$'.format(value), s=20)
         else:
-            ax8.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value), s=20)
+            ax11.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value), s=20)
 
-    ax8.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
+    ax11.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
                markerscale=1,
                fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
 
-    ax8.tick_params(axis="x", labelsize=10)
-    ax8.tick_params(axis="y", labelsize=10)
+    ax11.tick_params(axis="x", labelsize=10)
+    ax11.tick_params(axis="y", labelsize=10)
 
-    ax8.axvline(0.0192, c='b', linestyle=':', zorder=-2)
-    ax8.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
-    ax8.set_xlim([0, 0.6])
-    ax8.set_xticks(np.arange(0, 0.61, 0.2))
-    ax8.set_yticks(np.arange(0, 10, 2))
-    ax8.set_ylim([0, 10])
-    ax8.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax8.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax8.set_xlabel("$V$", fontsize=11)
-    ax8.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
-    ax8.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
+    ax11.axvline(0.0192, c='b', linestyle=':', zorder=-2)
+    ax11.grid(color='k', linestyle='-', linewidth=0.3, axis='x')
+    ax11.set_xlim([0, 0.6])
+    ax11.set_xticks(np.arange(0, 0.61, 0.2))
+    ax11.set_yticks(np.arange(0, 10, 2))
+    ax11.set_ylim([0, 10])
+    ax11.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
+    ax11.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
+    ax11.set_xlabel("$V$", fontsize=11)
+    ax11.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
+    ax11.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     
     ####################################################################################################################
 
-    ax8_2 = plt.subplot(lower_right_cell)
+    ax12 = plt.subplot(lower_right_cell)
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_data'
     ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_250_chiK_500_t1_1_V_10_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
@@ -501,24 +527,35 @@ if __name__ == '__main__':
                 xvalue.append(x[i])
                 yvalue.append(y[i])
         if value != 0:
-            ax8_2.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
+            ax12.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
         else:
-            ax8_2.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
+            ax12.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
-    ax8_2.set_yticks(np.arange(0, 15.1, 5))
-    ax8_2.set_ylim([0, 15])
+    ax12.set_yticks(np.arange(0, 15.1, 5))
+    ax12.set_ylim([0, 15])
 
-    # ax8_2.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
+    # ax12.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
-    ax8_2.set_xlim([-np.pi / 3, np.pi / 3])
-    ax8_2.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
-    ax8_2.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+    ax12.set_xlim([-np.pi / 3, np.pi / 3])
+    ax12.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
+    ax12.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
-    ax8_2.tick_params(axis="x", labelsize=10)
-    ax8_2.tick_params(axis="y", labelsize=10)
+    ax12.tick_params(axis="x", labelsize=10)
+    ax12.tick_params(axis="y", labelsize=10)
 
     ####################################################################################################################
+
+
+    left_con = ConnectionPatch(xyA=(0, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
+                                axesA=ax6, axesB=ax5, connectionstyle="angle3,angleA=40,angleB=200", arrowstyle='->',
+                                facecolor='k', edgecolor='k')
+    right_con = ConnectionPatch(xyA=(0, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
+                               axesA=ax12, axesB=ax11, connectionstyle="angle3,angleA=40,angleB=200", arrowstyle='->',
+                               facecolor='k', edgecolor='k')
+
+    ax6.add_artist(left_con)
+    ax12.add_artist(right_con)
 
     # fig.text(0.03, 0.87, "(a)", fontsize=12)
     # fig.text(0.5, 0.87, "(b)", fontsize=12)

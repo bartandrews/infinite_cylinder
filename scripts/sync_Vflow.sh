@@ -12,7 +12,7 @@
 # r = recursive (optional)
 # e ssh = transfer files over a secure connection
 
-TOOLS="ent_spec_V_flow ent_V_flow corr_len_V_flow ent_corr_len"
+TOOLS="ent_spec_V_flow ent_V_flow corr_len_V_flow ent_corr_len energy_V_flow"
 PCS="baandr1 baandr2 baandr3"
 BANDREWS_BASE=/home/fkp/bandrews  # the home directory on the remote computers with username == bandrews
 BART_BASE=/home/bart  # the home directory on the local computer with username == bart
