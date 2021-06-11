@@ -26,8 +26,8 @@ def my_observables(pickle_file_path, path_flag, threads, scalar, chiK_max):
 
     if not scalar:
         # Here, you need to enter the tools that you are interested in studying.
-        # tools = ["ent_spec_real", "ent_spec_mom", "density", "corr_func", "corr_func_ext"]
-        tools = ["corr_func_ext"]
+        tools = ["ent_spec_real", "ent_spec_mom", "density", "corr_func", "corr_func_ext"]
+        # tools = ["corr_func_ext"]
         data = fp.prepare_output_files(tools, path, model, chi_max, leaf, chiK_max)
 
     ####################################################################################################################

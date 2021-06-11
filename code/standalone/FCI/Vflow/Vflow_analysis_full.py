@@ -251,8 +251,8 @@ if __name__ == '__main__':
 
     ax6 = plt.subplot(lower_left_cell)
 
-    ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_data'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_250_chiK_500_t1_1_V_10_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+    ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_1000_chiK_1000_t1_1_V_0.6_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -504,8 +504,8 @@ if __name__ == '__main__':
 
     ax12 = plt.subplot(lower_right_cell)
 
-    ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1/ent_spec_mom_data'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_250_chiK_500_t1_1_V_10_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
+    ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_1000_chiK_1000_t1_1_V_0.6_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
