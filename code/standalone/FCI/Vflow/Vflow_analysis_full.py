@@ -285,8 +285,11 @@ if __name__ == '__main__':
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     ax6.set_xlim([-np.pi / 3, np.pi / 3])
-    ax6.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
+    ax6.set_xlabel("$k_a / \pi$", fontsize=11)
     ax6.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+
+    # ax6.plot([-1, 0.18], [0, 14.2], color='k', linestyle=':', linewidth=1)
+    # ax6.plot([-0.73, 0.18], [0, 6], color='k', linestyle=':', linewidth=1)
 
     ax6.tick_params(axis="x", labelsize=10)
     ax6.tick_params(axis="y", labelsize=10)
@@ -505,7 +508,7 @@ if __name__ == '__main__':
     ax12 = plt.subplot(lower_right_cell)
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_1000_chiK_1000_t1_1_V_0.6_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_1000_chiK_1000_t1_1_V_0.6_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -531,8 +534,8 @@ if __name__ == '__main__':
         else:
             ax12.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
-    ax12.set_yticks(np.arange(0, 15.1, 5))
-    ax12.set_ylim([0, 15])
+    ax12.set_yticks(np.arange(0, 20.1, 5))
+    ax12.set_ylim([0, 20])
 
     # ax12.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
@@ -540,6 +543,9 @@ if __name__ == '__main__':
     ax12.set_xlim([-np.pi / 3, np.pi / 3])
     ax12.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
     ax12.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+
+    # ax12.plot([-1.05, 0.3], [5, 18.2], color='k', linestyle=':', linewidth=1)
+    # ax12.plot([-0.3, 0.3], [0, 5], color='k', linestyle=':', linewidth=1)
 
     ax12.tick_params(axis="x", labelsize=10)
     ax12.tick_params(axis="y", labelsize=10)
@@ -550,7 +556,7 @@ if __name__ == '__main__':
     left_con = ConnectionPatch(xyA=(0, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
                                 axesA=ax6, axesB=ax5, connectionstyle="angle3,angleA=40,angleB=200", arrowstyle='->',
                                 facecolor='k', edgecolor='k')
-    right_con = ConnectionPatch(xyA=(0, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
+    right_con = ConnectionPatch(xyA=(0, 20), xyB=(0.6, 0), coordsA="data", coordsB="data",
                                axesA=ax12, axesB=ax11, connectionstyle="angle3,angleA=40,angleB=200", arrowstyle='->',
                                facecolor='k', edgecolor='k')
 

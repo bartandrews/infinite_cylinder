@@ -116,9 +116,10 @@ if __name__ == '__main__':
 
     ax3 = plt.subplot(left_inner_grid[2])
 
-    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
+    for i, chi_val in enumerate(np.arange(100, 600, 100)):
+
         energy_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/energy_V_flow/FerHofSqu1'
-        energy_file = f'energy_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_0.6_25_Coulomb_1_n_1_12_nphi_1_4_LxMUC_1_Ly_6.dat'
+        energy_file = f'energy_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0.125_3_24_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat'
         energy_path = os.path.join(energy_dir, energy_file)
 
         # extract data from file
@@ -134,7 +135,7 @@ if __name__ == '__main__':
                 pot.append(float(row[2]))
                 tot.append(float(row[3]))
 
-        ax3.plot(V[1:], np.log(pot[1:]), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+        ax3.plot(V, np.log(pot), c=f"C{i}", marker=markers[i], markersize=2,
                  label=f"${chi_val / 100:g}$")
 
     ax3.axvline(0.00678, c='b', linestyle=':', zorder=-2)
@@ -209,7 +210,7 @@ if __name__ == '__main__':
     ax5 = plt.subplot(lower_left_cell)
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_500_chiK_500_t1_1_V_3_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_500_chiK_500_t1_1_V_3_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_10.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -235,8 +236,8 @@ if __name__ == '__main__':
         else:
             ax5.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
 
-    ax5.set_yticks(np.arange(0, 15.1, 5))
-    ax5.set_ylim([0, 15])
+    ax5.set_yticks(np.arange(0, 20.1, 5))
+    ax5.set_ylim([0, 20])
 
     # ax5.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
@@ -254,8 +255,14 @@ if __name__ == '__main__':
     ax6 = plt.subplot(right_inner_grid[0])
 
     for i, chi_val in enumerate(np.arange(100, 600, 100)):
+
+        if chi_val == 100:
+            tag = ".corrected"
+        else:
+            tag = ""
+
         corr_len_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/corr_len_V_flow/FerHofSqu1'
-        corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_3_25_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat'
+        corr_len_file = f'corr_len_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_3_25_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat{tag}'
         corr_len_path = os.path.join(corr_len_dir, corr_len_file)
 
         # extract data from file
@@ -295,7 +302,7 @@ if __name__ == '__main__':
 
     for i, chi_val in enumerate(np.arange(100, 600, 100)):
         ent_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_V_flow/FerHofSqu1'
-        ent_file = f'ent_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_3_25_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat'
+        ent_file = f'ent_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_3_25_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat.corrected'
         ent_path = os.path.join(ent_dir, ent_file)
 
         # extract data from file
@@ -328,19 +335,22 @@ if __name__ == '__main__':
 
     ax8 = plt.subplot(right_inner_grid[2])
 
-    for i, chi_val in enumerate(np.arange(200, 1100, 200)):
+    for i, chi_val in enumerate(np.arange(100, 600, 100)):
 
-        V_min = 0
+        if chi_val == 100:
+            V_min = 0
+            V_samples = 25
+        else:
+            V_min = 0.125
+            V_samples = 24
 
-        # if chi_val == 100:
-        #     V_min = 0
-        #     V_samples = 25
-        # else:
-        #     V_min = 0.125
-        #     V_samples = 24
+        if chi_val == 500:
+            tag = ""
+        else:
+            tag = ".corrected"
 
         energy_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/energy_V_flow/FerHofSqu1'
-        energy_file = f'energy_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_0_0.6_25_Coulomb_1_n_1_18_nphi_1_6_LxMUC_1_Ly_6.dat'
+        energy_file = f'energy_V_flow_FerHofSqu1_chi_{chi_val}_t1_1_V_{V_min}_3_{V_samples}_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat{tag}'
         energy_path = os.path.join(energy_dir, energy_file)
 
         # extract data from file
@@ -357,10 +367,10 @@ if __name__ == '__main__':
                 tot.append(float(row[3]))
 
         if V_min == 0:
-            ax8.plot(V[1:], np.log(pot[1:]), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+            ax8.plot(V[1:], np.log(pot[1:]), c=f"C{i}", marker=markers[i], markersize=2,
                      label=f"${chi_val / 100:g}$")
         else:
-            ax8.plot(V, np.log(pot), c=f"C{2 * i + 1}", marker=markers[i], markersize=2,
+            ax8.plot(V, np.log(pot), c=f"C{i}", marker=markers[i], markersize=2,
                      label=f"${chi_val / 100:g}$")
 
     ax8.axvline(0.0230, c='b', linestyle=':', zorder=-2)
@@ -383,7 +393,7 @@ if __name__ == '__main__':
     ax9 = plt.subplot(right_inner_grid[3])
 
     ent_spec_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_V_flow/FerHofSqu1'
-    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_500_t1_1_V_0_3_25_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat'
+    ent_spec_file = f'ent_spec_V_flow_FerHofSqu1_chi_500_t1_1_V_0_3_25_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat.corrected'
     ent_spec_path = os.path.join(ent_spec_dir, ent_spec_file)
 
     x = []
@@ -435,7 +445,7 @@ if __name__ == '__main__':
     ax10 = plt.subplot(lower_right_cell)
 
     ent_spec_mom_dir = '/home/bart/PycharmProjects/infinite_cylinder/data/ent_spec_mom/FerHofSqu1'
-    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_500_chiK_500_t1_1_V_3_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat'
+    ent_spec_mom_file = 'ent_spec_mom_FerHofSqu1_chi_500_chiK_500_t1_1_V_3_Coulomb_1_n_2_81_nphi_5_9_LxMUC_1_Ly_9.dat.rotated'
     ent_spec_mom_path = os.path.join(ent_spec_mom_dir, ent_spec_mom_file)
 
     x = []
@@ -476,7 +486,7 @@ if __name__ == '__main__':
     
     ####################################################################################################################
 
-    left_con = ConnectionPatch(xyA=(0, 15), xyB=(3, 0), coordsA="data", coordsB="data",
+    left_con = ConnectionPatch(xyA=(0, 20), xyB=(3, 0), coordsA="data", coordsB="data",
                                axesA=ax5, axesB=ax4, connectionstyle="angle3,angleA=40,angleB=221", arrowstyle='->',
                                facecolor='k', edgecolor='k')
     right_con = ConnectionPatch(xyA=(0, 15), xyB=(3, 0), coordsA="data", coordsB="data",
