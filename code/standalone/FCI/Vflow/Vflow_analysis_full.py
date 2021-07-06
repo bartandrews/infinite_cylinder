@@ -261,10 +261,18 @@ if __name__ == '__main__':
 
     with open(ent_spec_mom_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
+        xmin = 15
         for row in plots:
-            x.append(float(row[1]))
-            y.append(float(row[2]))
-            z.append(int(row[0]))
+            if float(row[2]) < 15:
+                x.append(float(row[1]))
+                y.append(float(row[2]))
+                z.append(int(row[0]))
+                if float(row[2]) < 5:
+                    if float(row[1]) < xmin:
+                        xmin = float(row[1])
+
+    print("xmin = ", xmin)
+    x[:] = [i - (1 + xmin) for i in x]
 
     for value in np.linspace(3, -3, 7, dtype=int):
         xvalue = []
@@ -279,12 +287,13 @@ if __name__ == '__main__':
             ax6.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
     ax6.set_yticks(np.arange(0, 15.1, 5))
-    ax6.set_ylim([0, 15])
+    ax6.set_ylim(top=15)
 
     # ax6.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
-    ax6.set_xlim([-np.pi / 3, np.pi / 3])
+    # ax6.set_xlim([-np.pi / 3, np.pi / 3])
+    ax6.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax6.set_xlabel("$k_a / \pi$", fontsize=11)
     ax6.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
@@ -517,10 +526,18 @@ if __name__ == '__main__':
 
     with open(ent_spec_mom_path, 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
+        xmin = 10
         for row in plots:
-            x.append(float(row[1]))
-            y.append(float(row[2]))
-            z.append(int(row[0]))
+            if float(row[2]) < 20:
+                x.append(float(row[1]))
+                y.append(float(row[2]))
+                z.append(int(row[0]))
+                if float(row[2]) < 5:
+                    if float(row[1]) < xmin:
+                        xmin = float(row[1])
+
+    print("xmin = ", xmin)
+    x[:] = [i - (1 + xmin) for i in x]
 
     for value in np.linspace(3, -3, 7, dtype=int):
         xvalue = []
@@ -535,12 +552,13 @@ if __name__ == '__main__':
             ax12.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
     ax12.set_yticks(np.arange(0, 20.1, 5))
-    ax12.set_ylim([0, 20])
+    ax12.set_ylim(top=20)
 
     # ax12.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
-    ax12.set_xlim([-np.pi / 3, np.pi / 3])
+    # ax12.set_xlim([-np.pi / 3, np.pi / 3])
+    ax12.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax12.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
     ax12.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
@@ -554,10 +572,10 @@ if __name__ == '__main__':
 
 
     left_con = ConnectionPatch(xyA=(0, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
-                                axesA=ax6, axesB=ax5, connectionstyle="angle3,angleA=40,angleB=200", arrowstyle='->',
+                                axesA=ax6, axesB=ax5, connectionstyle="angle3,angleA=40,angleB=210", arrowstyle='->',
                                 facecolor='k', edgecolor='k')
     right_con = ConnectionPatch(xyA=(0, 20), xyB=(0.6, 0), coordsA="data", coordsB="data",
-                               axesA=ax12, axesB=ax11, connectionstyle="angle3,angleA=40,angleB=200", arrowstyle='->',
+                               axesA=ax12, axesB=ax11, connectionstyle="angle3,angleA=40,angleB=210", arrowstyle='->',
                                facecolor='k', edgecolor='k')
 
     ax6.add_artist(left_con)

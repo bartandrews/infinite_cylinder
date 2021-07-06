@@ -432,8 +432,8 @@ if __name__ == '__main__':
         ax.xaxis.labelpad = -1
         ax.yaxis.labelpad = -1
         ax.zaxis.labelpad = -5
-        ax.set_xlabel('$k_x / |\mathbf{b}_x|$')
-        ax.set_ylabel('$k_y / |\mathbf{b}_y|$')
+        ax.set_xlabel('$k_x / 10\pi$')
+        ax.set_ylabel('$k_y / 2\pi$')
 
 
         def custom(value, tick_number):
