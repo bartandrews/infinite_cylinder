@@ -19,12 +19,13 @@
 
 MODELS="BosHofSqu1 FerHofSqu1"  # the model directories that we would like to sync
 PCS="baandr1 baandr2 baandr3"  # remote hostnames that we intend to run on (username == ubuntu is assumed throughout)
+BART_BASE=/home/bart
 UBUNTU_BASE=/home/ubuntu  # the home directory on the remote computers with username == ubuntu
 BANDREWS_BASE=/home/fkp/bandrews  # the home directory on the remote computers with username == bandrews
 BAANDR_BASE=/home/cluster/baandr  # the home directory on the remote computers with username == baandr
 DST_BASE=/disk/data11/tfp/BartMadhav  # the base directory on data11
 DIR_PATH_HOME=PycharmProjects/infinite_cylinder/pickles/ground_state  # path to the ground_state directory relative to home
-DIR_PATH_BASE=project1/pickles/ground_state  # path to directory relative to base
+DIR_PATH_BASE=project2/pickles/ground_state  # path to directory relative to base
 
 # dry run
 for DIR in ${MODELS}
@@ -49,13 +50,21 @@ do
 		ssh -A dirac rsync --remove-source-files -nvtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
 	fi
 	# shellcheck disable=SC2029
-	if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
+	if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/pickles/ground_state/${DIR}/ ]"
 	then
 		echo
-		echo ">>> Dry run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
+		echo ">>> Dry run from bart@dart:${BART_BASE}/${DIR_PATH_HOME}/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
 		echo
-		ssh -A dirac rsync --remove-source-files -nvtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
+		ssh -A dart rsync --remove-source-files -nvtzhre ssh bart@dart:${BART_BASE}/${DIR_PATH_HOME}/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
 	fi
+  #	# shellcheck disable=SC2029
+  #	if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
+  #	then
+  #		echo
+  #		echo ">>> Dry run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
+  #		echo
+  #		ssh -A dirac rsync --remove-source-files -nvtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
+  #	fi
 done
 
 echo
@@ -86,13 +95,21 @@ then
 			ssh -A dirac rsync --remove-source-files -vtzhre ssh bandrews@dirac:${BANDREWS_BASE}/${DIR_PATH_HOME}/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
 		fi
 		# shellcheck disable=SC2029
-		if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
-		then
-			echo
-			echo ">>> Actual run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
-			echo
-			ssh -A dirac rsync --remove-source-files -vtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
-		fi
+    if ssh bart@dart "[ -d /home/bart/PycharmProjects/infinite_cylinder/pickles/ground_state/${DIR}/ ]"
+    then
+      echo
+      echo ">>> Dry run from bart@dart:${BART_BASE}/${DIR_PATH_HOME}/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
+      echo
+      ssh -A dart rsync --remove-source-files -vtzhre ssh bart@dart:${BART_BASE}/${DIR_PATH_HOME}/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
+    fi
+    #		# shellcheck disable=SC2029
+    #		if ssh baandr@s3it "[ -d /home/cluster/baandr/data/pickles/ground_state/${DIR}/ ]"
+    #		then
+    #			echo
+    #			echo ">>> Actual run from baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/${DIR}/ to bart@dirac:${DST_BASE}/${DIR_PATH_BASE}/${DIR}/"
+    #			echo
+    #			ssh -A dirac rsync --remove-source-files -vtzhre ssh baandr@s3it:${BAANDR_BASE}/data/pickles/ground_state/"${DIR}"/ ${DST_BASE}/${DIR_PATH_BASE}/"${DIR}"/
+    #		fi
 	done
 else
     exit
