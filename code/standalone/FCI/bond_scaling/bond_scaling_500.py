@@ -113,7 +113,10 @@ if __name__ == '__main__':
             # ax1.set_ylim([-nu[0], 0])
             ax1.set_ylabel("$\\langle Q_\mathrm{L} \\rangle$", fontsize=11)
             if chi == 50:
-                ax1.text(0.05*nu[1], -0.9*nu[0], f"$L_y={Ly_val}$", fontsize=11)
+                if nphi[0] == 1 and nphi[1] == 5 and Ly_val == 7:
+                    ax1.text(0.05 * nu[1], -1.1 * nu[0], f"$L_y={Ly_val}$", fontsize=11)
+                else:
+                    ax1.text(0.05*nu[1], -0.9*nu[0], f"$L_y={Ly_val}$", fontsize=11)
             if filling not in [2, 3, 6, 7]:
                 plt.setp(ax1.get_xticklabels(), visible=False)
                 ax1.set_title(f"$n_\phi={nphi[0]}/{nphi[1]}$")

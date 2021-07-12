@@ -245,6 +245,7 @@ if __name__ == '__main__':
             ax5.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
 
     ax5.set_yticks(np.arange(0, 20.1, 5))
+    ax5.set_xticks(np.arange(-1, 1, 0.5))
     ax5.set_ylim(top=20)
 
     # ax5.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
@@ -489,6 +490,7 @@ if __name__ == '__main__':
             ax10.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
 
     ax10.set_yticks(np.arange(0, 15.1, 5))
+    ax10.set_xticks(np.arange(-1, 1, 0.5))
     ax10.set_ylim(top=15)
 
     # ax10.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,

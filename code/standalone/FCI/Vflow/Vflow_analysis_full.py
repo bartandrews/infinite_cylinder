@@ -294,7 +294,7 @@ if __name__ == '__main__':
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     # ax6.set_xlim([-np.pi / 3, np.pi / 3])
     ax6.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax6.set_xlabel("$k_a / \pi$", fontsize=11)
+    ax6.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
     ax6.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
 
     # ax6.plot([-1, 0.18], [0, 14.2], color='k', linestyle=':', linewidth=1)
