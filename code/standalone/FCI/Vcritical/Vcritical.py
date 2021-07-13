@@ -54,46 +54,52 @@ if __name__ == '__main__':
     with open('code/standalone/FCI/Vcritical/Vcritical_C1.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         p_rm4, p_rm3, p_rm2, p_r1, p_r2, p_r3 = [], [], [], [], [], []
-        VcW_rm4, VcW_rm4_err = [], []
-        VcW_rm3, VcW_rm3_err = [], []
-        VcW_rm2, VcW_rm2_err = [], []
-        VcW_r1, VcW_r1_err = [], []
-        VcW_r2, VcW_r2_err = [], []
-        VcW_r3, VcW_r3_err = [], []
+        VcW_rm4, VcW_rm4_err_m, VcW_rm4_err_p = [], [], []
+        VcW_rm3, VcW_rm3_err_m, VcW_rm3_err_p = [], [], []
+        VcW_rm2, VcW_rm2_err_m, VcW_rm2_err_p = [], [], []
+        VcW_r1, VcW_r1_err_m, VcW_r1_err_p = [], [], []
+        VcW_r2, VcW_r2_err_m, VcW_r2_err_p = [], [], []
+        VcW_r3, VcW_r3_err_m, VcW_r3_err_p = [], [], []
         for i, row in enumerate(plots):
             if int(row[0]) == -4:
                 p_rm4.append(float(row[1]))
-                VcW_rm4.append(float(row[2])/float(row[4]))
-                VcW_rm4_err.append(float(row[3]) / float(row[4]))
+                VcW_rm4.append(float(row[2])/float(row[5]))
+                VcW_rm4_err_m.append(float(row[3]) / float(row[5]))
+                VcW_rm4_err_p.append(float(row[4]) / float(row[5]))
             elif int(row[0]) == -3:
                 p_rm3.append(float(row[1]))
-                VcW_rm3.append(float(row[2])/float(row[4]))
-                VcW_rm3_err.append(float(row[3]) / float(row[4]))
+                VcW_rm3.append(float(row[2])/float(row[5]))
+                VcW_rm3_err_m.append(float(row[3]) / float(row[5]))
+                VcW_rm3_err_p.append(float(row[4]) / float(row[5]))
             elif int(row[0]) == -2:
                 p_rm2.append(float(row[1]))
-                VcW_rm2.append(float(row[2])/float(row[4]))
-                VcW_rm2_err.append(float(row[3]) / float(row[4]))
+                VcW_rm2.append(float(row[2])/float(row[5]))
+                VcW_rm2_err_m.append(float(row[3]) / float(row[5]))
+                VcW_rm2_err_p.append(float(row[4]) / float(row[5]))
             elif int(row[0]) == 1:
                 p_r1.append(float(row[1]))
-                VcW_r1.append(float(row[2])/float(row[4]))
-                VcW_r1_err.append(float(row[3]) / float(row[4]))
+                VcW_r1.append(float(row[2])/float(row[5]))
+                VcW_r1_err_m.append(float(row[3]) / float(row[5]))
+                VcW_r1_err_p.append(float(row[4]) / float(row[5]))
             elif int(row[0]) == 2:
                 p_r2.append(float(row[1]))
-                VcW_r2.append(float(row[2])/float(row[4]))
-                VcW_r2_err.append(float(row[3]) / float(row[4]))
+                VcW_r2.append(float(row[2])/float(row[5]))
+                VcW_r2_err_m.append(float(row[3]) / float(row[5]))
+                VcW_r2_err_p.append(float(row[4]) / float(row[5]))
             elif int(row[0]) == 3:
                 p_r3.append(float(row[1]))
-                VcW_r3.append(float(row[2])/float(row[4]))
-                VcW_r3_err.append(float(row[3]) / float(row[4]))
+                VcW_r3.append(float(row[2])/float(row[5]))
+                VcW_r3_err_m.append(float(row[3]) / float(row[5]))
+                VcW_r3_err_p.append(float(row[4]) / float(row[5]))
 
     # ax1.plot(p, VcW_rm4, '-', c='C0', marker=markers[0], fillstyle='none', markersize=5)
-    ax1.errorbar(p_rm4, VcW_rm4, yerr=VcW_rm4_err, c='C0', marker=markers[0], fillstyle='none', markersize=5, label='$-4$', capsize=3)
-    ax1.errorbar(p_rm3, VcW_rm3, yerr=VcW_rm3_err, c='C1', marker=markers[1], fillstyle='none', markersize=5, label='$-3$', capsize=3)
-    ax1.errorbar(p_rm2, VcW_rm2, yerr=VcW_rm2_err, c='C2', marker=markers[2], fillstyle='none', markersize=5, label='$-2$', capsize=3)
+    ax1.errorbar(p_rm4, VcW_rm4, yerr=(VcW_rm4_err_m, VcW_rm4_err_p), c='C0', marker=markers[0], fillstyle='none', markersize=5, label='$-4$', capsize=3)
+    ax1.errorbar(p_rm3, VcW_rm3, yerr=(VcW_rm3_err_m, VcW_rm3_err_p), c='C1', marker=markers[1], fillstyle='none', markersize=5, label='$-3$', capsize=3)
+    ax1.errorbar(p_rm2, VcW_rm2, yerr=(VcW_rm2_err_m, VcW_rm2_err_p), c='C2', marker=markers[2], fillstyle='none', markersize=5, label='$-2$', capsize=3)
     ax1.errorbar(np.NaN, np.NaN, yerr=np.NaN, c='C3', marker=markers[3], fillstyle='none', markersize=5, label='$-1$', capsize=3)
-    ax1.errorbar(p_r1, VcW_r1, yerr=VcW_r1_err, c='C5', marker=markers[5], fillstyle='none', markersize=5, label='$1$', capsize=3)
-    ax1.errorbar(p_r2, VcW_r2, yerr=VcW_r2_err, c='C6', marker=markers[6], fillstyle='none', markersize=5, label='$2$', capsize=3)
-    ax1.errorbar(p_r3, VcW_r3, yerr=VcW_r3_err, c='C7', marker=markers[7], fillstyle='none', markersize=5, label='$3$', capsize=3)
+    ax1.errorbar(p_r1, VcW_r1, yerr=(VcW_r1_err_m, VcW_r1_err_p), c='C5', marker=markers[5], fillstyle='none', markersize=5, label='$1$', capsize=3)
+    ax1.errorbar(p_r2, VcW_r2, yerr=(VcW_r2_err_m, VcW_r2_err_p), c='C6', marker=markers[6], fillstyle='none', markersize=5, label='$2$', capsize=3)
+    ax1.errorbar(p_r3, VcW_r3, yerr=(VcW_r3_err_m, VcW_r3_err_p), c='C7', marker=markers[7], fillstyle='none', markersize=5, label='$3$', capsize=3)
 
     left, bottom, width, height = [0.18, 0.55, 0.15, 0.3]
     ax1sub = fig.add_axes([left, bottom, width, height])
@@ -101,67 +107,76 @@ if __name__ == '__main__':
         plots = csv.reader(csvfile, delimiter='\t')
         for i, row in enumerate(plots):
             p = int(row[1])
-            VcW = float(row[2])/float(row[4])
-            VcW_err = float(row[3]) / float(row[4])
-            ax1sub.errorbar(p, VcW, yerr=VcW_err, c=f'C{int(row[0])+4}', marker=markers[int(row[0])+4], fillstyle='none', markersize=5, capsize=3)
+            VcW = float(row[2])/float(row[5])
+            VcW_err_m = [float(row[3]) / float(row[5])]
+            VcW_err_p = [float(row[4]) / float(row[5])]
+            ax1sub.errorbar(p, VcW, yerr=(VcW_err_m, VcW_err_p), c=f'C{int(row[0])+4}', marker=markers[int(row[0])+4], fillstyle='none', markersize=5, capsize=3)
     ax1sub.text(5.25, 10, "$C=2$", fontsize=11)
     ax1sub.set_xticks(np.arange(5, 8 + 0.1, 1))
+    # ax1sub.set_yscale("log")
 
     ax1.set_xlabel("$p$", fontsize=11)
     ax1.set_xticks(np.arange(4, 9 + 0.1, 1))
     ax1.set_ylabel("$V_\mathrm{crit} / W$", fontsize=11)
+    # ax1.set_yscale("log")
 
     leg = ax1.legend(loc='upper center', handletextpad=0.5, handlelength=0, labelspacing=0.2, borderpad=0.35,
                      framealpha=1,
                      edgecolor='k', markerscale=0.8, fontsize=10, ncol=8, columnspacing=1, bbox_to_anchor=(1.19, 1.49),
                      title='$r$')
     leg.get_frame().set_linewidth(0.5)
-    ax1.text(5, -12, "$C=1$", fontsize=11)
+    ax1.text(4.5, 10, "$C=1$", fontsize=11)
 
     ax2 = plt.subplot(gs[1])  # 071829 #################################################################################
 
     with open('code/standalone/FCI/Vcritical/Vcritical_C1.dat', 'r') as csvfile:
         plots = csv.reader(csvfile, delimiter='\t')
         p_rm4, p_rm3, p_rm2, p_r1, p_r2, p_r3 = [], [], [], [], [], []
-        VcD_rm4, VcD_rm4_err = [], []
-        VcD_rm3, VcD_rm3_err = [], []
-        VcD_rm2, VcD_rm2_err = [], []
-        VcD_r1, VcD_r1_err = [], []
-        VcD_r2, VcD_r2_err = [], []
-        VcD_r3, VcD_r3_err = [], []
+        VcD_rm4, VcD_rm4_err_m, VcD_rm4_err_p = [], [], []
+        VcD_rm3, VcD_rm3_err_m, VcD_rm3_err_p = [], [], []
+        VcD_rm2, VcD_rm2_err_m, VcD_rm2_err_p = [], [], []
+        VcD_r1, VcD_r1_err_m, VcD_r1_err_p = [], [], []
+        VcD_r2, VcD_r2_err_m, VcD_r2_err_p = [], [], []
+        VcD_r3, VcD_r3_err_m, VcD_r3_err_p = [], [], []
         for i, row in enumerate(plots):
             if int(row[0]) == -4:
                 p_rm4.append(float(row[1]))
-                VcD_rm4.append(float(row[2]) / float(row[5]))
-                VcD_rm4_err.append(float(row[3]) / float(row[5]))
+                VcD_rm4.append(float(row[2]) / float(row[6]))
+                VcD_rm4_err_m.append(float(row[3]) / float(row[6]))
+                VcD_rm4_err_p.append(float(row[4]) / float(row[6]))
             elif int(row[0]) == -3:
                 p_rm3.append(float(row[1]))
-                VcD_rm3.append(float(row[2]) / float(row[5]))
-                VcD_rm3_err.append(float(row[3]) / float(row[5]))
+                VcD_rm3.append(float(row[2]) / float(row[6]))
+                VcD_rm3_err_m.append(float(row[3]) / float(row[6]))
+                VcD_rm3_err_p.append(float(row[4]) / float(row[6]))
             elif int(row[0]) == -2:
                 p_rm2.append(float(row[1]))
-                VcD_rm2.append(float(row[2]) / float(row[5]))
-                VcD_rm2_err.append(float(row[3]) / float(row[5]))
+                VcD_rm2.append(float(row[2]) / float(row[6]))
+                VcD_rm2_err_m.append(float(row[3]) / float(row[6]))
+                VcD_rm2_err_p.append(float(row[4]) / float(row[6]))
             elif int(row[0]) == 1:
                 p_r1.append(float(row[1]))
-                VcD_r1.append(float(row[2]) / float(row[5]))
-                VcD_r1_err.append(float(row[3]) / float(row[5]))
+                VcD_r1.append(float(row[2]) / float(row[6]))
+                VcD_r1_err_m.append(float(row[3]) / float(row[6]))
+                VcD_r1_err_p.append(float(row[4]) / float(row[6]))
             elif int(row[0]) == 2:
                 p_r2.append(float(row[1]))
-                VcD_r2.append(float(row[2]) / float(row[5]))
-                VcD_r2_err.append(float(row[3]) / float(row[5]))
+                VcD_r2.append(float(row[2]) / float(row[6]))
+                VcD_r2_err_m.append(float(row[3]) / float(row[6]))
+                VcD_r2_err_p.append(float(row[4]) / float(row[6]))
             elif int(row[0]) == 3:
                 p_r3.append(float(row[1]))
-                VcD_r3.append(float(row[2]) / float(row[5]))
-                VcD_r3_err.append(float(row[3]) / float(row[5]))
+                VcD_r3.append(float(row[2]) / float(row[6]))
+                VcD_r3_err_m.append(float(row[3]) / float(row[6]))
+                VcD_r3_err_p.append(float(row[4]) / float(row[6]))
 
-    ax2.errorbar(p_rm4, VcD_rm4, yerr=VcD_rm4_err, c='C0', marker=markers[0], fillstyle='none', markersize=5, label='$-4$', capsize=3)
-    ax2.errorbar(p_rm3, VcD_rm3, yerr=VcD_rm3_err, c='C1', marker=markers[1], fillstyle='none', markersize=5, label='$-3$', capsize=3)
-    ax2.errorbar(p_rm2, VcD_rm2, yerr=VcD_rm2_err, c='C2', marker=markers[2], fillstyle='none', markersize=5, label='$-2$', capsize=3)
+    ax2.errorbar(p_rm4, VcD_rm4, yerr=(VcD_rm4_err_m, VcD_rm4_err_p), c='C0', marker=markers[0], fillstyle='none', markersize=5, label='$-4$', capsize=3)
+    ax2.errorbar(p_rm3, VcD_rm3, yerr=(VcD_rm3_err_m, VcD_rm3_err_p), c='C1', marker=markers[1], fillstyle='none', markersize=5, label='$-3$', capsize=3)
+    ax2.errorbar(p_rm2, VcD_rm2, yerr=(VcD_rm2_err_m, VcD_rm2_err_p), c='C2', marker=markers[2], fillstyle='none', markersize=5, label='$-2$', capsize=3)
     # ax2.plot(4, 20, '.-', c='C3', marker=markers[3], fillstyle='none', markersize=5, label='$-1$')
-    ax2.errorbar(p_r1, VcD_r1, yerr=VcD_r1_err, c='C5', marker=markers[5], fillstyle='none', markersize=5, label='$1$', capsize=3)
-    ax2.errorbar(p_r2, VcD_r2, yerr=VcD_r2_err, c='C6', marker=markers[6], fillstyle='none', markersize=5, label='$2$', capsize=3)
-    ax2.errorbar(p_r3, VcD_r3, yerr=VcD_r3_err, c='C7', marker=markers[7], fillstyle='none', markersize=5, label='$3$', capsize=3)
+    ax2.errorbar(p_r1, VcD_r1, yerr=(VcD_r1_err_m, VcD_r1_err_p), c='C5', marker=markers[5], fillstyle='none', markersize=5, label='$1$', capsize=3)
+    ax2.errorbar(p_r2, VcD_r2, yerr=(VcD_r2_err_m, VcD_r2_err_p), c='C6', marker=markers[6], fillstyle='none', markersize=5, label='$2$', capsize=3)
+    ax2.errorbar(p_r3, VcD_r3, yerr=(VcD_r3_err_m, VcD_r3_err_p), c='C7', marker=markers[7], fillstyle='none', markersize=5, label='$3$', capsize=3)
 
     left, bottom, width, height = [0.71, 0.55, 0.15, 0.3]
     ax2sub = fig.add_axes([left, bottom, width, height])
@@ -169,9 +184,10 @@ if __name__ == '__main__':
         plots = csv.reader(csvfile, delimiter='\t')
         for i, row in enumerate(plots):
             p = int(row[1])
-            VcD = float(row[2])/float(row[5])
-            VcD_err = float(row[3])/float(row[5])
-            ax2sub.errorbar(p, VcD, yerr=VcD_err, c=f'C{int(row[0])+4}', marker=markers[int(row[0])+4], fillstyle='none', markersize=5, capsize=3)
+            VcD = float(row[2])/float(row[6])
+            VcD_err_m = [float(row[3]) / float(row[6])]
+            VcD_err_p = [float(row[4]) / float(row[6])]
+            ax2sub.errorbar(p, VcD, yerr=(VcD_err_m, VcD_err_p), c=f'C{int(row[0])+4}', marker=markers[int(row[0])+4], fillstyle='none', markersize=5, capsize=3)
     ax2sub.text(6.5, 4.71, "$C=2$", fontsize=11)
     ax2sub.set_xticks(np.arange(5, 8 + 0.1, 1))
 

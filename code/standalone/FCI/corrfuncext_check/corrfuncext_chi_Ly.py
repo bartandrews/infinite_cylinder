@@ -229,7 +229,7 @@ if __name__ == '__main__':
     nu = (1, 5)
 
     for count, Ly_val in enumerate([10, 15, 20]):
-        corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_100_t1_1_V_10_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_{Ly_val}.dat'
+        corrfunc_file = f'corr_func_ext_FerHofSqu1_chi_500_t1_1_V_10_Coulomb_1_n_1_55_nphi_6_11_LxMUC_1_Ly_{Ly_val}.dat'
         corrfunc_path = os.path.join(corrfunc_dir, corrfunc_file)
         with open(corrfunc_path, 'r') as csvfile:
             plots = csv.reader(csvfile, delimiter='\t')
@@ -251,16 +251,16 @@ if __name__ == '__main__':
                  markersize=5, label=f'${int(Ly_val)}$')
 
     if corr_len_scale:
-        ax4.axvline(24.379929534532238, c=f'C0', ls='--', zorder=-3)  # chi=100
-        ax4.axvline(38.52972334472212, c=f'C1', ls='--', zorder=-3)  # chi=100
-        ax4.axvline(33.59220089136867, c=f'C2', ls='--', zorder=-3)  # chi=100
+        ax4.axvline(23.720028947117555, c=f'C0', ls='--', zorder=-3)  # chi=500
+        ax4.axvline(38.61903377390765, c=f'C1', ls='--', zorder=-3)  # chi=500
+        ax4.axvline(51.63281812104975, c=f'C2', ls='--', zorder=-3)  # chi=500
     # ax4.plot(sites_cont, corr_func_cont, '--', c=f'C0')
 
     ax4.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax4.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     if corr_len_scale:
-        ax4.set_xlim([0, 40])
-        ax4.set_xticks(np.arange(0, 41, 5))
+        ax4.set_xlim([0, 60])
+        ax4.set_xticks(np.arange(0, 61, 10))
     else:
         ax4.set_xlim([0, 20])
         ax4.set_xticks(np.arange(0, 21, 10))
@@ -269,7 +269,7 @@ if __name__ == '__main__':
     # ax4.set_ylim(0)
     ax4.set_xlabel("$x$", fontsize=11)
     ax4.set_ylabel("$g(x)$", fontsize=11)
-    ax4.set_title("$\{C,\\nu,n_\phi,\chi\}=\{2,\\nicefrac{1}{5},\\nicefrac{6}{11},10^3\}$", fontsize=11)
+    ax4.set_title("$\{C,\\nu,n_\phi,\chi\}=\{2,\\nicefrac{1}{5},\\nicefrac{6}{11},500\}$", fontsize=11)
     # ax4.text(0.55 * 19, 0.021185, f"$\\nu={nu[0]}/{nu[1]}$", fontsize=11)
     # ax4.annotate(f"$\\nu={nu[0]}/{nu[1]}$", xy=(0.69, 0.87), xycoords='axes fraction', fontsize=10,
     #              verticalalignment='top',
