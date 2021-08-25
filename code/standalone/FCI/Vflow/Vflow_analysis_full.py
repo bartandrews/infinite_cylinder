@@ -243,7 +243,7 @@ if __name__ == '__main__':
     ax5.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax5.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax5.set_xlabel("$V$", fontsize=11)
-    ax5.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
+    ax5.set_ylabel("$\\epsilon$", fontsize=11)
     ax5.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
 
@@ -279,26 +279,32 @@ if __name__ == '__main__':
         yvalue = []
         for i in range(len(x)):
             if z[i] == value:
-                xvalue.append(x[i])
+                xvalue.append((x[i]+1)*(6/2))
                 yvalue.append(y[i])
         if value != 0:
             ax6.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
         else:
             ax6.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
+    ax6.set_xticks(np.arange(0, 6, 1))
     ax6.set_yticks(np.arange(0, 15.1, 5))
-    ax6.set_ylim(top=15)
+    ax6.set_ylim([-4, 15])
 
     # ax6.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     # ax6.set_xlim([-np.pi / 3, np.pi / 3])
     ax6.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax6.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
-    ax6.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+    ax6.set_xlabel("$\\tilde{K}$", fontsize=11)
+    ax6.set_ylabel("$\epsilon$", fontsize=11)
 
-    # ax6.plot([-1, 0.18], [0, 14.2], color='k', linestyle=':', linewidth=1)
-    # ax6.plot([-0.73, 0.18], [0, 6], color='k', linestyle=':', linewidth=1)
+    # ax6.plot([0, 3], [1, 14], color='k', linestyle=':', linewidth=1)
+    # ax6.plot([0.5, 3], [0, 5], color='k', linestyle=':', linewidth=1)
+
+    ax6.text(0 - 0.08, 0 - 2.5, "$1$", fontsize=11)
+    ax6.text(1 - 0.08, 4 - 2.5, "$1$", fontsize=11)
+    ax6.text(2 - 0.1, 6 - 2.5, "$2$", fontsize=11)
+    ax6.text(3 - 0.3, 7 - 2.7, "$(3)$", fontsize=11)
 
     ax6.tick_params(axis="x", labelsize=10)
     ax6.tick_params(axis="y", labelsize=10)
@@ -508,7 +514,7 @@ if __name__ == '__main__':
     ax11.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax11.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax11.set_xlabel("$V$", fontsize=11)
-    ax11.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
+    ax11.set_ylabel("$\\epsilon$", fontsize=11)
     ax11.text(0.415, 9.2, '$\chi=10^3$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     
@@ -544,26 +550,32 @@ if __name__ == '__main__':
         yvalue = []
         for i in range(len(x)):
             if z[i] == value:
-                xvalue.append(x[i])
+                xvalue.append((x[i]+1)*(6/2))
                 yvalue.append(y[i])
         if value != 0:
             ax12.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
         else:
             ax12.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='${}$'.format(value))
 
+    ax12.set_xticks(np.arange(0, 6, 1))
     ax12.set_yticks(np.arange(0, 20.1, 5))
-    ax12.set_ylim(top=20)
+    ax12.set_ylim([-4, 20])
 
     # ax12.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
     #            markerscale=1,
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     # ax12.set_xlim([-np.pi / 3, np.pi / 3])
     ax12.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax12.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
-    ax12.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+    ax12.set_xlabel("$\\tilde{K}$", fontsize=11)
+    ax12.set_ylabel("$\epsilon$", fontsize=11)
 
     # ax12.plot([-1.05, 0.3], [5, 18.2], color='k', linestyle=':', linewidth=1)
     # ax12.plot([-0.3, 0.3], [0, 5], color='k', linestyle=':', linewidth=1)
+
+    ax12.text(0 - 0.08, 0 - 2.2, "$1$", fontsize=11)
+    ax12.text(1 - 0.08, 5.5 - 2.5, "$1$", fontsize=11)
+    ax12.text(2 - 0.1, 7.5 - 2.5, "$2$", fontsize=11)
+    # ax12.text(3 - 0.3, 9 - 2.7, "$(3)$", fontsize=11)
 
     ax12.tick_params(axis="x", labelsize=10)
     ax12.tick_params(axis="y", labelsize=10)
@@ -571,10 +583,10 @@ if __name__ == '__main__':
     ####################################################################################################################
 
 
-    left_con = ConnectionPatch(xyA=(0, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
+    left_con = ConnectionPatch(xyA=(3, 15), xyB=(0.6, 0), coordsA="data", coordsB="data",
                                 axesA=ax6, axesB=ax5, connectionstyle="angle3,angleA=40,angleB=210", arrowstyle='->',
                                 facecolor='k', edgecolor='k')
-    right_con = ConnectionPatch(xyA=(0, 20), xyB=(0.6, 0), coordsA="data", coordsB="data",
+    right_con = ConnectionPatch(xyA=(3, 20), xyB=(0.6, 0), coordsA="data", coordsB="data",
                                axesA=ax12, axesB=ax11, connectionstyle="angle3,angleA=40,angleB=210", arrowstyle='->',
                                facecolor='k', edgecolor='k')
 
@@ -584,5 +596,5 @@ if __name__ == '__main__':
     # fig.text(0.03, 0.87, "(a)", fontsize=12)
     # fig.text(0.5, 0.87, "(b)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_analysis_full.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_analysis_full_new.png", bbox_inches='tight', dpi=300)
     plt.show()

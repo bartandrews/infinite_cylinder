@@ -201,7 +201,7 @@ if __name__ == '__main__':
     ax4.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax4.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax4.set_xlabel("$V$", fontsize=11)
-    ax4.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
+    ax4.set_ylabel("$\\epsilon$", fontsize=11)
     ax4.text(2.02, 9.2, '$\chi=500$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     
@@ -237,7 +237,7 @@ if __name__ == '__main__':
         yvalue = []
         for i in range(len(x)):
             if z[i] == value:
-                xvalue.append(x[i])
+                xvalue.append((x[i]+1)*(10/2))
                 yvalue.append(y[i])
         if value != 0:
             ax5.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
@@ -245,7 +245,7 @@ if __name__ == '__main__':
             ax5.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
 
     ax5.set_yticks(np.arange(0, 20.1, 5))
-    ax5.set_xticks(np.arange(-1, 1, 0.5))
+    ax5.set_xticks(np.arange(0, 10, 1))
     ax5.set_ylim(top=20)
 
     # ax5.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
@@ -253,8 +253,8 @@ if __name__ == '__main__':
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     # ax5.set_xlim([-np.pi / 3, np.pi / 3])
     ax5.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax5.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
-    ax5.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+    ax5.set_xlabel("$\\tilde{K}$", fontsize=11)
+    ax5.set_ylabel("$\epsilon$", fontsize=11)
 
     ax5.tick_params(axis="x", labelsize=10)
     ax5.tick_params(axis="y", labelsize=10)
@@ -446,7 +446,7 @@ if __name__ == '__main__':
     ax9.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax9.yaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
     ax9.set_xlabel("$V$", fontsize=11)
-    ax9.set_ylabel("$\\epsilon_\\alpha$", fontsize=11)
+    ax9.set_ylabel("$\\epsilon$", fontsize=11)
     ax9.text(2.02, 9.2, '$\chi=500$', fontsize=10, verticalalignment='top',
              bbox=dict(boxstyle='round', facecolor='white', alpha=1))
     
@@ -482,7 +482,7 @@ if __name__ == '__main__':
         yvalue = []
         for i in range(len(x)):
             if z[i] == value:
-                xvalue.append(x[i])
+                xvalue.append((x[i]+1)*(9/2))
                 yvalue.append(y[i])
         if value != 0:
             ax10.scatter(xvalue, yvalue, marker='_', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
@@ -490,7 +490,7 @@ if __name__ == '__main__':
             ax10.scatter(xvalue, yvalue, marker='x', c='C{}'.format((value + 4) % 10), label='{}'.format(value))
 
     ax10.set_yticks(np.arange(0, 15.1, 5))
-    ax10.set_xticks(np.arange(-1, 1, 0.5))
+    ax10.set_xticks(np.arange(0, 9, 1))
     ax10.set_ylim(top=15)
 
     # ax10.legend(loc='center left', handletextpad=0, handlelength=1, borderpad=0.2, framealpha=1, edgecolor=None,
@@ -498,18 +498,18 @@ if __name__ == '__main__':
     #            fontsize=10, ncol=1, bbox_to_anchor=(1, 0.5))
     # ax10.set_xlim([-np.pi / 3, np.pi / 3])
     ax10.xaxis.set_major_formatter(ticker.FormatStrFormatter('$%g$'))
-    ax10.set_xlabel("$\\tilde{k}_a / \pi$", fontsize=11)
-    ax10.set_ylabel("$\epsilon_{\\alpha}$", fontsize=11)
+    ax10.set_xlabel("$\\tilde{K}$", fontsize=11)
+    ax10.set_ylabel("$\epsilon$", fontsize=11)
 
     ax10.tick_params(axis="x", labelsize=10)
     ax10.tick_params(axis="y", labelsize=10)
     
     ####################################################################################################################
 
-    left_con = ConnectionPatch(xyA=(0, 20), xyB=(3, 0), coordsA="data", coordsB="data",
+    left_con = ConnectionPatch(xyA=(5, 20), xyB=(3, 0), coordsA="data", coordsB="data",
                                axesA=ax5, axesB=ax4, connectionstyle="angle3,angleA=50,angleB=221", arrowstyle='->',
                                facecolor='k', edgecolor='k')
-    right_con = ConnectionPatch(xyA=(0, 15), xyB=(3, 0), coordsA="data", coordsB="data",
+    right_con = ConnectionPatch(xyA=(5, 15), xyB=(3, 0), coordsA="data", coordsB="data",
                                 axesA=ax10, axesB=ax9, connectionstyle="angle3,angleA=50,angleB=221", arrowstyle='->',
                                 facecolor='k', edgecolor='k')
 
@@ -519,5 +519,5 @@ if __name__ == '__main__':
     # fig.text(0.03, 0.87, "(a)", fontsize=12)
     # fig.text(0.5, 0.87, "(b)", fontsize=12)
 
-    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_c2345_analysis_25_full.png", bbox_inches='tight', dpi=300)
+    plt.savefig("/home/bart/Documents/papers/FCI/Vflow_c2345_analysis_25_full_new.png", bbox_inches='tight', dpi=300)
     plt.show()
